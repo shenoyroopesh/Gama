@@ -6,7 +6,8 @@ using System.Web;
 namespace RadiologyTracking.Web.Models
 {
     public class Change
-    {        
+    {
+        public int ID { get; set; }
         public String What { get; set; }
         public String Where { get; set; }
         public DateTime When { get; set; }

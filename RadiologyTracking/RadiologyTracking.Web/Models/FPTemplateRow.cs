@@ -7,6 +7,7 @@ namespace RadiologyTracking.Web.Models
 {
     public class FPTemplateRow
     {
+        public int ID { get; set; }
         public int SlNo { get; set; }
         public String Location { get; set; }
         public int Thickness { get; set; }

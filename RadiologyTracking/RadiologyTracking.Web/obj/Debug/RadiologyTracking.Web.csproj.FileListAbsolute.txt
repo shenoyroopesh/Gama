@@ -7,5 +7,6 @@ D:\DotNet\Gama\RadiologyTracking\RadiologyTracking.Web\obj\Debug\GenerateResourc
 D:\DotNet\Gama\RadiologyTracking\RadiologyTracking.Web\obj\Debug\GenerateResource.write.1.tlog
 D:\DotNet\Gama\RadiologyTracking\RadiologyTracking.Web\obj\Debug\RadiologyTracking.Web.dll
 D:\DotNet\Gama\RadiologyTracking\RadiologyTracking.Web\obj\Debug\RadiologyTracking.Web.pdb
-D:\DotNet\Gama\RadiologyTracking\RadiologyTracking.Web\bin\EntityFramework.dll
 D:\DotNet\Gama\RadiologyTracking\RadiologyTracking.Web\bin\EntityFramework.xml
+D:\DotNet\Gama\RadiologyTracking\RadiologyTracking.Web\bin\EntityFramework.dll
+D:\DotNet\Gama\RadiologyTracking\RadiologyTracking.Web\bin\Microsoft.ServiceModel.DomainServices.EntityFramework.dll

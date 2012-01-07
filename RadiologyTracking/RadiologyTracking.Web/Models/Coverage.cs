@@ -7,6 +7,7 @@ namespace RadiologyTracking.Web.Models
 {
     public class Coverage
     {
+        public int ID { get; set; }
         public String CoverageName { get; set; }
     }
 }

@@ -7,6 +7,7 @@ namespace RadiologyTracking.Web.Models
 {
     public class RGReportRow
     {
+        public int ID { get; set; }
         public int SlNo { get; set; }
         public String Location { get; set; }
         public int Thickness { get; set; }
@@ -16,7 +17,7 @@ namespace RadiologyTracking.Web.Models
         public String Sensitivity { get; set; }
         public String Density { get; set; }
         public FilmSize FilmSize { get; set; }
-        public Observation[] Observations { get; set; }
+        public ICollection<Observation> Observations { get; set; }
         public Remark Remark { get; set; }
         public Technician Technician { get; set; }
         public Welder Welder { get; set; }

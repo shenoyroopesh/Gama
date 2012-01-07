@@ -10,6 +10,7 @@ namespace RadiologyTracking.Web.Models
     /// </summary>
     public class Energy
     {
+        public int ID { get; set; }
         public String Name { get; set; }
     }
 }

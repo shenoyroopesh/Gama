@@ -7,6 +7,7 @@ namespace RadiologyTracking.Web.Models
 {
     public class Welder
     {
+        public int ID { get; set; }
         public String Name { get; set; }
     }
 }
