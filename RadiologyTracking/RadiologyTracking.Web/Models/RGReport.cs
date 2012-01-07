@@ -12,9 +12,12 @@ namespace RadiologyTracking.Web.Models
     public class RGReport
     {
         public int ID { get; set; }
+
+        public int FixedPatternID { get; set; }
         public FixedPattern FixedPattern { get; set; }
+
         public String LeadScreen { get; set; }
-        public ICollection<Energy> Sources { get; set; }
+        public ICollection<RGReportSource> Sources { get; set; }
         public String SourceSize { get; set; }
         public String RTNo { get; set; }
         public String ReportNo { get; set; }

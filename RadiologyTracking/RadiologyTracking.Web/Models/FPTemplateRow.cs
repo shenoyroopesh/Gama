@@ -15,7 +15,11 @@ namespace RadiologyTracking.Web.Models
         public String Designation { get; set; }
         public String Sensitivity { get; set; }
         public String Density { get; set; }
+
+        public int FilmSizeID { get; set; }
         public FilmSize FilmSize { get; set; }
+
+        public int FixedPatternTemplateID { get; set; }
         public FixedPatternTemplate FixedPatternTemplate { get; set; }
     }
 }

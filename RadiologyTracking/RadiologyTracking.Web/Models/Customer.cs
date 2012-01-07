@@ -10,6 +10,7 @@ namespace RadiologyTracking.Web.Models
         public int ID { get; set; }
         public String CustomerName { get; set; }
 
+        public int FoundryID { get; set; }
         /// <summary>
         /// Every Customer belongs to a particular foundry, this particular note will tell which foundry
         /// </summary>

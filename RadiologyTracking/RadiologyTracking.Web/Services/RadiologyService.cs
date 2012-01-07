@@ -588,7 +588,7 @@ namespace RadiologyTracking.Web.Services
 
         public IQueryable<ThicknessRangeForEnergy> GetThicknessRangesForEnergy()
         {
-            return this.DbContext.ThicknessRangeForEnergy;
+            return this.DbContext.ThicknessRangesForEnergy;
         }
 
         public void InsertThicknessRangeForEnergy(ThicknessRangeForEnergy entity)
@@ -600,13 +600,13 @@ namespace RadiologyTracking.Web.Services
             }
             else
             {
-                this.DbContext.ThicknessRangeForEnergy.Add(entity);
+                this.DbContext.ThicknessRangesForEnergy.Add(entity);
             }
         }
 
         public void UpdateThicknessRangeForEnergy(ThicknessRangeForEnergy currentThicknessRangeForEnergy)
         {
-            this.DbContext.ThicknessRangeForEnergy.AttachAsModified(currentThicknessRangeForEnergy, this.ChangeSet.GetOriginal(currentThicknessRangeForEnergy), this.DbContext);
+            this.DbContext.ThicknessRangesForEnergy.AttachAsModified(currentThicknessRangeForEnergy, this.ChangeSet.GetOriginal(currentThicknessRangeForEnergy), this.DbContext);
         }
 
         public void DeleteThicknessRangeForEnergy(ThicknessRangeForEnergy entity)
@@ -618,8 +618,8 @@ namespace RadiologyTracking.Web.Services
             }
             else
             {
-                this.DbContext.ThicknessRangeForEnergy.Attach(entity);
-                this.DbContext.ThicknessRangeForEnergy.Remove(entity);
+                this.DbContext.ThicknessRangesForEnergy.Attach(entity);
+                this.DbContext.ThicknessRangesForEnergy.Remove(entity);
             }
         }
 
@@ -660,42 +660,42 @@ namespace RadiologyTracking.Web.Services
             }
         }
 
-        public IQueryable<User> GetUsers()
-        {
-            return this.DbContext.Users;
-        }
+        //public IQueryable<User> GetUsers()
+        //{
+        //    return this.DbContext.Users;
+        //}
 
-        public void InsertUser(User entity)
-        {
-            DbEntityEntry<User> entityEntry = this.DbContext.Entry(entity);
-            if ((entityEntry.State != EntityState.Detached))
-            {
-                entityEntry.State = EntityState.Added;
-            }
-            else
-            {
-                this.DbContext.Users.Add(entity);
-            }
-        }
+        //public void InsertUser(User entity)
+        //{
+        //    DbEntityEntry<User> entityEntry = this.DbContext.Entry(entity);
+        //    if ((entityEntry.State != EntityState.Detached))
+        //    {
+        //        entityEntry.State = EntityState.Added;
+        //    }
+        //    else
+        //    {
+        //        this.DbContext.Users.Add(entity);
+        //    }
+        //}
 
-        public void UpdateUser(User currentUser)
-        {
-            this.DbContext.Users.AttachAsModified(currentUser, this.ChangeSet.GetOriginal(currentUser), this.DbContext);
-        }
+        //public void UpdateUser(User currentUser)
+        //{
+        //    this.DbContext.Users.AttachAsModified(currentUser, this.ChangeSet.GetOriginal(currentUser), this.DbContext);
+        //}
 
-        public void DeleteUser(User entity)
-        {
-            DbEntityEntry<User> entityEntry = this.DbContext.Entry(entity);
-            if ((entityEntry.State != EntityState.Deleted))
-            {
-                entityEntry.State = EntityState.Deleted;
-            }
-            else
-            {
-                this.DbContext.Users.Attach(entity);
-                this.DbContext.Users.Remove(entity);
-            }
-        }
+        //public void DeleteUser(User entity)
+        //{
+        //    DbEntityEntry<User> entityEntry = this.DbContext.Entry(entity);
+        //    if ((entityEntry.State != EntityState.Deleted))
+        //    {
+        //        entityEntry.State = EntityState.Deleted;
+        //    }
+        //    else
+        //    {
+        //        this.DbContext.Users.Attach(entity);
+        //        this.DbContext.Users.Remove(entity);
+        //    }
+        //}
 
     }
 }

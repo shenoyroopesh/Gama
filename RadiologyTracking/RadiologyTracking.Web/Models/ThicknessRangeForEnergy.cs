@@ -10,6 +10,8 @@ namespace RadiologyTracking.Web.Models
         public int ID { get; set; }
         public double ThicknessFrom { get; set; }
         public double ThicknessTo { get; set; }
+
+        public int EnergyID { get; set; }
         public Energy Energy { get; set; }
     }
 }

@@ -7,7 +7,15 @@ using System.Data.Entity;
 namespace RadiologyTracking.Web.Models
 {
     public class RadiologyContext: DbContext
-    {        
+    {
+        public RadiologyContext()
+        {
+            if (HttpContext.Current == null)
+            {
+                Database.SetInitializer<RadiologyContext>(null);
+            }
+        }
+
         public DbSet<Change> Changes { get; set; }
         public DbSet<Coverage> Coverages { get; set; }
         public DbSet<Customer> Customers { get; set; }
@@ -21,10 +29,11 @@ namespace RadiologyTracking.Web.Models
         public DbSet<FPTemplateRow> FPTemplateRows { get; set; }
         public DbSet<Observation> Observations { get; set; }
         public DbSet<RGReport> RGReports { get; set; }
+        public DbSet<RGReportSource> RGReportSources { get; set; }
         public DbSet<RGReportRow> RGReportRows { get; set; }
         public DbSet<Technician> Technicians { get; set; }
-        public DbSet<User> Users { get; set; }
+        //public DbSet<User> Users { get; set; }
         public DbSet<Welder> Welders { get; set; }
-        public DbSet<ThicknessRangeForEnergy> ThicknessRangeForEnergy { get; set; }
+        public DbSet<ThicknessRangeForEnergy> ThicknessRangesForEnergy { get; set; }
     }
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.ComponentModel.DataAnnotations;
 
 namespace RadiologyTracking.Web.Models
 {
@@ -13,7 +14,10 @@ namespace RadiologyTracking.Web.Models
         public DateTime When { get; set; }
         public String FromValue { get; set; }
         public String ToValue { get; set; }
-        public User ByWhom { get; set; }
+
+        //TODO: check out whether this can be made user id later
+        public String ByWhom { get; set; }
+
         public String Why { get; set; }
     }
 }

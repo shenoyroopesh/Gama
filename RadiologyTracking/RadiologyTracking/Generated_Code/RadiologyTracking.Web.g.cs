@@ -792,3 +792,4809 @@ namespace RadiologyTracking.Web
         }
     }
 }
+namespace RadiologyTracking.Web.Models
+{
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel;
+    using System.ComponentModel.DataAnnotations;
+    using System.ComponentModel.DataAnnotations.Schema;
+    using System.Linq;
+    using System.Runtime.Serialization;
+    using System.ServiceModel.DomainServices;
+    using System.ServiceModel.DomainServices.Client;
+    using System.ServiceModel.DomainServices.Client.ApplicationServices;
+    
+    
+    /// <summary>
+    /// The 'Change' entity class.
+    /// </summary>
+    [DataContract(Namespace="http://schemas.datacontract.org/2004/07/RadiologyTracking.Web.Models")]
+    public sealed partial class Change : Entity
+    {
+        
+        private string _byWhom;
+        
+        private string _fromValue;
+        
+        private int _id;
+        
+        private string _toValue;
+        
+        private string _what;
+        
+        private DateTime _when;
+        
+        private string _where;
+        
+        private string _why;
+        
+        #region Extensibility Method Definitions
+
+        /// <summary>
+        /// This method is invoked from the constructor once initialization is complete and
+        /// can be used for further object setup.
+        /// </summary>
+        partial void OnCreated();
+        partial void OnByWhomChanging(string value);
+        partial void OnByWhomChanged();
+        partial void OnFromValueChanging(string value);
+        partial void OnFromValueChanged();
+        partial void OnIDChanging(int value);
+        partial void OnIDChanged();
+        partial void OnToValueChanging(string value);
+        partial void OnToValueChanged();
+        partial void OnWhatChanging(string value);
+        partial void OnWhatChanged();
+        partial void OnWhenChanging(DateTime value);
+        partial void OnWhenChanged();
+        partial void OnWhereChanging(string value);
+        partial void OnWhereChanged();
+        partial void OnWhyChanging(string value);
+        partial void OnWhyChanged();
+
+        #endregion
+        
+        
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Change"/> class.
+        /// </summary>
+        public Change()
+        {
+            this.OnCreated();
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'ByWhom' value.
+        /// </summary>
+        [DataMember()]
+        public string ByWhom
+        {
+            get
+            {
+                return this._byWhom;
+            }
+            set
+            {
+                if ((this._byWhom != value))
+                {
+                    this.OnByWhomChanging(value);
+                    this.RaiseDataMemberChanging("ByWhom");
+                    this.ValidateProperty("ByWhom", value);
+                    this._byWhom = value;
+                    this.RaiseDataMemberChanged("ByWhom");
+                    this.OnByWhomChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'FromValue' value.
+        /// </summary>
+        [DataMember()]
+        public string FromValue
+        {
+            get
+            {
+                return this._fromValue;
+            }
+            set
+            {
+                if ((this._fromValue != value))
+                {
+                    this.OnFromValueChanging(value);
+                    this.RaiseDataMemberChanging("FromValue");
+                    this.ValidateProperty("FromValue", value);
+                    this._fromValue = value;
+                    this.RaiseDataMemberChanged("FromValue");
+                    this.OnFromValueChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'ID' value.
+        /// </summary>
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [DataMember()]
+        [Editable(false, AllowInitialValue=true)]
+        [Key()]
+        [RoundtripOriginal()]
+        public int ID
+        {
+            get
+            {
+                return this._id;
+            }
+            set
+            {
+                if ((this._id != value))
+                {
+                    this.OnIDChanging(value);
+                    this.ValidateProperty("ID", value);
+                    this._id = value;
+                    this.RaisePropertyChanged("ID");
+                    this.OnIDChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'ToValue' value.
+        /// </summary>
+        [DataMember()]
+        public string ToValue
+        {
+            get
+            {
+                return this._toValue;
+            }
+            set
+            {
+                if ((this._toValue != value))
+                {
+                    this.OnToValueChanging(value);
+                    this.RaiseDataMemberChanging("ToValue");
+                    this.ValidateProperty("ToValue", value);
+                    this._toValue = value;
+                    this.RaiseDataMemberChanged("ToValue");
+                    this.OnToValueChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'What' value.
+        /// </summary>
+        [DataMember()]
+        public string What
+        {
+            get
+            {
+                return this._what;
+            }
+            set
+            {
+                if ((this._what != value))
+                {
+                    this.OnWhatChanging(value);
+                    this.RaiseDataMemberChanging("What");
+                    this.ValidateProperty("What", value);
+                    this._what = value;
+                    this.RaiseDataMemberChanged("What");
+                    this.OnWhatChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'When' value.
+        /// </summary>
+        [DataMember()]
+        public DateTime When
+        {
+            get
+            {
+                return this._when;
+            }
+            set
+            {
+                if ((this._when != value))
+                {
+                    this.OnWhenChanging(value);
+                    this.RaiseDataMemberChanging("When");
+                    this.ValidateProperty("When", value);
+                    this._when = value;
+                    this.RaiseDataMemberChanged("When");
+                    this.OnWhenChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'Where' value.
+        /// </summary>
+        [DataMember()]
+        public string Where
+        {
+            get
+            {
+                return this._where;
+            }
+            set
+            {
+                if ((this._where != value))
+                {
+                    this.OnWhereChanging(value);
+                    this.RaiseDataMemberChanging("Where");
+                    this.ValidateProperty("Where", value);
+                    this._where = value;
+                    this.RaiseDataMemberChanged("Where");
+                    this.OnWhereChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'Why' value.
+        /// </summary>
+        [DataMember()]
+        public string Why
+        {
+            get
+            {
+                return this._why;
+            }
+            set
+            {
+                if ((this._why != value))
+                {
+                    this.OnWhyChanging(value);
+                    this.RaiseDataMemberChanging("Why");
+                    this.ValidateProperty("Why", value);
+                    this._why = value;
+                    this.RaiseDataMemberChanged("Why");
+                    this.OnWhyChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Computes a value from the key fields that uniquely identifies this entity instance.
+        /// </summary>
+        /// <returns>An object instance that uniquely identifies this entity instance.</returns>
+        public override object GetIdentity()
+        {
+            return this._id;
+        }
+    }
+    
+    /// <summary>
+    /// The 'Coverage' entity class.
+    /// </summary>
+    [DataContract(Namespace="http://schemas.datacontract.org/2004/07/RadiologyTracking.Web.Models")]
+    public sealed partial class Coverage : Entity
+    {
+        
+        private string _coverageName;
+        
+        private int _id;
+        
+        #region Extensibility Method Definitions
+
+        /// <summary>
+        /// This method is invoked from the constructor once initialization is complete and
+        /// can be used for further object setup.
+        /// </summary>
+        partial void OnCreated();
+        partial void OnCoverageNameChanging(string value);
+        partial void OnCoverageNameChanged();
+        partial void OnIDChanging(int value);
+        partial void OnIDChanged();
+
+        #endregion
+        
+        
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Coverage"/> class.
+        /// </summary>
+        public Coverage()
+        {
+            this.OnCreated();
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'CoverageName' value.
+        /// </summary>
+        [DataMember()]
+        public string CoverageName
+        {
+            get
+            {
+                return this._coverageName;
+            }
+            set
+            {
+                if ((this._coverageName != value))
+                {
+                    this.OnCoverageNameChanging(value);
+                    this.RaiseDataMemberChanging("CoverageName");
+                    this.ValidateProperty("CoverageName", value);
+                    this._coverageName = value;
+                    this.RaiseDataMemberChanged("CoverageName");
+                    this.OnCoverageNameChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'ID' value.
+        /// </summary>
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [DataMember()]
+        [Editable(false, AllowInitialValue=true)]
+        [Key()]
+        [RoundtripOriginal()]
+        public int ID
+        {
+            get
+            {
+                return this._id;
+            }
+            set
+            {
+                if ((this._id != value))
+                {
+                    this.OnIDChanging(value);
+                    this.ValidateProperty("ID", value);
+                    this._id = value;
+                    this.RaisePropertyChanged("ID");
+                    this.OnIDChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Computes a value from the key fields that uniquely identifies this entity instance.
+        /// </summary>
+        /// <returns>An object instance that uniquely identifies this entity instance.</returns>
+        public override object GetIdentity()
+        {
+            return this._id;
+        }
+    }
+    
+    /// <summary>
+    /// The 'Customer' entity class.
+    /// </summary>
+    [DataContract(Namespace="http://schemas.datacontract.org/2004/07/RadiologyTracking.Web.Models")]
+    public sealed partial class Customer : Entity
+    {
+        
+        private string _customerName;
+        
+        private string _foundry;
+        
+        private int _foundryID;
+        
+        private int _id;
+        
+        #region Extensibility Method Definitions
+
+        /// <summary>
+        /// This method is invoked from the constructor once initialization is complete and
+        /// can be used for further object setup.
+        /// </summary>
+        partial void OnCreated();
+        partial void OnCustomerNameChanging(string value);
+        partial void OnCustomerNameChanged();
+        partial void OnFoundryChanging(string value);
+        partial void OnFoundryChanged();
+        partial void OnFoundryIDChanging(int value);
+        partial void OnFoundryIDChanged();
+        partial void OnIDChanging(int value);
+        partial void OnIDChanged();
+
+        #endregion
+        
+        
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Customer"/> class.
+        /// </summary>
+        public Customer()
+        {
+            this.OnCreated();
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'CustomerName' value.
+        /// </summary>
+        [DataMember()]
+        public string CustomerName
+        {
+            get
+            {
+                return this._customerName;
+            }
+            set
+            {
+                if ((this._customerName != value))
+                {
+                    this.OnCustomerNameChanging(value);
+                    this.RaiseDataMemberChanging("CustomerName");
+                    this.ValidateProperty("CustomerName", value);
+                    this._customerName = value;
+                    this.RaiseDataMemberChanged("CustomerName");
+                    this.OnCustomerNameChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'Foundry' value.
+        /// </summary>
+        [DataMember()]
+        public string Foundry
+        {
+            get
+            {
+                return this._foundry;
+            }
+            set
+            {
+                if ((this._foundry != value))
+                {
+                    this.OnFoundryChanging(value);
+                    this.RaiseDataMemberChanging("Foundry");
+                    this.ValidateProperty("Foundry", value);
+                    this._foundry = value;
+                    this.RaiseDataMemberChanged("Foundry");
+                    this.OnFoundryChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'FoundryID' value.
+        /// </summary>
+        [DataMember()]
+        public int FoundryID
+        {
+            get
+            {
+                return this._foundryID;
+            }
+            set
+            {
+                if ((this._foundryID != value))
+                {
+                    this.OnFoundryIDChanging(value);
+                    this.RaiseDataMemberChanging("FoundryID");
+                    this.ValidateProperty("FoundryID", value);
+                    this._foundryID = value;
+                    this.RaiseDataMemberChanged("FoundryID");
+                    this.OnFoundryIDChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'ID' value.
+        /// </summary>
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [DataMember()]
+        [Editable(false, AllowInitialValue=true)]
+        [Key()]
+        [RoundtripOriginal()]
+        public int ID
+        {
+            get
+            {
+                return this._id;
+            }
+            set
+            {
+                if ((this._id != value))
+                {
+                    this.OnIDChanging(value);
+                    this.ValidateProperty("ID", value);
+                    this._id = value;
+                    this.RaisePropertyChanged("ID");
+                    this.OnIDChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Computes a value from the key fields that uniquely identifies this entity instance.
+        /// </summary>
+        /// <returns>An object instance that uniquely identifies this entity instance.</returns>
+        public override object GetIdentity()
+        {
+            return this._id;
+        }
+    }
+    
+    /// <summary>
+    /// The 'Defect' entity class.
+    /// </summary>
+    [DataContract(Namespace="http://schemas.datacontract.org/2004/07/RadiologyTracking.Web.Models")]
+    public sealed partial class Defect : Entity
+    {
+        
+        private string _code;
+        
+        private int _id;
+        
+        private string _name;
+        
+        #region Extensibility Method Definitions
+
+        /// <summary>
+        /// This method is invoked from the constructor once initialization is complete and
+        /// can be used for further object setup.
+        /// </summary>
+        partial void OnCreated();
+        partial void OnCodeChanging(string value);
+        partial void OnCodeChanged();
+        partial void OnIDChanging(int value);
+        partial void OnIDChanged();
+        partial void OnNameChanging(string value);
+        partial void OnNameChanged();
+
+        #endregion
+        
+        
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Defect"/> class.
+        /// </summary>
+        public Defect()
+        {
+            this.OnCreated();
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'Code' value.
+        /// </summary>
+        [DataMember()]
+        public string Code
+        {
+            get
+            {
+                return this._code;
+            }
+            set
+            {
+                if ((this._code != value))
+                {
+                    this.OnCodeChanging(value);
+                    this.RaiseDataMemberChanging("Code");
+                    this.ValidateProperty("Code", value);
+                    this._code = value;
+                    this.RaiseDataMemberChanged("Code");
+                    this.OnCodeChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'ID' value.
+        /// </summary>
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [DataMember()]
+        [Editable(false, AllowInitialValue=true)]
+        [Key()]
+        [RoundtripOriginal()]
+        public int ID
+        {
+            get
+            {
+                return this._id;
+            }
+            set
+            {
+                if ((this._id != value))
+                {
+                    this.OnIDChanging(value);
+                    this.ValidateProperty("ID", value);
+                    this._id = value;
+                    this.RaisePropertyChanged("ID");
+                    this.OnIDChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'Name' value.
+        /// </summary>
+        [DataMember()]
+        public string Name
+        {
+            get
+            {
+                return this._name;
+            }
+            set
+            {
+                if ((this._name != value))
+                {
+                    this.OnNameChanging(value);
+                    this.RaiseDataMemberChanging("Name");
+                    this.ValidateProperty("Name", value);
+                    this._name = value;
+                    this.RaiseDataMemberChanged("Name");
+                    this.OnNameChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Computes a value from the key fields that uniquely identifies this entity instance.
+        /// </summary>
+        /// <returns>An object instance that uniquely identifies this entity instance.</returns>
+        public override object GetIdentity()
+        {
+            return this._id;
+        }
+    }
+    
+    public enum Direction
+    {
+        
+        SENT_TO_HO = 0,
+        
+        RECEIVED_FROM_HO = 1,
+    }
+    
+    /// <summary>
+    /// The 'Energy' entity class.
+    /// </summary>
+    [DataContract(Namespace="http://schemas.datacontract.org/2004/07/RadiologyTracking.Web.Models")]
+    public sealed partial class Energy : Entity
+    {
+        
+        private int _id;
+        
+        private string _name;
+        
+        #region Extensibility Method Definitions
+
+        /// <summary>
+        /// This method is invoked from the constructor once initialization is complete and
+        /// can be used for further object setup.
+        /// </summary>
+        partial void OnCreated();
+        partial void OnIDChanging(int value);
+        partial void OnIDChanged();
+        partial void OnNameChanging(string value);
+        partial void OnNameChanged();
+
+        #endregion
+        
+        
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Energy"/> class.
+        /// </summary>
+        public Energy()
+        {
+            this.OnCreated();
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'ID' value.
+        /// </summary>
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [DataMember()]
+        [Editable(false, AllowInitialValue=true)]
+        [Key()]
+        [RoundtripOriginal()]
+        public int ID
+        {
+            get
+            {
+                return this._id;
+            }
+            set
+            {
+                if ((this._id != value))
+                {
+                    this.OnIDChanging(value);
+                    this.ValidateProperty("ID", value);
+                    this._id = value;
+                    this.RaisePropertyChanged("ID");
+                    this.OnIDChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'Name' value.
+        /// </summary>
+        [DataMember()]
+        public string Name
+        {
+            get
+            {
+                return this._name;
+            }
+            set
+            {
+                if ((this._name != value))
+                {
+                    this.OnNameChanging(value);
+                    this.RaiseDataMemberChanging("Name");
+                    this.ValidateProperty("Name", value);
+                    this._name = value;
+                    this.RaiseDataMemberChanged("Name");
+                    this.OnNameChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Computes a value from the key fields that uniquely identifies this entity instance.
+        /// </summary>
+        /// <returns>An object instance that uniquely identifies this entity instance.</returns>
+        public override object GetIdentity()
+        {
+            return this._id;
+        }
+    }
+    
+    /// <summary>
+    /// The 'FilmSize' entity class.
+    /// </summary>
+    [DataContract(Namespace="http://schemas.datacontract.org/2004/07/RadiologyTracking.Web.Models")]
+    public sealed partial class FilmSize : Entity
+    {
+        
+        private int _area;
+        
+        private int _height;
+        
+        private int _id;
+        
+        private int _width;
+        
+        #region Extensibility Method Definitions
+
+        /// <summary>
+        /// This method is invoked from the constructor once initialization is complete and
+        /// can be used for further object setup.
+        /// </summary>
+        partial void OnCreated();
+        partial void OnAreaChanging(int value);
+        partial void OnAreaChanged();
+        partial void OnHeightChanging(int value);
+        partial void OnHeightChanged();
+        partial void OnIDChanging(int value);
+        partial void OnIDChanged();
+        partial void OnWidthChanging(int value);
+        partial void OnWidthChanged();
+
+        #endregion
+        
+        
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FilmSize"/> class.
+        /// </summary>
+        public FilmSize()
+        {
+            this.OnCreated();
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'Area' value.
+        /// </summary>
+        [DataMember()]
+        [Editable(false)]
+        [ReadOnly(true)]
+        public int Area
+        {
+            get
+            {
+                return this._area;
+            }
+            set
+            {
+                if ((this._area != value))
+                {
+                    this.OnAreaChanging(value);
+                    this.ValidateProperty("Area", value);
+                    this._area = value;
+                    this.RaisePropertyChanged("Area");
+                    this.OnAreaChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'Height' value.
+        /// </summary>
+        [DataMember()]
+        public int Height
+        {
+            get
+            {
+                return this._height;
+            }
+            set
+            {
+                if ((this._height != value))
+                {
+                    this.OnHeightChanging(value);
+                    this.RaiseDataMemberChanging("Height");
+                    this.ValidateProperty("Height", value);
+                    this._height = value;
+                    this.RaiseDataMemberChanged("Height");
+                    this.OnHeightChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'ID' value.
+        /// </summary>
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [DataMember()]
+        [Editable(false, AllowInitialValue=true)]
+        [Key()]
+        [RoundtripOriginal()]
+        public int ID
+        {
+            get
+            {
+                return this._id;
+            }
+            set
+            {
+                if ((this._id != value))
+                {
+                    this.OnIDChanging(value);
+                    this.ValidateProperty("ID", value);
+                    this._id = value;
+                    this.RaisePropertyChanged("ID");
+                    this.OnIDChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'Width' value.
+        /// </summary>
+        [DataMember()]
+        public int Width
+        {
+            get
+            {
+                return this._width;
+            }
+            set
+            {
+                if ((this._width != value))
+                {
+                    this.OnWidthChanging(value);
+                    this.RaiseDataMemberChanging("Width");
+                    this.ValidateProperty("Width", value);
+                    this._width = value;
+                    this.RaiseDataMemberChanged("Width");
+                    this.OnWidthChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Computes a value from the key fields that uniquely identifies this entity instance.
+        /// </summary>
+        /// <returns>An object instance that uniquely identifies this entity instance.</returns>
+        public override object GetIdentity()
+        {
+            return this._id;
+        }
+    }
+    
+    /// <summary>
+    /// The 'FilmTransaction' entity class.
+    /// </summary>
+    [DataContract(Namespace="http://schemas.datacontract.org/2004/07/RadiologyTracking.Web.Models")]
+    public sealed partial class FilmTransaction : Entity
+    {
+        
+        private int _area;
+        
+        private string _challanNo;
+        
+        private DateTime _date;
+        
+        private Direction _direction;
+        
+        private EntityRef<Foundry> _foundry;
+        
+        private int _foundryID;
+        
+        private int _id;
+        
+        #region Extensibility Method Definitions
+
+        /// <summary>
+        /// This method is invoked from the constructor once initialization is complete and
+        /// can be used for further object setup.
+        /// </summary>
+        partial void OnCreated();
+        partial void OnAreaChanging(int value);
+        partial void OnAreaChanged();
+        partial void OnChallanNoChanging(string value);
+        partial void OnChallanNoChanged();
+        partial void OnDateChanging(DateTime value);
+        partial void OnDateChanged();
+        partial void OnDirectionChanging(Direction value);
+        partial void OnDirectionChanged();
+        partial void OnFoundryIDChanging(int value);
+        partial void OnFoundryIDChanged();
+        partial void OnIDChanging(int value);
+        partial void OnIDChanged();
+
+        #endregion
+        
+        
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FilmTransaction"/> class.
+        /// </summary>
+        public FilmTransaction()
+        {
+            this.OnCreated();
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'Area' value.
+        /// </summary>
+        [DataMember()]
+        public int Area
+        {
+            get
+            {
+                return this._area;
+            }
+            set
+            {
+                if ((this._area != value))
+                {
+                    this.OnAreaChanging(value);
+                    this.RaiseDataMemberChanging("Area");
+                    this.ValidateProperty("Area", value);
+                    this._area = value;
+                    this.RaiseDataMemberChanged("Area");
+                    this.OnAreaChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'ChallanNo' value.
+        /// </summary>
+        [DataMember()]
+        public string ChallanNo
+        {
+            get
+            {
+                return this._challanNo;
+            }
+            set
+            {
+                if ((this._challanNo != value))
+                {
+                    this.OnChallanNoChanging(value);
+                    this.RaiseDataMemberChanging("ChallanNo");
+                    this.ValidateProperty("ChallanNo", value);
+                    this._challanNo = value;
+                    this.RaiseDataMemberChanged("ChallanNo");
+                    this.OnChallanNoChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'Date' value.
+        /// </summary>
+        [DataMember()]
+        public DateTime Date
+        {
+            get
+            {
+                return this._date;
+            }
+            set
+            {
+                if ((this._date != value))
+                {
+                    this.OnDateChanging(value);
+                    this.RaiseDataMemberChanging("Date");
+                    this.ValidateProperty("Date", value);
+                    this._date = value;
+                    this.RaiseDataMemberChanged("Date");
+                    this.OnDateChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'Direction' value.
+        /// </summary>
+        [DataMember()]
+        public Direction Direction
+        {
+            get
+            {
+                return this._direction;
+            }
+            set
+            {
+                if ((this._direction != value))
+                {
+                    this.OnDirectionChanging(value);
+                    this.RaiseDataMemberChanging("Direction");
+                    this.ValidateProperty("Direction", value);
+                    this._direction = value;
+                    this.RaiseDataMemberChanged("Direction");
+                    this.OnDirectionChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the associated <see cref="Foundry"/> entity.
+        /// </summary>
+        [Association("Foundry_FilmTransaction", "FoundryID", "ID", IsForeignKey=true)]
+        public Foundry Foundry
+        {
+            get
+            {
+                if ((this._foundry == null))
+                {
+                    this._foundry = new EntityRef<Foundry>(this, "Foundry", this.FilterFoundry);
+                }
+                return this._foundry.Entity;
+            }
+            set
+            {
+                Foundry previous = this.Foundry;
+                if ((previous != value))
+                {
+                    this.ValidateProperty("Foundry", value);
+                    if ((value != null))
+                    {
+                        this.FoundryID = value.ID;
+                    }
+                    else
+                    {
+                        this.FoundryID = default(int);
+                    }
+                    this._foundry.Entity = value;
+                    this.RaisePropertyChanged("Foundry");
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'FoundryID' value.
+        /// </summary>
+        [DataMember()]
+        [RoundtripOriginal()]
+        public int FoundryID
+        {
+            get
+            {
+                return this._foundryID;
+            }
+            set
+            {
+                if ((this._foundryID != value))
+                {
+                    this.OnFoundryIDChanging(value);
+                    this.RaiseDataMemberChanging("FoundryID");
+                    this.ValidateProperty("FoundryID", value);
+                    this._foundryID = value;
+                    this.RaiseDataMemberChanged("FoundryID");
+                    this.OnFoundryIDChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'ID' value.
+        /// </summary>
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [DataMember()]
+        [Editable(false, AllowInitialValue=true)]
+        [Key()]
+        [RoundtripOriginal()]
+        public int ID
+        {
+            get
+            {
+                return this._id;
+            }
+            set
+            {
+                if ((this._id != value))
+                {
+                    this.OnIDChanging(value);
+                    this.ValidateProperty("ID", value);
+                    this._id = value;
+                    this.RaisePropertyChanged("ID");
+                    this.OnIDChanged();
+                }
+            }
+        }
+        
+        private bool FilterFoundry(Foundry entity)
+        {
+            return (entity.ID == this.FoundryID);
+        }
+        
+        /// <summary>
+        /// Computes a value from the key fields that uniquely identifies this entity instance.
+        /// </summary>
+        /// <returns>An object instance that uniquely identifies this entity instance.</returns>
+        public override object GetIdentity()
+        {
+            return this._id;
+        }
+    }
+    
+    /// <summary>
+    /// The 'FixedPattern' entity class.
+    /// </summary>
+    [DataContract(Namespace="http://schemas.datacontract.org/2004/07/RadiologyTracking.Web.Models")]
+    public sealed partial class FixedPattern : Entity
+    {
+        
+        private EntityRef<Customer> _customer;
+        
+        private int _customerID;
+        
+        private string _description;
+        
+        private string _fpNo;
+        
+        private int _id;
+        
+        #region Extensibility Method Definitions
+
+        /// <summary>
+        /// This method is invoked from the constructor once initialization is complete and
+        /// can be used for further object setup.
+        /// </summary>
+        partial void OnCreated();
+        partial void OnCustomerIDChanging(int value);
+        partial void OnCustomerIDChanged();
+        partial void OnDescriptionChanging(string value);
+        partial void OnDescriptionChanged();
+        partial void OnFPNoChanging(string value);
+        partial void OnFPNoChanged();
+        partial void OnIDChanging(int value);
+        partial void OnIDChanged();
+
+        #endregion
+        
+        
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FixedPattern"/> class.
+        /// </summary>
+        public FixedPattern()
+        {
+            this.OnCreated();
+        }
+        
+        /// <summary>
+        /// Gets or sets the associated <see cref="Customer"/> entity.
+        /// </summary>
+        [Association("Customer_FixedPattern", "CustomerID", "ID", IsForeignKey=true)]
+        public Customer Customer
+        {
+            get
+            {
+                if ((this._customer == null))
+                {
+                    this._customer = new EntityRef<Customer>(this, "Customer", this.FilterCustomer);
+                }
+                return this._customer.Entity;
+            }
+            set
+            {
+                Customer previous = this.Customer;
+                if ((previous != value))
+                {
+                    this.ValidateProperty("Customer", value);
+                    if ((value != null))
+                    {
+                        this.CustomerID = value.ID;
+                    }
+                    else
+                    {
+                        this.CustomerID = default(int);
+                    }
+                    this._customer.Entity = value;
+                    this.RaisePropertyChanged("Customer");
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'CustomerID' value.
+        /// </summary>
+        [DataMember()]
+        [RoundtripOriginal()]
+        public int CustomerID
+        {
+            get
+            {
+                return this._customerID;
+            }
+            set
+            {
+                if ((this._customerID != value))
+                {
+                    this.OnCustomerIDChanging(value);
+                    this.RaiseDataMemberChanging("CustomerID");
+                    this.ValidateProperty("CustomerID", value);
+                    this._customerID = value;
+                    this.RaiseDataMemberChanged("CustomerID");
+                    this.OnCustomerIDChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'Description' value.
+        /// </summary>
+        [DataMember()]
+        public string Description
+        {
+            get
+            {
+                return this._description;
+            }
+            set
+            {
+                if ((this._description != value))
+                {
+                    this.OnDescriptionChanging(value);
+                    this.RaiseDataMemberChanging("Description");
+                    this.ValidateProperty("Description", value);
+                    this._description = value;
+                    this.RaiseDataMemberChanged("Description");
+                    this.OnDescriptionChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'FPNo' value.
+        /// </summary>
+        [DataMember()]
+        public string FPNo
+        {
+            get
+            {
+                return this._fpNo;
+            }
+            set
+            {
+                if ((this._fpNo != value))
+                {
+                    this.OnFPNoChanging(value);
+                    this.RaiseDataMemberChanging("FPNo");
+                    this.ValidateProperty("FPNo", value);
+                    this._fpNo = value;
+                    this.RaiseDataMemberChanged("FPNo");
+                    this.OnFPNoChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'ID' value.
+        /// </summary>
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [DataMember()]
+        [Editable(false, AllowInitialValue=true)]
+        [Key()]
+        [RoundtripOriginal()]
+        public int ID
+        {
+            get
+            {
+                return this._id;
+            }
+            set
+            {
+                if ((this._id != value))
+                {
+                    this.OnIDChanging(value);
+                    this.ValidateProperty("ID", value);
+                    this._id = value;
+                    this.RaisePropertyChanged("ID");
+                    this.OnIDChanged();
+                }
+            }
+        }
+        
+        private bool FilterCustomer(Customer entity)
+        {
+            return (entity.ID == this.CustomerID);
+        }
+        
+        /// <summary>
+        /// Computes a value from the key fields that uniquely identifies this entity instance.
+        /// </summary>
+        /// <returns>An object instance that uniquely identifies this entity instance.</returns>
+        public override object GetIdentity()
+        {
+            return this._id;
+        }
+    }
+    
+    /// <summary>
+    /// The 'FixedPatternTemplate' entity class.
+    /// </summary>
+    [DataContract(Namespace="http://schemas.datacontract.org/2004/07/RadiologyTracking.Web.Models")]
+    public sealed partial class FixedPatternTemplate : Entity
+    {
+        
+        private EntityRef<Coverage> _coverage;
+        
+        private int _coverageID;
+        
+        private EntityRef<FixedPattern> _fixedPattern;
+        
+        private int _fixedPatternID;
+        
+        private int _id;
+        
+        #region Extensibility Method Definitions
+
+        /// <summary>
+        /// This method is invoked from the constructor once initialization is complete and
+        /// can be used for further object setup.
+        /// </summary>
+        partial void OnCreated();
+        partial void OnCoverageIDChanging(int value);
+        partial void OnCoverageIDChanged();
+        partial void OnFixedPatternIDChanging(int value);
+        partial void OnFixedPatternIDChanged();
+        partial void OnIDChanging(int value);
+        partial void OnIDChanged();
+
+        #endregion
+        
+        
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FixedPatternTemplate"/> class.
+        /// </summary>
+        public FixedPatternTemplate()
+        {
+            this.OnCreated();
+        }
+        
+        /// <summary>
+        /// Gets or sets the associated <see cref="Coverage"/> entity.
+        /// </summary>
+        [Association("Coverage_FixedPatternTemplate", "CoverageID", "ID", IsForeignKey=true)]
+        public Coverage Coverage
+        {
+            get
+            {
+                if ((this._coverage == null))
+                {
+                    this._coverage = new EntityRef<Coverage>(this, "Coverage", this.FilterCoverage);
+                }
+                return this._coverage.Entity;
+            }
+            set
+            {
+                Coverage previous = this.Coverage;
+                if ((previous != value))
+                {
+                    this.ValidateProperty("Coverage", value);
+                    if ((value != null))
+                    {
+                        this.CoverageID = value.ID;
+                    }
+                    else
+                    {
+                        this.CoverageID = default(int);
+                    }
+                    this._coverage.Entity = value;
+                    this.RaisePropertyChanged("Coverage");
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'CoverageID' value.
+        /// </summary>
+        [DataMember()]
+        [RoundtripOriginal()]
+        public int CoverageID
+        {
+            get
+            {
+                return this._coverageID;
+            }
+            set
+            {
+                if ((this._coverageID != value))
+                {
+                    this.OnCoverageIDChanging(value);
+                    this.RaiseDataMemberChanging("CoverageID");
+                    this.ValidateProperty("CoverageID", value);
+                    this._coverageID = value;
+                    this.RaiseDataMemberChanged("CoverageID");
+                    this.OnCoverageIDChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the associated <see cref="FixedPattern"/> entity.
+        /// </summary>
+        [Association("FixedPattern_FixedPatternTemplate", "FixedPatternID", "ID", IsForeignKey=true)]
+        public FixedPattern FixedPattern
+        {
+            get
+            {
+                if ((this._fixedPattern == null))
+                {
+                    this._fixedPattern = new EntityRef<FixedPattern>(this, "FixedPattern", this.FilterFixedPattern);
+                }
+                return this._fixedPattern.Entity;
+            }
+            set
+            {
+                FixedPattern previous = this.FixedPattern;
+                if ((previous != value))
+                {
+                    this.ValidateProperty("FixedPattern", value);
+                    if ((value != null))
+                    {
+                        this.FixedPatternID = value.ID;
+                    }
+                    else
+                    {
+                        this.FixedPatternID = default(int);
+                    }
+                    this._fixedPattern.Entity = value;
+                    this.RaisePropertyChanged("FixedPattern");
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'FixedPatternID' value.
+        /// </summary>
+        [DataMember()]
+        [RoundtripOriginal()]
+        public int FixedPatternID
+        {
+            get
+            {
+                return this._fixedPatternID;
+            }
+            set
+            {
+                if ((this._fixedPatternID != value))
+                {
+                    this.OnFixedPatternIDChanging(value);
+                    this.RaiseDataMemberChanging("FixedPatternID");
+                    this.ValidateProperty("FixedPatternID", value);
+                    this._fixedPatternID = value;
+                    this.RaiseDataMemberChanged("FixedPatternID");
+                    this.OnFixedPatternIDChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'ID' value.
+        /// </summary>
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [DataMember()]
+        [Editable(false, AllowInitialValue=true)]
+        [Key()]
+        [RoundtripOriginal()]
+        public int ID
+        {
+            get
+            {
+                return this._id;
+            }
+            set
+            {
+                if ((this._id != value))
+                {
+                    this.OnIDChanging(value);
+                    this.ValidateProperty("ID", value);
+                    this._id = value;
+                    this.RaisePropertyChanged("ID");
+                    this.OnIDChanged();
+                }
+            }
+        }
+        
+        private bool FilterCoverage(Coverage entity)
+        {
+            return (entity.ID == this.CoverageID);
+        }
+        
+        private bool FilterFixedPattern(FixedPattern entity)
+        {
+            return (entity.ID == this.FixedPatternID);
+        }
+        
+        /// <summary>
+        /// Computes a value from the key fields that uniquely identifies this entity instance.
+        /// </summary>
+        /// <returns>An object instance that uniquely identifies this entity instance.</returns>
+        public override object GetIdentity()
+        {
+            return this._id;
+        }
+    }
+    
+    /// <summary>
+    /// The 'Foundry' entity class.
+    /// </summary>
+    [DataContract(Namespace="http://schemas.datacontract.org/2004/07/RadiologyTracking.Web.Models")]
+    public sealed partial class Foundry : Entity
+    {
+        
+        private string _address;
+        
+        private EntityCollection<Customer> _customers;
+        
+        private string _foundryName;
+        
+        private int _id;
+        
+        private string _reportNumberPrefix;
+        
+        #region Extensibility Method Definitions
+
+        /// <summary>
+        /// This method is invoked from the constructor once initialization is complete and
+        /// can be used for further object setup.
+        /// </summary>
+        partial void OnCreated();
+        partial void OnAddressChanging(string value);
+        partial void OnAddressChanged();
+        partial void OnFoundryNameChanging(string value);
+        partial void OnFoundryNameChanged();
+        partial void OnIDChanging(int value);
+        partial void OnIDChanged();
+        partial void OnReportNumberPrefixChanging(string value);
+        partial void OnReportNumberPrefixChanged();
+
+        #endregion
+        
+        
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Foundry"/> class.
+        /// </summary>
+        public Foundry()
+        {
+            this.OnCreated();
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'Address' value.
+        /// </summary>
+        [DataMember()]
+        public string Address
+        {
+            get
+            {
+                return this._address;
+            }
+            set
+            {
+                if ((this._address != value))
+                {
+                    this.OnAddressChanging(value);
+                    this.RaiseDataMemberChanging("Address");
+                    this.ValidateProperty("Address", value);
+                    this._address = value;
+                    this.RaiseDataMemberChanged("Address");
+                    this.OnAddressChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets the collection of associated <see cref="Customer"/> entity instances.
+        /// </summary>
+        [Association("Foundry_Customer", "ID", "FoundryID")]
+        public EntityCollection<Customer> Customers
+        {
+            get
+            {
+                if ((this._customers == null))
+                {
+                    this._customers = new EntityCollection<Customer>(this, "Customers", this.FilterCustomers);
+                }
+                return this._customers;
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'FoundryName' value.
+        /// </summary>
+        [DataMember()]
+        public string FoundryName
+        {
+            get
+            {
+                return this._foundryName;
+            }
+            set
+            {
+                if ((this._foundryName != value))
+                {
+                    this.OnFoundryNameChanging(value);
+                    this.RaiseDataMemberChanging("FoundryName");
+                    this.ValidateProperty("FoundryName", value);
+                    this._foundryName = value;
+                    this.RaiseDataMemberChanged("FoundryName");
+                    this.OnFoundryNameChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'ID' value.
+        /// </summary>
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [DataMember()]
+        [Editable(false, AllowInitialValue=true)]
+        [Key()]
+        [RoundtripOriginal()]
+        public int ID
+        {
+            get
+            {
+                return this._id;
+            }
+            set
+            {
+                if ((this._id != value))
+                {
+                    this.OnIDChanging(value);
+                    this.ValidateProperty("ID", value);
+                    this._id = value;
+                    this.RaisePropertyChanged("ID");
+                    this.OnIDChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'ReportNumberPrefix' value.
+        /// </summary>
+        [DataMember()]
+        public string ReportNumberPrefix
+        {
+            get
+            {
+                return this._reportNumberPrefix;
+            }
+            set
+            {
+                if ((this._reportNumberPrefix != value))
+                {
+                    this.OnReportNumberPrefixChanging(value);
+                    this.RaiseDataMemberChanging("ReportNumberPrefix");
+                    this.ValidateProperty("ReportNumberPrefix", value);
+                    this._reportNumberPrefix = value;
+                    this.RaiseDataMemberChanged("ReportNumberPrefix");
+                    this.OnReportNumberPrefixChanged();
+                }
+            }
+        }
+        
+        private bool FilterCustomers(Customer entity)
+        {
+            return (entity.FoundryID == this.ID);
+        }
+        
+        /// <summary>
+        /// Computes a value from the key fields that uniquely identifies this entity instance.
+        /// </summary>
+        /// <returns>An object instance that uniquely identifies this entity instance.</returns>
+        public override object GetIdentity()
+        {
+            return this._id;
+        }
+    }
+    
+    /// <summary>
+    /// The 'FPTemplateRow' entity class.
+    /// </summary>
+    [DataContract(Namespace="http://schemas.datacontract.org/2004/07/RadiologyTracking.Web.Models")]
+    public sealed partial class FPTemplateRow : Entity
+    {
+        
+        private string _density;
+        
+        private string _designation;
+        
+        private EntityRef<FilmSize> _filmSize;
+        
+        private int _filmSizeID;
+        
+        private EntityRef<FixedPatternTemplate> _fixedPatternTemplate;
+        
+        private int _fixedPatternTemplateID;
+        
+        private int _id;
+        
+        private string _location;
+        
+        private string _sensitivity;
+        
+        private int _sfd;
+        
+        private int _slNo;
+        
+        private int _thickness;
+        
+        #region Extensibility Method Definitions
+
+        /// <summary>
+        /// This method is invoked from the constructor once initialization is complete and
+        /// can be used for further object setup.
+        /// </summary>
+        partial void OnCreated();
+        partial void OnDensityChanging(string value);
+        partial void OnDensityChanged();
+        partial void OnDesignationChanging(string value);
+        partial void OnDesignationChanged();
+        partial void OnFilmSizeIDChanging(int value);
+        partial void OnFilmSizeIDChanged();
+        partial void OnFixedPatternTemplateIDChanging(int value);
+        partial void OnFixedPatternTemplateIDChanged();
+        partial void OnIDChanging(int value);
+        partial void OnIDChanged();
+        partial void OnLocationChanging(string value);
+        partial void OnLocationChanged();
+        partial void OnSensitivityChanging(string value);
+        partial void OnSensitivityChanged();
+        partial void OnSFDChanging(int value);
+        partial void OnSFDChanged();
+        partial void OnSlNoChanging(int value);
+        partial void OnSlNoChanged();
+        partial void OnThicknessChanging(int value);
+        partial void OnThicknessChanged();
+
+        #endregion
+        
+        
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FPTemplateRow"/> class.
+        /// </summary>
+        public FPTemplateRow()
+        {
+            this.OnCreated();
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'Density' value.
+        /// </summary>
+        [DataMember()]
+        public string Density
+        {
+            get
+            {
+                return this._density;
+            }
+            set
+            {
+                if ((this._density != value))
+                {
+                    this.OnDensityChanging(value);
+                    this.RaiseDataMemberChanging("Density");
+                    this.ValidateProperty("Density", value);
+                    this._density = value;
+                    this.RaiseDataMemberChanged("Density");
+                    this.OnDensityChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'Designation' value.
+        /// </summary>
+        [DataMember()]
+        public string Designation
+        {
+            get
+            {
+                return this._designation;
+            }
+            set
+            {
+                if ((this._designation != value))
+                {
+                    this.OnDesignationChanging(value);
+                    this.RaiseDataMemberChanging("Designation");
+                    this.ValidateProperty("Designation", value);
+                    this._designation = value;
+                    this.RaiseDataMemberChanged("Designation");
+                    this.OnDesignationChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the associated <see cref="FilmSize"/> entity.
+        /// </summary>
+        [Association("FilmSize_FPTemplateRow", "FilmSizeID", "ID", IsForeignKey=true)]
+        public FilmSize FilmSize
+        {
+            get
+            {
+                if ((this._filmSize == null))
+                {
+                    this._filmSize = new EntityRef<FilmSize>(this, "FilmSize", this.FilterFilmSize);
+                }
+                return this._filmSize.Entity;
+            }
+            set
+            {
+                FilmSize previous = this.FilmSize;
+                if ((previous != value))
+                {
+                    this.ValidateProperty("FilmSize", value);
+                    if ((value != null))
+                    {
+                        this.FilmSizeID = value.ID;
+                    }
+                    else
+                    {
+                        this.FilmSizeID = default(int);
+                    }
+                    this._filmSize.Entity = value;
+                    this.RaisePropertyChanged("FilmSize");
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'FilmSizeID' value.
+        /// </summary>
+        [DataMember()]
+        [RoundtripOriginal()]
+        public int FilmSizeID
+        {
+            get
+            {
+                return this._filmSizeID;
+            }
+            set
+            {
+                if ((this._filmSizeID != value))
+                {
+                    this.OnFilmSizeIDChanging(value);
+                    this.RaiseDataMemberChanging("FilmSizeID");
+                    this.ValidateProperty("FilmSizeID", value);
+                    this._filmSizeID = value;
+                    this.RaiseDataMemberChanged("FilmSizeID");
+                    this.OnFilmSizeIDChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the associated <see cref="FixedPatternTemplate"/> entity.
+        /// </summary>
+        [Association("FixedPatternTemplate_FPTemplateRow", "FixedPatternTemplateID", "ID", IsForeignKey=true)]
+        public FixedPatternTemplate FixedPatternTemplate
+        {
+            get
+            {
+                if ((this._fixedPatternTemplate == null))
+                {
+                    this._fixedPatternTemplate = new EntityRef<FixedPatternTemplate>(this, "FixedPatternTemplate", this.FilterFixedPatternTemplate);
+                }
+                return this._fixedPatternTemplate.Entity;
+            }
+            set
+            {
+                FixedPatternTemplate previous = this.FixedPatternTemplate;
+                if ((previous != value))
+                {
+                    this.ValidateProperty("FixedPatternTemplate", value);
+                    if ((value != null))
+                    {
+                        this.FixedPatternTemplateID = value.ID;
+                    }
+                    else
+                    {
+                        this.FixedPatternTemplateID = default(int);
+                    }
+                    this._fixedPatternTemplate.Entity = value;
+                    this.RaisePropertyChanged("FixedPatternTemplate");
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'FixedPatternTemplateID' value.
+        /// </summary>
+        [DataMember()]
+        [RoundtripOriginal()]
+        public int FixedPatternTemplateID
+        {
+            get
+            {
+                return this._fixedPatternTemplateID;
+            }
+            set
+            {
+                if ((this._fixedPatternTemplateID != value))
+                {
+                    this.OnFixedPatternTemplateIDChanging(value);
+                    this.RaiseDataMemberChanging("FixedPatternTemplateID");
+                    this.ValidateProperty("FixedPatternTemplateID", value);
+                    this._fixedPatternTemplateID = value;
+                    this.RaiseDataMemberChanged("FixedPatternTemplateID");
+                    this.OnFixedPatternTemplateIDChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'ID' value.
+        /// </summary>
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [DataMember()]
+        [Editable(false, AllowInitialValue=true)]
+        [Key()]
+        [RoundtripOriginal()]
+        public int ID
+        {
+            get
+            {
+                return this._id;
+            }
+            set
+            {
+                if ((this._id != value))
+                {
+                    this.OnIDChanging(value);
+                    this.ValidateProperty("ID", value);
+                    this._id = value;
+                    this.RaisePropertyChanged("ID");
+                    this.OnIDChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'Location' value.
+        /// </summary>
+        [DataMember()]
+        public string Location
+        {
+            get
+            {
+                return this._location;
+            }
+            set
+            {
+                if ((this._location != value))
+                {
+                    this.OnLocationChanging(value);
+                    this.RaiseDataMemberChanging("Location");
+                    this.ValidateProperty("Location", value);
+                    this._location = value;
+                    this.RaiseDataMemberChanged("Location");
+                    this.OnLocationChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'Sensitivity' value.
+        /// </summary>
+        [DataMember()]
+        public string Sensitivity
+        {
+            get
+            {
+                return this._sensitivity;
+            }
+            set
+            {
+                if ((this._sensitivity != value))
+                {
+                    this.OnSensitivityChanging(value);
+                    this.RaiseDataMemberChanging("Sensitivity");
+                    this.ValidateProperty("Sensitivity", value);
+                    this._sensitivity = value;
+                    this.RaiseDataMemberChanged("Sensitivity");
+                    this.OnSensitivityChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'SFD' value.
+        /// </summary>
+        [DataMember()]
+        public int SFD
+        {
+            get
+            {
+                return this._sfd;
+            }
+            set
+            {
+                if ((this._sfd != value))
+                {
+                    this.OnSFDChanging(value);
+                    this.RaiseDataMemberChanging("SFD");
+                    this.ValidateProperty("SFD", value);
+                    this._sfd = value;
+                    this.RaiseDataMemberChanged("SFD");
+                    this.OnSFDChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'SlNo' value.
+        /// </summary>
+        [DataMember()]
+        public int SlNo
+        {
+            get
+            {
+                return this._slNo;
+            }
+            set
+            {
+                if ((this._slNo != value))
+                {
+                    this.OnSlNoChanging(value);
+                    this.RaiseDataMemberChanging("SlNo");
+                    this.ValidateProperty("SlNo", value);
+                    this._slNo = value;
+                    this.RaiseDataMemberChanged("SlNo");
+                    this.OnSlNoChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'Thickness' value.
+        /// </summary>
+        [DataMember()]
+        public int Thickness
+        {
+            get
+            {
+                return this._thickness;
+            }
+            set
+            {
+                if ((this._thickness != value))
+                {
+                    this.OnThicknessChanging(value);
+                    this.RaiseDataMemberChanging("Thickness");
+                    this.ValidateProperty("Thickness", value);
+                    this._thickness = value;
+                    this.RaiseDataMemberChanged("Thickness");
+                    this.OnThicknessChanged();
+                }
+            }
+        }
+        
+        private bool FilterFilmSize(FilmSize entity)
+        {
+            return (entity.ID == this.FilmSizeID);
+        }
+        
+        private bool FilterFixedPatternTemplate(FixedPatternTemplate entity)
+        {
+            return (entity.ID == this.FixedPatternTemplateID);
+        }
+        
+        /// <summary>
+        /// Computes a value from the key fields that uniquely identifies this entity instance.
+        /// </summary>
+        /// <returns>An object instance that uniquely identifies this entity instance.</returns>
+        public override object GetIdentity()
+        {
+            return this._id;
+        }
+    }
+    
+    /// <summary>
+    /// The 'Observation' entity class.
+    /// </summary>
+    [DataContract(Namespace="http://schemas.datacontract.org/2004/07/RadiologyTracking.Web.Models")]
+    public sealed partial class Observation : Entity
+    {
+        
+        private EntityRef<Defect> _defect;
+        
+        private int _defectID;
+        
+        private int _id;
+        
+        private int _level;
+        
+        private int _rgReportRowID;
+        
+        #region Extensibility Method Definitions
+
+        /// <summary>
+        /// This method is invoked from the constructor once initialization is complete and
+        /// can be used for further object setup.
+        /// </summary>
+        partial void OnCreated();
+        partial void OnDefectIDChanging(int value);
+        partial void OnDefectIDChanged();
+        partial void OnIDChanging(int value);
+        partial void OnIDChanged();
+        partial void OnLevelChanging(int value);
+        partial void OnLevelChanged();
+        partial void OnRGReportRowIDChanging(int value);
+        partial void OnRGReportRowIDChanged();
+
+        #endregion
+        
+        
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Observation"/> class.
+        /// </summary>
+        public Observation()
+        {
+            this.OnCreated();
+        }
+        
+        /// <summary>
+        /// Gets or sets the associated <see cref="Defect"/> entity.
+        /// </summary>
+        [Association("Defect_Observation", "DefectID", "ID", IsForeignKey=true)]
+        public Defect Defect
+        {
+            get
+            {
+                if ((this._defect == null))
+                {
+                    this._defect = new EntityRef<Defect>(this, "Defect", this.FilterDefect);
+                }
+                return this._defect.Entity;
+            }
+            set
+            {
+                Defect previous = this.Defect;
+                if ((previous != value))
+                {
+                    this.ValidateProperty("Defect", value);
+                    if ((value != null))
+                    {
+                        this.DefectID = value.ID;
+                    }
+                    else
+                    {
+                        this.DefectID = default(int);
+                    }
+                    this._defect.Entity = value;
+                    this.RaisePropertyChanged("Defect");
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'DefectID' value.
+        /// </summary>
+        [DataMember()]
+        [RoundtripOriginal()]
+        public int DefectID
+        {
+            get
+            {
+                return this._defectID;
+            }
+            set
+            {
+                if ((this._defectID != value))
+                {
+                    this.OnDefectIDChanging(value);
+                    this.RaiseDataMemberChanging("DefectID");
+                    this.ValidateProperty("DefectID", value);
+                    this._defectID = value;
+                    this.RaiseDataMemberChanged("DefectID");
+                    this.OnDefectIDChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'ID' value.
+        /// </summary>
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [DataMember()]
+        [Editable(false, AllowInitialValue=true)]
+        [Key()]
+        [RoundtripOriginal()]
+        public int ID
+        {
+            get
+            {
+                return this._id;
+            }
+            set
+            {
+                if ((this._id != value))
+                {
+                    this.OnIDChanging(value);
+                    this.ValidateProperty("ID", value);
+                    this._id = value;
+                    this.RaisePropertyChanged("ID");
+                    this.OnIDChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'Level' value.
+        /// </summary>
+        [DataMember()]
+        public int Level
+        {
+            get
+            {
+                return this._level;
+            }
+            set
+            {
+                if ((this._level != value))
+                {
+                    this.OnLevelChanging(value);
+                    this.RaiseDataMemberChanging("Level");
+                    this.ValidateProperty("Level", value);
+                    this._level = value;
+                    this.RaiseDataMemberChanged("Level");
+                    this.OnLevelChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'RGReportRowID' value.
+        /// </summary>
+        [DataMember()]
+        public int RGReportRowID
+        {
+            get
+            {
+                return this._rgReportRowID;
+            }
+            set
+            {
+                if ((this._rgReportRowID != value))
+                {
+                    this.OnRGReportRowIDChanging(value);
+                    this.RaiseDataMemberChanging("RGReportRowID");
+                    this.ValidateProperty("RGReportRowID", value);
+                    this._rgReportRowID = value;
+                    this.RaiseDataMemberChanged("RGReportRowID");
+                    this.OnRGReportRowIDChanged();
+                }
+            }
+        }
+        
+        private bool FilterDefect(Defect entity)
+        {
+            return (entity.ID == this.DefectID);
+        }
+        
+        /// <summary>
+        /// Computes a value from the key fields that uniquely identifies this entity instance.
+        /// </summary>
+        /// <returns>An object instance that uniquely identifies this entity instance.</returns>
+        public override object GetIdentity()
+        {
+            return this._id;
+        }
+    }
+    
+    public enum Remark
+    {
+        
+        ACCEPTABLE = 0,
+        
+        REPAIR = 1,
+        
+        RESHOOT = 2,
+        
+        RETAKE = 3,
+    }
+    
+    /// <summary>
+    /// The 'RGReport' entity class.
+    /// </summary>
+    [DataContract(Namespace="http://schemas.datacontract.org/2004/07/RadiologyTracking.Web.Models")]
+    public sealed partial class RGReport : Entity
+    {
+        
+        private string _acceptanceAsPer;
+        
+        private DateTime _dateOfTest;
+        
+        private string _drawingNo;
+        
+        private string _evaluationAsPer;
+        
+        private string _film;
+        
+        private EntityRef<FixedPattern> _fixedPattern;
+        
+        private int _fixedPatternID;
+        
+        private string _heatNo;
+        
+        private int _id;
+        
+        private string _leadScreen;
+        
+        private string _procedureRef;
+        
+        private DateTime _reportDate;
+        
+        private string _reportNo;
+        
+        private string _result;
+        
+        private EntityCollection<RGReportRow> _rgReportRows;
+        
+        private string _rtNo;
+        
+        private Shift _shift;
+        
+        private string _sourceSize;
+        
+        private string _specifications;
+        
+        private RGStatus _status;
+        
+        #region Extensibility Method Definitions
+
+        /// <summary>
+        /// This method is invoked from the constructor once initialization is complete and
+        /// can be used for further object setup.
+        /// </summary>
+        partial void OnCreated();
+        partial void OnAcceptanceAsPerChanging(string value);
+        partial void OnAcceptanceAsPerChanged();
+        partial void OnDateOfTestChanging(DateTime value);
+        partial void OnDateOfTestChanged();
+        partial void OnDrawingNoChanging(string value);
+        partial void OnDrawingNoChanged();
+        partial void OnEvaluationAsPerChanging(string value);
+        partial void OnEvaluationAsPerChanged();
+        partial void OnFilmChanging(string value);
+        partial void OnFilmChanged();
+        partial void OnFixedPatternIDChanging(int value);
+        partial void OnFixedPatternIDChanged();
+        partial void OnHeatNoChanging(string value);
+        partial void OnHeatNoChanged();
+        partial void OnIDChanging(int value);
+        partial void OnIDChanged();
+        partial void OnLeadScreenChanging(string value);
+        partial void OnLeadScreenChanged();
+        partial void OnProcedureRefChanging(string value);
+        partial void OnProcedureRefChanged();
+        partial void OnReportDateChanging(DateTime value);
+        partial void OnReportDateChanged();
+        partial void OnReportNoChanging(string value);
+        partial void OnReportNoChanged();
+        partial void OnResultChanging(string value);
+        partial void OnResultChanged();
+        partial void OnRTNoChanging(string value);
+        partial void OnRTNoChanged();
+        partial void OnShiftChanging(Shift value);
+        partial void OnShiftChanged();
+        partial void OnSourceSizeChanging(string value);
+        partial void OnSourceSizeChanged();
+        partial void OnSpecificationsChanging(string value);
+        partial void OnSpecificationsChanged();
+        partial void OnStatusChanging(RGStatus value);
+        partial void OnStatusChanged();
+
+        #endregion
+        
+        
+        /// <summary>
+        /// Initializes a new instance of the <see cref="RGReport"/> class.
+        /// </summary>
+        public RGReport()
+        {
+            this.OnCreated();
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'AcceptanceAsPer' value.
+        /// </summary>
+        [DataMember()]
+        public string AcceptanceAsPer
+        {
+            get
+            {
+                return this._acceptanceAsPer;
+            }
+            set
+            {
+                if ((this._acceptanceAsPer != value))
+                {
+                    this.OnAcceptanceAsPerChanging(value);
+                    this.RaiseDataMemberChanging("AcceptanceAsPer");
+                    this.ValidateProperty("AcceptanceAsPer", value);
+                    this._acceptanceAsPer = value;
+                    this.RaiseDataMemberChanged("AcceptanceAsPer");
+                    this.OnAcceptanceAsPerChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'DateOfTest' value.
+        /// </summary>
+        [DataMember()]
+        public DateTime DateOfTest
+        {
+            get
+            {
+                return this._dateOfTest;
+            }
+            set
+            {
+                if ((this._dateOfTest != value))
+                {
+                    this.OnDateOfTestChanging(value);
+                    this.RaiseDataMemberChanging("DateOfTest");
+                    this.ValidateProperty("DateOfTest", value);
+                    this._dateOfTest = value;
+                    this.RaiseDataMemberChanged("DateOfTest");
+                    this.OnDateOfTestChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'DrawingNo' value.
+        /// </summary>
+        [DataMember()]
+        public string DrawingNo
+        {
+            get
+            {
+                return this._drawingNo;
+            }
+            set
+            {
+                if ((this._drawingNo != value))
+                {
+                    this.OnDrawingNoChanging(value);
+                    this.RaiseDataMemberChanging("DrawingNo");
+                    this.ValidateProperty("DrawingNo", value);
+                    this._drawingNo = value;
+                    this.RaiseDataMemberChanged("DrawingNo");
+                    this.OnDrawingNoChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'EvaluationAsPer' value.
+        /// </summary>
+        [DataMember()]
+        public string EvaluationAsPer
+        {
+            get
+            {
+                return this._evaluationAsPer;
+            }
+            set
+            {
+                if ((this._evaluationAsPer != value))
+                {
+                    this.OnEvaluationAsPerChanging(value);
+                    this.RaiseDataMemberChanging("EvaluationAsPer");
+                    this.ValidateProperty("EvaluationAsPer", value);
+                    this._evaluationAsPer = value;
+                    this.RaiseDataMemberChanged("EvaluationAsPer");
+                    this.OnEvaluationAsPerChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'Film' value.
+        /// </summary>
+        [DataMember()]
+        public string Film
+        {
+            get
+            {
+                return this._film;
+            }
+            set
+            {
+                if ((this._film != value))
+                {
+                    this.OnFilmChanging(value);
+                    this.RaiseDataMemberChanging("Film");
+                    this.ValidateProperty("Film", value);
+                    this._film = value;
+                    this.RaiseDataMemberChanged("Film");
+                    this.OnFilmChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the associated <see cref="FixedPattern"/> entity.
+        /// </summary>
+        [Association("FixedPattern_RGReport", "FixedPatternID", "ID", IsForeignKey=true)]
+        public FixedPattern FixedPattern
+        {
+            get
+            {
+                if ((this._fixedPattern == null))
+                {
+                    this._fixedPattern = new EntityRef<FixedPattern>(this, "FixedPattern", this.FilterFixedPattern);
+                }
+                return this._fixedPattern.Entity;
+            }
+            set
+            {
+                FixedPattern previous = this.FixedPattern;
+                if ((previous != value))
+                {
+                    this.ValidateProperty("FixedPattern", value);
+                    if ((value != null))
+                    {
+                        this.FixedPatternID = value.ID;
+                    }
+                    else
+                    {
+                        this.FixedPatternID = default(int);
+                    }
+                    this._fixedPattern.Entity = value;
+                    this.RaisePropertyChanged("FixedPattern");
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'FixedPatternID' value.
+        /// </summary>
+        [DataMember()]
+        [RoundtripOriginal()]
+        public int FixedPatternID
+        {
+            get
+            {
+                return this._fixedPatternID;
+            }
+            set
+            {
+                if ((this._fixedPatternID != value))
+                {
+                    this.OnFixedPatternIDChanging(value);
+                    this.RaiseDataMemberChanging("FixedPatternID");
+                    this.ValidateProperty("FixedPatternID", value);
+                    this._fixedPatternID = value;
+                    this.RaiseDataMemberChanged("FixedPatternID");
+                    this.OnFixedPatternIDChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'HeatNo' value.
+        /// </summary>
+        [DataMember()]
+        public string HeatNo
+        {
+            get
+            {
+                return this._heatNo;
+            }
+            set
+            {
+                if ((this._heatNo != value))
+                {
+                    this.OnHeatNoChanging(value);
+                    this.RaiseDataMemberChanging("HeatNo");
+                    this.ValidateProperty("HeatNo", value);
+                    this._heatNo = value;
+                    this.RaiseDataMemberChanged("HeatNo");
+                    this.OnHeatNoChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'ID' value.
+        /// </summary>
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [DataMember()]
+        [Editable(false, AllowInitialValue=true)]
+        [Key()]
+        [RoundtripOriginal()]
+        public int ID
+        {
+            get
+            {
+                return this._id;
+            }
+            set
+            {
+                if ((this._id != value))
+                {
+                    this.OnIDChanging(value);
+                    this.ValidateProperty("ID", value);
+                    this._id = value;
+                    this.RaisePropertyChanged("ID");
+                    this.OnIDChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'LeadScreen' value.
+        /// </summary>
+        [DataMember()]
+        public string LeadScreen
+        {
+            get
+            {
+                return this._leadScreen;
+            }
+            set
+            {
+                if ((this._leadScreen != value))
+                {
+                    this.OnLeadScreenChanging(value);
+                    this.RaiseDataMemberChanging("LeadScreen");
+                    this.ValidateProperty("LeadScreen", value);
+                    this._leadScreen = value;
+                    this.RaiseDataMemberChanged("LeadScreen");
+                    this.OnLeadScreenChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'ProcedureRef' value.
+        /// </summary>
+        [DataMember()]
+        public string ProcedureRef
+        {
+            get
+            {
+                return this._procedureRef;
+            }
+            set
+            {
+                if ((this._procedureRef != value))
+                {
+                    this.OnProcedureRefChanging(value);
+                    this.RaiseDataMemberChanging("ProcedureRef");
+                    this.ValidateProperty("ProcedureRef", value);
+                    this._procedureRef = value;
+                    this.RaiseDataMemberChanged("ProcedureRef");
+                    this.OnProcedureRefChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'ReportDate' value.
+        /// </summary>
+        [DataMember()]
+        public DateTime ReportDate
+        {
+            get
+            {
+                return this._reportDate;
+            }
+            set
+            {
+                if ((this._reportDate != value))
+                {
+                    this.OnReportDateChanging(value);
+                    this.RaiseDataMemberChanging("ReportDate");
+                    this.ValidateProperty("ReportDate", value);
+                    this._reportDate = value;
+                    this.RaiseDataMemberChanged("ReportDate");
+                    this.OnReportDateChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'ReportNo' value.
+        /// </summary>
+        [DataMember()]
+        public string ReportNo
+        {
+            get
+            {
+                return this._reportNo;
+            }
+            set
+            {
+                if ((this._reportNo != value))
+                {
+                    this.OnReportNoChanging(value);
+                    this.RaiseDataMemberChanging("ReportNo");
+                    this.ValidateProperty("ReportNo", value);
+                    this._reportNo = value;
+                    this.RaiseDataMemberChanged("ReportNo");
+                    this.OnReportNoChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'Result' value.
+        /// </summary>
+        [DataMember()]
+        public string Result
+        {
+            get
+            {
+                return this._result;
+            }
+            set
+            {
+                if ((this._result != value))
+                {
+                    this.OnResultChanging(value);
+                    this.RaiseDataMemberChanging("Result");
+                    this.ValidateProperty("Result", value);
+                    this._result = value;
+                    this.RaiseDataMemberChanged("Result");
+                    this.OnResultChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets the collection of associated <see cref="RGReportRow"/> entity instances.
+        /// </summary>
+        [Association("RGReport_RGReportRow", "ID", "RGReportID")]
+        public EntityCollection<RGReportRow> RGReportRows
+        {
+            get
+            {
+                if ((this._rgReportRows == null))
+                {
+                    this._rgReportRows = new EntityCollection<RGReportRow>(this, "RGReportRows", this.FilterRGReportRows, this.AttachRGReportRows, this.DetachRGReportRows);
+                }
+                return this._rgReportRows;
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'RTNo' value.
+        /// </summary>
+        [DataMember()]
+        public string RTNo
+        {
+            get
+            {
+                return this._rtNo;
+            }
+            set
+            {
+                if ((this._rtNo != value))
+                {
+                    this.OnRTNoChanging(value);
+                    this.RaiseDataMemberChanging("RTNo");
+                    this.ValidateProperty("RTNo", value);
+                    this._rtNo = value;
+                    this.RaiseDataMemberChanged("RTNo");
+                    this.OnRTNoChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'Shift' value.
+        /// </summary>
+        [DataMember()]
+        public Shift Shift
+        {
+            get
+            {
+                return this._shift;
+            }
+            set
+            {
+                if ((this._shift != value))
+                {
+                    this.OnShiftChanging(value);
+                    this.RaiseDataMemberChanging("Shift");
+                    this.ValidateProperty("Shift", value);
+                    this._shift = value;
+                    this.RaiseDataMemberChanged("Shift");
+                    this.OnShiftChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'SourceSize' value.
+        /// </summary>
+        [DataMember()]
+        public string SourceSize
+        {
+            get
+            {
+                return this._sourceSize;
+            }
+            set
+            {
+                if ((this._sourceSize != value))
+                {
+                    this.OnSourceSizeChanging(value);
+                    this.RaiseDataMemberChanging("SourceSize");
+                    this.ValidateProperty("SourceSize", value);
+                    this._sourceSize = value;
+                    this.RaiseDataMemberChanged("SourceSize");
+                    this.OnSourceSizeChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'Specifications' value.
+        /// </summary>
+        [DataMember()]
+        public string Specifications
+        {
+            get
+            {
+                return this._specifications;
+            }
+            set
+            {
+                if ((this._specifications != value))
+                {
+                    this.OnSpecificationsChanging(value);
+                    this.RaiseDataMemberChanging("Specifications");
+                    this.ValidateProperty("Specifications", value);
+                    this._specifications = value;
+                    this.RaiseDataMemberChanged("Specifications");
+                    this.OnSpecificationsChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'Status' value.
+        /// </summary>
+        [DataMember()]
+        public RGStatus Status
+        {
+            get
+            {
+                return this._status;
+            }
+            set
+            {
+                if ((this._status != value))
+                {
+                    this.OnStatusChanging(value);
+                    this.RaiseDataMemberChanging("Status");
+                    this.ValidateProperty("Status", value);
+                    this._status = value;
+                    this.RaiseDataMemberChanged("Status");
+                    this.OnStatusChanged();
+                }
+            }
+        }
+        
+        private bool FilterFixedPattern(FixedPattern entity)
+        {
+            return (entity.ID == this.FixedPatternID);
+        }
+        
+        private void AttachRGReportRows(RGReportRow entity)
+        {
+            entity.RGReport = this;
+        }
+        
+        private void DetachRGReportRows(RGReportRow entity)
+        {
+            entity.RGReport = null;
+        }
+        
+        private bool FilterRGReportRows(RGReportRow entity)
+        {
+            return (entity.RGReportID == this.ID);
+        }
+        
+        /// <summary>
+        /// Computes a value from the key fields that uniquely identifies this entity instance.
+        /// </summary>
+        /// <returns>An object instance that uniquely identifies this entity instance.</returns>
+        public override object GetIdentity()
+        {
+            return this._id;
+        }
+    }
+    
+    /// <summary>
+    /// The 'RGReportRow' entity class.
+    /// </summary>
+    [DataContract(Namespace="http://schemas.datacontract.org/2004/07/RadiologyTracking.Web.Models")]
+    public sealed partial class RGReportRow : Entity
+    {
+        
+        private string _density;
+        
+        private string _designation;
+        
+        private EntityRef<Energy> _energy;
+        
+        private int _energyID;
+        
+        private EntityRef<FilmSize> _filmSize;
+        
+        private int _filmSizeID;
+        
+        private int _id;
+        
+        private string _location;
+        
+        private EntityCollection<Observation> _observations;
+        
+        private Remark _remark;
+        
+        private EntityRef<RGReport> _rgReport;
+        
+        private int _rgReportID;
+        
+        private string _sensitivity;
+        
+        private int _sfd;
+        
+        private int _slNo;
+        
+        private EntityRef<Technician> _technician;
+        
+        private int _technicianID;
+        
+        private int _thickness;
+        
+        private EntityRef<Welder> _welder;
+        
+        private int _welderID;
+        
+        #region Extensibility Method Definitions
+
+        /// <summary>
+        /// This method is invoked from the constructor once initialization is complete and
+        /// can be used for further object setup.
+        /// </summary>
+        partial void OnCreated();
+        partial void OnDensityChanging(string value);
+        partial void OnDensityChanged();
+        partial void OnDesignationChanging(string value);
+        partial void OnDesignationChanged();
+        partial void OnEnergyIDChanging(int value);
+        partial void OnEnergyIDChanged();
+        partial void OnFilmSizeIDChanging(int value);
+        partial void OnFilmSizeIDChanged();
+        partial void OnIDChanging(int value);
+        partial void OnIDChanged();
+        partial void OnLocationChanging(string value);
+        partial void OnLocationChanged();
+        partial void OnRemarkChanging(Remark value);
+        partial void OnRemarkChanged();
+        partial void OnRGReportIDChanging(int value);
+        partial void OnRGReportIDChanged();
+        partial void OnSensitivityChanging(string value);
+        partial void OnSensitivityChanged();
+        partial void OnSFDChanging(int value);
+        partial void OnSFDChanged();
+        partial void OnSlNoChanging(int value);
+        partial void OnSlNoChanged();
+        partial void OnTechnicianIDChanging(int value);
+        partial void OnTechnicianIDChanged();
+        partial void OnThicknessChanging(int value);
+        partial void OnThicknessChanged();
+        partial void OnWelderIDChanging(int value);
+        partial void OnWelderIDChanged();
+
+        #endregion
+        
+        
+        /// <summary>
+        /// Initializes a new instance of the <see cref="RGReportRow"/> class.
+        /// </summary>
+        public RGReportRow()
+        {
+            this.OnCreated();
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'Density' value.
+        /// </summary>
+        [DataMember()]
+        public string Density
+        {
+            get
+            {
+                return this._density;
+            }
+            set
+            {
+                if ((this._density != value))
+                {
+                    this.OnDensityChanging(value);
+                    this.RaiseDataMemberChanging("Density");
+                    this.ValidateProperty("Density", value);
+                    this._density = value;
+                    this.RaiseDataMemberChanged("Density");
+                    this.OnDensityChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'Designation' value.
+        /// </summary>
+        [DataMember()]
+        public string Designation
+        {
+            get
+            {
+                return this._designation;
+            }
+            set
+            {
+                if ((this._designation != value))
+                {
+                    this.OnDesignationChanging(value);
+                    this.RaiseDataMemberChanging("Designation");
+                    this.ValidateProperty("Designation", value);
+                    this._designation = value;
+                    this.RaiseDataMemberChanged("Designation");
+                    this.OnDesignationChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the associated <see cref="Energy"/> entity.
+        /// </summary>
+        [Association("Energy_RGReportRow", "EnergyID", "ID", IsForeignKey=true)]
+        public Energy Energy
+        {
+            get
+            {
+                if ((this._energy == null))
+                {
+                    this._energy = new EntityRef<Energy>(this, "Energy", this.FilterEnergy);
+                }
+                return this._energy.Entity;
+            }
+            set
+            {
+                Energy previous = this.Energy;
+                if ((previous != value))
+                {
+                    this.ValidateProperty("Energy", value);
+                    if ((value != null))
+                    {
+                        this.EnergyID = value.ID;
+                    }
+                    else
+                    {
+                        this.EnergyID = default(int);
+                    }
+                    this._energy.Entity = value;
+                    this.RaisePropertyChanged("Energy");
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'EnergyID' value.
+        /// </summary>
+        [DataMember()]
+        [RoundtripOriginal()]
+        public int EnergyID
+        {
+            get
+            {
+                return this._energyID;
+            }
+            set
+            {
+                if ((this._energyID != value))
+                {
+                    this.OnEnergyIDChanging(value);
+                    this.RaiseDataMemberChanging("EnergyID");
+                    this.ValidateProperty("EnergyID", value);
+                    this._energyID = value;
+                    this.RaiseDataMemberChanged("EnergyID");
+                    this.OnEnergyIDChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the associated <see cref="FilmSize"/> entity.
+        /// </summary>
+        [Association("FilmSize_RGReportRow", "FilmSizeID", "ID", IsForeignKey=true)]
+        public FilmSize FilmSize
+        {
+            get
+            {
+                if ((this._filmSize == null))
+                {
+                    this._filmSize = new EntityRef<FilmSize>(this, "FilmSize", this.FilterFilmSize);
+                }
+                return this._filmSize.Entity;
+            }
+            set
+            {
+                FilmSize previous = this.FilmSize;
+                if ((previous != value))
+                {
+                    this.ValidateProperty("FilmSize", value);
+                    if ((value != null))
+                    {
+                        this.FilmSizeID = value.ID;
+                    }
+                    else
+                    {
+                        this.FilmSizeID = default(int);
+                    }
+                    this._filmSize.Entity = value;
+                    this.RaisePropertyChanged("FilmSize");
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'FilmSizeID' value.
+        /// </summary>
+        [DataMember()]
+        [RoundtripOriginal()]
+        public int FilmSizeID
+        {
+            get
+            {
+                return this._filmSizeID;
+            }
+            set
+            {
+                if ((this._filmSizeID != value))
+                {
+                    this.OnFilmSizeIDChanging(value);
+                    this.RaiseDataMemberChanging("FilmSizeID");
+                    this.ValidateProperty("FilmSizeID", value);
+                    this._filmSizeID = value;
+                    this.RaiseDataMemberChanged("FilmSizeID");
+                    this.OnFilmSizeIDChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'ID' value.
+        /// </summary>
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [DataMember()]
+        [Editable(false, AllowInitialValue=true)]
+        [Key()]
+        [RoundtripOriginal()]
+        public int ID
+        {
+            get
+            {
+                return this._id;
+            }
+            set
+            {
+                if ((this._id != value))
+                {
+                    this.OnIDChanging(value);
+                    this.ValidateProperty("ID", value);
+                    this._id = value;
+                    this.RaisePropertyChanged("ID");
+                    this.OnIDChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'Location' value.
+        /// </summary>
+        [DataMember()]
+        public string Location
+        {
+            get
+            {
+                return this._location;
+            }
+            set
+            {
+                if ((this._location != value))
+                {
+                    this.OnLocationChanging(value);
+                    this.RaiseDataMemberChanging("Location");
+                    this.ValidateProperty("Location", value);
+                    this._location = value;
+                    this.RaiseDataMemberChanged("Location");
+                    this.OnLocationChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets the collection of associated <see cref="Observation"/> entity instances.
+        /// </summary>
+        [Association("RGReportRow_Observation", "ID", "RGReportRowID")]
+        public EntityCollection<Observation> Observations
+        {
+            get
+            {
+                if ((this._observations == null))
+                {
+                    this._observations = new EntityCollection<Observation>(this, "Observations", this.FilterObservations);
+                }
+                return this._observations;
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'Remark' value.
+        /// </summary>
+        [DataMember()]
+        public Remark Remark
+        {
+            get
+            {
+                return this._remark;
+            }
+            set
+            {
+                if ((this._remark != value))
+                {
+                    this.OnRemarkChanging(value);
+                    this.RaiseDataMemberChanging("Remark");
+                    this.ValidateProperty("Remark", value);
+                    this._remark = value;
+                    this.RaiseDataMemberChanged("Remark");
+                    this.OnRemarkChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the associated <see cref="RGReport"/> entity.
+        /// </summary>
+        [Association("RGReport_RGReportRow", "RGReportID", "ID", IsForeignKey=true)]
+        public RGReport RGReport
+        {
+            get
+            {
+                if ((this._rgReport == null))
+                {
+                    this._rgReport = new EntityRef<RGReport>(this, "RGReport", this.FilterRGReport);
+                }
+                return this._rgReport.Entity;
+            }
+            set
+            {
+                RGReport previous = this.RGReport;
+                if ((previous != value))
+                {
+                    this.ValidateProperty("RGReport", value);
+                    if ((previous != null))
+                    {
+                        this._rgReport.Entity = null;
+                        previous.RGReportRows.Remove(this);
+                    }
+                    if ((value != null))
+                    {
+                        this.RGReportID = value.ID;
+                    }
+                    else
+                    {
+                        this.RGReportID = default(int);
+                    }
+                    this._rgReport.Entity = value;
+                    if ((value != null))
+                    {
+                        value.RGReportRows.Add(this);
+                    }
+                    this.RaisePropertyChanged("RGReport");
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'RGReportID' value.
+        /// </summary>
+        [DataMember()]
+        [RoundtripOriginal()]
+        public int RGReportID
+        {
+            get
+            {
+                return this._rgReportID;
+            }
+            set
+            {
+                if ((this._rgReportID != value))
+                {
+                    this.OnRGReportIDChanging(value);
+                    this.RaiseDataMemberChanging("RGReportID");
+                    this.ValidateProperty("RGReportID", value);
+                    this._rgReportID = value;
+                    this.RaiseDataMemberChanged("RGReportID");
+                    this.OnRGReportIDChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'Sensitivity' value.
+        /// </summary>
+        [DataMember()]
+        public string Sensitivity
+        {
+            get
+            {
+                return this._sensitivity;
+            }
+            set
+            {
+                if ((this._sensitivity != value))
+                {
+                    this.OnSensitivityChanging(value);
+                    this.RaiseDataMemberChanging("Sensitivity");
+                    this.ValidateProperty("Sensitivity", value);
+                    this._sensitivity = value;
+                    this.RaiseDataMemberChanged("Sensitivity");
+                    this.OnSensitivityChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'SFD' value.
+        /// </summary>
+        [DataMember()]
+        public int SFD
+        {
+            get
+            {
+                return this._sfd;
+            }
+            set
+            {
+                if ((this._sfd != value))
+                {
+                    this.OnSFDChanging(value);
+                    this.RaiseDataMemberChanging("SFD");
+                    this.ValidateProperty("SFD", value);
+                    this._sfd = value;
+                    this.RaiseDataMemberChanged("SFD");
+                    this.OnSFDChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'SlNo' value.
+        /// </summary>
+        [DataMember()]
+        public int SlNo
+        {
+            get
+            {
+                return this._slNo;
+            }
+            set
+            {
+                if ((this._slNo != value))
+                {
+                    this.OnSlNoChanging(value);
+                    this.RaiseDataMemberChanging("SlNo");
+                    this.ValidateProperty("SlNo", value);
+                    this._slNo = value;
+                    this.RaiseDataMemberChanged("SlNo");
+                    this.OnSlNoChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the associated <see cref="Technician"/> entity.
+        /// </summary>
+        [Association("Technician_RGReportRow", "TechnicianID", "ID", IsForeignKey=true)]
+        public Technician Technician
+        {
+            get
+            {
+                if ((this._technician == null))
+                {
+                    this._technician = new EntityRef<Technician>(this, "Technician", this.FilterTechnician);
+                }
+                return this._technician.Entity;
+            }
+            set
+            {
+                Technician previous = this.Technician;
+                if ((previous != value))
+                {
+                    this.ValidateProperty("Technician", value);
+                    if ((value != null))
+                    {
+                        this.TechnicianID = value.ID;
+                    }
+                    else
+                    {
+                        this.TechnicianID = default(int);
+                    }
+                    this._technician.Entity = value;
+                    this.RaisePropertyChanged("Technician");
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'TechnicianID' value.
+        /// </summary>
+        [DataMember()]
+        [RoundtripOriginal()]
+        public int TechnicianID
+        {
+            get
+            {
+                return this._technicianID;
+            }
+            set
+            {
+                if ((this._technicianID != value))
+                {
+                    this.OnTechnicianIDChanging(value);
+                    this.RaiseDataMemberChanging("TechnicianID");
+                    this.ValidateProperty("TechnicianID", value);
+                    this._technicianID = value;
+                    this.RaiseDataMemberChanged("TechnicianID");
+                    this.OnTechnicianIDChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'Thickness' value.
+        /// </summary>
+        [DataMember()]
+        public int Thickness
+        {
+            get
+            {
+                return this._thickness;
+            }
+            set
+            {
+                if ((this._thickness != value))
+                {
+                    this.OnThicknessChanging(value);
+                    this.RaiseDataMemberChanging("Thickness");
+                    this.ValidateProperty("Thickness", value);
+                    this._thickness = value;
+                    this.RaiseDataMemberChanged("Thickness");
+                    this.OnThicknessChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the associated <see cref="Welder"/> entity.
+        /// </summary>
+        [Association("Welder_RGReportRow", "WelderID", "ID", IsForeignKey=true)]
+        public Welder Welder
+        {
+            get
+            {
+                if ((this._welder == null))
+                {
+                    this._welder = new EntityRef<Welder>(this, "Welder", this.FilterWelder);
+                }
+                return this._welder.Entity;
+            }
+            set
+            {
+                Welder previous = this.Welder;
+                if ((previous != value))
+                {
+                    this.ValidateProperty("Welder", value);
+                    if ((value != null))
+                    {
+                        this.WelderID = value.ID;
+                    }
+                    else
+                    {
+                        this.WelderID = default(int);
+                    }
+                    this._welder.Entity = value;
+                    this.RaisePropertyChanged("Welder");
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'WelderID' value.
+        /// </summary>
+        [DataMember()]
+        [RoundtripOriginal()]
+        public int WelderID
+        {
+            get
+            {
+                return this._welderID;
+            }
+            set
+            {
+                if ((this._welderID != value))
+                {
+                    this.OnWelderIDChanging(value);
+                    this.RaiseDataMemberChanging("WelderID");
+                    this.ValidateProperty("WelderID", value);
+                    this._welderID = value;
+                    this.RaiseDataMemberChanged("WelderID");
+                    this.OnWelderIDChanged();
+                }
+            }
+        }
+        
+        private bool FilterEnergy(Energy entity)
+        {
+            return (entity.ID == this.EnergyID);
+        }
+        
+        private bool FilterFilmSize(FilmSize entity)
+        {
+            return (entity.ID == this.FilmSizeID);
+        }
+        
+        private bool FilterObservations(Observation entity)
+        {
+            return (entity.RGReportRowID == this.ID);
+        }
+        
+        private bool FilterRGReport(RGReport entity)
+        {
+            return (entity.ID == this.RGReportID);
+        }
+        
+        private bool FilterTechnician(Technician entity)
+        {
+            return (entity.ID == this.TechnicianID);
+        }
+        
+        private bool FilterWelder(Welder entity)
+        {
+            return (entity.ID == this.WelderID);
+        }
+        
+        /// <summary>
+        /// Computes a value from the key fields that uniquely identifies this entity instance.
+        /// </summary>
+        /// <returns>An object instance that uniquely identifies this entity instance.</returns>
+        public override object GetIdentity()
+        {
+            return this._id;
+        }
+    }
+    
+    public enum RGStatus
+    {
+        
+        PENDING = 0,
+        
+        COMPLETE = 1,
+    }
+    
+    public enum Shift
+    {
+        
+        DAY = 0,
+        
+        NIGHT = 1,
+    }
+    
+    /// <summary>
+    /// The 'Technician' entity class.
+    /// </summary>
+    [DataContract(Namespace="http://schemas.datacontract.org/2004/07/RadiologyTracking.Web.Models")]
+    public sealed partial class Technician : Entity
+    {
+        
+        private int _id;
+        
+        private string _name;
+        
+        #region Extensibility Method Definitions
+
+        /// <summary>
+        /// This method is invoked from the constructor once initialization is complete and
+        /// can be used for further object setup.
+        /// </summary>
+        partial void OnCreated();
+        partial void OnIDChanging(int value);
+        partial void OnIDChanged();
+        partial void OnNameChanging(string value);
+        partial void OnNameChanged();
+
+        #endregion
+        
+        
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Technician"/> class.
+        /// </summary>
+        public Technician()
+        {
+            this.OnCreated();
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'ID' value.
+        /// </summary>
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [DataMember()]
+        [Editable(false, AllowInitialValue=true)]
+        [Key()]
+        [RoundtripOriginal()]
+        public int ID
+        {
+            get
+            {
+                return this._id;
+            }
+            set
+            {
+                if ((this._id != value))
+                {
+                    this.OnIDChanging(value);
+                    this.ValidateProperty("ID", value);
+                    this._id = value;
+                    this.RaisePropertyChanged("ID");
+                    this.OnIDChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'Name' value.
+        /// </summary>
+        [DataMember()]
+        public string Name
+        {
+            get
+            {
+                return this._name;
+            }
+            set
+            {
+                if ((this._name != value))
+                {
+                    this.OnNameChanging(value);
+                    this.RaiseDataMemberChanging("Name");
+                    this.ValidateProperty("Name", value);
+                    this._name = value;
+                    this.RaiseDataMemberChanged("Name");
+                    this.OnNameChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Computes a value from the key fields that uniquely identifies this entity instance.
+        /// </summary>
+        /// <returns>An object instance that uniquely identifies this entity instance.</returns>
+        public override object GetIdentity()
+        {
+            return this._id;
+        }
+    }
+    
+    /// <summary>
+    /// The 'ThicknessRangeForEnergy' entity class.
+    /// </summary>
+    [DataContract(Namespace="http://schemas.datacontract.org/2004/07/RadiologyTracking.Web.Models")]
+    public sealed partial class ThicknessRangeForEnergy : Entity
+    {
+        
+        private EntityRef<Energy> _energy;
+        
+        private int _energyID;
+        
+        private int _id;
+        
+        private double _thicknessFrom;
+        
+        private double _thicknessTo;
+        
+        #region Extensibility Method Definitions
+
+        /// <summary>
+        /// This method is invoked from the constructor once initialization is complete and
+        /// can be used for further object setup.
+        /// </summary>
+        partial void OnCreated();
+        partial void OnEnergyIDChanging(int value);
+        partial void OnEnergyIDChanged();
+        partial void OnIDChanging(int value);
+        partial void OnIDChanged();
+        partial void OnThicknessFromChanging(double value);
+        partial void OnThicknessFromChanged();
+        partial void OnThicknessToChanging(double value);
+        partial void OnThicknessToChanged();
+
+        #endregion
+        
+        
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ThicknessRangeForEnergy"/> class.
+        /// </summary>
+        public ThicknessRangeForEnergy()
+        {
+            this.OnCreated();
+        }
+        
+        /// <summary>
+        /// Gets or sets the associated <see cref="Energy"/> entity.
+        /// </summary>
+        [Association("Energy_ThicknessRangeForEnergy", "EnergyID", "ID", IsForeignKey=true)]
+        public Energy Energy
+        {
+            get
+            {
+                if ((this._energy == null))
+                {
+                    this._energy = new EntityRef<Energy>(this, "Energy", this.FilterEnergy);
+                }
+                return this._energy.Entity;
+            }
+            set
+            {
+                Energy previous = this.Energy;
+                if ((previous != value))
+                {
+                    this.ValidateProperty("Energy", value);
+                    if ((value != null))
+                    {
+                        this.EnergyID = value.ID;
+                    }
+                    else
+                    {
+                        this.EnergyID = default(int);
+                    }
+                    this._energy.Entity = value;
+                    this.RaisePropertyChanged("Energy");
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'EnergyID' value.
+        /// </summary>
+        [DataMember()]
+        [RoundtripOriginal()]
+        public int EnergyID
+        {
+            get
+            {
+                return this._energyID;
+            }
+            set
+            {
+                if ((this._energyID != value))
+                {
+                    this.OnEnergyIDChanging(value);
+                    this.RaiseDataMemberChanging("EnergyID");
+                    this.ValidateProperty("EnergyID", value);
+                    this._energyID = value;
+                    this.RaiseDataMemberChanged("EnergyID");
+                    this.OnEnergyIDChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'ID' value.
+        /// </summary>
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [DataMember()]
+        [Editable(false, AllowInitialValue=true)]
+        [Key()]
+        [RoundtripOriginal()]
+        public int ID
+        {
+            get
+            {
+                return this._id;
+            }
+            set
+            {
+                if ((this._id != value))
+                {
+                    this.OnIDChanging(value);
+                    this.ValidateProperty("ID", value);
+                    this._id = value;
+                    this.RaisePropertyChanged("ID");
+                    this.OnIDChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'ThicknessFrom' value.
+        /// </summary>
+        [DataMember()]
+        public double ThicknessFrom
+        {
+            get
+            {
+                return this._thicknessFrom;
+            }
+            set
+            {
+                if ((this._thicknessFrom != value))
+                {
+                    this.OnThicknessFromChanging(value);
+                    this.RaiseDataMemberChanging("ThicknessFrom");
+                    this.ValidateProperty("ThicknessFrom", value);
+                    this._thicknessFrom = value;
+                    this.RaiseDataMemberChanged("ThicknessFrom");
+                    this.OnThicknessFromChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'ThicknessTo' value.
+        /// </summary>
+        [DataMember()]
+        public double ThicknessTo
+        {
+            get
+            {
+                return this._thicknessTo;
+            }
+            set
+            {
+                if ((this._thicknessTo != value))
+                {
+                    this.OnThicknessToChanging(value);
+                    this.RaiseDataMemberChanging("ThicknessTo");
+                    this.ValidateProperty("ThicknessTo", value);
+                    this._thicknessTo = value;
+                    this.RaiseDataMemberChanged("ThicknessTo");
+                    this.OnThicknessToChanged();
+                }
+            }
+        }
+        
+        private bool FilterEnergy(Energy entity)
+        {
+            return (entity.ID == this.EnergyID);
+        }
+        
+        /// <summary>
+        /// Computes a value from the key fields that uniquely identifies this entity instance.
+        /// </summary>
+        /// <returns>An object instance that uniquely identifies this entity instance.</returns>
+        public override object GetIdentity()
+        {
+            return this._id;
+        }
+    }
+    
+    /// <summary>
+    /// The 'Welder' entity class.
+    /// </summary>
+    [DataContract(Namespace="http://schemas.datacontract.org/2004/07/RadiologyTracking.Web.Models")]
+    public sealed partial class Welder : Entity
+    {
+        
+        private int _id;
+        
+        private string _name;
+        
+        #region Extensibility Method Definitions
+
+        /// <summary>
+        /// This method is invoked from the constructor once initialization is complete and
+        /// can be used for further object setup.
+        /// </summary>
+        partial void OnCreated();
+        partial void OnIDChanging(int value);
+        partial void OnIDChanged();
+        partial void OnNameChanging(string value);
+        partial void OnNameChanged();
+
+        #endregion
+        
+        
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Welder"/> class.
+        /// </summary>
+        public Welder()
+        {
+            this.OnCreated();
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'ID' value.
+        /// </summary>
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [DataMember()]
+        [Editable(false, AllowInitialValue=true)]
+        [Key()]
+        [RoundtripOriginal()]
+        public int ID
+        {
+            get
+            {
+                return this._id;
+            }
+            set
+            {
+                if ((this._id != value))
+                {
+                    this.OnIDChanging(value);
+                    this.ValidateProperty("ID", value);
+                    this._id = value;
+                    this.RaisePropertyChanged("ID");
+                    this.OnIDChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'Name' value.
+        /// </summary>
+        [DataMember()]
+        public string Name
+        {
+            get
+            {
+                return this._name;
+            }
+            set
+            {
+                if ((this._name != value))
+                {
+                    this.OnNameChanging(value);
+                    this.RaiseDataMemberChanging("Name");
+                    this.ValidateProperty("Name", value);
+                    this._name = value;
+                    this.RaiseDataMemberChanged("Name");
+                    this.OnNameChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Computes a value from the key fields that uniquely identifies this entity instance.
+        /// </summary>
+        /// <returns>An object instance that uniquely identifies this entity instance.</returns>
+        public override object GetIdentity()
+        {
+            return this._id;
+        }
+    }
+}
+namespace RadiologyTracking.Web.Services
+{
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel;
+    using System.ComponentModel.DataAnnotations;
+    using System.Linq;
+    using System.ServiceModel;
+    using System.ServiceModel.DomainServices;
+    using System.ServiceModel.DomainServices.Client;
+    using System.ServiceModel.DomainServices.Client.ApplicationServices;
+    using System.ServiceModel.Web;
+    using RadiologyTracking.Web.Models;
+    
+    
+    /// <summary>
+    /// The DomainContext corresponding to the 'RadiologyService' DomainService.
+    /// </summary>
+    public sealed partial class RadiologyContext : DomainContext
+    {
+        
+        #region Extensibility Method Definitions
+
+        /// <summary>
+        /// This method is invoked from the constructor once initialization is complete and
+        /// can be used for further object setup.
+        /// </summary>
+        partial void OnCreated();
+
+        #endregion
+        
+        
+        /// <summary>
+        /// Initializes a new instance of the <see cref="RadiologyContext"/> class.
+        /// </summary>
+        public RadiologyContext() : 
+                this(new WebDomainClient<IRadiologyServiceContract>(new Uri("RadiologyTracking-Web-Services-RadiologyService.svc", UriKind.Relative)))
+        {
+        }
+        
+        /// <summary>
+        /// Initializes a new instance of the <see cref="RadiologyContext"/> class with the specified service URI.
+        /// </summary>
+        /// <param name="serviceUri">The RadiologyService service URI.</param>
+        public RadiologyContext(Uri serviceUri) : 
+                this(new WebDomainClient<IRadiologyServiceContract>(serviceUri))
+        {
+        }
+        
+        /// <summary>
+        /// Initializes a new instance of the <see cref="RadiologyContext"/> class with the specified <paramref name="domainClient"/>.
+        /// </summary>
+        /// <param name="domainClient">The DomainClient instance to use for this DomainContext.</param>
+        public RadiologyContext(DomainClient domainClient) : 
+                base(domainClient)
+        {
+            this.OnCreated();
+        }
+        
+        /// <summary>
+        /// Gets the set of <see cref="Change"/> entity instances that have been loaded into this <see cref="RadiologyContext"/> instance.
+        /// </summary>
+        public EntitySet<Change> Changes
+        {
+            get
+            {
+                return base.EntityContainer.GetEntitySet<Change>();
+            }
+        }
+        
+        /// <summary>
+        /// Gets the set of <see cref="Coverage"/> entity instances that have been loaded into this <see cref="RadiologyContext"/> instance.
+        /// </summary>
+        public EntitySet<Coverage> Coverages
+        {
+            get
+            {
+                return base.EntityContainer.GetEntitySet<Coverage>();
+            }
+        }
+        
+        /// <summary>
+        /// Gets the set of <see cref="Customer"/> entity instances that have been loaded into this <see cref="RadiologyContext"/> instance.
+        /// </summary>
+        public EntitySet<Customer> Customers
+        {
+            get
+            {
+                return base.EntityContainer.GetEntitySet<Customer>();
+            }
+        }
+        
+        /// <summary>
+        /// Gets the set of <see cref="Defect"/> entity instances that have been loaded into this <see cref="RadiologyContext"/> instance.
+        /// </summary>
+        public EntitySet<Defect> Defects
+        {
+            get
+            {
+                return base.EntityContainer.GetEntitySet<Defect>();
+            }
+        }
+        
+        /// <summary>
+        /// Gets the set of <see cref="Energy"/> entity instances that have been loaded into this <see cref="RadiologyContext"/> instance.
+        /// </summary>
+        public EntitySet<Energy> Energies
+        {
+            get
+            {
+                return base.EntityContainer.GetEntitySet<Energy>();
+            }
+        }
+        
+        /// <summary>
+        /// Gets the set of <see cref="FilmSize"/> entity instances that have been loaded into this <see cref="RadiologyContext"/> instance.
+        /// </summary>
+        public EntitySet<FilmSize> FilmSizes
+        {
+            get
+            {
+                return base.EntityContainer.GetEntitySet<FilmSize>();
+            }
+        }
+        
+        /// <summary>
+        /// Gets the set of <see cref="FilmTransaction"/> entity instances that have been loaded into this <see cref="RadiologyContext"/> instance.
+        /// </summary>
+        public EntitySet<FilmTransaction> FilmTransactions
+        {
+            get
+            {
+                return base.EntityContainer.GetEntitySet<FilmTransaction>();
+            }
+        }
+        
+        /// <summary>
+        /// Gets the set of <see cref="FixedPattern"/> entity instances that have been loaded into this <see cref="RadiologyContext"/> instance.
+        /// </summary>
+        public EntitySet<FixedPattern> FixedPatterns
+        {
+            get
+            {
+                return base.EntityContainer.GetEntitySet<FixedPattern>();
+            }
+        }
+        
+        /// <summary>
+        /// Gets the set of <see cref="FixedPatternTemplate"/> entity instances that have been loaded into this <see cref="RadiologyContext"/> instance.
+        /// </summary>
+        public EntitySet<FixedPatternTemplate> FixedPatternTemplates
+        {
+            get
+            {
+                return base.EntityContainer.GetEntitySet<FixedPatternTemplate>();
+            }
+        }
+        
+        /// <summary>
+        /// Gets the set of <see cref="Foundry"/> entity instances that have been loaded into this <see cref="RadiologyContext"/> instance.
+        /// </summary>
+        public EntitySet<Foundry> Foundries
+        {
+            get
+            {
+                return base.EntityContainer.GetEntitySet<Foundry>();
+            }
+        }
+        
+        /// <summary>
+        /// Gets the set of <see cref="FPTemplateRow"/> entity instances that have been loaded into this <see cref="RadiologyContext"/> instance.
+        /// </summary>
+        public EntitySet<FPTemplateRow> FPTemplateRows
+        {
+            get
+            {
+                return base.EntityContainer.GetEntitySet<FPTemplateRow>();
+            }
+        }
+        
+        /// <summary>
+        /// Gets the set of <see cref="Observation"/> entity instances that have been loaded into this <see cref="RadiologyContext"/> instance.
+        /// </summary>
+        public EntitySet<Observation> Observations
+        {
+            get
+            {
+                return base.EntityContainer.GetEntitySet<Observation>();
+            }
+        }
+        
+        /// <summary>
+        /// Gets the set of <see cref="RGReportRow"/> entity instances that have been loaded into this <see cref="RadiologyContext"/> instance.
+        /// </summary>
+        public EntitySet<RGReportRow> RGReportRows
+        {
+            get
+            {
+                return base.EntityContainer.GetEntitySet<RGReportRow>();
+            }
+        }
+        
+        /// <summary>
+        /// Gets the set of <see cref="RGReport"/> entity instances that have been loaded into this <see cref="RadiologyContext"/> instance.
+        /// </summary>
+        public EntitySet<RGReport> RGReports
+        {
+            get
+            {
+                return base.EntityContainer.GetEntitySet<RGReport>();
+            }
+        }
+        
+        /// <summary>
+        /// Gets the set of <see cref="Technician"/> entity instances that have been loaded into this <see cref="RadiologyContext"/> instance.
+        /// </summary>
+        public EntitySet<Technician> Technicians
+        {
+            get
+            {
+                return base.EntityContainer.GetEntitySet<Technician>();
+            }
+        }
+        
+        /// <summary>
+        /// Gets the set of <see cref="ThicknessRangeForEnergy"/> entity instances that have been loaded into this <see cref="RadiologyContext"/> instance.
+        /// </summary>
+        public EntitySet<ThicknessRangeForEnergy> ThicknessRangeForEnergies
+        {
+            get
+            {
+                return base.EntityContainer.GetEntitySet<ThicknessRangeForEnergy>();
+            }
+        }
+        
+        /// <summary>
+        /// Gets the set of <see cref="Welder"/> entity instances that have been loaded into this <see cref="RadiologyContext"/> instance.
+        /// </summary>
+        public EntitySet<Welder> Welders
+        {
+            get
+            {
+                return base.EntityContainer.GetEntitySet<Welder>();
+            }
+        }
+        
+        /// <summary>
+        /// Gets an EntityQuery instance that can be used to load <see cref="Change"/> entity instances using the 'GetChanges' query.
+        /// </summary>
+        /// <returns>An EntityQuery that can be loaded to retrieve <see cref="Change"/> entity instances.</returns>
+        public EntityQuery<Change> GetChangesQuery()
+        {
+            this.ValidateMethod("GetChangesQuery", null);
+            return base.CreateQuery<Change>("GetChanges", null, false, true);
+        }
+        
+        /// <summary>
+        /// Gets an EntityQuery instance that can be used to load <see cref="Coverage"/> entity instances using the 'GetCoverages' query.
+        /// </summary>
+        /// <returns>An EntityQuery that can be loaded to retrieve <see cref="Coverage"/> entity instances.</returns>
+        public EntityQuery<Coverage> GetCoveragesQuery()
+        {
+            this.ValidateMethod("GetCoveragesQuery", null);
+            return base.CreateQuery<Coverage>("GetCoverages", null, false, true);
+        }
+        
+        /// <summary>
+        /// Gets an EntityQuery instance that can be used to load <see cref="Customer"/> entity instances using the 'GetCustomers' query.
+        /// </summary>
+        /// <returns>An EntityQuery that can be loaded to retrieve <see cref="Customer"/> entity instances.</returns>
+        public EntityQuery<Customer> GetCustomersQuery()
+        {
+            this.ValidateMethod("GetCustomersQuery", null);
+            return base.CreateQuery<Customer>("GetCustomers", null, false, true);
+        }
+        
+        /// <summary>
+        /// Gets an EntityQuery instance that can be used to load <see cref="Defect"/> entity instances using the 'GetDefects' query.
+        /// </summary>
+        /// <returns>An EntityQuery that can be loaded to retrieve <see cref="Defect"/> entity instances.</returns>
+        public EntityQuery<Defect> GetDefectsQuery()
+        {
+            this.ValidateMethod("GetDefectsQuery", null);
+            return base.CreateQuery<Defect>("GetDefects", null, false, true);
+        }
+        
+        /// <summary>
+        /// Gets an EntityQuery instance that can be used to load <see cref="Energy"/> entity instances using the 'GetEnergies' query.
+        /// </summary>
+        /// <returns>An EntityQuery that can be loaded to retrieve <see cref="Energy"/> entity instances.</returns>
+        public EntityQuery<Energy> GetEnergiesQuery()
+        {
+            this.ValidateMethod("GetEnergiesQuery", null);
+            return base.CreateQuery<Energy>("GetEnergies", null, false, true);
+        }
+        
+        /// <summary>
+        /// Gets an EntityQuery instance that can be used to load <see cref="FilmSize"/> entity instances using the 'GetFilmSizes' query.
+        /// </summary>
+        /// <returns>An EntityQuery that can be loaded to retrieve <see cref="FilmSize"/> entity instances.</returns>
+        public EntityQuery<FilmSize> GetFilmSizesQuery()
+        {
+            this.ValidateMethod("GetFilmSizesQuery", null);
+            return base.CreateQuery<FilmSize>("GetFilmSizes", null, false, true);
+        }
+        
+        /// <summary>
+        /// Gets an EntityQuery instance that can be used to load <see cref="FilmTransaction"/> entity instances using the 'GetFilmTransactions' query.
+        /// </summary>
+        /// <returns>An EntityQuery that can be loaded to retrieve <see cref="FilmTransaction"/> entity instances.</returns>
+        public EntityQuery<FilmTransaction> GetFilmTransactionsQuery()
+        {
+            this.ValidateMethod("GetFilmTransactionsQuery", null);
+            return base.CreateQuery<FilmTransaction>("GetFilmTransactions", null, false, true);
+        }
+        
+        /// <summary>
+        /// Gets an EntityQuery instance that can be used to load <see cref="FixedPattern"/> entity instances using the 'GetFixedPatterns' query.
+        /// </summary>
+        /// <returns>An EntityQuery that can be loaded to retrieve <see cref="FixedPattern"/> entity instances.</returns>
+        public EntityQuery<FixedPattern> GetFixedPatternsQuery()
+        {
+            this.ValidateMethod("GetFixedPatternsQuery", null);
+            return base.CreateQuery<FixedPattern>("GetFixedPatterns", null, false, true);
+        }
+        
+        /// <summary>
+        /// Gets an EntityQuery instance that can be used to load <see cref="FixedPatternTemplate"/> entity instances using the 'GetFixedPatternTemplates' query.
+        /// </summary>
+        /// <returns>An EntityQuery that can be loaded to retrieve <see cref="FixedPatternTemplate"/> entity instances.</returns>
+        public EntityQuery<FixedPatternTemplate> GetFixedPatternTemplatesQuery()
+        {
+            this.ValidateMethod("GetFixedPatternTemplatesQuery", null);
+            return base.CreateQuery<FixedPatternTemplate>("GetFixedPatternTemplates", null, false, true);
+        }
+        
+        /// <summary>
+        /// Gets an EntityQuery instance that can be used to load <see cref="Foundry"/> entity instances using the 'GetFoundries' query.
+        /// </summary>
+        /// <returns>An EntityQuery that can be loaded to retrieve <see cref="Foundry"/> entity instances.</returns>
+        public EntityQuery<Foundry> GetFoundriesQuery()
+        {
+            this.ValidateMethod("GetFoundriesQuery", null);
+            return base.CreateQuery<Foundry>("GetFoundries", null, false, true);
+        }
+        
+        /// <summary>
+        /// Gets an EntityQuery instance that can be used to load <see cref="FPTemplateRow"/> entity instances using the 'GetFPTemplateRows' query.
+        /// </summary>
+        /// <returns>An EntityQuery that can be loaded to retrieve <see cref="FPTemplateRow"/> entity instances.</returns>
+        public EntityQuery<FPTemplateRow> GetFPTemplateRowsQuery()
+        {
+            this.ValidateMethod("GetFPTemplateRowsQuery", null);
+            return base.CreateQuery<FPTemplateRow>("GetFPTemplateRows", null, false, true);
+        }
+        
+        /// <summary>
+        /// Gets an EntityQuery instance that can be used to load <see cref="Observation"/> entity instances using the 'GetObservations' query.
+        /// </summary>
+        /// <returns>An EntityQuery that can be loaded to retrieve <see cref="Observation"/> entity instances.</returns>
+        public EntityQuery<Observation> GetObservationsQuery()
+        {
+            this.ValidateMethod("GetObservationsQuery", null);
+            return base.CreateQuery<Observation>("GetObservations", null, false, true);
+        }
+        
+        /// <summary>
+        /// Gets an EntityQuery instance that can be used to load <see cref="RGReportRow"/> entity instances using the 'GetRGReportRows' query.
+        /// </summary>
+        /// <returns>An EntityQuery that can be loaded to retrieve <see cref="RGReportRow"/> entity instances.</returns>
+        public EntityQuery<RGReportRow> GetRGReportRowsQuery()
+        {
+            this.ValidateMethod("GetRGReportRowsQuery", null);
+            return base.CreateQuery<RGReportRow>("GetRGReportRows", null, false, true);
+        }
+        
+        /// <summary>
+        /// Gets an EntityQuery instance that can be used to load <see cref="RGReport"/> entity instances using the 'GetRGReports' query.
+        /// </summary>
+        /// <returns>An EntityQuery that can be loaded to retrieve <see cref="RGReport"/> entity instances.</returns>
+        public EntityQuery<RGReport> GetRGReportsQuery()
+        {
+            this.ValidateMethod("GetRGReportsQuery", null);
+            return base.CreateQuery<RGReport>("GetRGReports", null, false, true);
+        }
+        
+        /// <summary>
+        /// Gets an EntityQuery instance that can be used to load <see cref="Technician"/> entity instances using the 'GetTechnicians' query.
+        /// </summary>
+        /// <returns>An EntityQuery that can be loaded to retrieve <see cref="Technician"/> entity instances.</returns>
+        public EntityQuery<Technician> GetTechniciansQuery()
+        {
+            this.ValidateMethod("GetTechniciansQuery", null);
+            return base.CreateQuery<Technician>("GetTechnicians", null, false, true);
+        }
+        
+        /// <summary>
+        /// Gets an EntityQuery instance that can be used to load <see cref="ThicknessRangeForEnergy"/> entity instances using the 'GetThicknessRangesForEnergy' query.
+        /// </summary>
+        /// <returns>An EntityQuery that can be loaded to retrieve <see cref="ThicknessRangeForEnergy"/> entity instances.</returns>
+        public EntityQuery<ThicknessRangeForEnergy> GetThicknessRangesForEnergyQuery()
+        {
+            this.ValidateMethod("GetThicknessRangesForEnergyQuery", null);
+            return base.CreateQuery<ThicknessRangeForEnergy>("GetThicknessRangesForEnergy", null, false, true);
+        }
+        
+        /// <summary>
+        /// Gets an EntityQuery instance that can be used to load <see cref="Welder"/> entity instances using the 'GetWelders' query.
+        /// </summary>
+        /// <returns>An EntityQuery that can be loaded to retrieve <see cref="Welder"/> entity instances.</returns>
+        public EntityQuery<Welder> GetWeldersQuery()
+        {
+            this.ValidateMethod("GetWeldersQuery", null);
+            return base.CreateQuery<Welder>("GetWelders", null, false, true);
+        }
+        
+        /// <summary>
+        /// Creates a new EntityContainer for this DomainContext's EntitySets.
+        /// </summary>
+        /// <returns>A new container instance.</returns>
+        protected override EntityContainer CreateEntityContainer()
+        {
+            return new RadiologyContextEntityContainer();
+        }
+        
+        /// <summary>
+        /// Service contract for the 'RadiologyService' DomainService.
+        /// </summary>
+        [ServiceContract()]
+        public interface IRadiologyServiceContract
+        {
+            
+            /// <summary>
+            /// Asynchronously invokes the 'GetChanges' operation.
+            /// </summary>
+            /// <param name="callback">Callback to invoke on completion.</param>
+            /// <param name="asyncState">Optional state object.</param>
+            /// <returns>An IAsyncResult that can be used to monitor the request.</returns>
+            [FaultContract(typeof(DomainServiceFault), Action="http://tempuri.org/RadiologyService/GetChangesDomainServiceFault", Name="DomainServiceFault", Namespace="DomainServices")]
+            [OperationContract(AsyncPattern=true, Action="http://tempuri.org/RadiologyService/GetChanges", ReplyAction="http://tempuri.org/RadiologyService/GetChangesResponse")]
+            [WebGet()]
+            IAsyncResult BeginGetChanges(AsyncCallback callback, object asyncState);
+            
+            /// <summary>
+            /// Completes the asynchronous operation begun by 'BeginGetChanges'.
+            /// </summary>
+            /// <param name="result">The IAsyncResult returned from 'BeginGetChanges'.</param>
+            /// <returns>The 'QueryResult' returned from the 'GetChanges' operation.</returns>
+            QueryResult<Change> EndGetChanges(IAsyncResult result);
+            
+            /// <summary>
+            /// Asynchronously invokes the 'GetCoverages' operation.
+            /// </summary>
+            /// <param name="callback">Callback to invoke on completion.</param>
+            /// <param name="asyncState">Optional state object.</param>
+            /// <returns>An IAsyncResult that can be used to monitor the request.</returns>
+            [FaultContract(typeof(DomainServiceFault), Action="http://tempuri.org/RadiologyService/GetCoveragesDomainServiceFault", Name="DomainServiceFault", Namespace="DomainServices")]
+            [OperationContract(AsyncPattern=true, Action="http://tempuri.org/RadiologyService/GetCoverages", ReplyAction="http://tempuri.org/RadiologyService/GetCoveragesResponse")]
+            [WebGet()]
+            IAsyncResult BeginGetCoverages(AsyncCallback callback, object asyncState);
+            
+            /// <summary>
+            /// Completes the asynchronous operation begun by 'BeginGetCoverages'.
+            /// </summary>
+            /// <param name="result">The IAsyncResult returned from 'BeginGetCoverages'.</param>
+            /// <returns>The 'QueryResult' returned from the 'GetCoverages' operation.</returns>
+            QueryResult<Coverage> EndGetCoverages(IAsyncResult result);
+            
+            /// <summary>
+            /// Asynchronously invokes the 'GetCustomers' operation.
+            /// </summary>
+            /// <param name="callback">Callback to invoke on completion.</param>
+            /// <param name="asyncState">Optional state object.</param>
+            /// <returns>An IAsyncResult that can be used to monitor the request.</returns>
+            [FaultContract(typeof(DomainServiceFault), Action="http://tempuri.org/RadiologyService/GetCustomersDomainServiceFault", Name="DomainServiceFault", Namespace="DomainServices")]
+            [OperationContract(AsyncPattern=true, Action="http://tempuri.org/RadiologyService/GetCustomers", ReplyAction="http://tempuri.org/RadiologyService/GetCustomersResponse")]
+            [WebGet()]
+            IAsyncResult BeginGetCustomers(AsyncCallback callback, object asyncState);
+            
+            /// <summary>
+            /// Completes the asynchronous operation begun by 'BeginGetCustomers'.
+            /// </summary>
+            /// <param name="result">The IAsyncResult returned from 'BeginGetCustomers'.</param>
+            /// <returns>The 'QueryResult' returned from the 'GetCustomers' operation.</returns>
+            QueryResult<Customer> EndGetCustomers(IAsyncResult result);
+            
+            /// <summary>
+            /// Asynchronously invokes the 'GetDefects' operation.
+            /// </summary>
+            /// <param name="callback">Callback to invoke on completion.</param>
+            /// <param name="asyncState">Optional state object.</param>
+            /// <returns>An IAsyncResult that can be used to monitor the request.</returns>
+            [FaultContract(typeof(DomainServiceFault), Action="http://tempuri.org/RadiologyService/GetDefectsDomainServiceFault", Name="DomainServiceFault", Namespace="DomainServices")]
+            [OperationContract(AsyncPattern=true, Action="http://tempuri.org/RadiologyService/GetDefects", ReplyAction="http://tempuri.org/RadiologyService/GetDefectsResponse")]
+            [WebGet()]
+            IAsyncResult BeginGetDefects(AsyncCallback callback, object asyncState);
+            
+            /// <summary>
+            /// Completes the asynchronous operation begun by 'BeginGetDefects'.
+            /// </summary>
+            /// <param name="result">The IAsyncResult returned from 'BeginGetDefects'.</param>
+            /// <returns>The 'QueryResult' returned from the 'GetDefects' operation.</returns>
+            QueryResult<Defect> EndGetDefects(IAsyncResult result);
+            
+            /// <summary>
+            /// Asynchronously invokes the 'GetEnergies' operation.
+            /// </summary>
+            /// <param name="callback">Callback to invoke on completion.</param>
+            /// <param name="asyncState">Optional state object.</param>
+            /// <returns>An IAsyncResult that can be used to monitor the request.</returns>
+            [FaultContract(typeof(DomainServiceFault), Action="http://tempuri.org/RadiologyService/GetEnergiesDomainServiceFault", Name="DomainServiceFault", Namespace="DomainServices")]
+            [OperationContract(AsyncPattern=true, Action="http://tempuri.org/RadiologyService/GetEnergies", ReplyAction="http://tempuri.org/RadiologyService/GetEnergiesResponse")]
+            [WebGet()]
+            IAsyncResult BeginGetEnergies(AsyncCallback callback, object asyncState);
+            
+            /// <summary>
+            /// Completes the asynchronous operation begun by 'BeginGetEnergies'.
+            /// </summary>
+            /// <param name="result">The IAsyncResult returned from 'BeginGetEnergies'.</param>
+            /// <returns>The 'QueryResult' returned from the 'GetEnergies' operation.</returns>
+            QueryResult<Energy> EndGetEnergies(IAsyncResult result);
+            
+            /// <summary>
+            /// Asynchronously invokes the 'GetFilmSizes' operation.
+            /// </summary>
+            /// <param name="callback">Callback to invoke on completion.</param>
+            /// <param name="asyncState">Optional state object.</param>
+            /// <returns>An IAsyncResult that can be used to monitor the request.</returns>
+            [FaultContract(typeof(DomainServiceFault), Action="http://tempuri.org/RadiologyService/GetFilmSizesDomainServiceFault", Name="DomainServiceFault", Namespace="DomainServices")]
+            [OperationContract(AsyncPattern=true, Action="http://tempuri.org/RadiologyService/GetFilmSizes", ReplyAction="http://tempuri.org/RadiologyService/GetFilmSizesResponse")]
+            [WebGet()]
+            IAsyncResult BeginGetFilmSizes(AsyncCallback callback, object asyncState);
+            
+            /// <summary>
+            /// Completes the asynchronous operation begun by 'BeginGetFilmSizes'.
+            /// </summary>
+            /// <param name="result">The IAsyncResult returned from 'BeginGetFilmSizes'.</param>
+            /// <returns>The 'QueryResult' returned from the 'GetFilmSizes' operation.</returns>
+            QueryResult<FilmSize> EndGetFilmSizes(IAsyncResult result);
+            
+            /// <summary>
+            /// Asynchronously invokes the 'GetFilmTransactions' operation.
+            /// </summary>
+            /// <param name="callback">Callback to invoke on completion.</param>
+            /// <param name="asyncState">Optional state object.</param>
+            /// <returns>An IAsyncResult that can be used to monitor the request.</returns>
+            [FaultContract(typeof(DomainServiceFault), Action="http://tempuri.org/RadiologyService/GetFilmTransactionsDomainServiceFault", Name="DomainServiceFault", Namespace="DomainServices")]
+            [OperationContract(AsyncPattern=true, Action="http://tempuri.org/RadiologyService/GetFilmTransactions", ReplyAction="http://tempuri.org/RadiologyService/GetFilmTransactionsResponse")]
+            [WebGet()]
+            IAsyncResult BeginGetFilmTransactions(AsyncCallback callback, object asyncState);
+            
+            /// <summary>
+            /// Completes the asynchronous operation begun by 'BeginGetFilmTransactions'.
+            /// </summary>
+            /// <param name="result">The IAsyncResult returned from 'BeginGetFilmTransactions'.</param>
+            /// <returns>The 'QueryResult' returned from the 'GetFilmTransactions' operation.</returns>
+            QueryResult<FilmTransaction> EndGetFilmTransactions(IAsyncResult result);
+            
+            /// <summary>
+            /// Asynchronously invokes the 'GetFixedPatterns' operation.
+            /// </summary>
+            /// <param name="callback">Callback to invoke on completion.</param>
+            /// <param name="asyncState">Optional state object.</param>
+            /// <returns>An IAsyncResult that can be used to monitor the request.</returns>
+            [FaultContract(typeof(DomainServiceFault), Action="http://tempuri.org/RadiologyService/GetFixedPatternsDomainServiceFault", Name="DomainServiceFault", Namespace="DomainServices")]
+            [OperationContract(AsyncPattern=true, Action="http://tempuri.org/RadiologyService/GetFixedPatterns", ReplyAction="http://tempuri.org/RadiologyService/GetFixedPatternsResponse")]
+            [WebGet()]
+            IAsyncResult BeginGetFixedPatterns(AsyncCallback callback, object asyncState);
+            
+            /// <summary>
+            /// Completes the asynchronous operation begun by 'BeginGetFixedPatterns'.
+            /// </summary>
+            /// <param name="result">The IAsyncResult returned from 'BeginGetFixedPatterns'.</param>
+            /// <returns>The 'QueryResult' returned from the 'GetFixedPatterns' operation.</returns>
+            QueryResult<FixedPattern> EndGetFixedPatterns(IAsyncResult result);
+            
+            /// <summary>
+            /// Asynchronously invokes the 'GetFixedPatternTemplates' operation.
+            /// </summary>
+            /// <param name="callback">Callback to invoke on completion.</param>
+            /// <param name="asyncState">Optional state object.</param>
+            /// <returns>An IAsyncResult that can be used to monitor the request.</returns>
+            [FaultContract(typeof(DomainServiceFault), Action="http://tempuri.org/RadiologyService/GetFixedPatternTemplatesDomainServiceFault", Name="DomainServiceFault", Namespace="DomainServices")]
+            [OperationContract(AsyncPattern=true, Action="http://tempuri.org/RadiologyService/GetFixedPatternTemplates", ReplyAction="http://tempuri.org/RadiologyService/GetFixedPatternTemplatesResponse")]
+            [WebGet()]
+            IAsyncResult BeginGetFixedPatternTemplates(AsyncCallback callback, object asyncState);
+            
+            /// <summary>
+            /// Completes the asynchronous operation begun by 'BeginGetFixedPatternTemplates'.
+            /// </summary>
+            /// <param name="result">The IAsyncResult returned from 'BeginGetFixedPatternTemplates'.</param>
+            /// <returns>The 'QueryResult' returned from the 'GetFixedPatternTemplates' operation.</returns>
+            QueryResult<FixedPatternTemplate> EndGetFixedPatternTemplates(IAsyncResult result);
+            
+            /// <summary>
+            /// Asynchronously invokes the 'GetFoundries' operation.
+            /// </summary>
+            /// <param name="callback">Callback to invoke on completion.</param>
+            /// <param name="asyncState">Optional state object.</param>
+            /// <returns>An IAsyncResult that can be used to monitor the request.</returns>
+            [FaultContract(typeof(DomainServiceFault), Action="http://tempuri.org/RadiologyService/GetFoundriesDomainServiceFault", Name="DomainServiceFault", Namespace="DomainServices")]
+            [OperationContract(AsyncPattern=true, Action="http://tempuri.org/RadiologyService/GetFoundries", ReplyAction="http://tempuri.org/RadiologyService/GetFoundriesResponse")]
+            [WebGet()]
+            IAsyncResult BeginGetFoundries(AsyncCallback callback, object asyncState);
+            
+            /// <summary>
+            /// Completes the asynchronous operation begun by 'BeginGetFoundries'.
+            /// </summary>
+            /// <param name="result">The IAsyncResult returned from 'BeginGetFoundries'.</param>
+            /// <returns>The 'QueryResult' returned from the 'GetFoundries' operation.</returns>
+            QueryResult<Foundry> EndGetFoundries(IAsyncResult result);
+            
+            /// <summary>
+            /// Asynchronously invokes the 'GetFPTemplateRows' operation.
+            /// </summary>
+            /// <param name="callback">Callback to invoke on completion.</param>
+            /// <param name="asyncState">Optional state object.</param>
+            /// <returns>An IAsyncResult that can be used to monitor the request.</returns>
+            [FaultContract(typeof(DomainServiceFault), Action="http://tempuri.org/RadiologyService/GetFPTemplateRowsDomainServiceFault", Name="DomainServiceFault", Namespace="DomainServices")]
+            [OperationContract(AsyncPattern=true, Action="http://tempuri.org/RadiologyService/GetFPTemplateRows", ReplyAction="http://tempuri.org/RadiologyService/GetFPTemplateRowsResponse")]
+            [WebGet()]
+            IAsyncResult BeginGetFPTemplateRows(AsyncCallback callback, object asyncState);
+            
+            /// <summary>
+            /// Completes the asynchronous operation begun by 'BeginGetFPTemplateRows'.
+            /// </summary>
+            /// <param name="result">The IAsyncResult returned from 'BeginGetFPTemplateRows'.</param>
+            /// <returns>The 'QueryResult' returned from the 'GetFPTemplateRows' operation.</returns>
+            QueryResult<FPTemplateRow> EndGetFPTemplateRows(IAsyncResult result);
+            
+            /// <summary>
+            /// Asynchronously invokes the 'GetObservations' operation.
+            /// </summary>
+            /// <param name="callback">Callback to invoke on completion.</param>
+            /// <param name="asyncState">Optional state object.</param>
+            /// <returns>An IAsyncResult that can be used to monitor the request.</returns>
+            [FaultContract(typeof(DomainServiceFault), Action="http://tempuri.org/RadiologyService/GetObservationsDomainServiceFault", Name="DomainServiceFault", Namespace="DomainServices")]
+            [OperationContract(AsyncPattern=true, Action="http://tempuri.org/RadiologyService/GetObservations", ReplyAction="http://tempuri.org/RadiologyService/GetObservationsResponse")]
+            [WebGet()]
+            IAsyncResult BeginGetObservations(AsyncCallback callback, object asyncState);
+            
+            /// <summary>
+            /// Completes the asynchronous operation begun by 'BeginGetObservations'.
+            /// </summary>
+            /// <param name="result">The IAsyncResult returned from 'BeginGetObservations'.</param>
+            /// <returns>The 'QueryResult' returned from the 'GetObservations' operation.</returns>
+            QueryResult<Observation> EndGetObservations(IAsyncResult result);
+            
+            /// <summary>
+            /// Asynchronously invokes the 'GetRGReportRows' operation.
+            /// </summary>
+            /// <param name="callback">Callback to invoke on completion.</param>
+            /// <param name="asyncState">Optional state object.</param>
+            /// <returns>An IAsyncResult that can be used to monitor the request.</returns>
+            [FaultContract(typeof(DomainServiceFault), Action="http://tempuri.org/RadiologyService/GetRGReportRowsDomainServiceFault", Name="DomainServiceFault", Namespace="DomainServices")]
+            [OperationContract(AsyncPattern=true, Action="http://tempuri.org/RadiologyService/GetRGReportRows", ReplyAction="http://tempuri.org/RadiologyService/GetRGReportRowsResponse")]
+            [WebGet()]
+            IAsyncResult BeginGetRGReportRows(AsyncCallback callback, object asyncState);
+            
+            /// <summary>
+            /// Completes the asynchronous operation begun by 'BeginGetRGReportRows'.
+            /// </summary>
+            /// <param name="result">The IAsyncResult returned from 'BeginGetRGReportRows'.</param>
+            /// <returns>The 'QueryResult' returned from the 'GetRGReportRows' operation.</returns>
+            QueryResult<RGReportRow> EndGetRGReportRows(IAsyncResult result);
+            
+            /// <summary>
+            /// Asynchronously invokes the 'GetRGReports' operation.
+            /// </summary>
+            /// <param name="callback">Callback to invoke on completion.</param>
+            /// <param name="asyncState">Optional state object.</param>
+            /// <returns>An IAsyncResult that can be used to monitor the request.</returns>
+            [FaultContract(typeof(DomainServiceFault), Action="http://tempuri.org/RadiologyService/GetRGReportsDomainServiceFault", Name="DomainServiceFault", Namespace="DomainServices")]
+            [OperationContract(AsyncPattern=true, Action="http://tempuri.org/RadiologyService/GetRGReports", ReplyAction="http://tempuri.org/RadiologyService/GetRGReportsResponse")]
+            [WebGet()]
+            IAsyncResult BeginGetRGReports(AsyncCallback callback, object asyncState);
+            
+            /// <summary>
+            /// Completes the asynchronous operation begun by 'BeginGetRGReports'.
+            /// </summary>
+            /// <param name="result">The IAsyncResult returned from 'BeginGetRGReports'.</param>
+            /// <returns>The 'QueryResult' returned from the 'GetRGReports' operation.</returns>
+            QueryResult<RGReport> EndGetRGReports(IAsyncResult result);
+            
+            /// <summary>
+            /// Asynchronously invokes the 'GetTechnicians' operation.
+            /// </summary>
+            /// <param name="callback">Callback to invoke on completion.</param>
+            /// <param name="asyncState">Optional state object.</param>
+            /// <returns>An IAsyncResult that can be used to monitor the request.</returns>
+            [FaultContract(typeof(DomainServiceFault), Action="http://tempuri.org/RadiologyService/GetTechniciansDomainServiceFault", Name="DomainServiceFault", Namespace="DomainServices")]
+            [OperationContract(AsyncPattern=true, Action="http://tempuri.org/RadiologyService/GetTechnicians", ReplyAction="http://tempuri.org/RadiologyService/GetTechniciansResponse")]
+            [WebGet()]
+            IAsyncResult BeginGetTechnicians(AsyncCallback callback, object asyncState);
+            
+            /// <summary>
+            /// Completes the asynchronous operation begun by 'BeginGetTechnicians'.
+            /// </summary>
+            /// <param name="result">The IAsyncResult returned from 'BeginGetTechnicians'.</param>
+            /// <returns>The 'QueryResult' returned from the 'GetTechnicians' operation.</returns>
+            QueryResult<Technician> EndGetTechnicians(IAsyncResult result);
+            
+            /// <summary>
+            /// Asynchronously invokes the 'GetThicknessRangesForEnergy' operation.
+            /// </summary>
+            /// <param name="callback">Callback to invoke on completion.</param>
+            /// <param name="asyncState">Optional state object.</param>
+            /// <returns>An IAsyncResult that can be used to monitor the request.</returns>
+            [FaultContract(typeof(DomainServiceFault), Action="http://tempuri.org/RadiologyService/GetThicknessRangesForEnergyDomainServiceFault" +
+                "", Name="DomainServiceFault", Namespace="DomainServices")]
+            [OperationContract(AsyncPattern=true, Action="http://tempuri.org/RadiologyService/GetThicknessRangesForEnergy", ReplyAction="http://tempuri.org/RadiologyService/GetThicknessRangesForEnergyResponse")]
+            [WebGet()]
+            IAsyncResult BeginGetThicknessRangesForEnergy(AsyncCallback callback, object asyncState);
+            
+            /// <summary>
+            /// Completes the asynchronous operation begun by 'BeginGetThicknessRangesForEnergy'.
+            /// </summary>
+            /// <param name="result">The IAsyncResult returned from 'BeginGetThicknessRangesForEnergy'.</param>
+            /// <returns>The 'QueryResult' returned from the 'GetThicknessRangesForEnergy' operation.</returns>
+            QueryResult<ThicknessRangeForEnergy> EndGetThicknessRangesForEnergy(IAsyncResult result);
+            
+            /// <summary>
+            /// Asynchronously invokes the 'GetWelders' operation.
+            /// </summary>
+            /// <param name="callback">Callback to invoke on completion.</param>
+            /// <param name="asyncState">Optional state object.</param>
+            /// <returns>An IAsyncResult that can be used to monitor the request.</returns>
+            [FaultContract(typeof(DomainServiceFault), Action="http://tempuri.org/RadiologyService/GetWeldersDomainServiceFault", Name="DomainServiceFault", Namespace="DomainServices")]
+            [OperationContract(AsyncPattern=true, Action="http://tempuri.org/RadiologyService/GetWelders", ReplyAction="http://tempuri.org/RadiologyService/GetWeldersResponse")]
+            [WebGet()]
+            IAsyncResult BeginGetWelders(AsyncCallback callback, object asyncState);
+            
+            /// <summary>
+            /// Completes the asynchronous operation begun by 'BeginGetWelders'.
+            /// </summary>
+            /// <param name="result">The IAsyncResult returned from 'BeginGetWelders'.</param>
+            /// <returns>The 'QueryResult' returned from the 'GetWelders' operation.</returns>
+            QueryResult<Welder> EndGetWelders(IAsyncResult result);
+            
+            /// <summary>
+            /// Asynchronously invokes the 'SubmitChanges' operation.
+            /// </summary>
+            /// <param name="changeSet">The change-set to submit.</param>
+            /// <param name="callback">Callback to invoke on completion.</param>
+            /// <param name="asyncState">Optional state object.</param>
+            /// <returns>An IAsyncResult that can be used to monitor the request.</returns>
+            [FaultContract(typeof(DomainServiceFault), Action="http://tempuri.org/RadiologyService/SubmitChangesDomainServiceFault", Name="DomainServiceFault", Namespace="DomainServices")]
+            [OperationContract(AsyncPattern=true, Action="http://tempuri.org/RadiologyService/SubmitChanges", ReplyAction="http://tempuri.org/RadiologyService/SubmitChangesResponse")]
+            IAsyncResult BeginSubmitChanges(IEnumerable<ChangeSetEntry> changeSet, AsyncCallback callback, object asyncState);
+            
+            /// <summary>
+            /// Completes the asynchronous operation begun by 'BeginSubmitChanges'.
+            /// </summary>
+            /// <param name="result">The IAsyncResult returned from 'BeginSubmitChanges'.</param>
+            /// <returns>The collection of change-set entry elements returned from 'SubmitChanges'.</returns>
+            IEnumerable<ChangeSetEntry> EndSubmitChanges(IAsyncResult result);
+        }
+        
+        internal sealed class RadiologyContextEntityContainer : EntityContainer
+        {
+            
+            public RadiologyContextEntityContainer()
+            {
+                this.CreateEntitySet<Change>(EntitySetOperations.All);
+                this.CreateEntitySet<Coverage>(EntitySetOperations.All);
+                this.CreateEntitySet<Customer>(EntitySetOperations.All);
+                this.CreateEntitySet<Defect>(EntitySetOperations.All);
+                this.CreateEntitySet<Energy>(EntitySetOperations.All);
+                this.CreateEntitySet<FilmSize>(EntitySetOperations.All);
+                this.CreateEntitySet<FilmTransaction>(EntitySetOperations.All);
+                this.CreateEntitySet<FixedPattern>(EntitySetOperations.All);
+                this.CreateEntitySet<FixedPatternTemplate>(EntitySetOperations.All);
+                this.CreateEntitySet<Foundry>(EntitySetOperations.All);
+                this.CreateEntitySet<FPTemplateRow>(EntitySetOperations.All);
+                this.CreateEntitySet<Observation>(EntitySetOperations.All);
+                this.CreateEntitySet<RGReport>(EntitySetOperations.All);
+                this.CreateEntitySet<RGReportRow>(EntitySetOperations.All);
+                this.CreateEntitySet<Technician>(EntitySetOperations.All);
+                this.CreateEntitySet<ThicknessRangeForEnergy>(EntitySetOperations.All);
+                this.CreateEntitySet<Welder>(EntitySetOperations.All);
+            }
+        }
+    }
+}

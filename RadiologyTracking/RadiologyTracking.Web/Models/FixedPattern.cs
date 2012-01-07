@@ -9,7 +9,10 @@ namespace RadiologyTracking.Web.Models
     {
         public int ID { get; set; }
         public String FPNo { get; set; }
+
+        public int CustomerID { get; set; }
         public Customer Customer { get; set; }
+
         public String Description { get; set; }
     }
 }
