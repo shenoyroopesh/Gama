@@ -14,7 +14,7 @@ namespace RadiologyTracking.Web.Models
         /// <summary>
         /// Every Customer belongs to a particular foundry, this particular note will tell which foundry
         /// </summary>
-        public String Foundry { get; set; }
+        public Foundry Foundry { get; set; }
         public ICollection<FixedPattern> FixedPatterns;
     }
 }

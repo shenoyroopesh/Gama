@@ -13,14 +13,26 @@ namespace RadiologyTracking.Web.Services
     using System.Data.Entity.Infrastructure;
     using System.Data;
     using System.ServiceModel.DomainServices.EntityFramework;
+    using System.Data.Entity;
 
     [EnableClientAccess]
+    [RequiresAuthentication]
     public class RadiologyService : DbDomainService<RadiologyContext>
     {
+        #region Changes
+
         public IQueryable<Change> GetChanges()
         {
             return this.DbContext.Changes;
         }
+
+        public IQueryable<Change> GetChanges(DateTime fromDate, DateTime toDate)
+        {
+            return this.DbContext.Changes.Where(p => p.When <= fromDate && p.When >= toDate);
+        }
+
+
+        #region Check if these are really needed
 
         public void InsertChange(Change entity)
         {
@@ -53,6 +65,11 @@ namespace RadiologyTracking.Web.Services
                 this.DbContext.Changes.Remove(entity);
             }
         }
+        #endregion
+
+        #endregion
+
+        #region Coverages
 
         public IQueryable<Coverage> GetCoverages()
         {
@@ -90,8 +107,9 @@ namespace RadiologyTracking.Web.Services
                 this.DbContext.Coverages.Remove(entity);
             }
         }
+        #endregion
 
-
+        #region Customers
         public IQueryable<Customer> GetCustomers()
         {
             return this.DbContext.Customers;
@@ -128,8 +146,9 @@ namespace RadiologyTracking.Web.Services
                 this.DbContext.Customers.Remove(entity);
             }
         }
+        #endregion
 
-
+        #region Defects
         public IQueryable<Defect> GetDefects()
         {
             return this.DbContext.Defects;
@@ -166,8 +185,9 @@ namespace RadiologyTracking.Web.Services
                 this.DbContext.Defects.Remove(entity);
             }
         }
+        #endregion
 
-
+        #region Energies
         public IQueryable<Energy> GetEnergies()
         {
             return this.DbContext.Energies;
@@ -204,8 +224,9 @@ namespace RadiologyTracking.Web.Services
                 this.DbContext.Energies.Remove(entity);
             }
         }
+        #endregion
 
-
+        #region FilmSize
         public IQueryable<FilmSize> GetFilmSizes()
         {
             return this.DbContext.FilmSizes;
@@ -242,11 +263,20 @@ namespace RadiologyTracking.Web.Services
                 this.DbContext.FilmSizes.Remove(entity);
             }
         }
+        #endregion
 
-
+        #region Film Trasactions and other Film related functions
         public IQueryable<FilmTransaction> GetFilmTransactions()
         {
             return this.DbContext.FilmTransactions;
+        }
+
+        public IQueryable<FilmTransaction> GetFilmTransactions(Foundry foundry, DateTime fromDate, DateTime toDate)
+        {
+            return this.DbContext.FilmTransactions.Where(p =>
+                                                            p.Date >= fromDate &&
+                                                            p.Date <= toDate &&
+                                                            p.Foundry.Equals(foundry));
         }
 
         public void InsertFilmTransaction(FilmTransaction entity)
@@ -282,9 +312,105 @@ namespace RadiologyTracking.Web.Services
         }
 
 
+        /// <summary>
+        /// This function returns the data for the stock balance report
+        /// </summary>
+        /// <param name="foundry"></param>
+        /// <param name="fromDate"></param>
+        /// <param name="toDate"></param>
+        /// <returns></returns>
+        public IQueryable GetFilmStockReport(Foundry foundry, DateTime fromDate, DateTime toDate)
+        {
+            var transactions = this.DbContext.FilmTransactions.Where(p => p.Foundry.Equals(foundry))
+                .Select(p => new
+                {
+                    Date = p.Date,
+                    SentToHO = p.Direction == Direction.SENT_TO_HO ? p.Area : 0,
+                    Consumed = 0,
+                    ReceivedFromHO = p.Direction == Direction.SENT_TO_HO ? 0 : p.Area
+                });
+
+            var consumptions = this.DbContext.RGReportRows.Where(p => p.RGReport.FixedPattern.Customer.Foundry.Equals(foundry))
+                                                            .Select(p => new
+                                                            {
+                                                                Date = p.RGReport.ReportDate,
+                                                                SentToHO = 0,
+                                                                Consumed = p.FilmSize.Area,
+                                                                ReceivedFromHO = 0
+                                                            });
+
+            var all = transactions.Union(consumptions);
+
+            var allByDate = from a in all
+                            group a by a.Date into g
+                            select new
+                            {
+                                Date = g.Key,
+                                SentToHO = g.Sum(p => p.SentToHO),
+                                Consumed = g.Sum(p => p.Consumed),
+                                ReceivedFromHO = g.Sum(p => p.ReceivedFromHO),
+                            };
+
+            var allByDateInSpan = allByDate.Where(p => p.Date >= fromDate && p.Date <= toDate);
+
+            var openingStockonFromDate = allByDate.Where(p => p.Date < fromDate).Sum(p => p.ReceivedFromHO - p.SentToHO - p.Consumed);
+
+            var stock = from r in allByDateInSpan
+                        //opening stock for each date, since openingStockonFromDate is calculated at one shot, remaining should be fast enough
+                        let openingStock = openingStockonFromDate + allByDateInSpan
+                                                                    .Where(p => p.Date < r.Date)
+                                                                    .Sum(p => p.ReceivedFromHO - p.SentToHO - p.Consumed)
+                        select new
+                        {
+                            Date = r.Date,
+                            OpeningStock = openingStock,
+                            SentToHO = r.SentToHO,
+                            Consumed = r.Consumed,
+                            ReceivedFromHO = r.ReceivedFromHO,
+                            ClosingStock = openingStock + r.ReceivedFromHO - r.SentToHO - r.Consumed
+                        };
+
+            return stock;
+        }
+
+        //public IQueryable GetFilmConsumptionReport(DateTime fromDate, DateTime toDate)
+        //{
+        //    var groupedData = from r in this.DbContext.RGReportRows
+        //                 group r by new { r.RGReport, r.Energy, r.FilmSize, r.RowType } into g
+        //                 select new
+        //                 {
+        //                     //ReportNo = g.Key.RGReport.ReportNo,
+        //                     //ReportDate = g.Key.RGReport.ReportDate,
+        //                     //FPNo = g.Key.RGReport.FixedPattern.FPNo,
+        //                     //RTNo = g.Key.RGReport.RTNo,
+        //                     Report = g.Key.RGReport,
+        //                     Energy = g.Key.Energy,
+        //                     FilmSize = g.Key.FilmSize,
+        //                     RowType = g.Key.RowType,
+        //                     Area = g.Sum(p => p.FilmSize.Area)
+        //                 };
+
+        //    var report = from r in groupedData
+        //                 group r by r.Report into g
+        //                 select new 
+        //                 {
+                             
+        //                 }
+        //}
+
+        #endregion
+
+        #region Fixed Patterns
         public IQueryable<FixedPattern> GetFixedPatterns()
         {
             return this.DbContext.FixedPatterns;
+        }
+
+        public IQueryable<FixedPattern> GetFixedPatterns(String filter)
+        {
+            return this.DbContext.FixedPatterns.Where(p =>
+                                                        p.FPNo.Contains(filter) ||
+                                                        p.Description.Contains(filter));
         }
 
         public void InsertFixedPattern(FixedPattern entity)
@@ -318,11 +444,19 @@ namespace RadiologyTracking.Web.Services
                 this.DbContext.FixedPatterns.Remove(entity);
             }
         }
+        #endregion
 
-
+        #region FixedPattern Templates
         public IQueryable<FixedPatternTemplate> GetFixedPatternTemplates()
         {
             return this.DbContext.FixedPatternTemplates;
+        }
+
+        public IQueryable<FixedPatternTemplate> GetFixedPatternTemplates(FixedPattern fixedPattern, Coverage coverage)
+        {
+            return this.DbContext.FixedPatternTemplates.Where(p =>
+                                                                p.FixedPattern.Equals(fixedPattern) &&
+                                                                p.Coverage.Equals(coverage));
         }
 
         public void InsertFixedPatternTemplate(FixedPatternTemplate entity)
@@ -356,8 +490,9 @@ namespace RadiologyTracking.Web.Services
                 this.DbContext.FixedPatternTemplates.Remove(entity);
             }
         }
+        #endregion
 
-
+        #region Foundries
         public IQueryable<Foundry> GetFoundries()
         {
             return this.DbContext.Foundries;
@@ -394,8 +529,9 @@ namespace RadiologyTracking.Web.Services
                 this.DbContext.Foundries.Remove(entity);
             }
         }
+        #endregion
 
-
+        #region FP Template Rows
         public IQueryable<FPTemplateRow> GetFPTemplateRows()
         {
             return this.DbContext.FPTemplateRows;
@@ -432,8 +568,9 @@ namespace RadiologyTracking.Web.Services
                 this.DbContext.FPTemplateRows.Remove(entity);
             }
         }
+        #endregion
 
-
+        #region Observations
         public IQueryable<Observation> GetObservations()
         {
             return this.DbContext.Observations;
@@ -470,11 +607,19 @@ namespace RadiologyTracking.Web.Services
                 this.DbContext.Observations.Remove(entity);
             }
         }
+        #endregion
 
-
+        #region RG Reports
         public IQueryable<RGReport> GetRGReports()
         {
             return this.DbContext.RGReports;
+        }
+
+        public IQueryable<RGReport> GetRGReports(DateTime fromDate, DateTime toDate)
+        {
+            return this.DbContext.RGReports.Where(p =>
+                                                    p.ReportDate <= fromDate &&
+                                                    p.ReportDate >= toDate);
         }
 
         public void InsertRGReport(RGReport entity)
@@ -508,8 +653,9 @@ namespace RadiologyTracking.Web.Services
                 this.DbContext.RGReports.Remove(entity);
             }
         }
+        #endregion
 
-
+        #region RG Report Rows
         public IQueryable<RGReportRow> GetRGReportRows()
         {
             return this.DbContext.RGReportRows;
@@ -546,8 +692,9 @@ namespace RadiologyTracking.Web.Services
                 this.DbContext.RGReportRows.Remove(entity);
             }
         }
+        #endregion
 
-
+        #region Technicians
         public IQueryable<Technician> GetTechnicians()
         {
             return this.DbContext.Technicians;
@@ -584,11 +731,20 @@ namespace RadiologyTracking.Web.Services
                 this.DbContext.Technicians.Remove(entity);
             }
         }
+        #endregion
 
-
+        #region Thickness Ranges
         public IQueryable<ThicknessRangeForEnergy> GetThicknessRangesForEnergy()
         {
             return this.DbContext.ThicknessRangesForEnergy;
+        }
+
+        public IQueryable<ThicknessRangeForEnergy> GetThicknessRangesForEnergy(String filter)
+        {
+            return this.DbContext.ThicknessRangesForEnergy.Where(p =>
+                                                                    p.Energy.Name.Contains(filter) ||
+                                                                    p.ThicknessFrom.ToString().Contains(filter) ||
+                                                                    p.ThicknessTo.ToString().Contains(filter));
         }
 
         public void InsertThicknessRangeForEnergy(ThicknessRangeForEnergy entity)
@@ -622,7 +778,9 @@ namespace RadiologyTracking.Web.Services
                 this.DbContext.ThicknessRangesForEnergy.Remove(entity);
             }
         }
+        #endregion
 
+        #region Welders
         public IQueryable<Welder> GetWelders()
         {
             return this.DbContext.Welders;
@@ -659,43 +817,6 @@ namespace RadiologyTracking.Web.Services
                 this.DbContext.Welders.Remove(entity);
             }
         }
-
-        //public IQueryable<User> GetUsers()
-        //{
-        //    return this.DbContext.Users;
-        //}
-
-        //public void InsertUser(User entity)
-        //{
-        //    DbEntityEntry<User> entityEntry = this.DbContext.Entry(entity);
-        //    if ((entityEntry.State != EntityState.Detached))
-        //    {
-        //        entityEntry.State = EntityState.Added;
-        //    }
-        //    else
-        //    {
-        //        this.DbContext.Users.Add(entity);
-        //    }
-        //}
-
-        //public void UpdateUser(User currentUser)
-        //{
-        //    this.DbContext.Users.AttachAsModified(currentUser, this.ChangeSet.GetOriginal(currentUser), this.DbContext);
-        //}
-
-        //public void DeleteUser(User entity)
-        //{
-        //    DbEntityEntry<User> entityEntry = this.DbContext.Entry(entity);
-        //    if ((entityEntry.State != EntityState.Deleted))
-        //    {
-        //        entityEntry.State = EntityState.Deleted;
-        //    }
-        //    else
-        //    {
-        //        this.DbContext.Users.Attach(entity);
-        //        this.DbContext.Users.Remove(entity);
-        //    }
-        //}
-
+        #endregion
     }
 }

@@ -111,6 +111,7 @@
     <Compile Include="Models\FPTemplateRow.cs" />
     <Compile Include="Models\Observation.cs" />
     <Compile Include="Models\Remark.cs" />
+    <Compile Include="Models\RGReportRowType.cs" />
     <Compile Include="Models\RGReport.cs" />
     <Compile Include="Models\RGReportSource.cs" />
     <Compile Include="Models\RGReportRow.cs" />

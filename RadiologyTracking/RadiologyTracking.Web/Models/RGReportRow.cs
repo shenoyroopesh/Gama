@@ -34,5 +34,13 @@ namespace RadiologyTracking.Web.Models
 
         public int RGReportID { get; set; }
         public RGReport RGReport { get; set; }
+
+        /// <summary>
+        /// This will determine the cause for this row in the first place - necessary to track this separately from remark
+        /// 
+        /// For eg, in a first report, the cause for the row will be FRESH but the remark could be REPAIR. In this case, the next report will have a corresponding row 
+        /// whose cause is REPAIR which can again have different REMARK such as REPAIR or RESHOOT or ACCEPTABLE
+        /// </summary>
+        public RGReportRowType RowType { get; set; }
     }
 }
