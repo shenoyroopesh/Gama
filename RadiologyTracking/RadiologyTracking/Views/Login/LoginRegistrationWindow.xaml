@@ -16,7 +16,7 @@
         </Grid.RowDefinitions>
 
         <local:LoginForm x:Name="loginForm" Grid.Row="0"/>
-        <local:RegistrationForm x:Name="registrationForm" Grid.Row="0" />
+        <!--<local:RegistrationForm x:Name="registrationForm" Grid.Row="0" />-->
 
     </Grid>
 

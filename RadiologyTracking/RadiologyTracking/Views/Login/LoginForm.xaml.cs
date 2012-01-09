@@ -91,14 +91,6 @@
         }
 
         /// <summary>
-        /// Switches to the registration form.
-        /// </summary>
-        private void RegisterNow_Click(object sender, RoutedEventArgs e)
-        {
-            this.parentWindow.NavigateToRegistration();
-        }
-
-        /// <summary>
         /// If a login operation is in progress and is cancellable, cancel it.
         /// Otherwise, close the window.
         /// </summary>

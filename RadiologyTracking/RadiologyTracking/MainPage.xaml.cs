@@ -4,6 +4,7 @@
     using System.Windows.Controls;
     using System.Windows.Navigation;
     using RadiologyTracking.LoginUI;
+    using System;
 
     /// <summary>
     /// <see cref="UserControl"/> class providing the main UI for the application.
@@ -47,6 +48,38 @@
         {
             e.Handled = true;
             ErrorWindow.CreateNew(e.Exception);
+        }
+
+        private void ContentFrame_Navigating(object sender, NavigatingCancelEventArgs e)
+        {
+            Uri mappedUri = ContentFrame.UriMapper.MapUri(e.Uri);
+            if (WebContext.Current.User.IsAuthenticated == false)
+            {
+                e.Cancel = true;
+                LoginOrGoToMain(e.Uri);
+            }
+        }
+
+        /// <summary>
+        /// This method forces the user to login if she has not already logged in
+        /// </summary>
+        /// <param name="uri"></param>
+        private void LoginOrGoToMain(Uri uri)
+        {
+            if (WebContext.Current.User.IsAuthenticated == false)
+            {
+                LoginRegistrationWindow loginRegistrationWindow = new LoginRegistrationWindow();
+                loginRegistrationWindow.Closed +=
+                    (s, e) =>
+                        {
+                            if(WebContext.Current.User.IsAuthenticated)
+                            {
+                                // Try again!
+                                ContentFrame.Navigate(new Uri(uri.ToString(), UriKind.Relative));
+                            }
+                        };
+                loginRegistrationWindow.Show();
+            }
         }
     }
 }

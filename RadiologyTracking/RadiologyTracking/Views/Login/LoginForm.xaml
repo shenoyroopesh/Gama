@@ -29,14 +29,14 @@
             </StackPanel>
         </local:BusyIndicator>
 
-        <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,10,0">
+        <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,10,0">
             <Button x:Name="loginButton" Content="{Binding Path=Strings.OKButton, Source={StaticResource ApplicationResources}}" Click="LoginButton_Click" Style="{StaticResource RegisterLoginButtonStyle}" IsEnabled="{Binding Path=CanLogIn}" />
             <Button x:Name="loginCancel" Content="{Binding Path=Strings.CancelButton, Source={StaticResource ApplicationResources}}" Click="CancelButton_Click" Style="{StaticResource RegisterLoginButtonStyle}" />
         </StackPanel>
 
-        <StackPanel Grid.Row="1" Grid.Column="0" Style="{StaticResource RegisterLoginLinkPanelStyle}">
+        <!--<StackPanel Grid.Row="1" Grid.Column="0" Style="{StaticResource RegisterLoginLinkPanelStyle}">
             <TextBlock Text="{Binding Path=Strings.NotRegisteredYetLabel, Source={StaticResource ApplicationResources}}" Style="{StaticResource CommentStyle}"/>
             <HyperlinkButton x:Name="registerNow" Content="{Binding Path=Strings.RegisterNowButton, Source={StaticResource ApplicationResources}}" Click="RegisterNow_Click" IsEnabled="{Binding IsLoggingIn, Converter={StaticResource NotOperatorValueConverter}}" />
-        </StackPanel>
+        </StackPanel>-->
     </Grid>
 </StackPanel>

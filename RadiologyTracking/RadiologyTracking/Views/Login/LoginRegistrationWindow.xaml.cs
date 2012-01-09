@@ -21,12 +21,8 @@
         public LoginRegistrationWindow()
         {
             InitializeComponent();
-
-            this.registrationForm.SetParentWindow(this);
             this.loginForm.SetParentWindow(this);
-
-            this.LayoutUpdated += this.GoToInitialState;
-            this.LayoutUpdated += this.UpdateTitle;
+            //this.LayoutUpdated += this.GoToInitialState;
         }
 
         /// <summary>
@@ -48,16 +44,6 @@
         }
 
         /// <summary>
-        /// Updates the window title according to which panel (registration / login) is currently being displayed.
-        /// </summary>
-        private void UpdateTitle(object sender, EventArgs eventArgs)
-        {
-            this.Title = (this.registrationForm.Visibility == Visibility.Visible) ?
-                ApplicationStrings.RegistrationWindowTitle :
-                ApplicationStrings.LoginWindowTitle;
-        }
-
-        /// <summary>
         /// Notifies the <see cref="LoginRegistrationWindow"/> window that it can only close if <paramref name="operation"/> is finished or can be cancelled.
         /// </summary>
         /// <param name="operation">The pending operation to monitor</param>
@@ -71,17 +57,8 @@
         /// </summary>
         public virtual void NavigateToLogin()
         {
-            VisualStateManager.GoToState(this, "AtLogin", true);
+            //VisualStateManager.GoToState(this, "AtLogin", true);
             this.loginForm.SetInitialFocus();
-        }
-
-        /// <summary>
-        /// Causes the <see cref="VisualStateManager"/> to change to the "AtRegistration" state.
-        /// </summary>
-        public virtual void NavigateToRegistration()
-        {
-            VisualStateManager.GoToState(this, "AtRegistration", true);
-            this.registrationForm.SetInitialFocus();
         }
 
         /// <summary>
