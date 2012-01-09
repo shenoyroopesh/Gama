@@ -6,9 +6,10 @@ using System.Data.Entity;
 
 namespace RadiologyTracking.Web.Models
 {
-    public class RadiologyContext: DbContext
+    public class RadiologyContext : DbContext
     {
         public RadiologyContext()
+            : base("name=ApplicationServices")
         {
             if (HttpContext.Current == null)
             {

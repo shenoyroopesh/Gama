@@ -27,6 +27,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -78,6 +79,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="ClientBin\RadiologyTracking.xap" />
+    <Content Include="Global.asax" />
     <Content Include="RadiologyTrackingTestPage.aspx" />
     <Content Include="RadiologyTrackingTestPage.html" />
     <Content Include="Silverlight.js" />
@@ -90,9 +92,13 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Models\Change.cs" />
     <Compile Include="Models\Coverage.cs" />
+    <Compile Include="Models\CustomDBInitializer.cs" />
     <Compile Include="Models\Customer.cs" />
     <Compile Include="Models\Defect.cs" />
     <Compile Include="Models\Direction.cs" />
