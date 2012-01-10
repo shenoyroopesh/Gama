@@ -8,6 +8,8 @@
     using System.Web.Profile;
     using System.Web.Security;
     using RadiologyTracking.Web.Resources;
+    using System.Linq;
+    using RadiologyTracking.Web.Utility;
 
     // TODO: Switch to a secure endpoint when deploying the application.
     //       The user's name and password should only be passed using https.
@@ -20,7 +22,7 @@
     /// <summary>
     /// Domain Service responsible for registering users.
     /// </summary>
-    [EnableClientAccess]
+    [EnableClientAccess, RequiresAuthentication, RequiresRole("admin")]
     public class UserRegistrationService : DomainService
     {
         /// <summary>
@@ -28,8 +30,12 @@
         /// </summary>
         public const string DefaultRole = "Registered Users";
 
-        //// NOTE: This is a sample code to get your application started.
-        //// In the production code you should provide a mitigation against a denial of service attack by providing CAPTCHA control functionality or verifying user's email address.
+
+        public IQueryable GetUsers(string filter)
+        {
+            return Membership.GetAllUsers().Cast<MembershipUser>()
+                    .Select(p => p.GetUser()).AsQueryable();
+        }
 
         /// <summary>
         /// Adds a new user with the supplied <see cref="RegistrationData"/> and <paramref name="password"/>.
@@ -72,11 +78,56 @@
 
             // Set the friendly name (profile setting).
             // This will fail if the web.config is configured incorrectly.
-            ProfileBase profile = ProfileBase.Create(user.UserName, true);
+            ProfileBase profile = ProfileBase.Create(user.UserName, false);
             profile.SetPropertyValue("FriendlyName", user.FriendlyName);
+            profile.SetPropertyValue("Foundry", user.Foundry);
             profile.Save();
 
             return CreateUserStatus.Success;
+        }
+
+        [RequiresAuthentication, RequiresRole("admin")]
+        public CreateUserStatus UpdateUser(RegistrationData user,
+            [RegularExpression("^.*[^a-zA-Z0-9].*$", ErrorMessageResourceName = "ValidationErrorBadPasswordStrength", ErrorMessageResourceType = typeof(ValidationErrorResources))]
+            [StringLength(50, MinimumLength = 7, ErrorMessageResourceName = "ValidationErrorBadPasswordLength", ErrorMessageResourceType = typeof(ValidationErrorResources))]
+            string password = "")
+        {
+            if (user == null)
+            {
+                throw new ArgumentNullException("user");
+            }
+
+            // Run this BEFORE creating the user to make sure roles are enabled and the default role is available.
+            //
+            // If there is a problem with the role manager, it is better to fail now than to fail after the user is created.
+            if (!Roles.RoleExists(UserRegistrationService.DefaultRole))
+            {
+                Roles.CreateRole(UserRegistrationService.DefaultRole);
+            }
+            MembershipUser membershipUser = Membership.GetUser(user.UserName);
+            membershipUser.Email = user.Email;
+            Membership.UpdateUser(membershipUser);
+
+            if (password != "")
+            {
+                String resetPwd = membershipUser.ResetPassword();
+                membershipUser.ChangePassword(resetPwd, password);
+            }
+
+            // Set the friendly name (profile setting).
+            // This will fail if the web.config is configured incorrectly.
+            ProfileBase profile = ProfileBase.Create(user.UserName, false);
+            profile.SetPropertyValue("FriendlyName", user.FriendlyName);
+            profile.SetPropertyValue("Foundry", user.Foundry);
+            profile.Save();
+
+            return CreateUserStatus.Success;
+        }
+
+        [RequiresAuthentication, RequiresRole("admin")]
+        public bool DeleteUser(String userName)
+        {
+            return Membership.DeleteUser(userName);
         }
 
         private static CreateUserStatus ConvertStatus(MembershipCreateStatus createStatus)

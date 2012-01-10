@@ -321,6 +321,8 @@ namespace RadiologyTracking.Web
         
         private string _email;
         
+        private string _foundry;
+        
         private string _friendlyName;
         
         private string _question;
@@ -338,6 +340,8 @@ namespace RadiologyTracking.Web
         partial void OnAnswerChanged();
         partial void OnEmailChanging(string value);
         partial void OnEmailChanged();
+        partial void OnFoundryChanging(string value);
+        partial void OnFoundryChanged();
         partial void OnFriendlyNameChanging(string value);
         partial void OnFriendlyNameChanged();
         partial void OnQuestionChanging(string value);
@@ -407,6 +411,30 @@ namespace RadiologyTracking.Web
                     this._email = value;
                     this.RaiseDataMemberChanged("Email");
                     this.OnEmailChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'Foundry' value.
+        /// </summary>
+        [DataMember()]
+        public string Foundry
+        {
+            get
+            {
+                return this._foundry;
+            }
+            set
+            {
+                if ((this._foundry != value))
+                {
+                    this.OnFoundryChanging(value);
+                    this.RaiseDataMemberChanging("Foundry");
+                    this.ValidateProperty("Foundry", value);
+                    this._foundry = value;
+                    this.RaiseDataMemberChanged("Foundry");
+                    this.OnFoundryChanged();
                 }
             }
         }
@@ -499,6 +527,8 @@ namespace RadiologyTracking.Web
     public sealed partial class User : Entity, global::System.Security.Principal.IIdentity, global::System.Security.Principal.IPrincipal
     {
         
+        private string _foundry;
+        
         private string _friendlyName;
         
         private string _name = string.Empty;
@@ -512,6 +542,8 @@ namespace RadiologyTracking.Web
         /// can be used for further object setup.
         /// </summary>
         partial void OnCreated();
+        partial void OnFoundryChanging(string value);
+        partial void OnFoundryChanged();
         partial void OnFriendlyNameChanging(string value);
         partial void OnFriendlyNameChanged();
         partial void OnNameChanging(string value);
@@ -528,6 +560,30 @@ namespace RadiologyTracking.Web
         public User()
         {
             this.OnCreated();
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'Foundry' value.
+        /// </summary>
+        [DataMember()]
+        public string Foundry
+        {
+            get
+            {
+                return this._foundry;
+            }
+            set
+            {
+                if ((this._foundry != value))
+                {
+                    this.OnFoundryChanging(value);
+                    this.RaiseDataMemberChanging("Foundry");
+                    this.ValidateProperty("Foundry", value);
+                    this._foundry = value;
+                    this.RaiseDataMemberChanged("Foundry");
+                    this.OnFoundryChanged();
+                }
+            }
         }
         
         /// <summary>
@@ -748,6 +804,66 @@ namespace RadiologyTracking.Web
         }
         
         /// <summary>
+        /// Asynchronously invokes the 'DeleteUser' method of the DomainService.
+        /// </summary>
+        /// <param name="userName">The value for the 'userName' parameter of this action.</param>
+        /// <param name="callback">Callback to invoke when the operation completes.</param>
+        /// <param name="userState">Value to pass to the callback.  It can be <c>null</c>.</param>
+        /// <returns>An operation instance that can be used to manage the asynchronous request.</returns>
+        public InvokeOperation<bool> DeleteUser(string userName, Action<InvokeOperation<bool>> callback, object userState)
+        {
+            Dictionary<string, object> parameters = new Dictionary<string, object>();
+            parameters.Add("userName", userName);
+            this.ValidateMethod("DeleteUser", parameters);
+            return ((InvokeOperation<bool>)(this.InvokeOperation("DeleteUser", typeof(bool), parameters, true, callback, userState)));
+        }
+        
+        /// <summary>
+        /// Asynchronously invokes the 'DeleteUser' method of the DomainService.
+        /// </summary>
+        /// <param name="userName">The value for the 'userName' parameter of this action.</param>
+        /// <returns>An operation instance that can be used to manage the asynchronous request.</returns>
+        public InvokeOperation<bool> DeleteUser(string userName)
+        {
+            Dictionary<string, object> parameters = new Dictionary<string, object>();
+            parameters.Add("userName", userName);
+            this.ValidateMethod("DeleteUser", parameters);
+            return ((InvokeOperation<bool>)(this.InvokeOperation("DeleteUser", typeof(bool), parameters, true, null, null)));
+        }
+        
+        /// <summary>
+        /// Asynchronously invokes the 'UpdateUser' method of the DomainService.
+        /// </summary>
+        /// <param name="user">The value for the 'user' parameter of this action.</param>
+        /// <param name="password">The value for the 'password' parameter of this action.</param>
+        /// <param name="callback">Callback to invoke when the operation completes.</param>
+        /// <param name="userState">Value to pass to the callback.  It can be <c>null</c>.</param>
+        /// <returns>An operation instance that can be used to manage the asynchronous request.</returns>
+        public InvokeOperation<CreateUserStatus> UpdateUser(RegistrationData user, [RegularExpression("^.*[^a-zA-Z0-9].*$", ErrorMessageResourceName="ValidationErrorBadPasswordStrength", ErrorMessageResourceType=typeof(ValidationErrorResources))] [StringLength(50, ErrorMessageResourceName="ValidationErrorBadPasswordLength", ErrorMessageResourceType=typeof(ValidationErrorResources), MinimumLength=7)] string password, Action<InvokeOperation<CreateUserStatus>> callback, object userState)
+        {
+            Dictionary<string, object> parameters = new Dictionary<string, object>();
+            parameters.Add("user", user);
+            parameters.Add("password", password);
+            this.ValidateMethod("UpdateUser", parameters);
+            return ((InvokeOperation<CreateUserStatus>)(this.InvokeOperation("UpdateUser", typeof(CreateUserStatus), parameters, true, callback, userState)));
+        }
+        
+        /// <summary>
+        /// Asynchronously invokes the 'UpdateUser' method of the DomainService.
+        /// </summary>
+        /// <param name="user">The value for the 'user' parameter of this action.</param>
+        /// <param name="password">The value for the 'password' parameter of this action.</param>
+        /// <returns>An operation instance that can be used to manage the asynchronous request.</returns>
+        public InvokeOperation<CreateUserStatus> UpdateUser(RegistrationData user, [RegularExpression("^.*[^a-zA-Z0-9].*$", ErrorMessageResourceName="ValidationErrorBadPasswordStrength", ErrorMessageResourceType=typeof(ValidationErrorResources))] [StringLength(50, ErrorMessageResourceName="ValidationErrorBadPasswordLength", ErrorMessageResourceType=typeof(ValidationErrorResources), MinimumLength=7)] string password)
+        {
+            Dictionary<string, object> parameters = new Dictionary<string, object>();
+            parameters.Add("user", user);
+            parameters.Add("password", password);
+            this.ValidateMethod("UpdateUser", parameters);
+            return ((InvokeOperation<CreateUserStatus>)(this.InvokeOperation("UpdateUser", typeof(CreateUserStatus), parameters, true, null, null)));
+        }
+        
+        /// <summary>
         /// Creates a new EntityContainer for this DomainContext's EntitySets.
         /// </summary>
         /// <returns>A new container instance.</returns>
@@ -781,6 +897,43 @@ namespace RadiologyTracking.Web
             /// <param name="result">The IAsyncResult returned from 'BeginCreateUser'.</param>
             /// <returns>The 'CreateUserStatus' returned from the 'CreateUser' operation.</returns>
             CreateUserStatus EndCreateUser(IAsyncResult result);
+            
+            /// <summary>
+            /// Asynchronously invokes the 'DeleteUser' operation.
+            /// </summary>
+            /// <param name="userName">The value for the 'userName' parameter of this action.</param>
+            /// <param name="callback">Callback to invoke on completion.</param>
+            /// <param name="asyncState">Optional state object.</param>
+            /// <returns>An IAsyncResult that can be used to monitor the request.</returns>
+            [FaultContract(typeof(DomainServiceFault), Action="http://tempuri.org/UserRegistrationService/DeleteUserDomainServiceFault", Name="DomainServiceFault", Namespace="DomainServices")]
+            [OperationContract(AsyncPattern=true, Action="http://tempuri.org/UserRegistrationService/DeleteUser", ReplyAction="http://tempuri.org/UserRegistrationService/DeleteUserResponse")]
+            IAsyncResult BeginDeleteUser(string userName, AsyncCallback callback, object asyncState);
+            
+            /// <summary>
+            /// Completes the asynchronous operation begun by 'BeginDeleteUser'.
+            /// </summary>
+            /// <param name="result">The IAsyncResult returned from 'BeginDeleteUser'.</param>
+            /// <returns>The 'Boolean' returned from the 'DeleteUser' operation.</returns>
+            bool EndDeleteUser(IAsyncResult result);
+            
+            /// <summary>
+            /// Asynchronously invokes the 'UpdateUser' operation.
+            /// </summary>
+            /// <param name="user">The value for the 'user' parameter of this action.</param>
+            /// <param name="password">The value for the 'password' parameter of this action.</param>
+            /// <param name="callback">Callback to invoke on completion.</param>
+            /// <param name="asyncState">Optional state object.</param>
+            /// <returns>An IAsyncResult that can be used to monitor the request.</returns>
+            [FaultContract(typeof(DomainServiceFault), Action="http://tempuri.org/UserRegistrationService/UpdateUserDomainServiceFault", Name="DomainServiceFault", Namespace="DomainServices")]
+            [OperationContract(AsyncPattern=true, Action="http://tempuri.org/UserRegistrationService/UpdateUser", ReplyAction="http://tempuri.org/UserRegistrationService/UpdateUserResponse")]
+            IAsyncResult BeginUpdateUser(RegistrationData user, string password, AsyncCallback callback, object asyncState);
+            
+            /// <summary>
+            /// Completes the asynchronous operation begun by 'BeginUpdateUser'.
+            /// </summary>
+            /// <param name="result">The IAsyncResult returned from 'BeginUpdateUser'.</param>
+            /// <returns>The 'CreateUserStatus' returned from the 'UpdateUser' operation.</returns>
+            CreateUserStatus EndUpdateUser(IAsyncResult result);
         }
         
         internal sealed class UserRegistrationContextEntityContainer : EntityContainer
@@ -915,6 +1068,11 @@ namespace RadiologyTracking.Web.Models
         /// <summary>
         /// Gets or sets the 'ID' value.
         /// </summary>
+        // The following attributes were not generated:
+        // 
+        // - The attribute 'System.ComponentModel.DataAnnotations.DatabaseGeneratedAttribute' is not visible in the client project 'RadiologyTracking'. Are you missing an assembly reference?
+        // [DatabaseGeneratedAttribute(Identity)]
+        // 
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [DataMember()]
         [Editable(false, AllowInitialValue=true)]
@@ -1130,6 +1288,11 @@ namespace RadiologyTracking.Web.Models
         /// <summary>
         /// Gets or sets the 'ID' value.
         /// </summary>
+        // The following attributes were not generated:
+        // 
+        // - The attribute 'System.ComponentModel.DataAnnotations.DatabaseGeneratedAttribute' is not visible in the client project 'RadiologyTracking'. Are you missing an assembly reference?
+        // [DatabaseGeneratedAttribute(Identity)]
+        // 
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [DataMember()]
         [Editable(false, AllowInitialValue=true)]
@@ -1173,7 +1336,7 @@ namespace RadiologyTracking.Web.Models
         
         private string _customerName;
         
-        private string _foundry;
+        private EntityRef<Foundry> _foundry;
         
         private int _foundryID;
         
@@ -1188,8 +1351,6 @@ namespace RadiologyTracking.Web.Models
         partial void OnCreated();
         partial void OnCustomerNameChanging(string value);
         partial void OnCustomerNameChanged();
-        partial void OnFoundryChanging(string value);
-        partial void OnFoundryChanged();
         partial void OnFoundryIDChanging(int value);
         partial void OnFoundryIDChanged();
         partial void OnIDChanging(int value);
@@ -1231,25 +1392,44 @@ namespace RadiologyTracking.Web.Models
         }
         
         /// <summary>
-        /// Gets or sets the 'Foundry' value.
+        /// Gets or sets the associated <see cref="Foundry"/> entity.
         /// </summary>
-        [DataMember()]
-        public string Foundry
+        [Association("Foundry_Customer", "FoundryID", "ID", IsForeignKey=true)]
+        public Foundry Foundry
         {
             get
             {
-                return this._foundry;
+                if ((this._foundry == null))
+                {
+                    this._foundry = new EntityRef<Foundry>(this, "Foundry", this.FilterFoundry);
+                }
+                return this._foundry.Entity;
             }
             set
             {
-                if ((this._foundry != value))
+                Foundry previous = this.Foundry;
+                if ((previous != value))
                 {
-                    this.OnFoundryChanging(value);
-                    this.RaiseDataMemberChanging("Foundry");
                     this.ValidateProperty("Foundry", value);
-                    this._foundry = value;
-                    this.RaiseDataMemberChanged("Foundry");
-                    this.OnFoundryChanged();
+                    if ((previous != null))
+                    {
+                        this._foundry.Entity = null;
+                        previous.Customers.Remove(this);
+                    }
+                    if ((value != null))
+                    {
+                        this.FoundryID = value.ID;
+                    }
+                    else
+                    {
+                        this.FoundryID = default(int);
+                    }
+                    this._foundry.Entity = value;
+                    if ((value != null))
+                    {
+                        value.Customers.Add(this);
+                    }
+                    this.RaisePropertyChanged("Foundry");
                 }
             }
         }
@@ -1258,6 +1438,7 @@ namespace RadiologyTracking.Web.Models
         /// Gets or sets the 'FoundryID' value.
         /// </summary>
         [DataMember()]
+        [RoundtripOriginal()]
         public int FoundryID
         {
             get
@@ -1281,6 +1462,11 @@ namespace RadiologyTracking.Web.Models
         /// <summary>
         /// Gets or sets the 'ID' value.
         /// </summary>
+        // The following attributes were not generated:
+        // 
+        // - The attribute 'System.ComponentModel.DataAnnotations.DatabaseGeneratedAttribute' is not visible in the client project 'RadiologyTracking'. Are you missing an assembly reference?
+        // [DatabaseGeneratedAttribute(Identity)]
+        // 
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [DataMember()]
         [Editable(false, AllowInitialValue=true)]
@@ -1303,6 +1489,11 @@ namespace RadiologyTracking.Web.Models
                     this.OnIDChanged();
                 }
             }
+        }
+        
+        private bool FilterFoundry(Foundry entity)
+        {
+            return (entity.ID == this.FoundryID);
         }
         
         /// <summary>
@@ -1380,6 +1571,11 @@ namespace RadiologyTracking.Web.Models
         /// <summary>
         /// Gets or sets the 'ID' value.
         /// </summary>
+        // The following attributes were not generated:
+        // 
+        // - The attribute 'System.ComponentModel.DataAnnotations.DatabaseGeneratedAttribute' is not visible in the client project 'RadiologyTracking'. Are you missing an assembly reference?
+        // [DatabaseGeneratedAttribute(Identity)]
+        // 
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [DataMember()]
         [Editable(false, AllowInitialValue=true)]
@@ -1483,6 +1679,11 @@ namespace RadiologyTracking.Web.Models
         /// <summary>
         /// Gets or sets the 'ID' value.
         /// </summary>
+        // The following attributes were not generated:
+        // 
+        // - The attribute 'System.ComponentModel.DataAnnotations.DatabaseGeneratedAttribute' is not visible in the client project 'RadiologyTracking'. Are you missing an assembly reference?
+        // [DatabaseGeneratedAttribute(Identity)]
+        // 
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [DataMember()]
         [Editable(false, AllowInitialValue=true)]
@@ -1635,6 +1836,11 @@ namespace RadiologyTracking.Web.Models
         /// <summary>
         /// Gets or sets the 'ID' value.
         /// </summary>
+        // The following attributes were not generated:
+        // 
+        // - The attribute 'System.ComponentModel.DataAnnotations.DatabaseGeneratedAttribute' is not visible in the client project 'RadiologyTracking'. Are you missing an assembly reference?
+        // [DatabaseGeneratedAttribute(Identity)]
+        // 
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [DataMember()]
         [Editable(false, AllowInitialValue=true)]
@@ -1903,6 +2109,11 @@ namespace RadiologyTracking.Web.Models
         /// <summary>
         /// Gets or sets the 'ID' value.
         /// </summary>
+        // The following attributes were not generated:
+        // 
+        // - The attribute 'System.ComponentModel.DataAnnotations.DatabaseGeneratedAttribute' is not visible in the client project 'RadiologyTracking'. Are you missing an assembly reference?
+        // [DatabaseGeneratedAttribute(Identity)]
+        // 
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [DataMember()]
         [Editable(false, AllowInitialValue=true)]
@@ -2096,6 +2307,11 @@ namespace RadiologyTracking.Web.Models
         /// <summary>
         /// Gets or sets the 'ID' value.
         /// </summary>
+        // The following attributes were not generated:
+        // 
+        // - The attribute 'System.ComponentModel.DataAnnotations.DatabaseGeneratedAttribute' is not visible in the client project 'RadiologyTracking'. Are you missing an assembly reference?
+        // [DatabaseGeneratedAttribute(Identity)]
+        // 
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [DataMember()]
         [Editable(false, AllowInitialValue=true)]
@@ -2298,6 +2514,11 @@ namespace RadiologyTracking.Web.Models
         /// <summary>
         /// Gets or sets the 'ID' value.
         /// </summary>
+        // The following attributes were not generated:
+        // 
+        // - The attribute 'System.ComponentModel.DataAnnotations.DatabaseGeneratedAttribute' is not visible in the client project 'RadiologyTracking'. Are you missing an assembly reference?
+        // [DatabaseGeneratedAttribute(Identity)]
+        // 
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [DataMember()]
         [Editable(false, AllowInitialValue=true)]
@@ -2420,7 +2641,7 @@ namespace RadiologyTracking.Web.Models
             {
                 if ((this._customers == null))
                 {
-                    this._customers = new EntityCollection<Customer>(this, "Customers", this.FilterCustomers);
+                    this._customers = new EntityCollection<Customer>(this, "Customers", this.FilterCustomers, this.AttachCustomers, this.DetachCustomers);
                 }
                 return this._customers;
             }
@@ -2453,6 +2674,11 @@ namespace RadiologyTracking.Web.Models
         /// <summary>
         /// Gets or sets the 'ID' value.
         /// </summary>
+        // The following attributes were not generated:
+        // 
+        // - The attribute 'System.ComponentModel.DataAnnotations.DatabaseGeneratedAttribute' is not visible in the client project 'RadiologyTracking'. Are you missing an assembly reference?
+        // [DatabaseGeneratedAttribute(Identity)]
+        // 
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [DataMember()]
         [Editable(false, AllowInitialValue=true)]
@@ -2501,6 +2727,16 @@ namespace RadiologyTracking.Web.Models
             }
         }
         
+        private void AttachCustomers(Customer entity)
+        {
+            entity.Foundry = this;
+        }
+        
+        private void DetachCustomers(Customer entity)
+        {
+            entity.Foundry = null;
+        }
+        
         private bool FilterCustomers(Customer entity)
         {
             return (entity.FoundryID == this.ID);
@@ -2539,6 +2775,8 @@ namespace RadiologyTracking.Web.Models
         
         private string _location;
         
+        private string _segment;
+        
         private string _sensitivity;
         
         private int _sfd;
@@ -2566,6 +2804,8 @@ namespace RadiologyTracking.Web.Models
         partial void OnIDChanged();
         partial void OnLocationChanging(string value);
         partial void OnLocationChanged();
+        partial void OnSegmentChanging(string value);
+        partial void OnSegmentChanged();
         partial void OnSensitivityChanging(string value);
         partial void OnSensitivityChanged();
         partial void OnSFDChanging(int value);
@@ -2755,6 +2995,11 @@ namespace RadiologyTracking.Web.Models
         /// <summary>
         /// Gets or sets the 'ID' value.
         /// </summary>
+        // The following attributes were not generated:
+        // 
+        // - The attribute 'System.ComponentModel.DataAnnotations.DatabaseGeneratedAttribute' is not visible in the client project 'RadiologyTracking'. Are you missing an assembly reference?
+        // [DatabaseGeneratedAttribute(Identity)]
+        // 
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [DataMember()]
         [Editable(false, AllowInitialValue=true)]
@@ -2799,6 +3044,30 @@ namespace RadiologyTracking.Web.Models
                     this._location = value;
                     this.RaiseDataMemberChanged("Location");
                     this.OnLocationChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'Segment' value.
+        /// </summary>
+        [DataMember()]
+        public string Segment
+        {
+            get
+            {
+                return this._segment;
+            }
+            set
+            {
+                if ((this._segment != value))
+                {
+                    this.OnSegmentChanging(value);
+                    this.RaiseDataMemberChanging("Segment");
+                    this.ValidateProperty("Segment", value);
+                    this._segment = value;
+                    this.RaiseDataMemberChanged("Segment");
+                    this.OnSegmentChanged();
                 }
             }
         }
@@ -3025,6 +3294,11 @@ namespace RadiologyTracking.Web.Models
         /// <summary>
         /// Gets or sets the 'ID' value.
         /// </summary>
+        // The following attributes were not generated:
+        // 
+        // - The attribute 'System.ComponentModel.DataAnnotations.DatabaseGeneratedAttribute' is not visible in the client project 'RadiologyTracking'. Are you missing an assembly reference?
+        // [DatabaseGeneratedAttribute(Identity)]
+        // 
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [DataMember()]
         [Editable(false, AllowInitialValue=true)]
@@ -3432,6 +3706,11 @@ namespace RadiologyTracking.Web.Models
         /// <summary>
         /// Gets or sets the 'ID' value.
         /// </summary>
+        // The following attributes were not generated:
+        // 
+        // - The attribute 'System.ComponentModel.DataAnnotations.DatabaseGeneratedAttribute' is not visible in the client project 'RadiologyTracking'. Are you missing an assembly reference?
+        // [DatabaseGeneratedAttribute(Identity)]
+        // 
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [DataMember()]
         [Editable(false, AllowInitialValue=true)]
@@ -3580,6 +3859,7 @@ namespace RadiologyTracking.Web.Models
         /// Gets the collection of associated <see cref="RGReportRow"/> entity instances.
         /// </summary>
         [Association("RGReport_RGReportRow", "ID", "RGReportID")]
+        [Composition()]
         public EntityCollection<RGReportRow> RGReportRows
         {
             get
@@ -3773,6 +4053,10 @@ namespace RadiologyTracking.Web.Models
         
         private int _rgReportID;
         
+        private RGReportRowType _rowType;
+        
+        private string _segment;
+        
         private string _sensitivity;
         
         private int _sfd;
@@ -3812,6 +4096,10 @@ namespace RadiologyTracking.Web.Models
         partial void OnRemarkChanged();
         partial void OnRGReportIDChanging(int value);
         partial void OnRGReportIDChanged();
+        partial void OnRowTypeChanging(RGReportRowType value);
+        partial void OnRowTypeChanged();
+        partial void OnSegmentChanging(string value);
+        partial void OnSegmentChanged();
         partial void OnSensitivityChanging(string value);
         partial void OnSensitivityChanged();
         partial void OnSFDChanging(int value);
@@ -4005,6 +4293,11 @@ namespace RadiologyTracking.Web.Models
         /// <summary>
         /// Gets or sets the 'ID' value.
         /// </summary>
+        // The following attributes were not generated:
+        // 
+        // - The attribute 'System.ComponentModel.DataAnnotations.DatabaseGeneratedAttribute' is not visible in the client project 'RadiologyTracking'. Are you missing an assembly reference?
+        // [DatabaseGeneratedAttribute(Identity)]
+        // 
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [DataMember()]
         [Editable(false, AllowInitialValue=true)]
@@ -4057,6 +4350,7 @@ namespace RadiologyTracking.Web.Models
         /// Gets the collection of associated <see cref="Observation"/> entity instances.
         /// </summary>
         [Association("RGReportRow_Observation", "ID", "RGReportRowID")]
+        [Composition()]
         public EntityCollection<Observation> Observations
         {
             get
@@ -4157,6 +4451,54 @@ namespace RadiologyTracking.Web.Models
                     this._rgReportID = value;
                     this.RaiseDataMemberChanged("RGReportID");
                     this.OnRGReportIDChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'RowType' value.
+        /// </summary>
+        [DataMember()]
+        public RGReportRowType RowType
+        {
+            get
+            {
+                return this._rowType;
+            }
+            set
+            {
+                if ((this._rowType != value))
+                {
+                    this.OnRowTypeChanging(value);
+                    this.RaiseDataMemberChanging("RowType");
+                    this.ValidateProperty("RowType", value);
+                    this._rowType = value;
+                    this.RaiseDataMemberChanged("RowType");
+                    this.OnRowTypeChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'Segment' value.
+        /// </summary>
+        [DataMember()]
+        public string Segment
+        {
+            get
+            {
+                return this._segment;
+            }
+            set
+            {
+                if ((this._segment != value))
+                {
+                    this.OnSegmentChanging(value);
+                    this.RaiseDataMemberChanging("Segment");
+                    this.ValidateProperty("Segment", value);
+                    this._segment = value;
+                    this.RaiseDataMemberChanged("Segment");
+                    this.OnSegmentChanged();
                 }
             }
         }
@@ -4415,6 +4757,18 @@ namespace RadiologyTracking.Web.Models
         }
     }
     
+    public enum RGReportRowType
+    {
+        
+        FRESH = 0,
+        
+        REPAIR = 1,
+        
+        RESHOOT = 2,
+        
+        RETAKE = 3,
+    }
+    
     public enum RGStatus
     {
         
@@ -4468,6 +4822,11 @@ namespace RadiologyTracking.Web.Models
         /// <summary>
         /// Gets or sets the 'ID' value.
         /// </summary>
+        // The following attributes were not generated:
+        // 
+        // - The attribute 'System.ComponentModel.DataAnnotations.DatabaseGeneratedAttribute' is not visible in the client project 'RadiologyTracking'. Are you missing an assembly reference?
+        // [DatabaseGeneratedAttribute(Identity)]
+        // 
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [DataMember()]
         [Editable(false, AllowInitialValue=true)]
@@ -4632,6 +4991,11 @@ namespace RadiologyTracking.Web.Models
         /// <summary>
         /// Gets or sets the 'ID' value.
         /// </summary>
+        // The following attributes were not generated:
+        // 
+        // - The attribute 'System.ComponentModel.DataAnnotations.DatabaseGeneratedAttribute' is not visible in the client project 'RadiologyTracking'. Are you missing an assembly reference?
+        // [DatabaseGeneratedAttribute(Identity)]
+        // 
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [DataMember()]
         [Editable(false, AllowInitialValue=true)]
@@ -4756,6 +5120,11 @@ namespace RadiologyTracking.Web.Models
         /// <summary>
         /// Gets or sets the 'ID' value.
         /// </summary>
+        // The following attributes were not generated:
+        // 
+        // - The attribute 'System.ComponentModel.DataAnnotations.DatabaseGeneratedAttribute' is not visible in the client project 'RadiologyTracking'. Are you missing an assembly reference?
+        // [DatabaseGeneratedAttribute(Identity)]
+        // 
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [DataMember()]
         [Editable(false, AllowInitialValue=true)]
@@ -4995,28 +5364,6 @@ namespace RadiologyTracking.Web.Services
         }
         
         /// <summary>
-        /// Gets the set of <see cref="Observation"/> entity instances that have been loaded into this <see cref="RadiologyContext"/> instance.
-        /// </summary>
-        public EntitySet<Observation> Observations
-        {
-            get
-            {
-                return base.EntityContainer.GetEntitySet<Observation>();
-            }
-        }
-        
-        /// <summary>
-        /// Gets the set of <see cref="RGReportRow"/> entity instances that have been loaded into this <see cref="RadiologyContext"/> instance.
-        /// </summary>
-        public EntitySet<RGReportRow> RGReportRows
-        {
-            get
-            {
-                return base.EntityContainer.GetEntitySet<RGReportRow>();
-            }
-        }
-        
-        /// <summary>
         /// Gets the set of <see cref="RGReport"/> entity instances that have been loaded into this <see cref="RadiologyContext"/> instance.
         /// </summary>
         public EntitySet<RGReport> RGReports
@@ -5068,6 +5415,21 @@ namespace RadiologyTracking.Web.Services
         {
             this.ValidateMethod("GetChangesQuery", null);
             return base.CreateQuery<Change>("GetChanges", null, false, true);
+        }
+        
+        /// <summary>
+        /// Gets an EntityQuery instance that can be used to load <see cref="Change"/> entity instances using the 'GetChangesByDate' query.
+        /// </summary>
+        /// <param name="fromDate">The value for the 'fromDate' parameter of the query.</param>
+        /// <param name="toDate">The value for the 'toDate' parameter of the query.</param>
+        /// <returns>An EntityQuery that can be loaded to retrieve <see cref="Change"/> entity instances.</returns>
+        public EntityQuery<Change> GetChangesByDateQuery(DateTime fromDate, DateTime toDate)
+        {
+            Dictionary<string, object> parameters = new Dictionary<string, object>();
+            parameters.Add("fromDate", fromDate);
+            parameters.Add("toDate", toDate);
+            this.ValidateMethod("GetChangesByDateQuery", parameters);
+            return base.CreateQuery<Change>("GetChangesByDate", parameters, false, true);
         }
         
         /// <summary>
@@ -5131,13 +5493,33 @@ namespace RadiologyTracking.Web.Services
         }
         
         /// <summary>
+        /// Gets an EntityQuery instance that can be used to load <see cref="FilmTransaction"/> entity instances using the 'GetFilmTransactionsByFoundryAndDate' query.
+        /// </summary>
+        /// <param name="foundryName">The value for the 'foundryName' parameter of the query.</param>
+        /// <param name="fromDate">The value for the 'fromDate' parameter of the query.</param>
+        /// <param name="toDate">The value for the 'toDate' parameter of the query.</param>
+        /// <returns>An EntityQuery that can be loaded to retrieve <see cref="FilmTransaction"/> entity instances.</returns>
+        public EntityQuery<FilmTransaction> GetFilmTransactionsByFoundryAndDateQuery(string foundryName, DateTime fromDate, DateTime toDate)
+        {
+            Dictionary<string, object> parameters = new Dictionary<string, object>();
+            parameters.Add("foundryName", foundryName);
+            parameters.Add("fromDate", fromDate);
+            parameters.Add("toDate", toDate);
+            this.ValidateMethod("GetFilmTransactionsByFoundryAndDateQuery", parameters);
+            return base.CreateQuery<FilmTransaction>("GetFilmTransactionsByFoundryAndDate", parameters, false, true);
+        }
+        
+        /// <summary>
         /// Gets an EntityQuery instance that can be used to load <see cref="FixedPattern"/> entity instances using the 'GetFixedPatterns' query.
         /// </summary>
+        /// <param name="filter">The value for the 'filter' parameter of the query.</param>
         /// <returns>An EntityQuery that can be loaded to retrieve <see cref="FixedPattern"/> entity instances.</returns>
-        public EntityQuery<FixedPattern> GetFixedPatternsQuery()
+        public EntityQuery<FixedPattern> GetFixedPatternsQuery(string filter)
         {
-            this.ValidateMethod("GetFixedPatternsQuery", null);
-            return base.CreateQuery<FixedPattern>("GetFixedPatterns", null, false, true);
+            Dictionary<string, object> parameters = new Dictionary<string, object>();
+            parameters.Add("filter", filter);
+            this.ValidateMethod("GetFixedPatternsQuery", parameters);
+            return base.CreateQuery<FixedPattern>("GetFixedPatterns", parameters, false, true);
         }
         
         /// <summary>
@@ -5148,6 +5530,21 @@ namespace RadiologyTracking.Web.Services
         {
             this.ValidateMethod("GetFixedPatternTemplatesQuery", null);
             return base.CreateQuery<FixedPatternTemplate>("GetFixedPatternTemplates", null, false, true);
+        }
+        
+        /// <summary>
+        /// Gets an EntityQuery instance that can be used to load <see cref="FixedPatternTemplate"/> entity instances using the 'GetFixedPatternTemplatesForFP' query.
+        /// </summary>
+        /// <param name="fixedPatternNo">The value for the 'fixedPatternNo' parameter of the query.</param>
+        /// <param name="coverage">The value for the 'coverage' parameter of the query.</param>
+        /// <returns>An EntityQuery that can be loaded to retrieve <see cref="FixedPatternTemplate"/> entity instances.</returns>
+        public EntityQuery<FixedPatternTemplate> GetFixedPatternTemplatesForFPQuery(string fixedPatternNo, string coverage)
+        {
+            Dictionary<string, object> parameters = new Dictionary<string, object>();
+            parameters.Add("fixedPatternNo", fixedPatternNo);
+            parameters.Add("coverage", coverage);
+            this.ValidateMethod("GetFixedPatternTemplatesForFPQuery", parameters);
+            return base.CreateQuery<FixedPatternTemplate>("GetFixedPatternTemplatesForFP", parameters, false, true);
         }
         
         /// <summary>
@@ -5193,11 +5590,16 @@ namespace RadiologyTracking.Web.Services
         /// <summary>
         /// Gets an EntityQuery instance that can be used to load <see cref="RGReport"/> entity instances using the 'GetRGReports' query.
         /// </summary>
+        /// <param name="fromDate">The value for the 'fromDate' parameter of the query.</param>
+        /// <param name="toDate">The value for the 'toDate' parameter of the query.</param>
         /// <returns>An EntityQuery that can be loaded to retrieve <see cref="RGReport"/> entity instances.</returns>
-        public EntityQuery<RGReport> GetRGReportsQuery()
+        public EntityQuery<RGReport> GetRGReportsQuery(DateTime fromDate, DateTime toDate)
         {
-            this.ValidateMethod("GetRGReportsQuery", null);
-            return base.CreateQuery<RGReport>("GetRGReports", null, false, true);
+            Dictionary<string, object> parameters = new Dictionary<string, object>();
+            parameters.Add("fromDate", fromDate);
+            parameters.Add("toDate", toDate);
+            this.ValidateMethod("GetRGReportsQuery", parameters);
+            return base.CreateQuery<RGReport>("GetRGReports", parameters, false, true);
         }
         
         /// <summary>
@@ -5213,11 +5615,14 @@ namespace RadiologyTracking.Web.Services
         /// <summary>
         /// Gets an EntityQuery instance that can be used to load <see cref="ThicknessRangeForEnergy"/> entity instances using the 'GetThicknessRangesForEnergy' query.
         /// </summary>
+        /// <param name="filter">The value for the 'filter' parameter of the query.</param>
         /// <returns>An EntityQuery that can be loaded to retrieve <see cref="ThicknessRangeForEnergy"/> entity instances.</returns>
-        public EntityQuery<ThicknessRangeForEnergy> GetThicknessRangesForEnergyQuery()
+        public EntityQuery<ThicknessRangeForEnergy> GetThicknessRangesForEnergyQuery(string filter)
         {
-            this.ValidateMethod("GetThicknessRangesForEnergyQuery", null);
-            return base.CreateQuery<ThicknessRangeForEnergy>("GetThicknessRangesForEnergy", null, false, true);
+            Dictionary<string, object> parameters = new Dictionary<string, object>();
+            parameters.Add("filter", filter);
+            this.ValidateMethod("GetThicknessRangesForEnergyQuery", parameters);
+            return base.CreateQuery<ThicknessRangeForEnergy>("GetThicknessRangesForEnergy", parameters, false, true);
         }
         
         /// <summary>
@@ -5263,6 +5668,26 @@ namespace RadiologyTracking.Web.Services
             /// <param name="result">The IAsyncResult returned from 'BeginGetChanges'.</param>
             /// <returns>The 'QueryResult' returned from the 'GetChanges' operation.</returns>
             QueryResult<Change> EndGetChanges(IAsyncResult result);
+            
+            /// <summary>
+            /// Asynchronously invokes the 'GetChangesByDate' operation.
+            /// </summary>
+            /// <param name="fromDate">The value for the 'fromDate' parameter of this action.</param>
+            /// <param name="toDate">The value for the 'toDate' parameter of this action.</param>
+            /// <param name="callback">Callback to invoke on completion.</param>
+            /// <param name="asyncState">Optional state object.</param>
+            /// <returns>An IAsyncResult that can be used to monitor the request.</returns>
+            [FaultContract(typeof(DomainServiceFault), Action="http://tempuri.org/RadiologyService/GetChangesByDateDomainServiceFault", Name="DomainServiceFault", Namespace="DomainServices")]
+            [OperationContract(AsyncPattern=true, Action="http://tempuri.org/RadiologyService/GetChangesByDate", ReplyAction="http://tempuri.org/RadiologyService/GetChangesByDateResponse")]
+            [WebGet()]
+            IAsyncResult BeginGetChangesByDate(DateTime fromDate, DateTime toDate, AsyncCallback callback, object asyncState);
+            
+            /// <summary>
+            /// Completes the asynchronous operation begun by 'BeginGetChangesByDate'.
+            /// </summary>
+            /// <param name="result">The IAsyncResult returned from 'BeginGetChangesByDate'.</param>
+            /// <returns>The 'QueryResult' returned from the 'GetChangesByDate' operation.</returns>
+            QueryResult<Change> EndGetChangesByDate(IAsyncResult result);
             
             /// <summary>
             /// Asynchronously invokes the 'GetCoverages' operation.
@@ -5373,15 +5798,38 @@ namespace RadiologyTracking.Web.Services
             QueryResult<FilmTransaction> EndGetFilmTransactions(IAsyncResult result);
             
             /// <summary>
+            /// Asynchronously invokes the 'GetFilmTransactionsByFoundryAndDate' operation.
+            /// </summary>
+            /// <param name="foundryName">The value for the 'foundryName' parameter of this action.</param>
+            /// <param name="fromDate">The value for the 'fromDate' parameter of this action.</param>
+            /// <param name="toDate">The value for the 'toDate' parameter of this action.</param>
+            /// <param name="callback">Callback to invoke on completion.</param>
+            /// <param name="asyncState">Optional state object.</param>
+            /// <returns>An IAsyncResult that can be used to monitor the request.</returns>
+            [FaultContract(typeof(DomainServiceFault), Action="http://tempuri.org/RadiologyService/GetFilmTransactionsByFoundryAndDateDomainServ" +
+                "iceFault", Name="DomainServiceFault", Namespace="DomainServices")]
+            [OperationContract(AsyncPattern=true, Action="http://tempuri.org/RadiologyService/GetFilmTransactionsByFoundryAndDate", ReplyAction="http://tempuri.org/RadiologyService/GetFilmTransactionsByFoundryAndDateResponse")]
+            [WebGet()]
+            IAsyncResult BeginGetFilmTransactionsByFoundryAndDate(string foundryName, DateTime fromDate, DateTime toDate, AsyncCallback callback, object asyncState);
+            
+            /// <summary>
+            /// Completes the asynchronous operation begun by 'BeginGetFilmTransactionsByFoundryAndDate'.
+            /// </summary>
+            /// <param name="result">The IAsyncResult returned from 'BeginGetFilmTransactionsByFoundryAndDate'.</param>
+            /// <returns>The 'QueryResult' returned from the 'GetFilmTransactionsByFoundryAndDate' operation.</returns>
+            QueryResult<FilmTransaction> EndGetFilmTransactionsByFoundryAndDate(IAsyncResult result);
+            
+            /// <summary>
             /// Asynchronously invokes the 'GetFixedPatterns' operation.
             /// </summary>
+            /// <param name="filter">The value for the 'filter' parameter of this action.</param>
             /// <param name="callback">Callback to invoke on completion.</param>
             /// <param name="asyncState">Optional state object.</param>
             /// <returns>An IAsyncResult that can be used to monitor the request.</returns>
             [FaultContract(typeof(DomainServiceFault), Action="http://tempuri.org/RadiologyService/GetFixedPatternsDomainServiceFault", Name="DomainServiceFault", Namespace="DomainServices")]
             [OperationContract(AsyncPattern=true, Action="http://tempuri.org/RadiologyService/GetFixedPatterns", ReplyAction="http://tempuri.org/RadiologyService/GetFixedPatternsResponse")]
             [WebGet()]
-            IAsyncResult BeginGetFixedPatterns(AsyncCallback callback, object asyncState);
+            IAsyncResult BeginGetFixedPatterns(string filter, AsyncCallback callback, object asyncState);
             
             /// <summary>
             /// Completes the asynchronous operation begun by 'BeginGetFixedPatterns'.
@@ -5407,6 +5855,27 @@ namespace RadiologyTracking.Web.Services
             /// <param name="result">The IAsyncResult returned from 'BeginGetFixedPatternTemplates'.</param>
             /// <returns>The 'QueryResult' returned from the 'GetFixedPatternTemplates' operation.</returns>
             QueryResult<FixedPatternTemplate> EndGetFixedPatternTemplates(IAsyncResult result);
+            
+            /// <summary>
+            /// Asynchronously invokes the 'GetFixedPatternTemplatesForFP' operation.
+            /// </summary>
+            /// <param name="fixedPatternNo">The value for the 'fixedPatternNo' parameter of this action.</param>
+            /// <param name="coverage">The value for the 'coverage' parameter of this action.</param>
+            /// <param name="callback">Callback to invoke on completion.</param>
+            /// <param name="asyncState">Optional state object.</param>
+            /// <returns>An IAsyncResult that can be used to monitor the request.</returns>
+            [FaultContract(typeof(DomainServiceFault), Action="http://tempuri.org/RadiologyService/GetFixedPatternTemplatesForFPDomainServiceFau" +
+                "lt", Name="DomainServiceFault", Namespace="DomainServices")]
+            [OperationContract(AsyncPattern=true, Action="http://tempuri.org/RadiologyService/GetFixedPatternTemplatesForFP", ReplyAction="http://tempuri.org/RadiologyService/GetFixedPatternTemplatesForFPResponse")]
+            [WebGet()]
+            IAsyncResult BeginGetFixedPatternTemplatesForFP(string fixedPatternNo, string coverage, AsyncCallback callback, object asyncState);
+            
+            /// <summary>
+            /// Completes the asynchronous operation begun by 'BeginGetFixedPatternTemplatesForFP'.
+            /// </summary>
+            /// <param name="result">The IAsyncResult returned from 'BeginGetFixedPatternTemplatesForFP'.</param>
+            /// <returns>The 'QueryResult' returned from the 'GetFixedPatternTemplatesForFP' operation.</returns>
+            QueryResult<FixedPatternTemplate> EndGetFixedPatternTemplatesForFP(IAsyncResult result);
             
             /// <summary>
             /// Asynchronously invokes the 'GetFoundries' operation.
@@ -5483,13 +5952,15 @@ namespace RadiologyTracking.Web.Services
             /// <summary>
             /// Asynchronously invokes the 'GetRGReports' operation.
             /// </summary>
+            /// <param name="fromDate">The value for the 'fromDate' parameter of this action.</param>
+            /// <param name="toDate">The value for the 'toDate' parameter of this action.</param>
             /// <param name="callback">Callback to invoke on completion.</param>
             /// <param name="asyncState">Optional state object.</param>
             /// <returns>An IAsyncResult that can be used to monitor the request.</returns>
             [FaultContract(typeof(DomainServiceFault), Action="http://tempuri.org/RadiologyService/GetRGReportsDomainServiceFault", Name="DomainServiceFault", Namespace="DomainServices")]
             [OperationContract(AsyncPattern=true, Action="http://tempuri.org/RadiologyService/GetRGReports", ReplyAction="http://tempuri.org/RadiologyService/GetRGReportsResponse")]
             [WebGet()]
-            IAsyncResult BeginGetRGReports(AsyncCallback callback, object asyncState);
+            IAsyncResult BeginGetRGReports(DateTime fromDate, DateTime toDate, AsyncCallback callback, object asyncState);
             
             /// <summary>
             /// Completes the asynchronous operation begun by 'BeginGetRGReports'.
@@ -5519,6 +5990,7 @@ namespace RadiologyTracking.Web.Services
             /// <summary>
             /// Asynchronously invokes the 'GetThicknessRangesForEnergy' operation.
             /// </summary>
+            /// <param name="filter">The value for the 'filter' parameter of this action.</param>
             /// <param name="callback">Callback to invoke on completion.</param>
             /// <param name="asyncState">Optional state object.</param>
             /// <returns>An IAsyncResult that can be used to monitor the request.</returns>
@@ -5526,7 +5998,7 @@ namespace RadiologyTracking.Web.Services
                 "", Name="DomainServiceFault", Namespace="DomainServices")]
             [OperationContract(AsyncPattern=true, Action="http://tempuri.org/RadiologyService/GetThicknessRangesForEnergy", ReplyAction="http://tempuri.org/RadiologyService/GetThicknessRangesForEnergyResponse")]
             [WebGet()]
-            IAsyncResult BeginGetThicknessRangesForEnergy(AsyncCallback callback, object asyncState);
+            IAsyncResult BeginGetThicknessRangesForEnergy(string filter, AsyncCallback callback, object asyncState);
             
             /// <summary>
             /// Completes the asynchronous operation begun by 'BeginGetThicknessRangesForEnergy'.
@@ -5577,7 +6049,7 @@ namespace RadiologyTracking.Web.Services
             
             public RadiologyContextEntityContainer()
             {
-                this.CreateEntitySet<Change>(EntitySetOperations.All);
+                this.CreateEntitySet<Change>(EntitySetOperations.Add);
                 this.CreateEntitySet<Coverage>(EntitySetOperations.All);
                 this.CreateEntitySet<Customer>(EntitySetOperations.All);
                 this.CreateEntitySet<Defect>(EntitySetOperations.All);

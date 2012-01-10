@@ -47,5 +47,7 @@
         [Display(Order = 6, Name = "SecurityAnswerLabel", ResourceType = typeof(RegistrationDataResources))]
         [StringLength(128, ErrorMessageResourceName = "ValidationErrorBadAnswerLength", ErrorMessageResourceType = typeof(ValidationErrorResources))]
         public string Answer { get; set; }
+
+        public string Foundry { get; set; }
     }
 }

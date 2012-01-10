@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Reflection;
+using System.Web.Security;
+using System.Web.Profile;
 
 namespace RadiologyTracking.Web.Utility
 {
@@ -30,6 +32,24 @@ namespace RadiologyTracking.Web.Utility
 
             // Return the first if there was a match.
             return attribs.Length > 0 ? attribs[0].StringValue : null;
+        }
+
+        /// <summary>
+        /// This extension method allows a membership user to create and return a corresponding User instance
+        /// </summary>
+        /// <param name="membershipUser"></param>
+        /// <returns></returns>
+        public static User GetUser(this MembershipUser membershipUser)
+        {
+            User user = new User()
+            {
+                Name = membershipUser.UserName,
+                Roles = Roles.GetRolesForUser(membershipUser.UserName)
+            };
+            ProfileBase p = ProfileBase.Create(user.Name);
+            user.Foundry = (string)p.GetPropertyValue("Foundry");
+            user.FriendlyName = (string)p.GetPropertyValue("FriendlyName");
+            return user;
         }
     }
 }

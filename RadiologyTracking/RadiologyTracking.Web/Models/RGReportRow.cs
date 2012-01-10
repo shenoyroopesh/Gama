@@ -2,14 +2,18 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.ServiceModel.DomainServices.Server;
+using System.ComponentModel.DataAnnotations;
 
 namespace RadiologyTracking.Web.Models
 {
     public class RGReportRow
     {
+        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ID { get; set; }
         public int SlNo { get; set; }
         public String Location { get; set; }
+        public String Segment { get; set; }
         public int Thickness { get; set; }
 
         public int EnergyID { get; set; }
@@ -23,6 +27,7 @@ namespace RadiologyTracking.Web.Models
         public int FilmSizeID { get; set; }
         public FilmSize FilmSize { get; set; }
 
+        [Include, Composition]
         public ICollection<Observation> Observations { get; set; }
         public Remark Remark { get; set; }
 

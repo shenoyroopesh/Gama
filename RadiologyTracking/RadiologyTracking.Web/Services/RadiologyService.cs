@@ -14,6 +14,7 @@ namespace RadiologyTracking.Web.Services
     using System.Data;
     using System.ServiceModel.DomainServices.EntityFramework;
     using System.Data.Entity;
+    using System.Web.Security;
 
     [EnableClientAccess]
     [RequiresAuthentication]
@@ -26,14 +27,11 @@ namespace RadiologyTracking.Web.Services
             return this.DbContext.Changes;
         }
 
-        public IQueryable<Change> GetChanges(DateTime fromDate, DateTime toDate)
+        public IQueryable<Change> GetChangesByDate(DateTime fromDate, DateTime toDate)
         {
             return this.DbContext.Changes.Where(p => p.When <= fromDate && p.When >= toDate);
         }
-
-
-        #region Check if these are really needed
-
+        
         public void InsertChange(Change entity)
         {
             DbEntityEntry<Change> entityEntry = this.DbContext.Entry(entity);
@@ -47,25 +45,24 @@ namespace RadiologyTracking.Web.Services
             }
         }
 
-        public void UpdateChange(Change currentChange)
-        {
-            this.DbContext.Changes.AttachAsModified(currentChange, this.ChangeSet.GetOriginal(currentChange), this.DbContext);
-        }
+        //public void UpdateChange(Change currentChange)
+        //{
+        //    this.DbContext.Changes.AttachAsModified(currentChange, this.ChangeSet.GetOriginal(currentChange), this.DbContext);
+        //}
 
-        public void DeleteChange(Change entity)
-        {
-            DbEntityEntry<Change> entityEntry = this.DbContext.Entry(entity);
-            if ((entityEntry.State != EntityState.Deleted))
-            {
-                entityEntry.State = EntityState.Deleted;
-            }
-            else
-            {
-                this.DbContext.Changes.Attach(entity);
-                this.DbContext.Changes.Remove(entity);
-            }
-        }
-        #endregion
+        //public void DeleteChange(Change entity)
+        //{
+        //    DbEntityEntry<Change> entityEntry = this.DbContext.Entry(entity);
+        //    if ((entityEntry.State != EntityState.Deleted))
+        //    {
+        //        entityEntry.State = EntityState.Deleted;
+        //    }
+        //    else
+        //    {
+        //        this.DbContext.Changes.Attach(entity);
+        //        this.DbContext.Changes.Remove(entity);
+        //    }
+        //}
 
         #endregion
 
@@ -271,12 +268,12 @@ namespace RadiologyTracking.Web.Services
             return this.DbContext.FilmTransactions;
         }
 
-        public IQueryable<FilmTransaction> GetFilmTransactions(Foundry foundry, DateTime fromDate, DateTime toDate)
+        public IQueryable<FilmTransaction> GetFilmTransactionsByFoundryAndDate(String foundryName, DateTime fromDate, DateTime toDate)
         {
             return this.DbContext.FilmTransactions.Where(p =>
                                                             p.Date >= fromDate &&
                                                             p.Date <= toDate &&
-                                                            p.Foundry.Equals(foundry));
+                                                            p.Foundry.FoundryName.Contains(foundryName));
         }
 
         public void InsertFilmTransaction(FilmTransaction entity)
@@ -373,40 +370,25 @@ namespace RadiologyTracking.Web.Services
             return stock;
         }
 
-        //public IQueryable GetFilmConsumptionReport(DateTime fromDate, DateTime toDate)
-        //{
-        //    var groupedData = from r in this.DbContext.RGReportRows
-        //                 group r by new { r.RGReport, r.Energy, r.FilmSize, r.RowType } into g
-        //                 select new
-        //                 {
-        //                     //ReportNo = g.Key.RGReport.ReportNo,
-        //                     //ReportDate = g.Key.RGReport.ReportDate,
-        //                     //FPNo = g.Key.RGReport.FixedPattern.FPNo,
-        //                     //RTNo = g.Key.RGReport.RTNo,
-        //                     Report = g.Key.RGReport,
-        //                     Energy = g.Key.Energy,
-        //                     FilmSize = g.Key.FilmSize,
-        //                     RowType = g.Key.RowType,
-        //                     Area = g.Sum(p => p.FilmSize.Area)
-        //                 };
-
-        //    var report = from r in groupedData
-        //                 group r by r.Report into g
-        //                 select new 
-        //                 {
-                             
-        //                 }
-        //}
+        public IQueryable GetFilmConsumptionReport(DateTime fromDate, DateTime toDate)
+        {
+            return from r in this.DbContext.RGReportRows
+                   group r by new { r.RGReport, r.Energy, r.FilmSize, r.RowType } into g
+                   select new
+                   {
+                       Report = g.Key.RGReport,
+                       Energy = g.Key.Energy,
+                       FilmSize = g.Key.FilmSize,
+                       RowType = g.Key.RowType,
+                       Area = g.Sum(p => p.FilmSize.Area)
+                   };
+        }
 
         #endregion
 
         #region Fixed Patterns
-        public IQueryable<FixedPattern> GetFixedPatterns()
-        {
-            return this.DbContext.FixedPatterns;
-        }
-
-        public IQueryable<FixedPattern> GetFixedPatterns(String filter)
+        
+        public IQueryable<FixedPattern> GetFixedPatterns(String filter = "")
         {
             return this.DbContext.FixedPatterns.Where(p =>
                                                         p.FPNo.Contains(filter) ||
@@ -444,6 +426,35 @@ namespace RadiologyTracking.Web.Services
                 this.DbContext.FixedPatterns.Remove(entity);
             }
         }
+        
+
+        public IQueryable GetFixedPatternPerformanceReport(String fpNo)
+        {
+            return from r in this.DbContext.RGReportRows
+                   where r.RGReport.FixedPattern.FPNo == fpNo
+                   group r by new { r.RGReport.RTNo, r.RGReport.ReportDate } into g
+                   select new
+                   {
+                       RTNo = g.Key.RTNo,
+                       Date = g.Key.ReportDate,
+                       Locations = from rep in g
+                                   group rep by new { rep.Location, rep.Segment, rep.Observations } into repg
+                                   select new
+                                   {
+                                       Location = repg.Key.Location,
+                                       Segments = from row in repg
+                                                  group repg by new { repg.Key.Segment, repg.Key.Observations } into segg
+                                                  select new
+                                                  {
+                                                      Segment = segg.Key,
+                                                      Observations = String.Join(",", segg.Key.Observations
+                                                                                        .Select(p => p.ToString())
+                                                                                        .ToList())
+                                                  }
+                                   }
+                   };
+        }
+
         #endregion
 
         #region FixedPattern Templates
@@ -452,11 +463,11 @@ namespace RadiologyTracking.Web.Services
             return this.DbContext.FixedPatternTemplates;
         }
 
-        public IQueryable<FixedPatternTemplate> GetFixedPatternTemplates(FixedPattern fixedPattern, Coverage coverage)
+        public IQueryable<FixedPatternTemplate> GetFixedPatternTemplatesForFP(String fixedPatternNo, String coverage)
         {
             return this.DbContext.FixedPatternTemplates.Where(p =>
-                                                                p.FixedPattern.Equals(fixedPattern) &&
-                                                                p.Coverage.Equals(coverage));
+                                                                p.FixedPattern.FPNo.Equals(fixedPatternNo) &&
+                                                                p.Coverage.CoverageName.Equals(coverage));
         }
 
         public void InsertFixedPatternTemplate(FixedPatternTemplate entity)
@@ -610,11 +621,6 @@ namespace RadiologyTracking.Web.Services
         #endregion
 
         #region RG Reports
-        public IQueryable<RGReport> GetRGReports()
-        {
-            return this.DbContext.RGReports;
-        }
-
         public IQueryable<RGReport> GetRGReports(DateTime fromDate, DateTime toDate)
         {
             return this.DbContext.RGReports.Where(p =>
@@ -731,20 +737,42 @@ namespace RadiologyTracking.Web.Services
                 this.DbContext.Technicians.Remove(entity);
             }
         }
+
+        public IQueryable GetShiftWisePerformanceReport(DateTime fromDate, DateTime toDate, Technician technician = null)
+        {
+            return from r in this.DbContext.RGReportRows
+                   where r.Technician == (technician == null ? r.Technician : technician)
+                   && r.RGReport.ReportDate >= fromDate && r.RGReport.ReportDate <= toDate
+                   group r by new { r.RGReport.ReportDate, r.RGReport.Shift } into g
+                   let total = g.Count()
+                   let retakes = g.Where(p => p.Remark == Remark.RETAKE).Count()
+                   let totalArea = g.Sum(p => p.FilmSize.Area)
+                   let retakeArea = g.Where(p => p.Remark == Remark.RETAKE).Sum(p => p.FilmSize.Area)
+                   select new
+                   {
+                       Technicians = String.Join(",", g.Select(p => p.Technician.Name).ToList()),
+                       Date = g.Key.ReportDate,
+                       Shift = g.Key.Shift,
+                       FilmArea = from f in g
+                                  group f by f.FilmSize into fg
+                                  select new
+                                  {
+                                      FilmSize = fg.Key,
+                                      Total = fg.Count(),
+                                      RT = fg.Where(p => p.Remark == Remark.RETAKE).Count()
+                                  },
+                       TotalFilmsTaken = total,
+                       TotalRetakes = retakes,
+                       RTPercent = (retakes * 100 / total),
+                       RTPercentByArea = (retakeArea * 100 / totalArea)
+                   };
+        }
         #endregion
 
         #region Thickness Ranges
-        public IQueryable<ThicknessRangeForEnergy> GetThicknessRangesForEnergy()
+        public IQueryable<ThicknessRangeForEnergy> GetThicknessRangesForEnergy(String filter = "")
         {
-            return this.DbContext.ThicknessRangesForEnergy;
-        }
-
-        public IQueryable<ThicknessRangeForEnergy> GetThicknessRangesForEnergy(String filter)
-        {
-            return this.DbContext.ThicknessRangesForEnergy.Where(p =>
-                                                                    p.Energy.Name.Contains(filter) ||
-                                                                    p.ThicknessFrom.ToString().Contains(filter) ||
-                                                                    p.ThicknessTo.ToString().Contains(filter));
+            return this.DbContext.ThicknessRangesForEnergy.Where(p => p.Energy.Name.Contains(filter));
         }
 
         public void InsertThicknessRangeForEnergy(ThicknessRangeForEnergy entity)
@@ -778,6 +806,45 @@ namespace RadiologyTracking.Web.Services
                 this.DbContext.ThicknessRangesForEnergy.Remove(entity);
             }
         }
+        #endregion
+        
+        #region Users
+
+        //public IQueryable GetUsers()
+        //{
+        //    return Membership.GetAllUsers().AsQueryable();
+        //}
+
+        //public void InsertUser(User user)
+        //{
+        //    using (UserRegistrationService urs = new UserRegistrationService())
+        //    {
+        //       // urs.CreateUser(user, user.Password);
+        //    }
+            
+        //}
+
+        //public void UpdateUser(User user)
+        //{
+        //    //this.DbContext.Users.AttachAsModified(currentUser, this.ChangeSet.GetOriginal(currentUser), this.DbContext);
+        //    //Membership.UpdateUser((MembershipUser)user);
+        //}
+
+        //public void DeleteUser(User entity)
+        //{
+        //    DbEntityEntry<User> entityEntry = this.DbContext.Entry(entity);
+        //    if ((entityEntry.State != EntityState.Deleted))
+        //    {
+        //        entityEntry.State = EntityState.Deleted;
+        //    }
+        //    else
+        //    {
+        //        //this.DbContext.Users.Attach(entity);
+        //        //this.DbContext.Users.Remove(entity);
+        //    }
+        //}
+
+
         #endregion
 
         #region Welders

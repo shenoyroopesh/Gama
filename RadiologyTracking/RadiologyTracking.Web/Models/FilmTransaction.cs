@@ -8,6 +8,7 @@ namespace RadiologyTracking.Web.Models
 {
     public class FilmTransaction
     {
+        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ID { get; set; }
         public DateTime Date { get; set; }
 

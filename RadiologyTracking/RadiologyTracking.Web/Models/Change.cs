@@ -8,6 +8,7 @@ namespace RadiologyTracking.Web.Models
 {
     public class Change
     {
+        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ID { get; set; }
         public String What { get; set; }
         public String Where { get; set; }

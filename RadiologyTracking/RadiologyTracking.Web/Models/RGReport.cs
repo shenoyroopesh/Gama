@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.ServiceModel.DomainServices.Server;
+using System.ComponentModel.DataAnnotations;
 
 namespace RadiologyTracking.Web.Models
 {
@@ -11,6 +13,7 @@ namespace RadiologyTracking.Web.Models
     /// </summary>
     public class RGReport
     {
+        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ID { get; set; }
 
         public int FixedPatternID { get; set; }
@@ -31,7 +34,9 @@ namespace RadiologyTracking.Web.Models
         public String EvaluationAsPer { get; set; }
         public String AcceptanceAsPer { get; set; }
         public String DrawingNo { get; set; }
-        public RGStatus Status { get; set; }        
+        public RGStatus Status { get; set; }
+
+        [Include, Composition]
         public ICollection<RGReportRow> RGReportRows { get; set; }
         public String Result { get; set; }
     }

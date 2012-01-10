@@ -2,6 +2,7 @@
 {
     using System.Runtime.Serialization;
     using System.ServiceModel.DomainServices.Server.ApplicationServices;
+using RadiologyTracking.Web.Models;
 
     /// <summary>
     /// Class containing information about the authenticated user.
@@ -16,5 +17,10 @@
         /// Gets and sets the friendly name of the user.
         /// </summary>
         public string FriendlyName { get; set; }
+
+        /// <summary>
+        /// Used for identifying which Foundry this user belongs to
+        /// </summary>
+        public string Foundry { get; set; }
     }
 }
