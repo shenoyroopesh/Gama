@@ -14,6 +14,8 @@ namespace RadiologyTracking.Web.Models
     {
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ID { get; set; }
+
+        [Required(ErrorMessage="Name is required")]
         public String Name { get; set; }
     }
 }

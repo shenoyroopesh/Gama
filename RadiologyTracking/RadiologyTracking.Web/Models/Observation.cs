@@ -11,6 +11,48 @@ namespace RadiologyTracking.Web.Models
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ID { get; set; }
 
+        /// <summary>
+        /// Default constructor, doesn't do much
+        /// </summary>
+        public Observation()
+        {
+        }
+
+        /// <summary>
+        /// Constructor with a string, splits the input into Defect and level
+        /// </summary>
+        /// <param name="observation"></param>
+        public Observation(String observation)
+        {
+            //if the string contains less or more than 2 characters throw an exception
+            //we are assuming that the string contains only 2 characters, first character corresponds
+            //to the Defect and the second character corresponds to the Level
+
+            if (observation.Length != 2)
+            {
+                throw new ArgumentException("Observation should be only two characters");
+            }
+
+            int level;
+
+            if (!Int32.TryParse(observation[1].ToString(), out level))
+            {
+                throw new ArgumentException("Level should be numeric");
+            }
+
+            //need to validate against existing defects
+            using (RadiologyContext ctx = new RadiologyContext())
+            {
+                var rows = ctx.Defects.Where(p => p.Code == observation[0].ToString());
+                if (rows.Count() == 0)
+                {
+                    throw new ArgumentException("Defect with code "+ observation[0].ToString() + "is not defined in the database");
+                }
+                this.Defect = rows.First();
+                this.Level = level;
+            }
+        }
+
         public int DefectID { get; set; }
         public Defect Defect { get; set; }
 

@@ -1712,6 +1712,7 @@ namespace RadiologyTracking.Web.Models
         /// Gets or sets the 'Name' value.
         /// </summary>
         [DataMember()]
+        [Required(ErrorMessage="Name is required")]
         public string Name
         {
             get
@@ -4047,6 +4048,8 @@ namespace RadiologyTracking.Web.Models
         
         private EntityCollection<Observation> _observations;
         
+        private string _observationsText;
+        
         private Remark _remark;
         
         private EntityRef<RGReport> _rgReport;
@@ -4092,6 +4095,8 @@ namespace RadiologyTracking.Web.Models
         partial void OnIDChanged();
         partial void OnLocationChanging(string value);
         partial void OnLocationChanged();
+        partial void OnObservationsTextChanging(string value);
+        partial void OnObservationsTextChanged();
         partial void OnRemarkChanging(Remark value);
         partial void OnRemarkChanged();
         partial void OnRGReportIDChanging(int value);
@@ -4360,6 +4365,35 @@ namespace RadiologyTracking.Web.Models
                     this._observations = new EntityCollection<Observation>(this, "Observations", this.FilterObservations);
                 }
                 return this._observations;
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'ObservationsText' value.
+        /// </summary>
+        // The following attributes were not generated:
+        // 
+        // - The attribute 'System.ComponentModel.DataAnnotations.NotMappedAttribute' is not visible in the client project 'RadiologyTracking'. Are you missing an assembly reference?
+        // [NotMappedAttribute()]
+        // 
+        [DataMember()]
+        public string ObservationsText
+        {
+            get
+            {
+                return this._observationsText;
+            }
+            set
+            {
+                if ((this._observationsText != value))
+                {
+                    this.OnObservationsTextChanging(value);
+                    this.RaiseDataMemberChanging("ObservationsText");
+                    this.ValidateProperty("ObservationsText", value);
+                    this._observationsText = value;
+                    this.RaiseDataMemberChanged("ObservationsText");
+                    this.OnObservationsTextChanged();
+                }
             }
         }
         

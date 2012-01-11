@@ -47,5 +47,43 @@ namespace RadiologyTracking.Web.Models
         /// whose cause is REPAIR which can again have different REMARK such as REPAIR or RESHOOT or ACCEPTABLE
         /// </summary>
         public RGReportRowType RowType { get; set; }
+
+        /// <summary>
+        /// This property is only for setting observations for the row using a comma separated string of observations and not
+        /// for anything else. This won't be saved in the database
+        /// </summary>
+        [NotMapped]
+        public String ObservationsText
+        {
+            get
+            {
+                return string.Join(",", this.Observations.Select(p=>p.ToString()));
+            }
+            set
+            {
+                //break the text up and create a new observation object for each of the text. If any 
+                // segment not parse well just ignore it
+
+                List<Observation> newObservations = new List<Observation>();
+                String[] obs = value.Split(',');
+                foreach (var o in obs)
+                {
+                    try
+                    {
+                        Observation observation = new Observation(o);
+                        newObservations.Add(observation);
+                    }
+                    catch (ArgumentException e)
+                    {
+                        continue;
+                    }
+
+                    //if all goes well, delete existing observations and add these ones
+                    this.Observations.Clear();
+                    newObservations.ForEach(p => this.Observations.Add(p));
+                }
+            }
+        }
+
     }
 }

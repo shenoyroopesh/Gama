@@ -9,6 +9,7 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using System.Collections.Generic;
+using System.Collections;
 
 namespace RadiologyTracking.CustomControls
 {
@@ -63,6 +64,11 @@ namespace RadiologyTracking.CustomControls
                 item.FontWeight = FontWeights.Normal;
 
             selectedCells.Clear();
+
+            //if this is not textblock, it means it is in edit mode, so do not proceed further
+            if (e.OriginalSource.GetType() != typeof(TextBlock))
+                return;
+
             mouseDown = true;
             selectCell(e.OriginalSource);
         }
@@ -87,9 +93,11 @@ namespace RadiologyTracking.CustomControls
             if (e.Key == Key.V && (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
             {
                 string text = Clipboard.GetText();
-                foreach (TextBlock item in selectedCells) 
-                    item.Text = text;
-
+                foreach (TextBlock txt in selectedCells)
+                {
+                    txt.Text = text;
+                    txt.GetBindingExpression(TextBlock.TextProperty).UpdateSource();                    
+                }
                 e.Handled = true;
             }
             else
