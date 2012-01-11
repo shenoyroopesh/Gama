@@ -8,6 +8,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RadiologyTracking", "Radiol
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RadiologyTracking.Web", "RadiologyTracking.Web\RadiologyTracking.Web.csproj", "{BE633745-04FC-4865-8B0F-337B74356E75}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomControls", "CustomControls\CustomControls.csproj", "{B885C7C7-1917-483D-A179-1579D1428B7C}"
+EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
 		SccNumberOfProjects = 3
@@ -34,6 +36,10 @@ Global
 		{BE633745-04FC-4865-8B0F-337B74356E75}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BE633745-04FC-4865-8B0F-337B74356E75}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BE633745-04FC-4865-8B0F-337B74356E75}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B885C7C7-1917-483D-A179-1579D1428B7C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B885C7C7-1917-483D-A179-1579D1428B7C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B885C7C7-1917-483D-A179-1579D1428B7C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B885C7C7-1917-483D-A179-1579D1428B7C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
