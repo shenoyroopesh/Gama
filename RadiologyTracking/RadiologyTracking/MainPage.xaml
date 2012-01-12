@@ -57,6 +57,9 @@
                         <HyperlinkButton x:Name="Link4" Style="{StaticResource LinkStyle}" 
                                      NavigateUri="/ThicknessToEnergyType" TargetName="ContentFrame" Content="Thickness-Energy"/>
 
+                        <Rectangle x:Name="Divider4" Style="{StaticResource DividerStyle}"/>
+                        <HyperlinkButton x:Name="Link5" Style="{StaticResource LinkStyle}" 
+                                     NavigateUri="/Company" TargetName="ContentFrame" Content="Company"/>
 
                     </StackPanel>
                 </Border>

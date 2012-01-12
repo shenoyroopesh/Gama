@@ -19,6 +19,7 @@ namespace RadiologyTracking.Web.Models
 
         public DbSet<Change> Changes { get; set; }
         public DbSet<Coverage> Coverages { get; set; }
+        public DbSet<Company> Companies { get; set; }
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Defect> Defects { get; set; }
         public DbSet<Energy> Energies { get; set; }

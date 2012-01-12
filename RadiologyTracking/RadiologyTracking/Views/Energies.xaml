@@ -8,20 +8,38 @@
     xmlns:riaControls="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.DomainServices" 
     xmlns:my="clr-namespace:RadiologyTracking.Web.Models" xmlns:my1="clr-namespace:RadiologyTracking.Web.Services" 
     xmlns:sdk="http://schemas.microsoft.com/winfx/2006/xaml/presentation/sdk"
-    xmlns:custom="clr-namespace:RadiologyTracking.CustomControls;assembly=CustomControls">
-    
+    xmlns:custom="clr-namespace:RadiologyTracking.CustomControls;assembly=CustomControls"
+    xmlns:local="clr-namespace:RadiologyTracking.Controls">
+
     <Grid x:Name="LayoutRoot" Background="White">
-        <riaControls:DomainDataSource AutoLoad="True" d:DesignData="{d:DesignInstance my:Energy, CreateList=true}" Height="0" LoadedData="energyDomainDataSource_LoadedData" Name="energyDomainDataSource" QueryName="GetEnergiesQuery" Width="0">
+        <riaControls:DomainDataSource AutoLoad="True" d:DesignData="{d:DesignInstance my:Energy, CreateList=true}" Height="0" LoadedData="energyDomainDataSource_LoadedData" 
+                                      Name="energyDomainDataSource" QueryName="GetEnergiesQuery" Width="0">
             <riaControls:DomainDataSource.DomainContext>
                 <my1:RadiologyContext />
             </riaControls:DomainDataSource.DomainContext>
         </riaControls:DomainDataSource>
-        <custom:CustomGrid AutoGenerateColumns="False" Height="200" HorizontalAlignment="Left" ItemsSource="{Binding ElementName=energyDomainDataSource, Path=Data, Mode=TwoWay}" Margin="132,153,0,0" Name="energyDataGrid" RowDetailsVisibilityMode="VisibleWhenSelected" VerticalAlignment="Top" Width="400">
-            <sdk:DataGrid.Columns>
-                <sdk:DataGridTextColumn x:Name="nameColumn" Binding="{Binding Path=Name, Mode=TwoWay}" Header="Name" Width="Auto" />
-            </sdk:DataGrid.Columns>
-        </custom:CustomGrid>
-        <Button Content="Save" Height="23" HorizontalAlignment="Left" Margin="248,396,0,0" Name="btnSave" VerticalAlignment="Top" Width="75" Click="btnSave_Click" />
-        <Button Content="Add" Height="23" HorizontalAlignment="Right" Margin="0,396,161,0" Name="btnAdd" VerticalAlignment="Top" Width="75" Click="btnAdd_Click" />
+        <local:BusyIndicator x:Name="busyIndicator" IsBusy="{Binding IsBusy, ElementName=energyDomainDataSource}">
+            <StackPanel Orientation="Vertical">
+                <custom:CustomGrid AutoGenerateColumns="False" Height="200" HorizontalAlignment="Center" ItemsSource="{Binding ElementName=energyDomainDataSource, Path=Data, Mode=TwoWay}" 
+                           Margin="0,153,0,0"  Name="energyDataGrid" RowDetailsVisibilityMode="VisibleWhenSelected" Width="400">
+                    <sdk:DataGrid.Columns>
+                        <sdk:DataGridTextColumn x:Name="nameColumn" Binding="{Binding Path=Name, Mode=TwoWay}" Header="Name" Width="Auto" MinWidth="300" />
+                        <sdk:DataGridTemplateColumn Header="Delete" Width="Auto">
+                            <sdk:DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Button Name="grdDeleteButton" Click="grdDeleteButton_Click" Tag="{Binding}" BorderBrush="Transparent"
+                                            Style="{StaticResource DeleteButtonStyle}"/>
+                                </DataTemplate>
+                            </sdk:DataGridTemplateColumn.CellTemplate>
+                        </sdk:DataGridTemplateColumn>
+                    </sdk:DataGrid.Columns>
+                </custom:CustomGrid>
+                <StackPanel Orientation="Horizontal" Height="23" Margin="0,20,0,0" HorizontalAlignment="Center">
+                    <Button Name="btnSave" Click="btnSave_Click" Background="Transparent" Style="{StaticResource SaveButtonStyle}"/>
+                    <Button Name="btnCancel" Margin="20,0,0,0" Click="btnCancel_Click" Style="{StaticResource CancelButtonStyle}" />
+                    <Button Margin="100,0,0,0" Name="btnAdd" VerticalAlignment="Top" Width="75" Click="btnAdd_Click" Style="{StaticResource AddButtonStyle}"/>
+                </StackPanel>
+            </StackPanel>
+        </local:BusyIndicator>
     </Grid>
 </UserControl>

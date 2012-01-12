@@ -106,6 +106,21 @@ namespace RadiologyTracking.Web.Services
         }
         #endregion
 
+        #region Company
+
+        public IQueryable<Company> GetCompanies()
+        {
+            return this.DbContext.Companies;
+        }
+        
+        public void UpdateCompany(Company currentCompany)
+        {
+            this.DbContext.Companies.AttachAsModified(currentCompany, this.ChangeSet.GetOriginal(currentCompany), this.DbContext);
+        }
+
+        #endregion
+
+
         #region Customers
         public IQueryable<Customer> GetCustomers()
         {

@@ -1,8 +1,5 @@
 D:\DotNet\Gama\RadiologyTracking\RadiologyTracking\Bin\Debug\RadiologyTracking.dll
 D:\DotNet\Gama\RadiologyTracking\RadiologyTracking\Bin\Debug\RadiologyTracking.pdb
-D:\DotNet\Gama\RadiologyTracking\RadiologyTracking\Bin\Debug\AppManifest.xaml
-D:\DotNet\Gama\RadiologyTracking\RadiologyTracking\Bin\Debug\RadiologyTracking.xap
-D:\DotNet\Gama\RadiologyTracking\RadiologyTracking\Bin\Debug\TestPage.html
 D:\DotNet\Gama\RadiologyTracking\RadiologyTracking\Bin\Debug\CustomControls.dll
 D:\DotNet\Gama\RadiologyTracking\RadiologyTracking\Bin\Debug\System.ComponentModel.DataAnnotations.dll
 D:\DotNet\Gama\RadiologyTracking\RadiologyTracking\Bin\Debug\System.ServiceModel.DomainServices.Client.dll
@@ -242,6 +239,7 @@ D:\DotNet\Gama\RadiologyTracking\RadiologyTracking\Bin\Debug\zh-Hans\System.Wind
 D:\DotNet\Gama\RadiologyTracking\RadiologyTracking\Bin\Debug\zh-Hant\System.Windows.Controls.Navigation.resources.dll
 D:\DotNet\Gama\RadiologyTracking\RadiologyTracking\obj\Debug\ResolveAssemblyReference.cache
 D:\DotNet\Gama\RadiologyTracking\RadiologyTracking\obj\Debug\App.g.i.cs
+D:\DotNet\Gama\RadiologyTracking\RadiologyTracking\obj\Debug\Views\Company.g.i.cs
 D:\DotNet\Gama\RadiologyTracking\RadiologyTracking\obj\Debug\Views\Energies.g.i.cs
 D:\DotNet\Gama\RadiologyTracking\RadiologyTracking\obj\Debug\Views\ErrorWindow.g.i.cs
 D:\DotNet\Gama\RadiologyTracking\RadiologyTracking\obj\Debug\Views\About.g.i.cs
@@ -263,4 +261,7 @@ D:\DotNet\Gama\RadiologyTracking\RadiologyTracking\obj\Debug\GenerateResource.re
 D:\DotNet\Gama\RadiologyTracking\RadiologyTracking\obj\Debug\GenerateResource.write.1.tlog
 D:\DotNet\Gama\RadiologyTracking\RadiologyTracking\obj\Debug\RadiologyTracking.dll
 D:\DotNet\Gama\RadiologyTracking\RadiologyTracking\obj\Debug\RadiologyTracking.pdb
+D:\DotNet\Gama\RadiologyTracking\RadiologyTracking\Bin\Debug\AppManifest.xaml
+D:\DotNet\Gama\RadiologyTracking\RadiologyTracking\Bin\Debug\RadiologyTracking.xap
+D:\DotNet\Gama\RadiologyTracking\RadiologyTracking\Bin\Debug\TestPage.html
 D:\DotNet\Gama\RadiologyTracking\RadiologyTracking\obj\Debug\XapCacheFile.xml

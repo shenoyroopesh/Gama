@@ -126,6 +126,10 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>SecurityQuestions.resx</DependentUpon>
     </Compile>
+    <Compile Include="Common.cs" />
+    <Compile Include="Views\Company.xaml.cs">
+      <DependentUpon>Company.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Energies.xaml.cs">
       <DependentUpon>Energies.xaml</DependentUpon>
     </Compile>
@@ -172,6 +176,10 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Page>
     <Page Include="Controls\BusyIndicator.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Company.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -261,6 +269,18 @@
       <Project>{B885C7C7-1917-483D-A179-1579D1428B7C}</Project>
       <Name>CustomControls</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Button-Add-icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Delete.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Save-icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\cancel.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Silverlight\$(SilverlightVersion)\Microsoft.Silverlight.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

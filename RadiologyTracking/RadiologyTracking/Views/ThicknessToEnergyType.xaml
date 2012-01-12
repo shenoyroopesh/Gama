@@ -4,7 +4,9 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    d:DesignHeight="480" d:DesignWidth="640" xmlns:sdk="http://schemas.microsoft.com/winfx/2006/xaml/presentation/sdk" xmlns:riaControls="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.DomainServices" xmlns:my="clr-namespace:RadiologyTracking.Web.Services" xmlns:my1="clr-namespace:RadiologyTracking.Web.Models">
+    d:DesignHeight="480" d:DesignWidth="640" xmlns:sdk="http://schemas.microsoft.com/winfx/2006/xaml/presentation/sdk" xmlns:riaControls="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.DomainServices" xmlns:my="clr-namespace:RadiologyTracking.Web.Services" xmlns:my1="clr-namespace:RadiologyTracking.Web.Models"
+    xmlns:custom="clr-namespace:RadiologyTracking.CustomControls;assembly=CustomControls"
+    xmlns:local="clr-namespace:RadiologyTracking.Controls">
     
     <Grid x:Name="LayoutRoot" Background="White">
         <sdk:Label Height="28" HorizontalAlignment="Left" Margin="12,12,0,0" Name="label1" VerticalAlignment="Top" Width="403" 
@@ -28,8 +30,9 @@
             <Button Command="{Binding Path=LoadCommand, ElementName=thicknessRangeForEnergyDomainDataSource}" Content="Load" Margin="3" Name="thicknessRangeForEnergyDomainDataSourceLoadButton" />
         </StackPanel>
         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-            <sdk:DataGrid AutoGenerateColumns="False" Height="200" ItemsSource="{Binding ElementName=thicknessRangeForEnergyDomainDataSource, Path=Data}" 
-                          HorizontalAlignment="Center" VerticalAlignment="Center" Name="thicknessRangeForEnergyDataGrid" RowDetailsVisibilityMode="VisibleWhenSelected" Width="400">
+            <custom:CustomGrid AutoGenerateColumns="False" Height="200" ItemsSource="{Binding ElementName=thicknessRangeForEnergyDomainDataSource, Path=Data}" 
+                          HorizontalAlignment="Center" VerticalAlignment="Center" Name="grdThicknessRangeForEnergy" RowDetailsVisibilityMode="VisibleWhenSelected" 
+                          Width="400">
                 <sdk:DataGrid.Columns>                
                     <sdk:DataGridTextColumn x:Name="thicknessFromColumn" Binding="{Binding Path=ThicknessFrom}" Header="Thickness From" Width="SizeToHeader" />
                     <sdk:DataGridTextColumn x:Name="thicknessToColumn" Binding="{Binding Path=ThicknessTo}" Header="Thickness To" Width="SizeToHeader" />
@@ -47,27 +50,21 @@
                             </DataTemplate>
                         </sdk:DataGridTemplateColumn.CellTemplate>
                     </sdk:DataGridTemplateColumn>
+                    <sdk:DataGridTemplateColumn Header="Delete" Width="Auto">
+                        <sdk:DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button Name="grdDeleteButton" Click="grdDeleteButton_Click" Tag="{Binding}" BorderBrush="Transparent"
+                                            Style="{StaticResource DeleteButtonStyle}"/>
+                            </DataTemplate>
+                        </sdk:DataGridTemplateColumn.CellTemplate>
+                    </sdk:DataGridTemplateColumn>
                 </sdk:DataGrid.Columns>
-            </sdk:DataGrid>
+            </custom:CustomGrid>
+            <StackPanel Orientation="Horizontal" Height="23" Margin="0,20,0,0" HorizontalAlignment="Center">
+                <Button Name="btnSave" Click="btnSave_Click" Background="Transparent" Style="{StaticResource SaveButtonStyle}"/>
+                <Button Name="btnCancel" Margin="20,0,0,0" Click="btnCancel_Click" Style="{StaticResource CancelButtonStyle}" />
+                <Button Margin="100,0,0,0" Name="btnAdd" VerticalAlignment="Top" Width="75" Click="btnAdd_Click" Style="{StaticResource AddButtonStyle}"/>
+            </StackPanel>
         </StackPanel>
-        <Grid DataContext="{Binding ElementName=thicknessRangeForEnergyDomainDataSource, Path=Data}" HorizontalAlignment="Left" Margin="208,391,0,0" Name="grid1" VerticalAlignment="Top">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="Auto" />
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-            </Grid.RowDefinitions>
-            <sdk:Label Content="Thickness From:" Grid.Column="0" Grid.Row="0" HorizontalAlignment="Left" Margin="3" VerticalAlignment="Center" />
-            <TextBox Grid.Column="1" Grid.Row="0" Height="23" HorizontalAlignment="Left" Margin="3" Name="thicknessFromTextBox" Text="{Binding Path=ThicknessFrom, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center" Width="120" />
-            <sdk:Label Content="Thickness To:" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Left" Margin="3" VerticalAlignment="Center" />
-            <TextBox Grid.Column="1" Grid.Row="1" Height="23" HorizontalAlignment="Left" Margin="3" Name="thicknessToTextBox" Text="{Binding Path=ThicknessTo, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center" Width="120" />
-            <sdk:Label Content="Energy:" Grid.Column="0" Grid.Row="2" HorizontalAlignment="Left" Margin="3" VerticalAlignment="Center" />
-            <ComboBox Grid.Column="1" Grid.Row="2" Height="23" HorizontalAlignment="Left" Margin="3" Name="cmbEnergy" 
-                      ItemsSource="{Binding ElementName=energyDomainDataSource, Path=Data}" SelectedValue="{Binding Path=Energy, Mode=TwoWay}" />
-        </Grid>
     </Grid>
 </UserControl>

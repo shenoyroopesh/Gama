@@ -15,7 +15,7 @@
                     <app:NotOperatorValueConverter x:Key="NotOperatorValueConverter" />
                 </ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>                
+        </ResourceDictionary> 
     </Application.Resources>
 
 </Application>

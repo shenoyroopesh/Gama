@@ -83,6 +83,9 @@ namespace RadiologyTracking.CustomControls
    
         void selectCell(Object c)
         {
+            if (c.GetType() != typeof(TextBlock))
+                return;
+
             TextBlock cell = (TextBlock)c;
             selectedCells.Add(cell);            
             cell.FontWeight = FontWeights.Bold;
@@ -93,6 +96,9 @@ namespace RadiologyTracking.CustomControls
             if (e.Key == Key.V && (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
             {
                 string text = Clipboard.GetText();
+
+                //cleanup the escape characters
+                text = text.Replace("\t", "").Replace("\r", "").Replace("\n", "");
                 foreach (TextBlock txt in selectedCells)
                 {
                     txt.Text = text;

@@ -11,6 +11,8 @@ using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using RadiologyTracking.Web.Services;
 using RadiologyTracking.Web.Models;
+using System.ServiceModel.DomainServices.Client;
+using System.ComponentModel.DataAnnotations;
 
 namespace RadiologyTracking.Views
 {
@@ -36,8 +38,28 @@ namespace RadiologyTracking.Views
         }
 
         private void btnSave_Click(object sender, RoutedEventArgs e)
+        {            
+           if(energyDataGrid.IsValid)
+                //commit any unsaved changes to avoid an exception
+                if(energyDataGrid.CommitEdit())
+                    energyDomainDataSource.DomainContext.SubmitChanges(Common.OnFormSubmitCompleted, null);
+        }
+
+        private void grdDeleteButton_Click(object sender, RoutedEventArgs e)
         {
-            energyDomainDataSource.DomainContext.SubmitChanges();
+            if (MessageBox.Show("Are you sure you want to delete this item?", "Confirm Delete", MessageBoxButton.OKCancel) == MessageBoxResult.Cancel)
+                return;
+
+            DataGridRow row = DataGridRow.GetRowContainingElement(sender as FrameworkElement);
+            //commit any unsaved changes to avoid an exception
+            if(energyDataGrid.CommitEdit()) 
+                ((DomainDataSourceView)energyDataGrid.ItemsSource).Remove((Energy)row.DataContext);
+        }
+
+        private void btnCancel_Click(object sender, RoutedEventArgs e)
+        {
+            if(energyDataGrid.CommitEdit())
+                energyDomainDataSource.DomainContext.RejectChanges();
         }
     }
 }

@@ -21,7 +21,17 @@ namespace RadiologyTracking.Web.Models
             Roles.CreateRole("Foundry Supervisor");
             Roles.CreateRole("Corrector");
             Roles.CreateRole("Managing Director");
-            Roles.AddUsersToRole(new[] {"admin"}, "Admin");   
+            Roles.AddUsersToRole(new[] {"admin"}, "Admin");
+
+            //Necessary to have one and only one company
+            context.Companies.Add(new Company()
+            {
+                Name = "Company Name",
+                Address = "Sample Address",
+                ShortName = "Company"
+            });
+
+            context.SaveChanges();
         }
     }
 }

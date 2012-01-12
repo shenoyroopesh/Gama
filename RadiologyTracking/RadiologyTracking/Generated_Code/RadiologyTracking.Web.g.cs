@@ -957,6 +957,7 @@ namespace RadiologyTracking.Web.Models
     using System.ServiceModel.DomainServices;
     using System.ServiceModel.DomainServices.Client;
     using System.ServiceModel.DomainServices.Client.ApplicationServices;
+    using RadiologyTracking.Web.Resources;
     
     
     /// <summary>
@@ -1228,6 +1229,258 @@ namespace RadiologyTracking.Web.Models
     }
     
     /// <summary>
+    /// The 'Company' entity class.
+    /// </summary>
+    [DataContract(Namespace="http://schemas.datacontract.org/2004/07/RadiologyTracking.Web.Models")]
+    public sealed partial class Company : Entity
+    {
+        
+        private string _address;
+        
+        private string _email;
+        
+        private int _id;
+        
+        private string _name;
+        
+        private string _phoneNo;
+        
+        private string _shortName;
+        
+        private string _webSite;
+        
+        #region Extensibility Method Definitions
+
+        /// <summary>
+        /// This method is invoked from the constructor once initialization is complete and
+        /// can be used for further object setup.
+        /// </summary>
+        partial void OnCreated();
+        partial void OnAddressChanging(string value);
+        partial void OnAddressChanged();
+        partial void OnEmailChanging(string value);
+        partial void OnEmailChanged();
+        partial void OnIDChanging(int value);
+        partial void OnIDChanged();
+        partial void OnNameChanging(string value);
+        partial void OnNameChanged();
+        partial void OnPhoneNoChanging(string value);
+        partial void OnPhoneNoChanged();
+        partial void OnShortNameChanging(string value);
+        partial void OnShortNameChanged();
+        partial void OnWebSiteChanging(string value);
+        partial void OnWebSiteChanged();
+
+        #endregion
+        
+        
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Company"/> class.
+        /// </summary>
+        public Company()
+        {
+            this.OnCreated();
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'Address' value.
+        /// </summary>
+        [DataMember()]
+        [Display(Order=4)]
+        [Required(ErrorMessage="Address for the Company cannot be empty")]
+        public string Address
+        {
+            get
+            {
+                return this._address;
+            }
+            set
+            {
+                if ((this._address != value))
+                {
+                    this.OnAddressChanging(value);
+                    this.RaiseDataMemberChanging("Address");
+                    this.ValidateProperty("Address", value);
+                    this._address = value;
+                    this.RaiseDataMemberChanged("Address");
+                    this.OnAddressChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'Email' value.
+        /// </summary>
+        [DataMember()]
+        [Display(Order=5)]
+        [RegularExpression("^([\\w-\\.]+)@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.)|(([\\w-]+\\.)+))([a-zA-Z]{2,4" +
+            "}|[0-9]{1,3})(\\]?)$", ErrorMessageResourceName="ValidationErrorInvalidEmail", ErrorMessageResourceType=typeof(ValidationErrorResources))]
+        public string Email
+        {
+            get
+            {
+                return this._email;
+            }
+            set
+            {
+                if ((this._email != value))
+                {
+                    this.OnEmailChanging(value);
+                    this.RaiseDataMemberChanging("Email");
+                    this.ValidateProperty("Email", value);
+                    this._email = value;
+                    this.RaiseDataMemberChanged("Email");
+                    this.OnEmailChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'ID' value.
+        /// </summary>
+        // The following attributes were not generated:
+        // 
+        // - The attribute 'System.ComponentModel.DataAnnotations.DatabaseGeneratedAttribute' is not visible in the client project 'RadiologyTracking'. Are you missing an assembly reference?
+        // [DatabaseGeneratedAttribute(Identity)]
+        // 
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [DataMember()]
+        [Display(Order=1)]
+        [Editable(false, AllowInitialValue=true)]
+        [Key()]
+        [RoundtripOriginal()]
+        public int ID
+        {
+            get
+            {
+                return this._id;
+            }
+            set
+            {
+                if ((this._id != value))
+                {
+                    this.OnIDChanging(value);
+                    this.ValidateProperty("ID", value);
+                    this._id = value;
+                    this.RaisePropertyChanged("ID");
+                    this.OnIDChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'Name' value.
+        /// </summary>
+        [DataMember()]
+        [Display(Description="This is the name that will be used in Final Printable Reports", Order=2)]
+        [Required(ErrorMessage="Name of the company cannot be empty")]
+        public string Name
+        {
+            get
+            {
+                return this._name;
+            }
+            set
+            {
+                if ((this._name != value))
+                {
+                    this.OnNameChanging(value);
+                    this.RaiseDataMemberChanging("Name");
+                    this.ValidateProperty("Name", value);
+                    this._name = value;
+                    this.RaiseDataMemberChanged("Name");
+                    this.OnNameChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'PhoneNo' value.
+        /// </summary>
+        [DataMember()]
+        [Display(Order=7)]
+        public string PhoneNo
+        {
+            get
+            {
+                return this._phoneNo;
+            }
+            set
+            {
+                if ((this._phoneNo != value))
+                {
+                    this.OnPhoneNoChanging(value);
+                    this.RaiseDataMemberChanging("PhoneNo");
+                    this.ValidateProperty("PhoneNo", value);
+                    this._phoneNo = value;
+                    this.RaiseDataMemberChanged("PhoneNo");
+                    this.OnPhoneNoChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'ShortName' value.
+        /// </summary>
+        [DataMember()]
+        [Display(Description="Short Name is used everywhere except final reports", Order=3)]
+        [Required(ErrorMessage="Short Name of the company cannot be empty")]
+        public string ShortName
+        {
+            get
+            {
+                return this._shortName;
+            }
+            set
+            {
+                if ((this._shortName != value))
+                {
+                    this.OnShortNameChanging(value);
+                    this.RaiseDataMemberChanging("ShortName");
+                    this.ValidateProperty("ShortName", value);
+                    this._shortName = value;
+                    this.RaiseDataMemberChanged("ShortName");
+                    this.OnShortNameChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'WebSite' value.
+        /// </summary>
+        [DataMember()]
+        [Display(Order=6)]
+        public string WebSite
+        {
+            get
+            {
+                return this._webSite;
+            }
+            set
+            {
+                if ((this._webSite != value))
+                {
+                    this.OnWebSiteChanging(value);
+                    this.RaiseDataMemberChanging("WebSite");
+                    this.ValidateProperty("WebSite", value);
+                    this._webSite = value;
+                    this.RaiseDataMemberChanged("WebSite");
+                    this.OnWebSiteChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Computes a value from the key fields that uniquely identifies this entity instance.
+        /// </summary>
+        /// <returns>An object instance that uniquely identifies this entity instance.</returns>
+        public override object GetIdentity()
+        {
+            return this._id;
+        }
+    }
+    
+    /// <summary>
     /// The 'Coverage' entity class.
     /// </summary>
     [DataContract(Namespace="http://schemas.datacontract.org/2004/07/RadiologyTracking.Web.Models")]
@@ -1334,13 +1587,23 @@ namespace RadiologyTracking.Web.Models
     public sealed partial class Customer : Entity
     {
         
+        private string _address;
+        
         private string _customerName;
+        
+        private string _email;
         
         private EntityRef<Foundry> _foundry;
         
         private int _foundryID;
         
         private int _id;
+        
+        private string _phoneNo;
+        
+        private string _shortName;
+        
+        private string _webSite;
         
         #region Extensibility Method Definitions
 
@@ -1349,12 +1612,22 @@ namespace RadiologyTracking.Web.Models
         /// can be used for further object setup.
         /// </summary>
         partial void OnCreated();
+        partial void OnAddressChanging(string value);
+        partial void OnAddressChanged();
         partial void OnCustomerNameChanging(string value);
         partial void OnCustomerNameChanged();
+        partial void OnEmailChanging(string value);
+        partial void OnEmailChanged();
         partial void OnFoundryIDChanging(int value);
         partial void OnFoundryIDChanged();
         partial void OnIDChanging(int value);
         partial void OnIDChanged();
+        partial void OnPhoneNoChanging(string value);
+        partial void OnPhoneNoChanged();
+        partial void OnShortNameChanging(string value);
+        partial void OnShortNameChanged();
+        partial void OnWebSiteChanging(string value);
+        partial void OnWebSiteChanged();
 
         #endregion
         
@@ -1365,6 +1638,31 @@ namespace RadiologyTracking.Web.Models
         public Customer()
         {
             this.OnCreated();
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'Address' value.
+        /// </summary>
+        [DataMember()]
+        [Required(ErrorMessage="Address for the Company cannot be empty")]
+        public string Address
+        {
+            get
+            {
+                return this._address;
+            }
+            set
+            {
+                if ((this._address != value))
+                {
+                    this.OnAddressChanging(value);
+                    this.RaiseDataMemberChanging("Address");
+                    this.ValidateProperty("Address", value);
+                    this._address = value;
+                    this.RaiseDataMemberChanged("Address");
+                    this.OnAddressChanged();
+                }
+            }
         }
         
         /// <summary>
@@ -1387,6 +1685,32 @@ namespace RadiologyTracking.Web.Models
                     this._customerName = value;
                     this.RaiseDataMemberChanged("CustomerName");
                     this.OnCustomerNameChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'Email' value.
+        /// </summary>
+        [DataMember()]
+        [RegularExpression("^([\\w-\\.]+)@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.)|(([\\w-]+\\.)+))([a-zA-Z]{2,4" +
+            "}|[0-9]{1,3})(\\]?)$", ErrorMessageResourceName="ValidationErrorInvalidEmail", ErrorMessageResourceType=typeof(ValidationErrorResources))]
+        public string Email
+        {
+            get
+            {
+                return this._email;
+            }
+            set
+            {
+                if ((this._email != value))
+                {
+                    this.OnEmailChanging(value);
+                    this.RaiseDataMemberChanging("Email");
+                    this.ValidateProperty("Email", value);
+                    this._email = value;
+                    this.RaiseDataMemberChanged("Email");
+                    this.OnEmailChanged();
                 }
             }
         }
@@ -1487,6 +1811,79 @@ namespace RadiologyTracking.Web.Models
                     this._id = value;
                     this.RaisePropertyChanged("ID");
                     this.OnIDChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'PhoneNo' value.
+        /// </summary>
+        [DataMember()]
+        public string PhoneNo
+        {
+            get
+            {
+                return this._phoneNo;
+            }
+            set
+            {
+                if ((this._phoneNo != value))
+                {
+                    this.OnPhoneNoChanging(value);
+                    this.RaiseDataMemberChanging("PhoneNo");
+                    this.ValidateProperty("PhoneNo", value);
+                    this._phoneNo = value;
+                    this.RaiseDataMemberChanged("PhoneNo");
+                    this.OnPhoneNoChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'ShortName' value.
+        /// </summary>
+        [DataMember()]
+        [Required(ErrorMessage="Short Name of the company cannot be empty")]
+        public string ShortName
+        {
+            get
+            {
+                return this._shortName;
+            }
+            set
+            {
+                if ((this._shortName != value))
+                {
+                    this.OnShortNameChanging(value);
+                    this.RaiseDataMemberChanging("ShortName");
+                    this.ValidateProperty("ShortName", value);
+                    this._shortName = value;
+                    this.RaiseDataMemberChanged("ShortName");
+                    this.OnShortNameChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'WebSite' value.
+        /// </summary>
+        [DataMember()]
+        public string WebSite
+        {
+            get
+            {
+                return this._webSite;
+            }
+            set
+            {
+                if ((this._webSite != value))
+                {
+                    this.OnWebSiteChanging(value);
+                    this.RaiseDataMemberChanging("WebSite");
+                    this.ValidateProperty("WebSite", value);
+                    this._webSite = value;
+                    this.RaiseDataMemberChanged("WebSite");
+                    this.OnWebSiteChanged();
                 }
             }
         }
@@ -5288,6 +5685,17 @@ namespace RadiologyTracking.Web.Services
         }
         
         /// <summary>
+        /// Gets the set of <see cref="Company"/> entity instances that have been loaded into this <see cref="RadiologyContext"/> instance.
+        /// </summary>
+        public EntitySet<Company> Companies
+        {
+            get
+            {
+                return base.EntityContainer.GetEntitySet<Company>();
+            }
+        }
+        
+        /// <summary>
         /// Gets the set of <see cref="Coverage"/> entity instances that have been loaded into this <see cref="RadiologyContext"/> instance.
         /// </summary>
         public EntitySet<Coverage> Coverages
@@ -5464,6 +5872,16 @@ namespace RadiologyTracking.Web.Services
             parameters.Add("toDate", toDate);
             this.ValidateMethod("GetChangesByDateQuery", parameters);
             return base.CreateQuery<Change>("GetChangesByDate", parameters, false, true);
+        }
+        
+        /// <summary>
+        /// Gets an EntityQuery instance that can be used to load <see cref="Company"/> entity instances using the 'GetCompanies' query.
+        /// </summary>
+        /// <returns>An EntityQuery that can be loaded to retrieve <see cref="Company"/> entity instances.</returns>
+        public EntityQuery<Company> GetCompaniesQuery()
+        {
+            this.ValidateMethod("GetCompaniesQuery", null);
+            return base.CreateQuery<Company>("GetCompanies", null, false, true);
         }
         
         /// <summary>
@@ -5722,6 +6140,24 @@ namespace RadiologyTracking.Web.Services
             /// <param name="result">The IAsyncResult returned from 'BeginGetChangesByDate'.</param>
             /// <returns>The 'QueryResult' returned from the 'GetChangesByDate' operation.</returns>
             QueryResult<Change> EndGetChangesByDate(IAsyncResult result);
+            
+            /// <summary>
+            /// Asynchronously invokes the 'GetCompanies' operation.
+            /// </summary>
+            /// <param name="callback">Callback to invoke on completion.</param>
+            /// <param name="asyncState">Optional state object.</param>
+            /// <returns>An IAsyncResult that can be used to monitor the request.</returns>
+            [FaultContract(typeof(DomainServiceFault), Action="http://tempuri.org/RadiologyService/GetCompaniesDomainServiceFault", Name="DomainServiceFault", Namespace="DomainServices")]
+            [OperationContract(AsyncPattern=true, Action="http://tempuri.org/RadiologyService/GetCompanies", ReplyAction="http://tempuri.org/RadiologyService/GetCompaniesResponse")]
+            [WebGet()]
+            IAsyncResult BeginGetCompanies(AsyncCallback callback, object asyncState);
+            
+            /// <summary>
+            /// Completes the asynchronous operation begun by 'BeginGetCompanies'.
+            /// </summary>
+            /// <param name="result">The IAsyncResult returned from 'BeginGetCompanies'.</param>
+            /// <returns>The 'QueryResult' returned from the 'GetCompanies' operation.</returns>
+            QueryResult<Company> EndGetCompanies(IAsyncResult result);
             
             /// <summary>
             /// Asynchronously invokes the 'GetCoverages' operation.
@@ -6084,6 +6520,7 @@ namespace RadiologyTracking.Web.Services
             public RadiologyContextEntityContainer()
             {
                 this.CreateEntitySet<Change>(EntitySetOperations.Add);
+                this.CreateEntitySet<Company>(EntitySetOperations.Edit);
                 this.CreateEntitySet<Coverage>(EntitySetOperations.All);
                 this.CreateEntitySet<Customer>(EntitySetOperations.All);
                 this.CreateEntitySet<Defect>(EntitySetOperations.All);

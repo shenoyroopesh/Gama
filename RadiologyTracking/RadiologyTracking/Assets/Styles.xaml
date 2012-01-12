@@ -6,7 +6,8 @@
   xmlns:dataControls="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Data.DataForm.Toolkit" 
   xmlns:appControls="clr-namespace:RadiologyTracking.Controls"
   xmlns:loginWindow="clr-namespace:RadiologyTracking.LoginUI"
-  xmlns:dataInput="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Data.Input">
+  xmlns:dataInput="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Data.Input"
+  xmlns:vsm="clr-namespace:System.Windows;assembly=System.Windows">
 
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="../Controls/BusyIndicator.xaml" />
@@ -1769,6 +1770,70 @@
                 <Style TargetType="Rectangle">
                     <Setter Property="Visibility" Value="Collapsed" />
                 </Style>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!--Button Styles-->
+
+    <Style x:Key="BaseButtonStyle" TargetType="Button">
+        <Setter Property="Width" Value="75" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Height" Value="23" />
+    </Style>
+    
+    <!--Add Button Style-->
+    <Style x:Key="AddButtonStyle" TargetType="Button" BasedOn="{StaticResource BaseButtonStyle}">
+        <Setter Property="ContentTemplate">
+            <Setter.Value>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Height="Auto">
+                        <Image Source="/RadiologyTracking;component/Images/Button-Add-icon.png" Stretch="UniformToFill" />
+                        <TextBlock Text="Add" FontSize="12" Margin="10,0,0,0"/>
+                    </StackPanel>
+                </DataTemplate>               
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!--Cancel Button Style-->
+    <Style x:Key="CancelButtonStyle" TargetType="Button" BasedOn="{StaticResource BaseButtonStyle}">
+        <Setter Property="ContentTemplate">
+            <Setter.Value>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <Image Stretch="UniformToFill" Source="/RadiologyTracking;component/Images/cancel.png" />
+                        <TextBlock Text="Cancel" FontSize="12" Margin="10,0,0,0"/>
+                    </StackPanel>
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!--Save Button Style-->
+    <Style x:Key="SaveButtonStyle" TargetType="Button" BasedOn="{StaticResource BaseButtonStyle}">
+        <Setter Property="ContentTemplate">
+            <Setter.Value>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <Image Stretch="UniformToFill" Source="/RadiologyTracking;component/Images/Save-icon.png" />
+                        <TextBlock Text="Save" FontSize="12" Margin="10,0,0,0"/>
+                    </StackPanel>
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!--Delete Button Style-->
+    <Style x:Key="DeleteButtonStyle" TargetType="Button" BasedOn="{StaticResource BaseButtonStyle}">
+        <Setter Property="Width" Value="23" />
+        <Setter Property="ContentTemplate">
+            <Setter.Value>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <Image Stretch="UniformToFill" Source="/RadiologyTracking;component/Images/Delete.png" />
+                    </StackPanel>
+                </DataTemplate>
             </Setter.Value>
         </Setter>
     </Style>
