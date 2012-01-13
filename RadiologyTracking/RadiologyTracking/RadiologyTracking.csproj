@@ -265,6 +265,10 @@
     <None Include="Properties\OutOfBrowserSettings.xml" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ComboBoxExtensions\ComboBoxExtensions.csproj">
+      <Project>{4B47504F-AC43-4A3E-9990-FA1183CD1F1F}</Project>
+      <Name>ComboBoxExtensions</Name>
+    </ProjectReference>
     <ProjectReference Include="..\CustomControls\CustomControls.csproj">
       <Project>{B885C7C7-1917-483D-A179-1579D1428B7C}</Project>
       <Name>CustomControls</Name>

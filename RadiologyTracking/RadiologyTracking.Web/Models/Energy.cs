@@ -17,5 +17,11 @@ namespace RadiologyTracking.Web.Models
 
         [Required(ErrorMessage="Name is required")]
         public String Name { get; set; }
+
+
+        public override string ToString()
+        {
+            return this.Name;
+        }
     }
 }

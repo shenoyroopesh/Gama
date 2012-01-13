@@ -200,6 +200,7 @@ namespace RadiologyTracking.Web.Services
         #endregion
 
         #region Energies
+
         public IQueryable<Energy> GetEnergies()
         {
             return this.DbContext.Energies;

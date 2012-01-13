@@ -6,47 +6,57 @@
     mc:Ignorable="d"
     d:DesignHeight="480" d:DesignWidth="640" xmlns:sdk="http://schemas.microsoft.com/winfx/2006/xaml/presentation/sdk" xmlns:riaControls="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.DomainServices" xmlns:my="clr-namespace:RadiologyTracking.Web.Services" xmlns:my1="clr-namespace:RadiologyTracking.Web.Models"
     xmlns:custom="clr-namespace:RadiologyTracking.CustomControls;assembly=CustomControls"
-    xmlns:local="clr-namespace:RadiologyTracking.Controls">
+    xmlns:local="clr-namespace:RadiologyTracking.Controls"
+    xmlns:ex="clr-namespace:ComboBoxExtensions;assembly=ComboBoxExtensions">
+    
+    <UserControl.Resources>
+        <my:RadiologyContext x:Key="RadiologyContext" />
+        <ex:ComboBoxDataSource x:Key="energyDataSource" DomainContext="{StaticResource RadiologyContext}" 
+                               OperationName="GetEnergiesQuery" Loaded="energyDataSource_Loaded" />
+    </UserControl.Resources>
     
     <Grid x:Name="LayoutRoot" Background="White">
         <sdk:Label Height="28" HorizontalAlignment="Left" Margin="12,12,0,0" Name="label1" VerticalAlignment="Top" Width="403" 
                    FontWeight="Bold" FontSize="20">MAP THICKNESS TO ENERGY TYPE</sdk:Label>
-        <riaControls:DomainDataSource AutoLoad="False" d:DesignData="{d:DesignInstance my1:ThicknessRangeForEnergy, CreateList=true}" Height="0" LoadedData="thicknessRangeForEnergyDomainDataSource_LoadedData" Name="thicknessRangeForEnergyDomainDataSource" QueryName="GetThicknessRangesForEnergyQuery" Width="0">
-            <riaControls:DomainDataSource.DomainContext>
-                <my:RadiologyContext />
-            </riaControls:DomainDataSource.DomainContext>
+        <riaControls:DomainDataSource AutoLoad="True" LoadedData="thicknessRangeForEnergyDomainDataSource_LoadedData" 
+                                      Name="thicknessRangeForEnergyDomainDataSource" 
+                                      DomainContext="{StaticResource RadiologyContext}" QueryName="GetThicknessRangesForEnergyQuery">
             <riaControls:DomainDataSource.QueryParameters>
                 <riaControls:Parameter ParameterName="filter" Value="{Binding ElementName=filterTextBox, Path=Text}" />
             </riaControls:DomainDataSource.QueryParameters>
         </riaControls:DomainDataSource>
-        <riaControls:DomainDataSource AutoLoad="True" d:DesignData="{d:DesignInstance my1:Energy, CreateList=true}" Height="0" LoadedData="energyDomainDataSource_LoadedData" Name="energyDomainDataSource" QueryName="GetEnergiesQuery" Width="0">
-            <riaControls:DomainDataSource.DomainContext>
-                <my:RadiologyContext />
-            </riaControls:DomainDataSource.DomainContext>
-        </riaControls:DomainDataSource>
+        
+
+        
         <StackPanel Height="30" HorizontalAlignment="Left" Orientation="Horizontal" VerticalAlignment="Top" Margin="20, 100">
             <sdk:Label Content="Search:" Margin="3" VerticalAlignment="Center" />
             <TextBox Name="filterTextBox" Width="60" />
-            <Button Command="{Binding Path=LoadCommand, ElementName=thicknessRangeForEnergyDomainDataSource}" Content="Load" Margin="3" Name="thicknessRangeForEnergyDomainDataSourceLoadButton" />
         </StackPanel>
         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
             <custom:CustomGrid AutoGenerateColumns="False" Height="200" ItemsSource="{Binding ElementName=thicknessRangeForEnergyDomainDataSource, Path=Data}" 
                           HorizontalAlignment="Center" VerticalAlignment="Center" Name="grdThicknessRangeForEnergy" RowDetailsVisibilityMode="VisibleWhenSelected" 
                           Width="400">
+                <custom:CustomGrid.Resources>
+                    <Style TargetType="sdk:DataGridCell">
+                        <Setter Property="TextBlock.HorizontalAlignment" Value="Center" />
+                    </Style>
+                </custom:CustomGrid.Resources>
                 <sdk:DataGrid.Columns>                
-                    <sdk:DataGridTextColumn x:Name="thicknessFromColumn" Binding="{Binding Path=ThicknessFrom}" Header="Thickness From" Width="SizeToHeader" />
+                    <sdk:DataGridTextColumn x:Name="thicknessFromColumn" Binding="{Binding Path=ThicknessFrom}" Header="Thickness From" 
+                                            Width="SizeToHeader"/>
                     <sdk:DataGridTextColumn x:Name="thicknessToColumn" Binding="{Binding Path=ThicknessTo}" Header="Thickness To" Width="SizeToHeader" />
                     <sdk:DataGridTemplateColumn Header="Energy">
                         <sdk:DataGridTemplateColumn.CellEditingTemplate>
                             <DataTemplate>
-                                <ComboBox ItemsSource="{Binding ElementName=energyDomainDataSource, Path=Data}" 
+                                <ComboBox ItemsSource="{Binding Source={StaticResource energyDataSource}, Path=Data}"
                                           SelectedValue="{Binding Path=Energy, Mode=TwoWay}"
-                                          DisplayMemberPath="Name"></ComboBox>
+                                          DisplayMemberPath="Name">
+                                </ComboBox>
                             </DataTemplate>
                         </sdk:DataGridTemplateColumn.CellEditingTemplate>
                         <sdk:DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <sdk:Label Content="{Binding Path=Energy.Name}" />
+                                <TextBlock Text="{Binding Path=Energy.Name, Mode=OneWay}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
                             </DataTemplate>
                         </sdk:DataGridTemplateColumn.CellTemplate>
                     </sdk:DataGridTemplateColumn>

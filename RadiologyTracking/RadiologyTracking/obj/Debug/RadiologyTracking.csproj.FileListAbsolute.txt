@@ -1,5 +1,9 @@
 D:\DotNet\Gama\RadiologyTracking\RadiologyTracking\Bin\Debug\RadiologyTracking.dll
 D:\DotNet\Gama\RadiologyTracking\RadiologyTracking\Bin\Debug\RadiologyTracking.pdb
+D:\DotNet\Gama\RadiologyTracking\RadiologyTracking\Bin\Debug\AppManifest.xaml
+D:\DotNet\Gama\RadiologyTracking\RadiologyTracking\Bin\Debug\RadiologyTracking.xap
+D:\DotNet\Gama\RadiologyTracking\RadiologyTracking\Bin\Debug\TestPage.html
+D:\DotNet\Gama\RadiologyTracking\RadiologyTracking\Bin\Debug\ComboBoxExtensions.dll
 D:\DotNet\Gama\RadiologyTracking\RadiologyTracking\Bin\Debug\CustomControls.dll
 D:\DotNet\Gama\RadiologyTracking\RadiologyTracking\Bin\Debug\System.ComponentModel.DataAnnotations.dll
 D:\DotNet\Gama\RadiologyTracking\RadiologyTracking\Bin\Debug\System.ServiceModel.DomainServices.Client.dll
@@ -12,6 +16,7 @@ D:\DotNet\Gama\RadiologyTracking\RadiologyTracking\Bin\Debug\System.Windows.Cont
 D:\DotNet\Gama\RadiologyTracking\RadiologyTracking\Bin\Debug\System.Windows.Controls.DomainServices.dll
 D:\DotNet\Gama\RadiologyTracking\RadiologyTracking\Bin\Debug\System.Windows.Controls.Navigation.dll
 D:\DotNet\Gama\RadiologyTracking\RadiologyTracking\Bin\Debug\System.Windows.Data.dll
+D:\DotNet\Gama\RadiologyTracking\RadiologyTracking\Bin\Debug\ComboBoxExtensions.pdb
 D:\DotNet\Gama\RadiologyTracking\RadiologyTracking\Bin\Debug\CustomControls.pdb
 D:\DotNet\Gama\RadiologyTracking\RadiologyTracking\Bin\Debug\System.ComponentModel.DataAnnotations.xml
 D:\DotNet\Gama\RadiologyTracking\RadiologyTracking\Bin\Debug\System.Windows.Controls.Data.xml
@@ -261,7 +266,4 @@ D:\DotNet\Gama\RadiologyTracking\RadiologyTracking\obj\Debug\GenerateResource.re
 D:\DotNet\Gama\RadiologyTracking\RadiologyTracking\obj\Debug\GenerateResource.write.1.tlog
 D:\DotNet\Gama\RadiologyTracking\RadiologyTracking\obj\Debug\RadiologyTracking.dll
 D:\DotNet\Gama\RadiologyTracking\RadiologyTracking\obj\Debug\RadiologyTracking.pdb
-D:\DotNet\Gama\RadiologyTracking\RadiologyTracking\Bin\Debug\AppManifest.xaml
-D:\DotNet\Gama\RadiologyTracking\RadiologyTracking\Bin\Debug\RadiologyTracking.xap
-D:\DotNet\Gama\RadiologyTracking\RadiologyTracking\Bin\Debug\TestPage.html
 D:\DotNet\Gama\RadiologyTracking\RadiologyTracking\obj\Debug\XapCacheFile.xml
