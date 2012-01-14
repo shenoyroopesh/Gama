@@ -1844,8 +1844,17 @@
         </Setter>
     </Style>    
     
-    
-    <!--DataGrid Styling-->
+    <!--Page Heading Styling-->
+    <Style TargetType="sdk:Label" x:Key="PageHeaderStyle" >
+        <Setter Property="HorizontalAlignment" Value="Left" />
+        <Setter Property="Margin" Value="50,12,0,0" />
+        <Setter Property="VerticalAlignment" Value="Top" />
+        <Setter Property="Width" Value="Auto" />
+        <Setter Property="Height" Value="Auto" />
+        <Setter Property="FontWeight" Value="Bold" />
+        <Setter Property="FontSize" Value="20" />
+    </Style>
+            <!--DataGrid Styling-->
     <Style x:Key="DataGridStyle"  TargetType="custom:CustomGrid">
         <Setter Property="RowBackground" Value="#FFFFFF" />
         <Setter Property="AlternatingRowBackground" Value="#EBEBED" />

@@ -13,53 +13,41 @@ using RadiologyTracking.Web.Services;
 using RadiologyTracking.Web.Models;
 using System.ServiceModel.DomainServices.Client;
 using System.ComponentModel.DataAnnotations;
+using Vagsons.Controls;
 
 namespace RadiologyTracking.Views
 {
-    public partial class FilmSizes : UserControl
+    public partial class FilmSizes : BaseCRUDView
     {
         public FilmSizes()
         {
             InitializeComponent();
+            DomainSource.LoadedData += domainDataSource_LoadedData;
+            btnAdd.Click += AddOperation;
+            btnCancel.Click += CancelOperation;
+            btnSave.Click += SaveOperation;
         }
 
-        private void filmDomainDataSource_LoadedData(object sender, LoadedDataEventArgs e)
+        [CLSCompliant(false)]
+        public override CustomGrid Grid
         {
-            if (e.HasError)
-            {
-                System.Windows.MessageBox.Show(e.Error.ToString(), "Load Error", System.Windows.MessageBoxButton.OK);
-                e.MarkErrorAsHandled();
-            }
+            get { return this.filmSizesDataGrid; }
         }
 
-        private void btnAdd_Click(object sender, RoutedEventArgs e)
+        public override DomainDataSource DomainSource
         {
-            ((DomainDataSourceView)filmSizesDataGrid.ItemsSource).Add(new FilmSize());
+            get { return this.filmDomainDataSource; }
         }
 
-        private void btnSave_Click(object sender, RoutedEventArgs e)
+        public override Type MainType
         {
-            if (filmSizesDataGrid.IsValid)
-                //commit any unsaved changes to avoid an exception
-                if (filmSizesDataGrid.CommitEdit())
-                    filmDomainDataSource.DomainContext.SubmitChanges(Common.OnFormSubmitCompleted, null);
+            get { return typeof(FilmSize); }
         }
 
-        private void grdDeleteButton_Click(object sender, RoutedEventArgs e)
+        //Kept here only for the template column to work fine
+        public override void DeleteOperation(object sender, RoutedEventArgs e)
         {
-            if (MessageBox.Show("Are you sure you want to delete this item?", "Confirm Delete", MessageBoxButton.OKCancel) == MessageBoxResult.Cancel)
-                return;
-
-            DataGridRow row = DataGridRow.GetRowContainingElement(sender as FrameworkElement);
-            //commit any unsaved changes to avoid an exception
-            if (filmSizesDataGrid.CommitEdit())
-                ((DomainDataSourceView)filmSizesDataGrid.ItemsSource).Remove((Energy)row.DataContext);
-        }
-
-        private void btnCancel_Click(object sender, RoutedEventArgs e)
-        {
-            if (filmSizesDataGrid.CommitEdit())
-                filmDomainDataSource.DomainContext.RejectChanges();
+            base.DeleteOperation(sender, e);
         }
     }
 }

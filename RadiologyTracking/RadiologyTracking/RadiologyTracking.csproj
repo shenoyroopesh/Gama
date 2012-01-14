@@ -127,9 +127,21 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>SecurityQuestions.resx</DependentUpon>
     </Compile>
-    <Compile Include="Common.cs" />
+    <Compile Include="Views\BaseCRUDView.cs" />
     <Compile Include="Views\Company.xaml.cs">
       <DependentUpon>Company.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\FilmTransactions.xaml.cs">
+      <DependentUpon>FilmTransactions.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Customers.xaml.cs">
+      <DependentUpon>Customers.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Foundries.xaml.cs">
+      <DependentUpon>Foundries.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Coverages.xaml.cs">
+      <DependentUpon>Coverages.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\FilmSizes.xaml.cs">
       <DependentUpon>FilmSizes.xaml</DependentUpon>
@@ -181,6 +193,22 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\Company.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\FilmTransactions.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Customers.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Foundries.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Coverages.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

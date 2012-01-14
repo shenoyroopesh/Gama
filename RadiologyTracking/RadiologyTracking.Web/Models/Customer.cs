@@ -12,12 +12,13 @@ namespace RadiologyTracking.Web.Models
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ID { get; set; }
 
+        [Required(ErrorMessage = "Name of the Customer cannot be empty")]
         public String CustomerName { get; set; }
 
-        [Required(ErrorMessage = "Short Name of the company cannot be empty")]
+        [Required(ErrorMessage = "Short Name of the Customer cannot be empty")]
         public String ShortName { get; set; }
 
-        [Required(ErrorMessage = "Address for the Company cannot be empty")]
+        [Required(ErrorMessage = "Address for the Customer cannot be empty")]
         public String Address { get; set; }
 
         [RegularExpression(@"^([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$",

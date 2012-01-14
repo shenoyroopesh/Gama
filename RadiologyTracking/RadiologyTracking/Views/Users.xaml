@@ -4,7 +4,8 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    d:DesignWidth="640" d:DesignHeight="480" xmlns:sdk="http://schemas.microsoft.com/winfx/2006/xaml/presentation/sdk">
+    d:DesignWidth="640" d:DesignHeight="480" xmlns:sdk="http://schemas.microsoft.com/winfx/2006/xaml/presentation/sdk"
+    xmlns:views="clr-namespace:RadiologyTracking.Views">
     
     <Grid x:Name="LayoutRoot" Background="White">
         <sdk:DataGrid AutoGenerateColumns="False" HorizontalAlignment="Left" Margin="50,74,0,0" Name="dataGrid1" VerticalAlignment="Top" MinHeight="100" />

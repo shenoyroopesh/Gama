@@ -309,3 +309,7 @@ D:\DotNet\Gama\RadiologyTracking\RadiologyTracking\Bin\Debug\vi\System.Windows.C
 D:\DotNet\Gama\RadiologyTracking\RadiologyTracking\Bin\Debug\zh-Hans\System.Windows.Controls.Input.resources.dll
 D:\DotNet\Gama\RadiologyTracking\RadiologyTracking\Bin\Debug\zh-Hant\System.Windows.Controls.Input.resources.dll
 D:\DotNet\Gama\RadiologyTracking\RadiologyTracking\obj\Debug\Views\FilmSizes.g.i.cs
+D:\DotNet\Gama\RadiologyTracking\RadiologyTracking\obj\Debug\Views\Coverages.g.i.cs
+D:\DotNet\Gama\RadiologyTracking\RadiologyTracking\obj\Debug\Views\Foundries.g.i.cs
+D:\DotNet\Gama\RadiologyTracking\RadiologyTracking\obj\Debug\Views\Customers.g.i.cs
+D:\DotNet\Gama\RadiologyTracking\RadiologyTracking\obj\Debug\Views\FilmTransactions.g.i.cs

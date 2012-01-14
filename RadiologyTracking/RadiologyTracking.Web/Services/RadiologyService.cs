@@ -16,8 +16,8 @@ namespace RadiologyTracking.Web.Services
     using System.Data.Entity;
     using System.Web.Security;
 
-    [EnableClientAccess]
-    [RequiresAuthentication]
+    [EnableClientAccess()]
+    [RequiresAuthentication()]
     public class RadiologyService : DbDomainService<RadiologyContext>
     {
         #region Changes
@@ -127,6 +127,19 @@ namespace RadiologyTracking.Web.Services
             return this.DbContext.Customers;
         }
 
+        /// <summary>
+        /// Gets the customers filtered by a filter query
+        /// </summary>
+        /// <param name="filter"></param>
+        /// <returns></returns>
+        public IQueryable<Customer> GetCustomersFiltered(String filter)
+        {
+            return this.DbContext.Customers.Where(p => p.CustomerName.Contains(filter) ||
+                                                     p.Address.Contains(filter) ||
+                                                     p.Email.Contains(filter) ||
+                                                     p.Foundry.FoundryName.Contains(filter));
+        }
+
         public void InsertCustomer(Customer entity)
         {
             DbEntityEntry<Customer> entityEntry = this.DbContext.Entry(entity);
@@ -198,6 +211,12 @@ namespace RadiologyTracking.Web.Services
             }
         }
         #endregion
+
+        public IQueryable<Direction> GetDirections()
+        {
+            return this.DbContext.Directions;
+        }
+
 
         #region Energies
 
@@ -284,12 +303,11 @@ namespace RadiologyTracking.Web.Services
             return this.DbContext.FilmTransactions;
         }
 
-        public IQueryable<FilmTransaction> GetFilmTransactionsByFoundryAndDate(String foundryName, DateTime fromDate, DateTime toDate)
+        public IQueryable<FilmTransaction> GetFilmTransactionsByDate(DateTime fromDate, DateTime toDate)
         {
             return this.DbContext.FilmTransactions.Where(p =>
-                                                            p.Date >= fromDate &&
-                                                            p.Date <= toDate &&
-                                                            p.Foundry.FoundryName.Contains(foundryName));
+                                                            p.Date >= fromDate  &&
+                                                                p.Date <= toDate );
         }
 
         public void InsertFilmTransaction(FilmTransaction entity)
@@ -334,13 +352,15 @@ namespace RadiologyTracking.Web.Services
         /// <returns></returns>
         public IQueryable GetFilmStockReport(Foundry foundry, DateTime fromDate, DateTime toDate)
         {
+            var sentToHO = this.DbContext.Directions.Single(p => p.Value == "SENT_TO_HO");
+
             var transactions = this.DbContext.FilmTransactions.Where(p => p.Foundry.Equals(foundry))
                 .Select(p => new
                 {
                     Date = p.Date,
-                    SentToHO = p.Direction == Direction.SENT_TO_HO ? p.Area : 0,
+                    SentToHO = p.Direction == sentToHO ? p.Area : 0,
                     Consumed = 0,
-                    ReceivedFromHO = p.Direction == Direction.SENT_TO_HO ? 0 : p.Area
+                    ReceivedFromHO = p.Direction == sentToHO ? 0 : p.Area
                 });
 
             var consumptions = this.DbContext.RGReportRows.Where(p => p.RGReport.FixedPattern.Customer.Foundry.Equals(foundry))
@@ -756,14 +776,16 @@ namespace RadiologyTracking.Web.Services
 
         public IQueryable GetShiftWisePerformanceReport(DateTime fromDate, DateTime toDate, Technician technician = null)
         {
+            var retake = this.DbContext.Remarks.Single(p => p.Value == "RETAKE");
+
             return from r in this.DbContext.RGReportRows
                    where r.Technician == (technician == null ? r.Technician : technician)
                    && r.RGReport.ReportDate >= fromDate && r.RGReport.ReportDate <= toDate
                    group r by new { r.RGReport.ReportDate, r.RGReport.Shift } into g
                    let total = g.Count()
-                   let retakes = g.Where(p => p.Remark == Remark.RETAKE).Count()
+                   let retakes = g.Where(p => p.Remark == retake).Count()
                    let totalArea = g.Sum(p => p.FilmSize.Area)
-                   let retakeArea = g.Where(p => p.Remark == Remark.RETAKE).Sum(p => p.FilmSize.Area)
+                   let retakeArea = g.Where(p => p.Remark == retake).Sum(p => p.FilmSize.Area)
                    select new
                    {
                        Technicians = String.Join(",", g.Select(p => p.Technician.Name).ToList()),
@@ -775,7 +797,7 @@ namespace RadiologyTracking.Web.Services
                                   {
                                       FilmSize = fg.Key,
                                       Total = fg.Count(),
-                                      RT = fg.Where(p => p.Remark == Remark.RETAKE).Count()
+                                      RT = fg.Where(p => p.Remark == retake).Count()
                                   },
                        TotalFilmsTaken = total,
                        TotalRetakes = retakes,

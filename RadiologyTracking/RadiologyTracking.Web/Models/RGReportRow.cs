@@ -29,6 +29,9 @@ namespace RadiologyTracking.Web.Models
 
         [Include, Composition]
         public ICollection<Observation> Observations { get; set; }
+
+        public int RemarkID { get; set; }
+
         public Remark Remark { get; set; }
 
         public int TechnicianID { get; set; }

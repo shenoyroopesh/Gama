@@ -31,6 +31,29 @@ namespace RadiologyTracking.Web.Models
                 ShortName = "Company"
             });
 
+            //seed data for lookups that won't have any screens
+
+            context.Directions.Add(new Direction()
+            {
+                Value = "RECEIVED_FROM_HO"
+            });
+
+            context.Directions.Add(new Direction()
+            {
+                Value = "SENT_TO_HO"
+            });
+            
+            context.Remarks.Add(new Remark { Value = "REPAIR" });
+            context.Remarks.Add(new Remark { Value = "ACCEPTABLE" });
+            context.Remarks.Add(new Remark { Value = "RETAKE" });
+            context.Remarks.Add(new Remark { Value = "RESHOOT" });
+
+            context.RGStatuses.Add(new RGStatus() { Status = "PENDING" });
+            context.RGStatuses.Add(new RGStatus() { Status = "COMPLETE" });
+
+            context.Shifts.Add(new Shift() { Value = "DAY" });
+            context.Shifts.Add(new Shift() { Value = "NIGHT" });
+
             context.SaveChanges();
         }
     }

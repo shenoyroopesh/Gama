@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="RadiologyTracking.Views.ThicknessToEnergyType"
+﻿<views:BaseCRUDView x:Class="RadiologyTracking.Views.ThicknessToEnergyType"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -7,19 +7,18 @@
     d:DesignHeight="480" d:DesignWidth="640" xmlns:sdk="http://schemas.microsoft.com/winfx/2006/xaml/presentation/sdk" xmlns:riaControls="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.DomainServices" xmlns:my="clr-namespace:RadiologyTracking.Web.Services" xmlns:my1="clr-namespace:RadiologyTracking.Web.Models"
     xmlns:custom="clr-namespace:Vagsons.Controls;assembly=CustomControls"
     xmlns:local="clr-namespace:RadiologyTracking.Controls"
-    xmlns:ex="clr-namespace:ComboBoxExtensions;assembly=ComboBoxExtensions">
+    xmlns:ex="clr-namespace:ComboBoxExtensions;assembly=ComboBoxExtensions"
+    xmlns:views="clr-namespace:RadiologyTracking.Views">
     
     <UserControl.Resources>
         <my:RadiologyContext x:Key="RadiologyContext" />
         <ex:ComboBoxDataSource x:Key="energyDataSource" DomainContext="{StaticResource RadiologyContext}" 
-                               OperationName="GetEnergiesQuery" Loaded="energyDataSource_Loaded" />
+                               OperationName="GetEnergiesQuery" />
     </UserControl.Resources>
     
     <Grid x:Name="LayoutRoot" Background="White">
-        <sdk:Label Height="28" HorizontalAlignment="Left" Margin="12,12,0,0" Name="label1" VerticalAlignment="Top" Width="403" 
-                   FontWeight="Bold" FontSize="20">MAP THICKNESS TO ENERGY TYPE</sdk:Label>
-        <riaControls:DomainDataSource AutoLoad="True" LoadedData="thicknessRangeForEnergyDomainDataSource_LoadedData" 
-                                      Name="thicknessRangeForEnergyDomainDataSource" 
+        <sdk:Label Name="headerLabel" Style="{StaticResource PageHeaderStyle}" Content="MAP THICKNESS TO ENERGY TYPE"/>
+        <riaControls:DomainDataSource AutoLoad="True" Name="thicknessRangeForEnergyDomainDataSource" 
                                       DomainContext="{StaticResource RadiologyContext}" QueryName="GetThicknessRangesForEnergyQuery">
             <riaControls:DomainDataSource.QueryParameters>
                 <riaControls:Parameter ParameterName="filter" Value="{Binding ElementName=filterTextBox, Path=Text}" />
@@ -32,7 +31,7 @@
         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
             <StackPanel Height="30" HorizontalAlignment="Left" Orientation="Horizontal" VerticalAlignment="Top" Margin="20">
                 <sdk:Label Content="Search:" Margin="3" VerticalAlignment="Center" />
-                <TextBox Name="filterTextBox" Width="60" />
+                <TextBox Name="filterTextBox" MinWidth="60" Width="Auto"/>
             </StackPanel>
             <local:BusyIndicator x:Name="busyIndicator" IsBusy="{Binding IsBusy, ElementName=thicknessRangeForEnergyDomainDataSource}">
                 <custom:CustomGrid ItemsSource="{Binding ElementName=thicknessRangeForEnergyDomainDataSource, Path=Data}" 
@@ -63,7 +62,7 @@
                         <sdk:DataGridTemplateColumn Header="Delete" Width="Auto">
                             <sdk:DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <Button Name="grdDeleteButton" Click="grdDeleteButton_Click" Tag="{Binding}" BorderBrush="Transparent"
+                                    <Button Name="grdDeleteButton" Click="DeleteOperation" Tag="{Binding}" BorderBrush="Transparent"
                                             Style="{StaticResource DeleteButtonStyle}"/>
                                 </DataTemplate>
                             </sdk:DataGridTemplateColumn.CellTemplate>
@@ -72,10 +71,10 @@
                 </custom:CustomGrid>
             </local:BusyIndicator>
             <StackPanel Orientation="Horizontal" Height="23" Margin="0,20,0,0" HorizontalAlignment="Center">
-                <Button Name="btnSave" Click="btnSave_Click" Background="Transparent" Style="{StaticResource SaveButtonStyle}"/>
-                <Button Name="btnCancel" Margin="20,0,0,0" Click="btnCancel_Click" Style="{StaticResource CancelButtonStyle}" />
-                <Button Margin="100,0,0,0" Name="btnAdd" VerticalAlignment="Top" Width="75" Click="btnAdd_Click" Style="{StaticResource AddButtonStyle}"/>
+                <Button Name="btnSave" Background="Transparent" Style="{StaticResource SaveButtonStyle}"/>
+                <Button Name="btnCancel" Margin="20,0,0,0" Style="{StaticResource CancelButtonStyle}" />
+                <Button Margin="100,0,0,0" Name="btnAdd" VerticalAlignment="Top" Width="75" Style="{StaticResource AddButtonStyle}"/>
             </StackPanel>
         </StackPanel>
     </Grid>
-</UserControl>
+</views:BaseCRUDView>

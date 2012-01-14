@@ -13,53 +13,41 @@ using RadiologyTracking.Web.Services;
 using RadiologyTracking.Web.Models;
 using System.ServiceModel.DomainServices.Client;
 using System.ComponentModel.DataAnnotations;
+using Vagsons.Controls;
 
 namespace RadiologyTracking.Views
 {
-    public partial class Energies : UserControl
+    public partial class Energies : BaseCRUDView
     {
         public Energies()
         {
             InitializeComponent();
+            DomainSource.LoadedData += domainDataSource_LoadedData;
+            btnAdd.Click += AddOperation;
+            btnCancel.Click += CancelOperation;
+            btnSave.Click += SaveOperation;
         }
 
-        private void energyDomainDataSource_LoadedData(object sender, LoadedDataEventArgs e)
+        [CLSCompliant(false)]
+        public override CustomGrid Grid
         {
-            if (e.HasError)
-            {
-                System.Windows.MessageBox.Show(e.Error.ToString(), "Load Error", System.Windows.MessageBoxButton.OK);
-                e.MarkErrorAsHandled();
-            }
+            get { return this.energyDataGrid; }
         }
 
-        private void btnAdd_Click(object sender, RoutedEventArgs e)
+        public override DomainDataSource DomainSource
         {
-            ((DomainDataSourceView)energyDataGrid.ItemsSource).Add(new Energy());
+            get { return this.energyDomainDataSource; }
         }
 
-        private void btnSave_Click(object sender, RoutedEventArgs e)
-        {            
-           if(energyDataGrid.IsValid)
-                //commit any unsaved changes to avoid an exception
-                if(energyDataGrid.CommitEdit())
-                    energyDomainDataSource.DomainContext.SubmitChanges(Common.OnFormSubmitCompleted, null);
-        }
-
-        private void grdDeleteButton_Click(object sender, RoutedEventArgs e)
+        public override Type MainType
         {
-            if (MessageBox.Show("Are you sure you want to delete this item?", "Confirm Delete", MessageBoxButton.OKCancel) == MessageBoxResult.Cancel)
-                return;
-
-            DataGridRow row = DataGridRow.GetRowContainingElement(sender as FrameworkElement);
-            //commit any unsaved changes to avoid an exception
-            if(energyDataGrid.CommitEdit()) 
-                ((DomainDataSourceView)energyDataGrid.ItemsSource).Remove((Energy)row.DataContext);
+            get { return typeof(Energy); }
         }
 
-        private void btnCancel_Click(object sender, RoutedEventArgs e)
+        //Kept here only for the template column to work fine
+        public override void DeleteOperation(object sender, RoutedEventArgs e)
         {
-            if(energyDataGrid.CommitEdit())
-                energyDomainDataSource.DomainContext.RejectChanges();
+            base.DeleteOperation(sender, e);
         }
     }
 }

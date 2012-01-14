@@ -12,6 +12,7 @@
     xmlns:local="clr-namespace:RadiologyTracking.Controls">
 
     <Grid x:Name="LayoutRoot" Background="White">
+        <sdk:Label Name="headerLabel" Style="{StaticResource PageHeaderStyle}" Content="COMPANY DETAILS"/>
         <local:BusyIndicator x:Name="busyIndicator" IsBusy="{Binding IsBusy, ElementName=companyDomainDataSource}">
             <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
                 <toolkit:DataForm AutoGenerateFields="True" Name="companyForm"

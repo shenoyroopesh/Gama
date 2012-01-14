@@ -1286,7 +1286,7 @@ namespace RadiologyTracking.Web.Models
         /// Gets or sets the 'Address' value.
         /// </summary>
         [DataMember()]
-        [Display(Order=4)]
+        [Display(Order=3)]
         [Required(ErrorMessage="Address for the Company cannot be empty")]
         public string Address
         {
@@ -1312,7 +1312,7 @@ namespace RadiologyTracking.Web.Models
         /// Gets or sets the 'Email' value.
         /// </summary>
         [DataMember()]
-        [Display(Order=5)]
+        [Display(Order=4)]
         [RegularExpression("^([\\w-\\.]+)@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.)|(([\\w-]+\\.)+))([a-zA-Z]{2,4" +
             "}|[0-9]{1,3})(\\]?)$", ErrorMessageResourceName="ValidationErrorInvalidEmail", ErrorMessageResourceType=typeof(ValidationErrorResources))]
         public string Email
@@ -1345,7 +1345,7 @@ namespace RadiologyTracking.Web.Models
         // 
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [DataMember()]
-        [Display(Order=1)]
+        [Display(AutoGenerateField=false)]
         [Editable(false, AllowInitialValue=true)]
         [Key()]
         [RoundtripOriginal()]
@@ -1372,7 +1372,7 @@ namespace RadiologyTracking.Web.Models
         /// Gets or sets the 'Name' value.
         /// </summary>
         [DataMember()]
-        [Display(Description="This is the name that will be used in Final Printable Reports", Order=2)]
+        [Display(Description="This is the name that will be used in Final Printable Reports", Order=1)]
         [Required(ErrorMessage="Name of the company cannot be empty")]
         public string Name
         {
@@ -1398,7 +1398,7 @@ namespace RadiologyTracking.Web.Models
         /// Gets or sets the 'PhoneNo' value.
         /// </summary>
         [DataMember()]
-        [Display(Order=7)]
+        [Display(Order=6)]
         public string PhoneNo
         {
             get
@@ -1423,7 +1423,7 @@ namespace RadiologyTracking.Web.Models
         /// Gets or sets the 'ShortName' value.
         /// </summary>
         [DataMember()]
-        [Display(Description="Short Name is used everywhere except final reports", Order=3)]
+        [Display(Description="Short Name is used everywhere except final reports", Order=2)]
         [Required(ErrorMessage="Short Name of the company cannot be empty")]
         public string ShortName
         {
@@ -1449,7 +1449,7 @@ namespace RadiologyTracking.Web.Models
         /// Gets or sets the 'WebSite' value.
         /// </summary>
         [DataMember()]
-        [Display(Order=6)]
+        [Display(Order=5)]
         public string WebSite
         {
             get
@@ -1644,7 +1644,7 @@ namespace RadiologyTracking.Web.Models
         /// Gets or sets the 'Address' value.
         /// </summary>
         [DataMember()]
-        [Required(ErrorMessage="Address for the Company cannot be empty")]
+        [Required(ErrorMessage="Address for the Customer cannot be empty")]
         public string Address
         {
             get
@@ -1669,6 +1669,7 @@ namespace RadiologyTracking.Web.Models
         /// Gets or sets the 'CustomerName' value.
         /// </summary>
         [DataMember()]
+        [Required(ErrorMessage="Name of the Customer cannot be empty")]
         public string CustomerName
         {
             get
@@ -1843,7 +1844,7 @@ namespace RadiologyTracking.Web.Models
         /// Gets or sets the 'ShortName' value.
         /// </summary>
         [DataMember()]
-        [Required(ErrorMessage="Short Name of the company cannot be empty")]
+        [Required(ErrorMessage="Short Name of the Customer cannot be empty")]
         public string ShortName
         {
             get
@@ -2031,12 +2032,104 @@ namespace RadiologyTracking.Web.Models
         }
     }
     
-    public enum Direction
+    /// <summary>
+    /// The 'Direction' entity class.
+    /// </summary>
+    [DataContract(Namespace="http://schemas.datacontract.org/2004/07/RadiologyTracking.Web.Models")]
+    public sealed partial class Direction : Entity
     {
         
-        SENT_TO_HO = 0,
+        private int _id;
         
-        RECEIVED_FROM_HO = 1,
+        private string _value;
+        
+        #region Extensibility Method Definitions
+
+        /// <summary>
+        /// This method is invoked from the constructor once initialization is complete and
+        /// can be used for further object setup.
+        /// </summary>
+        partial void OnCreated();
+        partial void OnIDChanging(int value);
+        partial void OnIDChanged();
+        partial void OnValueChanging(string value);
+        partial void OnValueChanged();
+
+        #endregion
+        
+        
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Direction"/> class.
+        /// </summary>
+        public Direction()
+        {
+            this.OnCreated();
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'ID' value.
+        /// </summary>
+        // The following attributes were not generated:
+        // 
+        // - The attribute 'System.ComponentModel.DataAnnotations.DatabaseGeneratedAttribute' is not visible in the client project 'RadiologyTracking'. Are you missing an assembly reference?
+        // [DatabaseGeneratedAttribute(Identity)]
+        // 
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [DataMember()]
+        [Editable(false, AllowInitialValue=true)]
+        [Key()]
+        [RoundtripOriginal()]
+        public int ID
+        {
+            get
+            {
+                return this._id;
+            }
+            set
+            {
+                if ((this._id != value))
+                {
+                    this.OnIDChanging(value);
+                    this.ValidateProperty("ID", value);
+                    this._id = value;
+                    this.RaisePropertyChanged("ID");
+                    this.OnIDChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'Value' value.
+        /// </summary>
+        [DataMember()]
+        public string Value
+        {
+            get
+            {
+                return this._value;
+            }
+            set
+            {
+                if ((this._value != value))
+                {
+                    this.OnValueChanging(value);
+                    this.RaiseDataMemberChanging("Value");
+                    this.ValidateProperty("Value", value);
+                    this._value = value;
+                    this.RaiseDataMemberChanged("Value");
+                    this.OnValueChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Computes a value from the key fields that uniquely identifies this entity instance.
+        /// </summary>
+        /// <returns>An object instance that uniquely identifies this entity instance.</returns>
+        public override object GetIdentity()
+        {
+            return this._id;
+        }
     }
     
     /// <summary>
@@ -2310,7 +2403,9 @@ namespace RadiologyTracking.Web.Models
         
         private DateTime _date;
         
-        private Direction _direction;
+        private EntityRef<Direction> _direction;
+        
+        private int _directionID;
         
         private EntityRef<Foundry> _foundry;
         
@@ -2331,8 +2426,8 @@ namespace RadiologyTracking.Web.Models
         partial void OnChallanNoChanged();
         partial void OnDateChanging(DateTime value);
         partial void OnDateChanged();
-        partial void OnDirectionChanging(Direction value);
-        partial void OnDirectionChanged();
+        partial void OnDirectionIDChanging(int value);
+        partial void OnDirectionIDChanged();
         partial void OnFoundryIDChanging(int value);
         partial void OnFoundryIDChanged();
         partial void OnIDChanging(int value);
@@ -2422,25 +2517,60 @@ namespace RadiologyTracking.Web.Models
         }
         
         /// <summary>
-        /// Gets or sets the 'Direction' value.
+        /// Gets or sets the associated <see cref="Direction"/> entity.
         /// </summary>
-        [DataMember()]
+        [Association("Direction_FilmTransaction", "DirectionID", "ID", IsForeignKey=true)]
         public Direction Direction
         {
             get
             {
-                return this._direction;
+                if ((this._direction == null))
+                {
+                    this._direction = new EntityRef<Direction>(this, "Direction", this.FilterDirection);
+                }
+                return this._direction.Entity;
             }
             set
             {
-                if ((this._direction != value))
+                Direction previous = this.Direction;
+                if ((previous != value))
                 {
-                    this.OnDirectionChanging(value);
-                    this.RaiseDataMemberChanging("Direction");
                     this.ValidateProperty("Direction", value);
-                    this._direction = value;
-                    this.RaiseDataMemberChanged("Direction");
-                    this.OnDirectionChanged();
+                    if ((value != null))
+                    {
+                        this.DirectionID = value.ID;
+                    }
+                    else
+                    {
+                        this.DirectionID = default(int);
+                    }
+                    this._direction.Entity = value;
+                    this.RaisePropertyChanged("Direction");
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'DirectionID' value.
+        /// </summary>
+        [DataMember()]
+        [RoundtripOriginal()]
+        public int DirectionID
+        {
+            get
+            {
+                return this._directionID;
+            }
+            set
+            {
+                if ((this._directionID != value))
+                {
+                    this.OnDirectionIDChanging(value);
+                    this.RaiseDataMemberChanging("DirectionID");
+                    this.ValidateProperty("DirectionID", value);
+                    this._directionID = value;
+                    this.RaiseDataMemberChanged("DirectionID");
+                    this.OnDirectionIDChanged();
                 }
             }
         }
@@ -2534,6 +2664,11 @@ namespace RadiologyTracking.Web.Models
                     this.OnIDChanged();
                 }
             }
+        }
+        
+        private bool FilterDirection(Direction entity)
+        {
+            return (entity.ID == this.DirectionID);
         }
         
         private bool FilterFoundry(Foundry entity)
@@ -3784,18 +3919,6 @@ namespace RadiologyTracking.Web.Models
         }
     }
     
-    public enum Remark
-    {
-        
-        ACCEPTABLE = 0,
-        
-        REPAIR = 1,
-        
-        RESHOOT = 2,
-        
-        RETAKE = 3,
-    }
-    
     /// <summary>
     /// The 'RGReport' entity class.
     /// </summary>
@@ -3835,13 +3958,13 @@ namespace RadiologyTracking.Web.Models
         
         private string _rtNo;
         
-        private Shift _shift;
+        private int _shiftID;
         
         private string _sourceSize;
         
         private string _specifications;
         
-        private RGStatus _status;
+        private int _statusID;
         
         #region Extensibility Method Definitions
 
@@ -3878,14 +4001,14 @@ namespace RadiologyTracking.Web.Models
         partial void OnResultChanged();
         partial void OnRTNoChanging(string value);
         partial void OnRTNoChanged();
-        partial void OnShiftChanging(Shift value);
-        partial void OnShiftChanged();
+        partial void OnShiftIDChanging(int value);
+        partial void OnShiftIDChanged();
         partial void OnSourceSizeChanging(string value);
         partial void OnSourceSizeChanged();
         partial void OnSpecificationsChanging(string value);
         partial void OnSpecificationsChanged();
-        partial void OnStatusChanging(RGStatus value);
-        partial void OnStatusChanged();
+        partial void OnStatusIDChanging(int value);
+        partial void OnStatusIDChanged();
 
         #endregion
         
@@ -4295,25 +4418,26 @@ namespace RadiologyTracking.Web.Models
         }
         
         /// <summary>
-        /// Gets or sets the 'Shift' value.
+        /// Gets or sets the 'ShiftID' value.
         /// </summary>
         [DataMember()]
-        public Shift Shift
+        [RoundtripOriginal()]
+        public int ShiftID
         {
             get
             {
-                return this._shift;
+                return this._shiftID;
             }
             set
             {
-                if ((this._shift != value))
+                if ((this._shiftID != value))
                 {
-                    this.OnShiftChanging(value);
-                    this.RaiseDataMemberChanging("Shift");
-                    this.ValidateProperty("Shift", value);
-                    this._shift = value;
-                    this.RaiseDataMemberChanged("Shift");
-                    this.OnShiftChanged();
+                    this.OnShiftIDChanging(value);
+                    this.RaiseDataMemberChanging("ShiftID");
+                    this.ValidateProperty("ShiftID", value);
+                    this._shiftID = value;
+                    this.RaiseDataMemberChanged("ShiftID");
+                    this.OnShiftIDChanged();
                 }
             }
         }
@@ -4367,25 +4491,26 @@ namespace RadiologyTracking.Web.Models
         }
         
         /// <summary>
-        /// Gets or sets the 'Status' value.
+        /// Gets or sets the 'StatusID' value.
         /// </summary>
         [DataMember()]
-        public RGStatus Status
+        [RoundtripOriginal()]
+        public int StatusID
         {
             get
             {
-                return this._status;
+                return this._statusID;
             }
             set
             {
-                if ((this._status != value))
+                if ((this._statusID != value))
                 {
-                    this.OnStatusChanging(value);
-                    this.RaiseDataMemberChanging("Status");
-                    this.ValidateProperty("Status", value);
-                    this._status = value;
-                    this.RaiseDataMemberChanged("Status");
-                    this.OnStatusChanged();
+                    this.OnStatusIDChanging(value);
+                    this.RaiseDataMemberChanging("StatusID");
+                    this.ValidateProperty("StatusID", value);
+                    this._statusID = value;
+                    this.RaiseDataMemberChanged("StatusID");
+                    this.OnStatusIDChanged();
                 }
             }
         }
@@ -4447,7 +4572,7 @@ namespace RadiologyTracking.Web.Models
         
         private string _observationsText;
         
-        private Remark _remark;
+        private int _remarkID;
         
         private EntityRef<RGReport> _rgReport;
         
@@ -4494,8 +4619,8 @@ namespace RadiologyTracking.Web.Models
         partial void OnLocationChanged();
         partial void OnObservationsTextChanging(string value);
         partial void OnObservationsTextChanged();
-        partial void OnRemarkChanging(Remark value);
-        partial void OnRemarkChanged();
+        partial void OnRemarkIDChanging(int value);
+        partial void OnRemarkIDChanged();
         partial void OnRGReportIDChanging(int value);
         partial void OnRGReportIDChanged();
         partial void OnRowTypeChanging(RGReportRowType value);
@@ -4795,25 +4920,26 @@ namespace RadiologyTracking.Web.Models
         }
         
         /// <summary>
-        /// Gets or sets the 'Remark' value.
+        /// Gets or sets the 'RemarkID' value.
         /// </summary>
         [DataMember()]
-        public Remark Remark
+        [RoundtripOriginal()]
+        public int RemarkID
         {
             get
             {
-                return this._remark;
+                return this._remarkID;
             }
             set
             {
-                if ((this._remark != value))
+                if ((this._remarkID != value))
                 {
-                    this.OnRemarkChanging(value);
-                    this.RaiseDataMemberChanging("Remark");
-                    this.ValidateProperty("Remark", value);
-                    this._remark = value;
-                    this.RaiseDataMemberChanged("Remark");
-                    this.OnRemarkChanged();
+                    this.OnRemarkIDChanging(value);
+                    this.RaiseDataMemberChanging("RemarkID");
+                    this.ValidateProperty("RemarkID", value);
+                    this._remarkID = value;
+                    this.RaiseDataMemberChanged("RemarkID");
+                    this.OnRemarkIDChanged();
                 }
             }
         }
@@ -5198,22 +5324,6 @@ namespace RadiologyTracking.Web.Models
         RESHOOT = 2,
         
         RETAKE = 3,
-    }
-    
-    public enum RGStatus
-    {
-        
-        PENDING = 0,
-        
-        COMPLETE = 1,
-    }
-    
-    public enum Shift
-    {
-        
-        DAY = 0,
-        
-        NIGHT = 1,
     }
     
     /// <summary>
@@ -5729,6 +5839,17 @@ namespace RadiologyTracking.Web.Services
         }
         
         /// <summary>
+        /// Gets the set of <see cref="Direction"/> entity instances that have been loaded into this <see cref="RadiologyContext"/> instance.
+        /// </summary>
+        public EntitySet<Direction> Directions
+        {
+            get
+            {
+                return base.EntityContainer.GetEntitySet<Direction>();
+            }
+        }
+        
+        /// <summary>
         /// Gets the set of <see cref="Energy"/> entity instances that have been loaded into this <see cref="RadiologyContext"/> instance.
         /// </summary>
         public EntitySet<Energy> Energies
@@ -5905,6 +6026,19 @@ namespace RadiologyTracking.Web.Services
         }
         
         /// <summary>
+        /// Gets an EntityQuery instance that can be used to load <see cref="Customer"/> entity instances using the 'GetCustomersFiltered' query.
+        /// </summary>
+        /// <param name="filter">The value for the 'filter' parameter of the query.</param>
+        /// <returns>An EntityQuery that can be loaded to retrieve <see cref="Customer"/> entity instances.</returns>
+        public EntityQuery<Customer> GetCustomersFilteredQuery(string filter)
+        {
+            Dictionary<string, object> parameters = new Dictionary<string, object>();
+            parameters.Add("filter", filter);
+            this.ValidateMethod("GetCustomersFilteredQuery", parameters);
+            return base.CreateQuery<Customer>("GetCustomersFiltered", parameters, false, true);
+        }
+        
+        /// <summary>
         /// Gets an EntityQuery instance that can be used to load <see cref="Defect"/> entity instances using the 'GetDefects' query.
         /// </summary>
         /// <returns>An EntityQuery that can be loaded to retrieve <see cref="Defect"/> entity instances.</returns>
@@ -5912,6 +6046,16 @@ namespace RadiologyTracking.Web.Services
         {
             this.ValidateMethod("GetDefectsQuery", null);
             return base.CreateQuery<Defect>("GetDefects", null, false, true);
+        }
+        
+        /// <summary>
+        /// Gets an EntityQuery instance that can be used to load <see cref="Direction"/> entity instances using the 'GetDirections' query.
+        /// </summary>
+        /// <returns>An EntityQuery that can be loaded to retrieve <see cref="Direction"/> entity instances.</returns>
+        public EntityQuery<Direction> GetDirectionsQuery()
+        {
+            this.ValidateMethod("GetDirectionsQuery", null);
+            return base.CreateQuery<Direction>("GetDirections", null, false, true);
         }
         
         /// <summary>
@@ -5945,20 +6089,18 @@ namespace RadiologyTracking.Web.Services
         }
         
         /// <summary>
-        /// Gets an EntityQuery instance that can be used to load <see cref="FilmTransaction"/> entity instances using the 'GetFilmTransactionsByFoundryAndDate' query.
+        /// Gets an EntityQuery instance that can be used to load <see cref="FilmTransaction"/> entity instances using the 'GetFilmTransactionsByDate' query.
         /// </summary>
-        /// <param name="foundryName">The value for the 'foundryName' parameter of the query.</param>
         /// <param name="fromDate">The value for the 'fromDate' parameter of the query.</param>
         /// <param name="toDate">The value for the 'toDate' parameter of the query.</param>
         /// <returns>An EntityQuery that can be loaded to retrieve <see cref="FilmTransaction"/> entity instances.</returns>
-        public EntityQuery<FilmTransaction> GetFilmTransactionsByFoundryAndDateQuery(string foundryName, DateTime fromDate, DateTime toDate)
+        public EntityQuery<FilmTransaction> GetFilmTransactionsByDateQuery(DateTime fromDate, DateTime toDate)
         {
             Dictionary<string, object> parameters = new Dictionary<string, object>();
-            parameters.Add("foundryName", foundryName);
             parameters.Add("fromDate", fromDate);
             parameters.Add("toDate", toDate);
-            this.ValidateMethod("GetFilmTransactionsByFoundryAndDateQuery", parameters);
-            return base.CreateQuery<FilmTransaction>("GetFilmTransactionsByFoundryAndDate", parameters, false, true);
+            this.ValidateMethod("GetFilmTransactionsByDateQuery", parameters);
+            return base.CreateQuery<FilmTransaction>("GetFilmTransactionsByDate", parameters, false, true);
         }
         
         /// <summary>
@@ -6196,6 +6338,25 @@ namespace RadiologyTracking.Web.Services
             QueryResult<Customer> EndGetCustomers(IAsyncResult result);
             
             /// <summary>
+            /// Asynchronously invokes the 'GetCustomersFiltered' operation.
+            /// </summary>
+            /// <param name="filter">The value for the 'filter' parameter of this action.</param>
+            /// <param name="callback">Callback to invoke on completion.</param>
+            /// <param name="asyncState">Optional state object.</param>
+            /// <returns>An IAsyncResult that can be used to monitor the request.</returns>
+            [FaultContract(typeof(DomainServiceFault), Action="http://tempuri.org/RadiologyService/GetCustomersFilteredDomainServiceFault", Name="DomainServiceFault", Namespace="DomainServices")]
+            [OperationContract(AsyncPattern=true, Action="http://tempuri.org/RadiologyService/GetCustomersFiltered", ReplyAction="http://tempuri.org/RadiologyService/GetCustomersFilteredResponse")]
+            [WebGet()]
+            IAsyncResult BeginGetCustomersFiltered(string filter, AsyncCallback callback, object asyncState);
+            
+            /// <summary>
+            /// Completes the asynchronous operation begun by 'BeginGetCustomersFiltered'.
+            /// </summary>
+            /// <param name="result">The IAsyncResult returned from 'BeginGetCustomersFiltered'.</param>
+            /// <returns>The 'QueryResult' returned from the 'GetCustomersFiltered' operation.</returns>
+            QueryResult<Customer> EndGetCustomersFiltered(IAsyncResult result);
+            
+            /// <summary>
             /// Asynchronously invokes the 'GetDefects' operation.
             /// </summary>
             /// <param name="callback">Callback to invoke on completion.</param>
@@ -6212,6 +6373,24 @@ namespace RadiologyTracking.Web.Services
             /// <param name="result">The IAsyncResult returned from 'BeginGetDefects'.</param>
             /// <returns>The 'QueryResult' returned from the 'GetDefects' operation.</returns>
             QueryResult<Defect> EndGetDefects(IAsyncResult result);
+            
+            /// <summary>
+            /// Asynchronously invokes the 'GetDirections' operation.
+            /// </summary>
+            /// <param name="callback">Callback to invoke on completion.</param>
+            /// <param name="asyncState">Optional state object.</param>
+            /// <returns>An IAsyncResult that can be used to monitor the request.</returns>
+            [FaultContract(typeof(DomainServiceFault), Action="http://tempuri.org/RadiologyService/GetDirectionsDomainServiceFault", Name="DomainServiceFault", Namespace="DomainServices")]
+            [OperationContract(AsyncPattern=true, Action="http://tempuri.org/RadiologyService/GetDirections", ReplyAction="http://tempuri.org/RadiologyService/GetDirectionsResponse")]
+            [WebGet()]
+            IAsyncResult BeginGetDirections(AsyncCallback callback, object asyncState);
+            
+            /// <summary>
+            /// Completes the asynchronous operation begun by 'BeginGetDirections'.
+            /// </summary>
+            /// <param name="result">The IAsyncResult returned from 'BeginGetDirections'.</param>
+            /// <returns>The 'QueryResult' returned from the 'GetDirections' operation.</returns>
+            QueryResult<Direction> EndGetDirections(IAsyncResult result);
             
             /// <summary>
             /// Asynchronously invokes the 'GetEnergies' operation.
@@ -6268,26 +6447,24 @@ namespace RadiologyTracking.Web.Services
             QueryResult<FilmTransaction> EndGetFilmTransactions(IAsyncResult result);
             
             /// <summary>
-            /// Asynchronously invokes the 'GetFilmTransactionsByFoundryAndDate' operation.
+            /// Asynchronously invokes the 'GetFilmTransactionsByDate' operation.
             /// </summary>
-            /// <param name="foundryName">The value for the 'foundryName' parameter of this action.</param>
             /// <param name="fromDate">The value for the 'fromDate' parameter of this action.</param>
             /// <param name="toDate">The value for the 'toDate' parameter of this action.</param>
             /// <param name="callback">Callback to invoke on completion.</param>
             /// <param name="asyncState">Optional state object.</param>
             /// <returns>An IAsyncResult that can be used to monitor the request.</returns>
-            [FaultContract(typeof(DomainServiceFault), Action="http://tempuri.org/RadiologyService/GetFilmTransactionsByFoundryAndDateDomainServ" +
-                "iceFault", Name="DomainServiceFault", Namespace="DomainServices")]
-            [OperationContract(AsyncPattern=true, Action="http://tempuri.org/RadiologyService/GetFilmTransactionsByFoundryAndDate", ReplyAction="http://tempuri.org/RadiologyService/GetFilmTransactionsByFoundryAndDateResponse")]
+            [FaultContract(typeof(DomainServiceFault), Action="http://tempuri.org/RadiologyService/GetFilmTransactionsByDateDomainServiceFault", Name="DomainServiceFault", Namespace="DomainServices")]
+            [OperationContract(AsyncPattern=true, Action="http://tempuri.org/RadiologyService/GetFilmTransactionsByDate", ReplyAction="http://tempuri.org/RadiologyService/GetFilmTransactionsByDateResponse")]
             [WebGet()]
-            IAsyncResult BeginGetFilmTransactionsByFoundryAndDate(string foundryName, DateTime fromDate, DateTime toDate, AsyncCallback callback, object asyncState);
+            IAsyncResult BeginGetFilmTransactionsByDate(DateTime fromDate, DateTime toDate, AsyncCallback callback, object asyncState);
             
             /// <summary>
-            /// Completes the asynchronous operation begun by 'BeginGetFilmTransactionsByFoundryAndDate'.
+            /// Completes the asynchronous operation begun by 'BeginGetFilmTransactionsByDate'.
             /// </summary>
-            /// <param name="result">The IAsyncResult returned from 'BeginGetFilmTransactionsByFoundryAndDate'.</param>
-            /// <returns>The 'QueryResult' returned from the 'GetFilmTransactionsByFoundryAndDate' operation.</returns>
-            QueryResult<FilmTransaction> EndGetFilmTransactionsByFoundryAndDate(IAsyncResult result);
+            /// <param name="result">The IAsyncResult returned from 'BeginGetFilmTransactionsByDate'.</param>
+            /// <returns>The 'QueryResult' returned from the 'GetFilmTransactionsByDate' operation.</returns>
+            QueryResult<FilmTransaction> EndGetFilmTransactionsByDate(IAsyncResult result);
             
             /// <summary>
             /// Asynchronously invokes the 'GetFixedPatterns' operation.
@@ -6524,6 +6701,7 @@ namespace RadiologyTracking.Web.Services
                 this.CreateEntitySet<Coverage>(EntitySetOperations.All);
                 this.CreateEntitySet<Customer>(EntitySetOperations.All);
                 this.CreateEntitySet<Defect>(EntitySetOperations.All);
+                this.CreateEntitySet<Direction>(EntitySetOperations.None);
                 this.CreateEntitySet<Energy>(EntitySetOperations.All);
                 this.CreateEntitySet<FilmSize>(EntitySetOperations.All);
                 this.CreateEntitySet<FilmTransaction>(EntitySetOperations.All);

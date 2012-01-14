@@ -60,7 +60,22 @@
                         <Rectangle x:Name="Divider4" Style="{StaticResource DividerStyle}"/>
                         <HyperlinkButton x:Name="Link5" Style="{StaticResource LinkStyle}" 
                                      NavigateUri="/Company" TargetName="ContentFrame" Content="Company"/>
+                        
+                        <Rectangle x:Name="Divider5" Style="{StaticResource DividerStyle}"/>
+                        <HyperlinkButton x:Name="Link6" Style="{StaticResource LinkStyle}" 
+                                     NavigateUri="/Coverages" TargetName="ContentFrame" Content="Coverages"/>
 
+                        <Rectangle x:Name="Divider6" Style="{StaticResource DividerStyle}"/>
+                        <HyperlinkButton x:Name="Link7" Style="{StaticResource LinkStyle}" 
+                                     NavigateUri="/Foundries" TargetName="ContentFrame" Content="Foundries"/>
+
+                        <Rectangle x:Name="Divider7" Style="{StaticResource DividerStyle}"/>
+                        <HyperlinkButton x:Name="Link8" Style="{StaticResource LinkStyle}" 
+                                     NavigateUri="/Customers" TargetName="ContentFrame" Content="Customers"/>
+
+                        <Rectangle x:Name="Divider8" Style="{StaticResource DividerStyle}"/>
+                        <HyperlinkButton x:Name="Link9" Style="{StaticResource LinkStyle}" 
+                                     NavigateUri="/FilmTransactions" TargetName="ContentFrame" Content="FilmTransactions"/>
                     </StackPanel>
                 </Border>
 

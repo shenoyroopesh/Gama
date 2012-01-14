@@ -1,0 +1,90 @@
+﻿<views:BaseCRUDView x:Class="RadiologyTracking.Views.Customers"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignHeight="480" d:DesignWidth="640" 
+    xmlns:riaControls="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.DomainServices" 
+    xmlns:my="clr-namespace:RadiologyTracking.Web.Models" xmlns:my1="clr-namespace:RadiologyTracking.Web.Services" 
+    xmlns:sdk="http://schemas.microsoft.com/winfx/2006/xaml/presentation/sdk"
+    xmlns:custom="clr-namespace:Vagsons.Controls;assembly=CustomControls"
+    xmlns:local="clr-namespace:RadiologyTracking.Controls"
+    xmlns:ex="clr-namespace:ComboBoxExtensions;assembly=ComboBoxExtensions"
+    xmlns:views="clr-namespace:RadiologyTracking.Views">
+    
+    <UserControl.Resources>
+        <my1:RadiologyContext x:Key="RadiologyContext" />
+        <ex:ComboBoxDataSource x:Key="FoundryDataSource" DomainContext="{StaticResource RadiologyContext}" OperationName="GetFoundriesQuery" />
+    </UserControl.Resources>
+
+    <Grid x:Name="LayoutRoot" Background="White">
+        <sdk:Label Name="headerLabel" Style="{StaticResource PageHeaderStyle}" Content="CUSTOMERS"/>
+        <riaControls:DomainDataSource AutoLoad="True" DomainContext="{StaticResource RadiologyContext}"
+                                      Name="customersDomainDataSource" QueryName="GetCustomersFilteredQuery">
+            <riaControls:DomainDataSource.QueryParameters>
+                <riaControls:Parameter ParameterName="filter" Value="{Binding ElementName=filterTextBox, Path=Text}" />
+            </riaControls:DomainDataSource.QueryParameters>
+        </riaControls:DomainDataSource>
+        <local:BusyIndicator x:Name="busyIndicator" IsBusy="{Binding IsBusy, ElementName=customersDomainDataSource}">
+            <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <StackPanel Height="30" HorizontalAlignment="Left" Orientation="Horizontal" VerticalAlignment="Top" Margin="20">
+                    <sdk:Label Content="Search:" Margin="3" VerticalAlignment="Center" />
+                    <TextBox Name="filterTextBox" Width="Auto" MinWidth="60" />
+                </StackPanel>
+                <custom:CustomGrid ItemsSource="{Binding ElementName=customersDomainDataSource, Path=Data, Mode=TwoWay}" 
+                                    Name="customersDataGrid" Style="{StaticResource DataGridStyle}" 
+                                   ColumnHeaderStyle="{StaticResource DataGridHeaderGlassEffect}"
+                                   CellStyle="{StaticResource AlignCenter}" MaxWidth="750">
+                    <sdk:DataGrid.Columns>
+                        <sdk:DataGridTextColumn x:Name="nameColumn" Binding="{Binding Path=CustomerName, Mode=TwoWay}" Header="Name" Width="Auto" />
+                        <sdk:DataGridTextColumn x:Name="shortNameColumn" Binding="{Binding Path=ShortName, Mode=TwoWay}" Header="Short Name" Width="Auto" />
+                        <sdk:DataGridTemplateColumn Header="Address" MaxWidth="150">
+                            <sdk:DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock TextWrapping="Wrap" Text="{Binding Address, Mode=TwoWay}" />
+                                </DataTemplate>
+                             </sdk:DataGridTemplateColumn.CellTemplate>
+                            <sdk:DataGridTemplateColumn.CellEditingTemplate>
+                                <DataTemplate>
+                                    <TextBox TextWrapping="Wrap" Text="{Binding Address, Mode=TwoWay}" />
+                                </DataTemplate>
+                            </sdk:DataGridTemplateColumn.CellEditingTemplate>
+                        </sdk:DataGridTemplateColumn>
+                        <sdk:DataGridTextColumn x:Name="emailColumn" Binding="{Binding Path=Email, Mode=TwoWay}" Header="Email" Width="Auto" />
+                        <sdk:DataGridTextColumn x:Name="websiteColumn" Binding="{Binding Path=WebSite, Mode=TwoWay}" Header="WebSite" Width="Auto" />
+                        <sdk:DataGridTextColumn x:Name="phoneColumn" Binding="{Binding Path=PhoneNo, Mode=TwoWay}" Header="Phone" Width="Auto" />
+                        <sdk:DataGridTemplateColumn Header="Foundry">
+                            <sdk:DataGridTemplateColumn.CellEditingTemplate>
+                                <DataTemplate>
+                                    <ComboBox ItemsSource="{Binding Source={StaticResource FoundryDataSource}, Path=Data}"
+                                          SelectedValue="{Binding Path=Foundry, Mode=TwoWay}"
+                                          DisplayMemberPath="FoundryName" Style="{StaticResource ComboBoxStyle}"
+                                          ItemContainerStyle="{StaticResource ComboBoxItemStyle}"/>
+                                </DataTemplate>
+                            </sdk:DataGridTemplateColumn.CellEditingTemplate>
+                            <sdk:DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <sdk:Label Content="{Binding Path=Foundry.FoundryName, Mode=OneWay}" />
+                                </DataTemplate>
+                            </sdk:DataGridTemplateColumn.CellTemplate>
+                        </sdk:DataGridTemplateColumn>
+                        <sdk:DataGridTemplateColumn Header="Delete" Width="Auto">
+                            <sdk:DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Button Name="grdDeleteButton" Click="DeleteOperation" Tag="{Binding}" BorderBrush="Transparent"
+                                            Style="{StaticResource DeleteButtonStyle}"/>
+                                </DataTemplate>
+                            </sdk:DataGridTemplateColumn.CellTemplate>
+                        </sdk:DataGridTemplateColumn>
+                    </sdk:DataGrid.Columns>
+                </custom:CustomGrid>
+                <StackPanel Orientation="Horizontal" Height="23" Margin="0,20,0,0" HorizontalAlignment="Center">
+                    <Button Name="btnSave" Background="Transparent" Style="{StaticResource SaveButtonStyle}"/>
+                    <Button Name="btnCancel" Margin="20,0,0,0" Style="{StaticResource CancelButtonStyle}" />
+                    <Button Margin="100,0,0,0" Name="btnAdd" VerticalAlignment="Top" Width="75" Style="{StaticResource AddButtonStyle}"/>
+                </StackPanel>
+            </StackPanel>
+        </local:BusyIndicator>
+    </Grid>
+</views:BaseCRUDView>

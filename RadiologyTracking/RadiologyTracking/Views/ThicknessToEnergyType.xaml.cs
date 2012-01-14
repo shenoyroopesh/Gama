@@ -10,58 +10,41 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using RadiologyTracking.Web.Models;
+using Vagsons.Controls;
 
 namespace RadiologyTracking.Views
 {
-    public partial class ThicknessToEnergyType : UserControl
+    public partial class ThicknessToEnergyType : BaseCRUDView
     {
         public ThicknessToEnergyType()
         {
             InitializeComponent();
+            DomainSource.LoadedData += domainDataSource_LoadedData;
+            btnAdd.Click += AddOperation;
+            btnCancel.Click += CancelOperation;
+            btnSave.Click += SaveOperation;
         }
 
-        private void thicknessRangeForEnergyDomainDataSource_LoadedData(object sender, System.Windows.Controls.LoadedDataEventArgs e)
+        [CLSCompliant(false)]
+        public override CustomGrid Grid
         {
-            if (e.HasError)
-            {
-                System.Windows.MessageBox.Show(e.Error.ToString(), "Load Error", System.Windows.MessageBoxButton.OK);
-                e.MarkErrorAsHandled();
-            }
+            get { return this.grdThicknessRangeForEnergy; }
         }
 
-        private void btnAdd_Click(object sender, RoutedEventArgs e)
+        public override DomainDataSource DomainSource
         {
-            ((DomainDataSourceView)grdThicknessRangeForEnergy.ItemsSource).Add(new ThicknessRangeForEnergy());
+            get { return this.thicknessRangeForEnergyDomainDataSource; }
         }
 
-        private void btnSave_Click(object sender, RoutedEventArgs e)
+        public override Type MainType
         {
-            if (grdThicknessRangeForEnergy.IsValid)
-                //commit any unsaved changes to avoid an exception
-                if (grdThicknessRangeForEnergy.CommitEdit())
-                    thicknessRangeForEnergyDomainDataSource.DomainContext.SubmitChanges(Common.OnFormSubmitCompleted, null);
+            get { return typeof(ThicknessRangeForEnergy); }
         }
 
-        private void grdDeleteButton_Click(object sender, RoutedEventArgs e)
+        //Kept here only for the template column to work fine
+        public override void DeleteOperation(object sender, RoutedEventArgs e)
         {
-            if (MessageBox.Show("Are you sure you want to delete this item?", "Confirm Delete", MessageBoxButton.OKCancel) == MessageBoxResult.Cancel)
-                return;
-
-            DataGridRow row = DataGridRow.GetRowContainingElement(sender as FrameworkElement);
-            //commit any unsaved changes to avoid an exception
-            if (grdThicknessRangeForEnergy.CommitEdit())
-                ((DomainDataSourceView)grdThicknessRangeForEnergy.ItemsSource).Remove((ThicknessRangeForEnergy)row.DataContext);
-        }
-
-        private void btnCancel_Click(object sender, RoutedEventArgs e)
-        {
-            if (grdThicknessRangeForEnergy.CommitEdit())
-                thicknessRangeForEnergyDomainDataSource.DomainContext.RejectChanges();
-        }
-
-        private void energyDataSource_Loaded(object sender, RoutedEventArgs e)
-        {
-            var test = sender;
+            base.DeleteOperation(sender, e);
         }
     }
 }

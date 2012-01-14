@@ -19,6 +19,7 @@ namespace RadiologyTracking.Views
     {
         RadiologyContext ctx;
 
+
         public Company()
         {
             InitializeComponent();
@@ -45,13 +46,13 @@ namespace RadiologyTracking.Views
         {
             if(companyForm.ValidateItem())
                 if (companyForm.CommitEdit())
-                    ctx.SubmitChanges(Common.OnFormSubmitCompleted, null);
+                    ctx.SubmitChanges(BaseCRUDView.OnFormSubmitCompleted, null);
         }
 
         private void btnCancel_Click(object sender, RoutedEventArgs e)
         {
             if(companyForm.CommitEdit())
                 ctx.RejectChanges();
-        }        
+        }
     }
 }

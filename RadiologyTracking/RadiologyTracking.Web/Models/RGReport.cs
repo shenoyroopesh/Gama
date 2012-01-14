@@ -30,10 +30,15 @@ namespace RadiologyTracking.Web.Models
         public DateTime ReportDate { get; set; }
         public String Film { get; set; }
         public DateTime DateOfTest { get; set; }
+
+        public int ShiftID { get; set; }
         public Shift Shift { get; set; }
+
         public String EvaluationAsPer { get; set; }
         public String AcceptanceAsPer { get; set; }
         public String DrawingNo { get; set; }
+
+        public int StatusID { get; set; }
         public RGStatus Status { get; set; }
 
         [Include, Composition]

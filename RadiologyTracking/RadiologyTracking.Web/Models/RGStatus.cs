@@ -3,14 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using RadiologyTracking.Web.Utility;
+using System.ComponentModel.DataAnnotations;
 
 namespace RadiologyTracking.Web.Models
 {
-    public enum RGStatus
+    public class RGStatus
     {
-        [StringValue("Pending")]
-        PENDING,
-        [StringValue("Complete")]
-        COMPLETE
+        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int ID { get; set; }
+
+        public String Status { get; set; }
     }
 }
