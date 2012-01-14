@@ -47,7 +47,7 @@
                         <Rectangle x:Name="Divider1" Style="{StaticResource DividerStyle}"/>
 
                         <HyperlinkButton x:Name="Link2" Style="{StaticResource LinkStyle}" 
-                                     NavigateUri="/About" TargetName="ContentFrame" Content="{Binding Path=Strings.AboutPageTitle, Source={StaticResource ApplicationResources}}"/>
+                                     NavigateUri="/FilmSizes" TargetName="ContentFrame" Content="Film Sizes"/>
                         <Rectangle x:Name="Divider2" Style="{StaticResource DividerStyle}"/>
 
                         <HyperlinkButton x:Name="Link3" Style="{StaticResource LinkStyle}" 

@@ -8,7 +8,6 @@
     xmlns:riaControls="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.DomainServices" 
     xmlns:my="clr-namespace:RadiologyTracking.Web.Models" xmlns:my1="clr-namespace:RadiologyTracking.Web.Services" 
     xmlns:sdk="http://schemas.microsoft.com/winfx/2006/xaml/presentation/sdk"
-    xmlns:custom="clr-namespace:RadiologyTracking.CustomControls;assembly=CustomControls"
     xmlns:toolkit="http://schemas.microsoft.com/winfx/2006/xaml/presentation/toolkit"
     xmlns:local="clr-namespace:RadiologyTracking.Controls">
 

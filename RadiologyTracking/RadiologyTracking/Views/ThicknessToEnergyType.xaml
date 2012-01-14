@@ -5,7 +5,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     d:DesignHeight="480" d:DesignWidth="640" xmlns:sdk="http://schemas.microsoft.com/winfx/2006/xaml/presentation/sdk" xmlns:riaControls="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.DomainServices" xmlns:my="clr-namespace:RadiologyTracking.Web.Services" xmlns:my1="clr-namespace:RadiologyTracking.Web.Models"
-    xmlns:custom="clr-namespace:RadiologyTracking.CustomControls;assembly=CustomControls"
+    xmlns:custom="clr-namespace:Vagsons.Controls;assembly=CustomControls"
     xmlns:local="clr-namespace:RadiologyTracking.Controls"
     xmlns:ex="clr-namespace:ComboBoxExtensions;assembly=ComboBoxExtensions">
     
@@ -28,48 +28,49 @@
         
 
         
-        <StackPanel Height="30" HorizontalAlignment="Left" Orientation="Horizontal" VerticalAlignment="Top" Margin="20, 100">
-            <sdk:Label Content="Search:" Margin="3" VerticalAlignment="Center" />
-            <TextBox Name="filterTextBox" Width="60" />
-        </StackPanel>
+        
         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-            <custom:CustomGrid AutoGenerateColumns="False" Height="200" ItemsSource="{Binding ElementName=thicknessRangeForEnergyDomainDataSource, Path=Data}" 
-                          HorizontalAlignment="Center" VerticalAlignment="Center" Name="grdThicknessRangeForEnergy" RowDetailsVisibilityMode="VisibleWhenSelected" 
-                          Width="400">
-                <custom:CustomGrid.Resources>
-                    <Style TargetType="sdk:DataGridCell">
-                        <Setter Property="TextBlock.HorizontalAlignment" Value="Center" />
-                    </Style>
-                </custom:CustomGrid.Resources>
-                <sdk:DataGrid.Columns>                
-                    <sdk:DataGridTextColumn x:Name="thicknessFromColumn" Binding="{Binding Path=ThicknessFrom}" Header="Thickness From" 
-                                            Width="SizeToHeader"/>
-                    <sdk:DataGridTextColumn x:Name="thicknessToColumn" Binding="{Binding Path=ThicknessTo}" Header="Thickness To" Width="SizeToHeader" />
-                    <sdk:DataGridTemplateColumn Header="Energy">
-                        <sdk:DataGridTemplateColumn.CellEditingTemplate>
-                            <DataTemplate>
-                                <ComboBox ItemsSource="{Binding Source={StaticResource energyDataSource}, Path=Data}"
+            <StackPanel Height="30" HorizontalAlignment="Left" Orientation="Horizontal" VerticalAlignment="Top" Margin="20">
+                <sdk:Label Content="Search:" Margin="3" VerticalAlignment="Center" />
+                <TextBox Name="filterTextBox" Width="60" />
+            </StackPanel>
+            <local:BusyIndicator x:Name="busyIndicator" IsBusy="{Binding IsBusy, ElementName=thicknessRangeForEnergyDomainDataSource}">
+                <custom:CustomGrid ItemsSource="{Binding ElementName=thicknessRangeForEnergyDomainDataSource, Path=Data}" 
+                                    Name="grdThicknessRangeForEnergy" Style="{StaticResource DataGridStyle}" 
+                                   ColumnHeaderStyle="{StaticResource DataGridHeaderGlassEffect}"
+                                    CellStyle="{StaticResource AlignCenter}">
+                    <custom:CustomGrid.Resources>
+                    </custom:CustomGrid.Resources>
+                    <sdk:DataGrid.Columns>
+                        <sdk:DataGridTextColumn x:Name="thicknessFromColumn" Binding="{Binding Path=ThicknessFrom}" Header="Thickness From" 
+                                            Width="Auto" />
+                        <sdk:DataGridTextColumn x:Name="thicknessToColumn" Binding="{Binding Path=ThicknessTo}" Header="Thickness To" Width="Auto" />
+                        <sdk:DataGridTemplateColumn Header="Energy">
+                            <sdk:DataGridTemplateColumn.CellEditingTemplate>
+                                <DataTemplate>
+                                    <ComboBox ItemsSource="{Binding Source={StaticResource energyDataSource}, Path=Data}"
                                           SelectedValue="{Binding Path=Energy, Mode=TwoWay}"
-                                          DisplayMemberPath="Name">
-                                </ComboBox>
-                            </DataTemplate>
-                        </sdk:DataGridTemplateColumn.CellEditingTemplate>
-                        <sdk:DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <TextBlock Text="{Binding Path=Energy.Name, Mode=OneWay}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                            </DataTemplate>
-                        </sdk:DataGridTemplateColumn.CellTemplate>
-                    </sdk:DataGridTemplateColumn>
-                    <sdk:DataGridTemplateColumn Header="Delete" Width="Auto">
-                        <sdk:DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <Button Name="grdDeleteButton" Click="grdDeleteButton_Click" Tag="{Binding}" BorderBrush="Transparent"
+                                          DisplayMemberPath="Name" Style="{StaticResource ComboBoxStyle}"
+                                          ItemContainerStyle="{StaticResource ComboBoxItemStyle}"/>
+                                </DataTemplate>
+                            </sdk:DataGridTemplateColumn.CellEditingTemplate>
+                            <sdk:DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <sdk:Label Content="{Binding Path=Energy.Name, Mode=OneWay}" />
+                                </DataTemplate>
+                            </sdk:DataGridTemplateColumn.CellTemplate>
+                        </sdk:DataGridTemplateColumn>
+                        <sdk:DataGridTemplateColumn Header="Delete" Width="Auto">
+                            <sdk:DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Button Name="grdDeleteButton" Click="grdDeleteButton_Click" Tag="{Binding}" BorderBrush="Transparent"
                                             Style="{StaticResource DeleteButtonStyle}"/>
-                            </DataTemplate>
-                        </sdk:DataGridTemplateColumn.CellTemplate>
-                    </sdk:DataGridTemplateColumn>
-                </sdk:DataGrid.Columns>
-            </custom:CustomGrid>
+                                </DataTemplate>
+                            </sdk:DataGridTemplateColumn.CellTemplate>
+                        </sdk:DataGridTemplateColumn>
+                    </sdk:DataGrid.Columns>
+                </custom:CustomGrid>
+            </local:BusyIndicator>
             <StackPanel Orientation="Horizontal" Height="23" Margin="0,20,0,0" HorizontalAlignment="Center">
                 <Button Name="btnSave" Click="btnSave_Click" Background="Transparent" Style="{StaticResource SaveButtonStyle}"/>
                 <Button Name="btnCancel" Margin="20,0,0,0" Click="btnCancel_Click" Style="{StaticResource CancelButtonStyle}" />

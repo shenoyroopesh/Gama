@@ -11,17 +11,19 @@ using System.Windows.Shapes;
 using System.Collections.Generic;
 using System.Collections;
 
-namespace RadiologyTracking.CustomControls
+namespace Vagsons.Controls
 {
     public class CustomGrid : DataGrid
     {
         bool mouseDown = false;
         List<FrameworkElement> selectedCells = new List<FrameworkElement>();
+        String copiedText = String.Empty;
 
         public CustomGrid():base()
         {
             this.CellEditEnded += new EventHandler<DataGridCellEditEndedEventArgs>(CustomGrid_CellEditEnded);
             this.LoadingRow += new EventHandler<DataGridRowEventArgs>(CustomGrid_LoadingRow);
+            this.AutoGenerateColumns = false;
         }
 
         /// <summary>
@@ -95,16 +97,33 @@ namespace RadiologyTracking.CustomControls
         {
             if (e.Key == Key.V && (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
             {
-                string text = Clipboard.GetText();
+                string text = copiedText;
 
                 //cleanup the escape characters
                 text = text.Replace("\t", "").Replace("\r", "").Replace("\n", "");
                 foreach (TextBlock txt in selectedCells)
                 {
-                    txt.Text = text;
-                    txt.GetBindingExpression(TextBlock.TextProperty).UpdateSource();                    
+                    string originalText = txt.Text;
+                    //if there is any exception, only for that cell revert to old value
+                    try
+                    {
+                        txt.Text = text;
+                        txt.GetBindingExpression(TextBlock.TextProperty).UpdateSource();
+                    }
+                    catch
+                    {
+                        txt.Text = originalText;
+                    }
                 }
                 e.Handled = true;
+            }
+            // handle copying so that entire row does not get copied even if a row is selected
+            else if (e.Key == Key.C && (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
+            {
+                if (this.CurrentColumn.GetCellContent(this.CurrentItem).GetType() == typeof(TextBlock))
+                    copiedText = ((TextBlock)this.CurrentColumn.GetCellContent(this.CurrentItem)).Text;
+                else
+                    base.OnKeyDown(e);
             }
             else
             {

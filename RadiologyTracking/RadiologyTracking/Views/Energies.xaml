@@ -8,7 +8,7 @@
     xmlns:riaControls="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.DomainServices" 
     xmlns:my="clr-namespace:RadiologyTracking.Web.Models" xmlns:my1="clr-namespace:RadiologyTracking.Web.Services" 
     xmlns:sdk="http://schemas.microsoft.com/winfx/2006/xaml/presentation/sdk"
-    xmlns:custom="clr-namespace:RadiologyTracking.CustomControls;assembly=CustomControls"
+    xmlns:custom="clr-namespace:Vagsons.Controls;assembly=CustomControls"
     xmlns:local="clr-namespace:RadiologyTracking.Controls">
 
     <Grid x:Name="LayoutRoot" Background="White">
@@ -19,9 +19,11 @@
             </riaControls:DomainDataSource.DomainContext>
         </riaControls:DomainDataSource>
         <local:BusyIndicator x:Name="busyIndicator" IsBusy="{Binding IsBusy, ElementName=energyDomainDataSource}">
-            <StackPanel Orientation="Vertical">
-                <custom:CustomGrid AutoGenerateColumns="False" Height="200" HorizontalAlignment="Center" ItemsSource="{Binding ElementName=energyDomainDataSource, Path=Data, Mode=TwoWay}" 
-                           Margin="0,153,0,0"  Name="energyDataGrid" RowDetailsVisibilityMode="VisibleWhenSelected" Width="400">
+            <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <custom:CustomGrid ItemsSource="{Binding ElementName=energyDomainDataSource, Path=Data, Mode=TwoWay}" 
+                                    Name="energyDataGrid" Style="{StaticResource DataGridStyle}" 
+                                   ColumnHeaderStyle="{StaticResource DataGridHeaderGlassEffect}"
+                                   CellStyle="{StaticResource AlignCenter}">
                     <sdk:DataGrid.Columns>
                         <sdk:DataGridTextColumn x:Name="nameColumn" Binding="{Binding Path=Name, Mode=TwoWay}" Header="Name" Width="Auto" MinWidth="300" />
                         <sdk:DataGridTemplateColumn Header="Delete" Width="Auto">
