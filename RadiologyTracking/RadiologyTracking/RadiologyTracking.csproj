@@ -112,6 +112,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ErrorResources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Controls\DateFormatter.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Models\LoginInfo.cs" />
     <Compile Include="Models\User.partial.cs" />
@@ -127,15 +128,22 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>SecurityQuestions.resx</DependentUpon>
     </Compile>
+    <Compile Include="Utility.cs" />
     <Compile Include="Views\BaseCRUDView.cs" />
     <Compile Include="Views\Company.xaml.cs">
       <DependentUpon>Company.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\FixedPatterns.xaml.cs">
+      <DependentUpon>FixedPatterns.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\FilmTransactions.xaml.cs">
       <DependentUpon>FilmTransactions.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Customers.xaml.cs">
       <DependentUpon>Customers.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\FixedPatternTemplates.xaml.cs">
+      <DependentUpon>FixedPatternTemplates.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Foundries.xaml.cs">
       <DependentUpon>Foundries.xaml</DependentUpon>
@@ -196,6 +204,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Views\FixedPatterns.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Views\FilmTransactions.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -203,6 +215,10 @@
     <Page Include="Views\Customers.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\FixedPatternTemplates.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Foundries.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -259,6 +275,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\AppManifest.xml" />
+    <Resource Include="Assets\Fonts\SegoeWP.ttf" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Libs\System.Windows.Controls.Data.DataForm.Toolkit.dll" />
@@ -314,6 +331,12 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\cancel.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Edit.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\details-icon.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Silverlight\$(SilverlightVersion)\Microsoft.Silverlight.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

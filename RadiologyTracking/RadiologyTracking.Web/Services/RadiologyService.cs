@@ -305,6 +305,9 @@ namespace RadiologyTracking.Web.Services
 
         public IQueryable<FilmTransaction> GetFilmTransactionsByDate(DateTime fromDate, DateTime toDate)
         {
+            //to ensure that time component of the date does not make some dates get excluded
+            fromDate = fromDate.Date;
+            toDate = toDate.Date.AddDays(1);
             return this.DbContext.FilmTransactions.Where(p =>
                                                             p.Date >= fromDate  &&
                                                                 p.Date <= toDate );
@@ -499,12 +502,45 @@ namespace RadiologyTracking.Web.Services
             return this.DbContext.FixedPatternTemplates;
         }
 
-        public IQueryable<FixedPatternTemplate> GetFixedPatternTemplatesForFP(String fixedPatternNo, String coverage)
+        /// <summary>
+        /// Returns the Fixed Pattern template corresponding to this fP no and coverage. If none exists, returns a new 
+        /// template
+        /// </summary>
+        /// <param name="fixedPatternNo"></param>
+        /// <param name="strCoverage"></param>
+        /// <returns></returns>
+        public FixedPatternTemplate GetFixedPatternTemplateForFP(String fixedPatternNo, String strCoverage)
         {
-            return this.DbContext.FixedPatternTemplates.Where(p =>
-                                                                p.FixedPattern.FPNo.Equals(fixedPatternNo) &&
-                                                                p.Coverage.CoverageName.Equals(coverage));
+            FixedPattern fixedPattern;
+            Coverage coverage;
+
+            try
+            {
+                fixedPattern = this.DbContext.FixedPatterns.Single(p => p.FPNo == fixedPatternNo);
+                coverage = this.DbContext.Coverages.Single(p => p.CoverageName == strCoverage);
+            }
+            catch (InvalidOperationException e)
+            {
+                return null;
+            }
+
+            var fpTemplates = this.DbContext.FixedPatternTemplates.Where(p =>
+                                                                p.FixedPattern.FPNo == fixedPattern.FPNo &&
+                                                                p.Coverage.CoverageName == coverage.CoverageName);
+
+            if (fpTemplates.Count() > 0)
+                return fpTemplates.First();
+            else
+            {
+                //create a new fixed pattern template for this combination
+                FixedPatternTemplate fpTemplate = new FixedPatternTemplate() { FixedPattern = fixedPattern, Coverage = coverage };
+                DbContext.FixedPatternTemplates.Add(fpTemplate);
+                //save the fixed pattern template before sending it back, so that it has an ID
+                DbContext.SaveChanges();
+                return fpTemplate;
+            }
         }
+
 
         public void InsertFixedPatternTemplate(FixedPatternTemplate entity)
         {
@@ -582,6 +618,16 @@ namespace RadiologyTracking.Web.Services
         public IQueryable<FPTemplateRow> GetFPTemplateRows()
         {
             return this.DbContext.FPTemplateRows;
+        }
+
+        /// <summary>
+        /// Based on FP Template ID
+        /// </summary>
+        /// <param name="fpTemplateID"></param>
+        /// <returns></returns>
+        public IQueryable<FPTemplateRow> GetFPTemplateRowsByTemplate(int fpTemplateID)
+        {
+            return this.DbContext.FPTemplateRows.Where(p=>p.FixedPatternTemplateID == fpTemplateID);
         }
 
         public void InsertFPTemplateRow(FPTemplateRow entity)

@@ -16,7 +16,7 @@ namespace Vagsons.Controls
     public class CustomGrid : DataGrid
     {
         bool mouseDown = false;
-        List<FrameworkElement> selectedCells = new List<FrameworkElement>();
+        Dictionary<DataGridCell, Brush> selectedCells = new Dictionary<DataGridCell, Brush>();
         String copiedText = String.Empty;
 
         public CustomGrid():base()
@@ -62,8 +62,11 @@ namespace Vagsons.Controls
         void cellContent_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             //clear all the selected cells
-            foreach (TextBlock item in selectedCells) 
-                item.FontWeight = FontWeights.Normal;
+            foreach (var item in selectedCells)
+            {
+                //make the background its original value
+                item.Key.Background = item.Value;
+            }                
 
             selectedCells.Clear();
 
@@ -88,9 +91,14 @@ namespace Vagsons.Controls
             if (c.GetType() != typeof(TextBlock))
                 return;
 
-            TextBlock cell = (TextBlock)c;
-            selectedCells.Add(cell);            
-            cell.FontWeight = FontWeights.Bold;
+            TextBlock tblock = (TextBlock)c;
+            DataGridCell cell = (DataGridCell)tblock.Parent;
+
+            //if already added, return
+            if (selectedCells.ContainsKey(cell)) return;
+
+            selectedCells.Add(cell, cell.Background);
+            cell.Background = new SolidColorBrush(Colors.Purple);
         }
 
         protected override void OnKeyDown(KeyEventArgs e)
@@ -101,8 +109,13 @@ namespace Vagsons.Controls
 
                 //cleanup the escape characters
                 text = text.Replace("\t", "").Replace("\r", "").Replace("\n", "");
-                foreach (TextBlock txt in selectedCells)
+                foreach (var item in selectedCells)
                 {
+                    //this applies to only textblocks within cells
+                    if (item.Key.Content.GetType() != typeof(TextBlock))
+                        continue;
+
+                    TextBlock txt = (TextBlock)item.Key.Content;
                     string originalText = txt.Text;
                     //if there is any exception, only for that cell revert to old value
                     try

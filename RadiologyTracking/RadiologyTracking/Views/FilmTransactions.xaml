@@ -32,14 +32,17 @@
             <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
                 <StackPanel Height="30" HorizontalAlignment="Left" Orientation="Horizontal" VerticalAlignment="Top" Margin="20">
                     <sdk:Label Content="From:" Margin="3" VerticalAlignment="Center" />
-                    <sdk:DatePicker Name="fromDatePicker"  />
+                    <sdk:DatePicker Name="fromDatePicker" IsEnabled="{Binding ElementName=filmTransactionsDomainDataSource, Path=CanLoad}" />
                     <sdk:Label Content="To:" Margin="3" VerticalAlignment="Center" />
-                    <sdk:DatePicker Name="toDatePicker" />
+                    <sdk:DatePicker Name="toDatePicker" IsEnabled="{Binding ElementName=filmTransactionsDomainDataSource, Path=CanLoad}"/>
                 </StackPanel>
                 <custom:CustomGrid ItemsSource="{Binding ElementName=filmTransactionsDomainDataSource, Path=Data, Mode=TwoWay}" 
                                     Name="filmTransactionsDataGrid" Style="{StaticResource DataGridStyle}" 
                                    ColumnHeaderStyle="{StaticResource DataGridHeaderGlassEffect}"
                                    CellStyle="{StaticResource AlignCenter}" MaxWidth="750">
+                    <custom:CustomGrid.Resources>
+                        <local:DateFormatter x:Key="FormatConverter" />
+                    </custom:CustomGrid.Resources>
                     <sdk:DataGrid.Columns>
                         <sdk:DataGridTemplateColumn Header="Date">
                             <sdk:DataGridTemplateColumn.CellEditingTemplate>
@@ -49,7 +52,8 @@
                             </sdk:DataGridTemplateColumn.CellEditingTemplate>
                             <sdk:DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <sdk:Label Content="{Binding Date, Mode=OneWay}" />
+                                    <TextBlock Text="{Binding Date, Mode=OneWay, Converter={StaticResource FormatConverter},
+                                         ConverterParameter=\{0:d-M-yyyy\}}" />
                                 </DataTemplate>
                             </sdk:DataGridTemplateColumn.CellTemplate>
                         </sdk:DataGridTemplateColumn>

@@ -8,6 +8,15 @@ namespace RadiologyTracking.Web.Models
 {
     public class FilmTransaction
     {
+        /// <summary>
+        /// Constructor - initialize the transaction date to today for convenience
+        /// </summary>
+        public FilmTransaction()
+        {
+            this.Date = DateTime.Now;
+        }
+
+
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ID { get; set; }
 

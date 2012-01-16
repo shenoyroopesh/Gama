@@ -313,3 +313,5 @@ D:\DotNet\Gama\RadiologyTracking\RadiologyTracking\obj\Debug\Views\Coverages.g.i
 D:\DotNet\Gama\RadiologyTracking\RadiologyTracking\obj\Debug\Views\Foundries.g.i.cs
 D:\DotNet\Gama\RadiologyTracking\RadiologyTracking\obj\Debug\Views\Customers.g.i.cs
 D:\DotNet\Gama\RadiologyTracking\RadiologyTracking\obj\Debug\Views\FilmTransactions.g.i.cs
+D:\DotNet\Gama\RadiologyTracking\RadiologyTracking\obj\Debug\Views\FixedPatterns.g.i.cs
+D:\DotNet\Gama\RadiologyTracking\RadiologyTracking\obj\Debug\Views\FixedPatternTemplates.g.i.cs

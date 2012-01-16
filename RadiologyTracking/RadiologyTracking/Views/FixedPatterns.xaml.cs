@@ -14,37 +14,35 @@ using RadiologyTracking.Web.Models;
 using System.ServiceModel.DomainServices.Client;
 using System.ComponentModel.DataAnnotations;
 using Vagsons.Controls;
+using System.Windows.Navigation;
 
 namespace RadiologyTracking.Views
 {
-    public partial class FilmTransactions : BaseCRUDView
+    public partial class FixedPatterns : BaseCRUDView
     {
-        public FilmTransactions()
+        public FixedPatterns()
         {
             InitializeComponent();
             DomainSource.LoadedData += domainDataSource_LoadedData;
             btnAdd.Click += AddOperation;
             btnCancel.Click += CancelOperation;
             btnSave.Click += SaveOperation;
-
-            fromDatePicker.SelectedDate = fromDatePicker.DisplayDate = DateTime.Now.AddDays(-15);
-            toDatePicker.SelectedDate = toDatePicker.DisplayDate = DateTime.Now;
         }
 
         [CLSCompliant(false)]
         public override CustomGrid Grid
         {
-            get { return this.filmTransactionsDataGrid; }
+            get { return this.FPDataGrid; }
         }
 
         public override DomainDataSource DomainSource
-        { 
-            get { return this.filmTransactionsDomainDataSource; } 
+        {
+            get { return this.FPDomainDataSource; }
         }
 
         public override Type MainType
         {
-            get { return typeof(FilmTransaction); }
+            get { return typeof(FixedPattern); }
         }
 
         //Kept here only for the template column to work fine
@@ -53,15 +51,11 @@ namespace RadiologyTracking.Views
             base.DeleteOperation(sender, e);
         }
 
-        /// <summary>
-        /// Overrides the addoperation from the baseview, so that the film transaction is instantiated with default date
-        /// of today
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        public override void AddOperation(object sender, RoutedEventArgs e)
+        private void grdTemplatesButton_Click(object sender, RoutedEventArgs e)
         {
-            ((DomainDataSourceView)Grid.ItemsSource).Add(new FilmTransaction() { Date = DateTime.Now });
+            DataGridRow row = DataGridRow.GetRowContainingElement(sender as FrameworkElement);
+            App.FixedPattern = (FixedPattern)row.DataContext;
+            Navigate("/FixedPatternTemplates");
         }
     }
 }

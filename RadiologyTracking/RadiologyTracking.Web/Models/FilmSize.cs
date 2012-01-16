@@ -13,6 +13,18 @@ namespace RadiologyTracking.Web.Models
         public int Width { get; set; }
         public int Height { get; set; }
 
+        /// <summary>
+        /// Returns the name in the format Height X Width
+        /// </summary>
+        public String Name
+        {
+            get { 
+                return String.Concat(Height.ToString(), 
+                                    "X", 
+                                    Width.ToString()); 
+            }
+        }
+
         public int Area
         {
             get {

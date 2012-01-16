@@ -1787,7 +1787,7 @@
         <Setter Property="Background" Value="Transparent" />
         <Setter Property="Height" Value="23" />
     </Style>
-    
+
     <!--Add Button Style-->
     <Style x:Key="AddButtonStyle" TargetType="Button" BasedOn="{StaticResource BaseButtonStyle}">
         <Setter Property="ContentTemplate">
@@ -1797,7 +1797,7 @@
                         <Image Source="/RadiologyTracking;component/Images/Button-Add-icon.png" Stretch="UniformToFill" />
                         <TextBlock Text="Add" FontSize="12" Margin="10,0,0,0"/>
                     </StackPanel>
-                </DataTemplate>               
+                </DataTemplate>
             </Setter.Value>
         </Setter>
     </Style>
@@ -1833,17 +1833,39 @@
     <!--Delete Button Style-->
     <Style x:Key="DeleteButtonStyle" TargetType="Button" BasedOn="{StaticResource BaseButtonStyle}">
         <Setter Property="Width" Value="23" />
-        <Setter Property="ContentTemplate">
+        <Setter Property="Template">
             <Setter.Value>
-                <DataTemplate>
-                    <StackPanel Orientation="Horizontal">
-                        <Image Stretch="UniformToFill" Source="/RadiologyTracking;component/Images/Delete.png" />
-                    </StackPanel>
-                </DataTemplate>
+                <ControlTemplate>
+                    <Image Stretch="Fill" Source="/RadiologyTracking;component/Images/Delete.png" />
+                </ControlTemplate>
             </Setter.Value>
         </Setter>
-    </Style>    
-    
+    </Style>
+
+    <!--Edit Button Style-->
+    <Style x:Key="EditButtonStyle" TargetType="Button" BasedOn="{StaticResource BaseButtonStyle}">
+        <Setter Property="Width" Value="23" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate>
+                    <Image Stretch="Fill" Source="/RadiologyTracking;component/Images/Edit.png" />
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!--Edit Button Style-->
+    <Style x:Key="DetailsButtonStyle" TargetType="Button" BasedOn="{StaticResource BaseButtonStyle}">
+        <Setter Property="Width" Value="23" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate>
+                    <Image Stretch="Fill" Source="/RadiologyTracking;component/Images/details-icon.png" />
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
     <!--Page Heading Styling-->
     <Style TargetType="sdk:Label" x:Key="PageHeaderStyle" >
         <Setter Property="HorizontalAlignment" Value="Left" />
@@ -1854,11 +1876,11 @@
         <Setter Property="FontWeight" Value="Bold" />
         <Setter Property="FontSize" Value="20" />
     </Style>
-            <!--DataGrid Styling-->
+    <!--DataGrid Styling-->
     <Style x:Key="DataGridStyle"  TargetType="custom:CustomGrid">
         <Setter Property="RowBackground" Value="#FFFFFF" />
         <Setter Property="AlternatingRowBackground" Value="#EBEBED" />
-        <Setter Property="Margin" Value="0,0,0,100" />
+        <Setter Property="Margin" Value="0,0,0,30" />
         <Setter Property="GridLinesVisibility" Value="All"/>
         <Setter Property="HeadersVisibility" Value="Column" />
         <Setter Property="HorizontalGridLinesBrush" Value="#A0A0A0" />
@@ -1874,7 +1896,6 @@
         <Setter Property="CanUserReorderColumns" Value="False" />
         <Setter Property="CanUserResizeColumns" Value="False" />
         <Setter Property="CanUserSortColumns" Value="True" />
-        <Setter Property="AutoGenerateColumns" Value="True" />
         <Setter Property="RowDetailsVisibilityMode" Value="VisibleWhenSelected" />
     </Style >
 
@@ -2059,7 +2080,7 @@
     <Style x:Key="AlignCenter" TargetType="sdk:DataGridCell">
         <Setter Property="HorizontalContentAlignment" Value="Center" />
     </Style>
-
+    
     <!--Combobox styling-->
     <ControlTemplate x:Key="ValidationToolTipTemplate">
         <Grid x:Name="Root" Margin="5,0" Opacity="0" RenderTransformOrigin="0,0">
@@ -2104,8 +2125,8 @@
             </Border>
         </Grid>
     </ControlTemplate>
-    
-    
+
+
     <Style x:Key="ToggleButtonStyle1" TargetType="ToggleButton">
         <Setter Property="Background" Value="#FF1F3B53"/>
         <Setter Property="Foreground" Value="#FF000000"/>

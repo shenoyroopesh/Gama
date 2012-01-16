@@ -76,16 +76,16 @@
                         <Rectangle x:Name="Divider8" Style="{StaticResource DividerStyle}"/>
                         <HyperlinkButton x:Name="Link9" Style="{StaticResource LinkStyle}" 
                                      NavigateUri="/FilmTransactions" TargetName="ContentFrame" Content="FilmTransactions"/>
+
+                        <Rectangle x:Name="Divider9" Style="{StaticResource DividerStyle}"/>
+                        <HyperlinkButton x:Name="Link10" Style="{StaticResource LinkStyle}" 
+                                     NavigateUri="/FixedPatterns" TargetName="ContentFrame" Content="Fixed Patterns"/>
                     </StackPanel>
                 </Border>
-
             </Grid>
-
             <Border Style="{StaticResource LoginContainerStyle}">
                 <login:LoginStatus/>
             </Border>
         </Grid>
-
     </Grid>
-
 </UserControl>

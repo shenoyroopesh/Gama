@@ -10,6 +10,7 @@ using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using System.ServiceModel.DomainServices.Client;
 using Vagsons.Controls;
+using System.ComponentModel;
 
 namespace RadiologyTracking.Views
 {
@@ -18,7 +19,7 @@ namespace RadiologyTracking.Views
     /// 
     /// DO NOT USE THIS VIEW DIRECTLY
     /// </summary>
-    public class BaseCRUDView : UserControl
+    public class BaseCRUDView : UserControl, INotifyPropertyChanged
     {
         public BaseCRUDView()
         {
@@ -40,6 +41,23 @@ namespace RadiologyTracking.Views
         /// Represents the main item type in this page, use the new keyword to hide this and define one corresponding to the page
         /// </summary>
         public virtual Type MainType { get { return null; } }
+
+
+        /// <summary>
+        /// Property to find and get the Frame for this user control, mainly for navigation
+        /// </summary>
+        public Frame Frame
+        {
+            get
+            {
+                return ((Frame)Utility.GetParent(this, typeof(Frame)));
+            }
+        }
+
+        public void Navigate(string uri)
+        {
+            Frame.Navigate(new Uri(uri, UriKind.Relative));
+        }
 
 
         /// <summary>
@@ -66,7 +84,7 @@ namespace RadiologyTracking.Views
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        public void domainDataSource_LoadedData(object sender, LoadedDataEventArgs e)
+        public virtual void domainDataSource_LoadedData(object sender, LoadedDataEventArgs e)
         {
             if (e.HasError)
             {
@@ -80,7 +98,7 @@ namespace RadiologyTracking.Views
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        public void AddOperation(object sender, RoutedEventArgs e)
+        public virtual void AddOperation(object sender, RoutedEventArgs e)
         {
             ((DomainDataSourceView)Grid.ItemsSource).Add(Activator.CreateInstance(MainType));
         }
@@ -91,7 +109,7 @@ namespace RadiologyTracking.Views
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        public void SaveOperation(object sender, RoutedEventArgs e)
+        public virtual void SaveOperation(object sender, RoutedEventArgs e)
         {
             if (Grid.IsValid)
                 //commit any unsaved changes to avoid an exception
@@ -124,6 +142,16 @@ namespace RadiologyTracking.Views
         {
             if (Grid.CommitEdit())
                 DomainSource.DomainContext.RejectChanges();
+        }
+
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        protected void OnPropertyChanged(String name)
+        {
+            if (PropertyChanged != null)
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs(name));
+            }
         }
     }
 }

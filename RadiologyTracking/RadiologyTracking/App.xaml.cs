@@ -5,6 +5,8 @@
     using System.ServiceModel.DomainServices.Client.ApplicationServices;
     using System.Windows;
     using System.Windows.Controls;
+    using System.Threading;
+using RadiologyTracking.Web.Models;
 
     /// <summary>
     /// Main <see cref="Application"/> class.
@@ -24,8 +26,15 @@
             webContext.Authentication = new FormsAuthentication();
             //webContext.Authentication = new WindowsAuthentication();
             this.ApplicationLifetimeObjects.Add(webContext);
+
+            //initialize culture
+            Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-IN");
         }
 
+        //Global properties - used to pass objects between pages without having to query
+        //the database unnecessarily
+        public static FixedPattern FixedPattern { get; set; }
+        
         private void Application_Startup(object sender, StartupEventArgs e)
         {
             // This will enable you to bind controls in XAML to WebContext.Current properties.

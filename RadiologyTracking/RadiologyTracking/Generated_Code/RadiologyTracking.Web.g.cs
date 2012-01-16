@@ -2246,6 +2246,8 @@ namespace RadiologyTracking.Web.Models
         
         private int _id;
         
+        private string _name;
+        
         private int _width;
         
         #region Extensibility Method Definitions
@@ -2261,6 +2263,8 @@ namespace RadiologyTracking.Web.Models
         partial void OnHeightChanged();
         partial void OnIDChanging(int value);
         partial void OnIDChanged();
+        partial void OnNameChanging(string value);
+        partial void OnNameChanged();
         partial void OnWidthChanging(int value);
         partial void OnWidthChanged();
 
@@ -2352,6 +2356,31 @@ namespace RadiologyTracking.Web.Models
                     this._id = value;
                     this.RaisePropertyChanged("ID");
                     this.OnIDChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'Name' value.
+        /// </summary>
+        [DataMember()]
+        [Editable(false)]
+        [ReadOnly(true)]
+        public string Name
+        {
+            get
+            {
+                return this._name;
+            }
+            set
+            {
+                if ((this._name != value))
+                {
+                    this.OnNameChanging(value);
+                    this.ValidateProperty("Name", value);
+                    this._name = value;
+                    this.RaisePropertyChanged("Name");
+                    this.OnNameChanged();
                 }
             }
         }
@@ -6117,6 +6146,21 @@ namespace RadiologyTracking.Web.Services
         }
         
         /// <summary>
+        /// Gets an EntityQuery instance that can be used to load <see cref="FixedPatternTemplate"/> entity instances using the 'GetFixedPatternTemplateForFP' query.
+        /// </summary>
+        /// <param name="fixedPatternNo">The value for the 'fixedPatternNo' parameter of the query.</param>
+        /// <param name="strCoverage">The value for the 'strCoverage' parameter of the query.</param>
+        /// <returns>An EntityQuery that can be loaded to retrieve <see cref="FixedPatternTemplate"/> entity instances.</returns>
+        public EntityQuery<FixedPatternTemplate> GetFixedPatternTemplateForFPQuery(string fixedPatternNo, string strCoverage)
+        {
+            Dictionary<string, object> parameters = new Dictionary<string, object>();
+            parameters.Add("fixedPatternNo", fixedPatternNo);
+            parameters.Add("strCoverage", strCoverage);
+            this.ValidateMethod("GetFixedPatternTemplateForFPQuery", parameters);
+            return base.CreateQuery<FixedPatternTemplate>("GetFixedPatternTemplateForFP", parameters, false, false);
+        }
+        
+        /// <summary>
         /// Gets an EntityQuery instance that can be used to load <see cref="FixedPatternTemplate"/> entity instances using the 'GetFixedPatternTemplates' query.
         /// </summary>
         /// <returns>An EntityQuery that can be loaded to retrieve <see cref="FixedPatternTemplate"/> entity instances.</returns>
@@ -6124,21 +6168,6 @@ namespace RadiologyTracking.Web.Services
         {
             this.ValidateMethod("GetFixedPatternTemplatesQuery", null);
             return base.CreateQuery<FixedPatternTemplate>("GetFixedPatternTemplates", null, false, true);
-        }
-        
-        /// <summary>
-        /// Gets an EntityQuery instance that can be used to load <see cref="FixedPatternTemplate"/> entity instances using the 'GetFixedPatternTemplatesForFP' query.
-        /// </summary>
-        /// <param name="fixedPatternNo">The value for the 'fixedPatternNo' parameter of the query.</param>
-        /// <param name="coverage">The value for the 'coverage' parameter of the query.</param>
-        /// <returns>An EntityQuery that can be loaded to retrieve <see cref="FixedPatternTemplate"/> entity instances.</returns>
-        public EntityQuery<FixedPatternTemplate> GetFixedPatternTemplatesForFPQuery(string fixedPatternNo, string coverage)
-        {
-            Dictionary<string, object> parameters = new Dictionary<string, object>();
-            parameters.Add("fixedPatternNo", fixedPatternNo);
-            parameters.Add("coverage", coverage);
-            this.ValidateMethod("GetFixedPatternTemplatesForFPQuery", parameters);
-            return base.CreateQuery<FixedPatternTemplate>("GetFixedPatternTemplatesForFP", parameters, false, true);
         }
         
         /// <summary>
@@ -6159,6 +6188,19 @@ namespace RadiologyTracking.Web.Services
         {
             this.ValidateMethod("GetFPTemplateRowsQuery", null);
             return base.CreateQuery<FPTemplateRow>("GetFPTemplateRows", null, false, true);
+        }
+        
+        /// <summary>
+        /// Gets an EntityQuery instance that can be used to load <see cref="FPTemplateRow"/> entity instances using the 'GetFPTemplateRowsByTemplate' query.
+        /// </summary>
+        /// <param name="fpTemplateID">The value for the 'fpTemplateID' parameter of the query.</param>
+        /// <returns>An EntityQuery that can be loaded to retrieve <see cref="FPTemplateRow"/> entity instances.</returns>
+        public EntityQuery<FPTemplateRow> GetFPTemplateRowsByTemplateQuery(int fpTemplateID)
+        {
+            Dictionary<string, object> parameters = new Dictionary<string, object>();
+            parameters.Add("fpTemplateID", fpTemplateID);
+            this.ValidateMethod("GetFPTemplateRowsByTemplateQuery", parameters);
+            return base.CreateQuery<FPTemplateRow>("GetFPTemplateRowsByTemplate", parameters, false, true);
         }
         
         /// <summary>
@@ -6486,6 +6528,27 @@ namespace RadiologyTracking.Web.Services
             QueryResult<FixedPattern> EndGetFixedPatterns(IAsyncResult result);
             
             /// <summary>
+            /// Asynchronously invokes the 'GetFixedPatternTemplateForFP' operation.
+            /// </summary>
+            /// <param name="fixedPatternNo">The value for the 'fixedPatternNo' parameter of this action.</param>
+            /// <param name="strCoverage">The value for the 'strCoverage' parameter of this action.</param>
+            /// <param name="callback">Callback to invoke on completion.</param>
+            /// <param name="asyncState">Optional state object.</param>
+            /// <returns>An IAsyncResult that can be used to monitor the request.</returns>
+            [FaultContract(typeof(DomainServiceFault), Action="http://tempuri.org/RadiologyService/GetFixedPatternTemplateForFPDomainServiceFaul" +
+                "t", Name="DomainServiceFault", Namespace="DomainServices")]
+            [OperationContract(AsyncPattern=true, Action="http://tempuri.org/RadiologyService/GetFixedPatternTemplateForFP", ReplyAction="http://tempuri.org/RadiologyService/GetFixedPatternTemplateForFPResponse")]
+            [WebGet()]
+            IAsyncResult BeginGetFixedPatternTemplateForFP(string fixedPatternNo, string strCoverage, AsyncCallback callback, object asyncState);
+            
+            /// <summary>
+            /// Completes the asynchronous operation begun by 'BeginGetFixedPatternTemplateForFP'.
+            /// </summary>
+            /// <param name="result">The IAsyncResult returned from 'BeginGetFixedPatternTemplateForFP'.</param>
+            /// <returns>The 'QueryResult' returned from the 'GetFixedPatternTemplateForFP' operation.</returns>
+            QueryResult<FixedPatternTemplate> EndGetFixedPatternTemplateForFP(IAsyncResult result);
+            
+            /// <summary>
             /// Asynchronously invokes the 'GetFixedPatternTemplates' operation.
             /// </summary>
             /// <param name="callback">Callback to invoke on completion.</param>
@@ -6502,27 +6565,6 @@ namespace RadiologyTracking.Web.Services
             /// <param name="result">The IAsyncResult returned from 'BeginGetFixedPatternTemplates'.</param>
             /// <returns>The 'QueryResult' returned from the 'GetFixedPatternTemplates' operation.</returns>
             QueryResult<FixedPatternTemplate> EndGetFixedPatternTemplates(IAsyncResult result);
-            
-            /// <summary>
-            /// Asynchronously invokes the 'GetFixedPatternTemplatesForFP' operation.
-            /// </summary>
-            /// <param name="fixedPatternNo">The value for the 'fixedPatternNo' parameter of this action.</param>
-            /// <param name="coverage">The value for the 'coverage' parameter of this action.</param>
-            /// <param name="callback">Callback to invoke on completion.</param>
-            /// <param name="asyncState">Optional state object.</param>
-            /// <returns>An IAsyncResult that can be used to monitor the request.</returns>
-            [FaultContract(typeof(DomainServiceFault), Action="http://tempuri.org/RadiologyService/GetFixedPatternTemplatesForFPDomainServiceFau" +
-                "lt", Name="DomainServiceFault", Namespace="DomainServices")]
-            [OperationContract(AsyncPattern=true, Action="http://tempuri.org/RadiologyService/GetFixedPatternTemplatesForFP", ReplyAction="http://tempuri.org/RadiologyService/GetFixedPatternTemplatesForFPResponse")]
-            [WebGet()]
-            IAsyncResult BeginGetFixedPatternTemplatesForFP(string fixedPatternNo, string coverage, AsyncCallback callback, object asyncState);
-            
-            /// <summary>
-            /// Completes the asynchronous operation begun by 'BeginGetFixedPatternTemplatesForFP'.
-            /// </summary>
-            /// <param name="result">The IAsyncResult returned from 'BeginGetFixedPatternTemplatesForFP'.</param>
-            /// <returns>The 'QueryResult' returned from the 'GetFixedPatternTemplatesForFP' operation.</returns>
-            QueryResult<FixedPatternTemplate> EndGetFixedPatternTemplatesForFP(IAsyncResult result);
             
             /// <summary>
             /// Asynchronously invokes the 'GetFoundries' operation.
@@ -6559,6 +6601,26 @@ namespace RadiologyTracking.Web.Services
             /// <param name="result">The IAsyncResult returned from 'BeginGetFPTemplateRows'.</param>
             /// <returns>The 'QueryResult' returned from the 'GetFPTemplateRows' operation.</returns>
             QueryResult<FPTemplateRow> EndGetFPTemplateRows(IAsyncResult result);
+            
+            /// <summary>
+            /// Asynchronously invokes the 'GetFPTemplateRowsByTemplate' operation.
+            /// </summary>
+            /// <param name="fpTemplateID">The value for the 'fpTemplateID' parameter of this action.</param>
+            /// <param name="callback">Callback to invoke on completion.</param>
+            /// <param name="asyncState">Optional state object.</param>
+            /// <returns>An IAsyncResult that can be used to monitor the request.</returns>
+            [FaultContract(typeof(DomainServiceFault), Action="http://tempuri.org/RadiologyService/GetFPTemplateRowsByTemplateDomainServiceFault" +
+                "", Name="DomainServiceFault", Namespace="DomainServices")]
+            [OperationContract(AsyncPattern=true, Action="http://tempuri.org/RadiologyService/GetFPTemplateRowsByTemplate", ReplyAction="http://tempuri.org/RadiologyService/GetFPTemplateRowsByTemplateResponse")]
+            [WebGet()]
+            IAsyncResult BeginGetFPTemplateRowsByTemplate(int fpTemplateID, AsyncCallback callback, object asyncState);
+            
+            /// <summary>
+            /// Completes the asynchronous operation begun by 'BeginGetFPTemplateRowsByTemplate'.
+            /// </summary>
+            /// <param name="result">The IAsyncResult returned from 'BeginGetFPTemplateRowsByTemplate'.</param>
+            /// <returns>The 'QueryResult' returned from the 'GetFPTemplateRowsByTemplate' operation.</returns>
+            QueryResult<FPTemplateRow> EndGetFPTemplateRowsByTemplate(IAsyncResult result);
             
             /// <summary>
             /// Asynchronously invokes the 'GetObservations' operation.
