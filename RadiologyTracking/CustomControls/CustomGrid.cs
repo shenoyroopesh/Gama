@@ -28,13 +28,13 @@ namespace Vagsons.Controls
 
         /// <summary>
         /// After the editing is completed, it is necessary to add the eventhandlers again
+        /// to all the cells of that row
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         void CustomGrid_CellEditEnded(object sender, DataGridCellEditEndedEventArgs e)
         {
-            FrameworkElement cellContent = e.Column.GetCellContent(e.Row);
-            addCellEventHandlers(cellContent);
+            CustomGrid_LoadingRow(sender, new DataGridRowEventArgs(e.Row));
         }
 
         void CustomGrid_LoadingRow(object sender, DataGridRowEventArgs e)
@@ -51,9 +51,33 @@ namespace Vagsons.Controls
             cellContent.MouseEnter += new MouseEventHandler(cellContent_MouseEnter);
             cellContent.MouseLeftButtonDown += new MouseButtonEventHandler(cellContent_MouseLeftButtonDown);
             cellContent.MouseLeftButtonUp += new MouseButtonEventHandler(cellContent_MouseLeftButtonUp);
+            this.MouseLeave += new MouseEventHandler(CustomGrid_MouseLeave);
+            this.MouseEnter += new MouseEventHandler(CustomGrid_MouseEnter);
+            this.MouseLeftButtonUp += new MouseButtonEventHandler(CustomGrid_MouseLeftButtonUp);
         }
 
+        void CustomGrid_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            mouseDown = false;
+            ReleaseMouseCapture();
+        }
 
+        void CustomGrid_MouseEnter(object sender, MouseEventArgs e)
+        {
+            ReleaseMouseCapture();
+        }
+
+        /// <summary>
+        /// Capture the mouse if it is leaving when down
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        void CustomGrid_MouseLeave(object sender, MouseEventArgs e)
+        {
+            if(mouseDown)
+                CaptureMouse();
+        }
+        
         void cellContent_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             mouseDown = false;
