@@ -705,13 +705,57 @@ namespace RadiologyTracking.Web.Services
         }
         #endregion
 
+        #region Remarks
+
+        public IQueryable<Remark> GetRemarks()
+        {
+            return this.DbContext.Remarks;
+        }
+
+        #endregion
+
         #region RG Reports
         public IQueryable<RGReport> GetRGReports(DateTime fromDate, DateTime toDate)
         {
+            //to ensure that time component of the date does not make some dates get excluded
+            fromDate = fromDate.Date;
+            toDate = toDate.Date.AddDays(1);
             return this.DbContext.RGReports.Where(p =>
                                                     p.ReportDate <= fromDate &&
                                                     p.ReportDate >= toDate);
         }
+
+
+        public RGReport GetNewRGReport(String strFPNo, String strCoverage, String rtNo)
+        {
+            //check if there is an existing report with this combination
+            FixedPattern fp = DbContext.FixedPatterns.FirstOrDefault(p => p.FPNo == strFPNo);
+            Coverage coverage = DbContext.Coverages.FirstOrDefault(p => p.CoverageName == strCoverage);
+
+            if (fp == null) throw new ArgumentException("Invalid Fixed Pattern No");
+            if (coverage == null) throw new ArgumentException("Invalid Coverage Name");
+
+            int fpID = fp.ID;
+            int coverageID = coverage.ID;
+            FixedPatternTemplate fpTemplate = this.GetFixedPatternTemplateForFP(strFPNo, strCoverage);
+
+            var rgReport = DbContext.RGReports.FirstOrDefault(p => p.FixedPatternID == fpID &&
+                                                            p.CoverageID == coverageID &&
+                                                            p.RTNo == rtNo);
+
+            if (rgReport == null)
+            {
+                //create new report with existing fptemplate
+                return new RGReport(fpTemplate, rtNo, DbContext);
+            }
+            else
+            {
+                //if this RT no is already complete, then no new report to be created
+                if (rgReport.Status.Status == "COMPLETE") return null;
+                return new RGReport(rgReport, DbContext);
+            }
+        }
+
 
         public void InsertRGReport(RGReport entity)
         {

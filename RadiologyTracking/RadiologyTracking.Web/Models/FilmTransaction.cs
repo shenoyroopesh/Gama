@@ -16,7 +16,6 @@ namespace RadiologyTracking.Web.Models
             this.Date = DateTime.Now;
         }
 
-
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ID { get; set; }
 

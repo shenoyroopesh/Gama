@@ -13,5 +13,10 @@ namespace RadiologyTracking.Web.Models
         public int ID { get; set; }
 
         public String Status { get; set; }
+
+        public static RGStatus getStatus (string status, RadiologyContext ctx)
+        {
+            return ctx.RGStatuses.First(p => p.Status == status);
+        }
     }
 }

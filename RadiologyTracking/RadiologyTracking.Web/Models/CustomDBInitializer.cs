@@ -54,6 +54,11 @@ namespace RadiologyTracking.Web.Models
             context.Shifts.Add(new Shift() { Value = "DAY" });
             context.Shifts.Add(new Shift() { Value = "NIGHT" });
 
+            context.RGReportRowTypes.Add(new RGReportRowType() { Value = "FRESH" });
+            context.RGReportRowTypes.Add(new RGReportRowType() { Value = "REPAIR" });
+            context.RGReportRowTypes.Add(new RGReportRowType() { Value = "RETAKE" });
+            context.RGReportRowTypes.Add(new RGReportRowType() { Value = "RESHOOT" });
+
             context.SaveChanges();
         }
     }

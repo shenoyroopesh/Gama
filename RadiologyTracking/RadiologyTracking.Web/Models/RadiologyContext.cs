@@ -35,6 +35,7 @@ namespace RadiologyTracking.Web.Models
         public DbSet<RGReport> RGReports { get; set; }
         public DbSet<RGReportSource> RGReportSources { get; set; }
         public DbSet<RGReportRow> RGReportRows { get; set; }
+        public DbSet<RGReportRowType> RGReportRowTypes { get; set; }
         public DbSet<RGStatus> RGStatuses { get; set; }
         public DbSet<Shift> Shifts { get; set; }
         public DbSet<Technician> Technicians { get; set; }

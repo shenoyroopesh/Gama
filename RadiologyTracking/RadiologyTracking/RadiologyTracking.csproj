@@ -133,8 +133,14 @@
     <Compile Include="Views\Company.xaml.cs">
       <DependentUpon>Company.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\EnterRadioGraphyReport.xaml.cs">
+      <DependentUpon>EnterRadioGraphyReport.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\FixedPatterns.xaml.cs">
       <DependentUpon>FixedPatterns.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\RadiographyReports.xaml.cs">
+      <DependentUpon>RadiographyReports.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\FilmTransactions.xaml.cs">
       <DependentUpon>FilmTransactions.xaml</DependentUpon>
@@ -204,7 +210,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Views\EnterRadioGraphyReport.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Views\FixedPatterns.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\RadiographyReports.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

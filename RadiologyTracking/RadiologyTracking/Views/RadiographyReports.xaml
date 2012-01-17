@@ -1,0 +1,75 @@
+﻿<views:BaseCRUDView x:Class="RadiologyTracking.Views.RadiographyReports"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignHeight="480" d:DesignWidth="640" 
+    xmlns:riaControls="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.DomainServices" 
+    xmlns:my="clr-namespace:RadiologyTracking.Web.Models" xmlns:my1="clr-namespace:RadiologyTracking.Web.Services" 
+    xmlns:sdk="http://schemas.microsoft.com/winfx/2006/xaml/presentation/sdk"
+    xmlns:custom="clr-namespace:Vagsons.Controls;assembly=CustomControls"
+    xmlns:local="clr-namespace:RadiologyTracking.Controls"
+    xmlns:ex="clr-namespace:ComboBoxExtensions;assembly=ComboBoxExtensions"
+    xmlns:views="clr-namespace:RadiologyTracking.Views">
+    <UserControl.Resources>
+        <my1:RadiologyContext x:Key="RadiologyContext" />
+    </UserControl.Resources>    
+    <Grid x:Name="LayoutRoot" Background="White">
+        <sdk:Label Name="headerLabel" Style="{StaticResource PageHeaderStyle}" Content="RADIOLOGY REPORTS"/>
+        <riaControls:DomainDataSource AutoLoad="True" Name="RGDomainDataSource" QueryName="GetRGReportsQuery"
+                                      DomainContext="{StaticResource RadiologyContext}">
+            <riaControls:DomainDataSource.QueryParameters>
+                <riaControls:Parameter ParameterName="fromDate" Value="{Binding ElementName=fromDatePicker, Path=SelectedDate}" />
+                <riaControls:Parameter ParameterName="toDate" Value="{Binding ElementName=fromDatePicker, Path=SelectedDate}" />
+            </riaControls:DomainDataSource.QueryParameters>
+        </riaControls:DomainDataSource>
+        <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <StackPanel Height="30" HorizontalAlignment="Left" Orientation="Horizontal" VerticalAlignment="Top" Margin="20">
+                <sdk:Label Content="From:" Margin="3" VerticalAlignment="Center" />
+                <sdk:DatePicker Name="fromDatePicker" IsEnabled="{Binding ElementName=RGDomainDataSource, Path=CanLoad}" />
+                <sdk:Label Content="To:" Margin="3" VerticalAlignment="Center" />
+                <sdk:DatePicker Name="toDatePicker" IsEnabled="{Binding ElementName=RGDomainDataSource, Path=CanLoad}" />
+            </StackPanel>
+            <local:BusyIndicator x:Name="busyIndicator" IsBusy="{Binding IsBusy, ElementName=RGDomainDataSource}">
+                <custom:CustomGrid ItemsSource="{Binding ElementName=RGDomainDataSource, Path=Data, Mode=TwoWay}" 
+                                   Name="RGDataGrid" Style="{StaticResource DataGridStyle}" 
+                                   ColumnHeaderStyle="{StaticResource DataGridHeaderGlassEffect}"
+                                   CellStyle="{StaticResource AlignCenter}" IsReadOnly="True">
+                    <sdk:DataGrid.Columns>
+                        <sdk:DataGridTextColumn Binding="{Binding Path=ReportNo, Mode=OneWay}" Header="Report No" Width="Auto" />
+                        <sdk:DataGridTextColumn Binding="{Binding Path=ReportDate, Mode=OneWay, 
+                                                            Converter={StaticResource FormatConverter}, 
+                                                            ConverterParameter=\{0:d-M-yyyy\}}"
+                                                Header="Date" Width="Auto" />
+                        <sdk:DataGridTextColumn Binding="{Binding Path=RTNo, Mode=OneWay}" Header="RT No" Width="Auto" />
+                        <sdk:DataGridTextColumn Binding="{Binding Path=FixedPattern.FPNo, Mode=OneWay}" Header="FP No" Width="Auto" />
+                        <sdk:DataGridTextColumn Binding="{Binding Path=FixedPattern.Description, Mode=OneWay}" Header="Description" 
+                                                Width="Auto" />
+                        <sdk:DataGridTextColumn Binding="{Binding Path=Coverage.CoverageName, Mode=OneWay}" Header="Coverage" Width="Auto" />
+                        <sdk:DataGridTemplateColumn Header="Templates" Width="Auto">
+                            <sdk:DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Button Name="grdEditButton" Tag="{Binding}" Style="{StaticResource EditButtonStyle}"
+                                            Click="EditOperation"/>
+                                </DataTemplate>
+                            </sdk:DataGridTemplateColumn.CellTemplate>
+                        </sdk:DataGridTemplateColumn>
+                        <sdk:DataGridTemplateColumn Header="Delete" Width="Auto">
+                            <sdk:DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Button Name="grdDeleteButton" Click="DeleteOperation" Tag="{Binding}" 
+                                            Style="{StaticResource DeleteButtonStyle}"/>
+                                </DataTemplate>
+                            </sdk:DataGridTemplateColumn.CellTemplate>
+                        </sdk:DataGridTemplateColumn>
+                    </sdk:DataGrid.Columns>
+                </custom:CustomGrid>
+            </local:BusyIndicator>
+            <StackPanel Orientation="Horizontal" Height="23" Margin="0,20,0,0" HorizontalAlignment="Center">
+                <Button Margin="100,0,0,0" Name="btnAdd" VerticalAlignment="Top" Width="75" Style="{StaticResource AddButtonStyle}"
+                        Content="Enter New Report"/>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</views:BaseCRUDView>

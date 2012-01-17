@@ -45,6 +45,9 @@
     <Reference Include="EntityFramework, Version=4.1.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.4.1.10715.0\lib\EntityFramework.dll</HintPath>
     </Reference>
+    <Reference Include="EntityFramework.Migrations">
+      <HintPath>..\packages\EntityFramework.Migrations.0.7.0.0\lib\net40\EntityFramework.Migrations.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.ServiceModel.DomainServices.EntityFramework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\RIAServices.EntityFramework.4.1.60730.0\lib\Net40\Microsoft.ServiceModel.DomainServices.EntityFramework.dll</HintPath>
     </Reference>
@@ -100,6 +103,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="Migrations\Settings.cs" />
     <Compile Include="Models\Change.cs" />
     <Compile Include="Models\Company.cs" />
     <Compile Include="Models\Coverage.cs" />

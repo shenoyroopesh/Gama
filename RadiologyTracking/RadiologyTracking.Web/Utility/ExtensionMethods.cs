@@ -51,5 +51,44 @@ namespace RadiologyTracking.Web.Utility
             user.FriendlyName = (string)p.GetPropertyValue("FriendlyName");
             return user;
         }
+
+        /// <summary>
+        /// Performs a shallow copy of all same named public properties from source to destination. Does not touch private or protected
+        /// properties
+        /// 
+        /// While performing a copy, if there are other complex objects, it just copies the reference and not create a new
+        /// instance of the property type
+        /// </summary>
+        /// <param name="source">Source from where to copy the object</param>
+        /// <param name="destination">Destination object to be copied to</param>
+        /// <param name="excludeProperties">Comma separated names of properties that should not be copied</param>
+        /// <returns></returns>
+        public static void CopyTo(this Object source, Object destination, string excludeProperties)
+        {
+            Type SourceType = source.GetType();
+            Type DestinationType = destination.GetType();
+            string[] excluded = null;
+
+            if (!String.IsNullOrEmpty(excludeProperties))
+            {
+                excluded = excludeProperties.Split(',');
+            }
+
+            PropertyInfo[] properties = DestinationType.GetProperties();
+
+            foreach (var destProperty in properties)
+            {
+                if ((!destProperty.CanWrite) || 
+                    excluded.Contains(destProperty.Name))
+                    continue;
+
+                var sourceProperty = SourceType.GetProperty(destProperty.Name);
+
+                if(sourceProperty == null || !sourceProperty.CanRead)
+                    continue;
+
+                destProperty.SetValue(destination, sourceProperty.GetValue(source, null), null);                
+            }
+        }
     }
 }

@@ -34,6 +34,8 @@ using RadiologyTracking.Web.Models;
         //Global properties - used to pass objects between pages without having to query
         //the database unnecessarily
         public static FixedPattern FixedPattern { get; set; }
+
+        public static RGReport RGReport { get; set; }
         
         private void Application_Startup(object sender, StartupEventArgs e)
         {

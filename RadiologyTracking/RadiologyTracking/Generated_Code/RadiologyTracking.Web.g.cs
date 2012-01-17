@@ -3982,6 +3982,106 @@ namespace RadiologyTracking.Web.Models
     }
     
     /// <summary>
+    /// The 'Remark' entity class.
+    /// </summary>
+    [DataContract(Namespace="http://schemas.datacontract.org/2004/07/RadiologyTracking.Web.Models")]
+    public sealed partial class Remark : Entity
+    {
+        
+        private int _id;
+        
+        private string _value;
+        
+        #region Extensibility Method Definitions
+
+        /// <summary>
+        /// This method is invoked from the constructor once initialization is complete and
+        /// can be used for further object setup.
+        /// </summary>
+        partial void OnCreated();
+        partial void OnIDChanging(int value);
+        partial void OnIDChanged();
+        partial void OnValueChanging(string value);
+        partial void OnValueChanged();
+
+        #endregion
+        
+        
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Remark"/> class.
+        /// </summary>
+        public Remark()
+        {
+            this.OnCreated();
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'ID' value.
+        /// </summary>
+        // The following attributes were not generated:
+        // 
+        // - The attribute 'System.ComponentModel.DataAnnotations.DatabaseGeneratedAttribute' is not visible in the client project 'RadiologyTracking'. Are you missing an assembly reference?
+        // [DatabaseGeneratedAttribute(Identity)]
+        // 
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [DataMember()]
+        [Editable(false, AllowInitialValue=true)]
+        [Key()]
+        [RoundtripOriginal()]
+        public int ID
+        {
+            get
+            {
+                return this._id;
+            }
+            set
+            {
+                if ((this._id != value))
+                {
+                    this.OnIDChanging(value);
+                    this.ValidateProperty("ID", value);
+                    this._id = value;
+                    this.RaisePropertyChanged("ID");
+                    this.OnIDChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'Value' value.
+        /// </summary>
+        [DataMember()]
+        public string Value
+        {
+            get
+            {
+                return this._value;
+            }
+            set
+            {
+                if ((this._value != value))
+                {
+                    this.OnValueChanging(value);
+                    this.RaiseDataMemberChanging("Value");
+                    this.ValidateProperty("Value", value);
+                    this._value = value;
+                    this.RaiseDataMemberChanged("Value");
+                    this.OnValueChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Computes a value from the key fields that uniquely identifies this entity instance.
+        /// </summary>
+        /// <returns>An object instance that uniquely identifies this entity instance.</returns>
+        public override object GetIdentity()
+        {
+            return this._id;
+        }
+    }
+    
+    /// <summary>
     /// The 'RGReport' entity class.
     /// </summary>
     [DataContract(Namespace="http://schemas.datacontract.org/2004/07/RadiologyTracking.Web.Models")]
@@ -3989,6 +4089,10 @@ namespace RadiologyTracking.Web.Models
     {
         
         private string _acceptanceAsPer;
+        
+        private EntityRef<Coverage> _coverage;
+        
+        private int _coverageID;
         
         private DateTime _dateOfTest;
         
@@ -4037,6 +4141,8 @@ namespace RadiologyTracking.Web.Models
         partial void OnCreated();
         partial void OnAcceptanceAsPerChanging(string value);
         partial void OnAcceptanceAsPerChanged();
+        partial void OnCoverageIDChanging(int value);
+        partial void OnCoverageIDChanged();
         partial void OnDateOfTestChanging(DateTime value);
         partial void OnDateOfTestChanged();
         partial void OnDrawingNoChanging(string value);
@@ -4103,6 +4209,65 @@ namespace RadiologyTracking.Web.Models
                     this._acceptanceAsPer = value;
                     this.RaiseDataMemberChanged("AcceptanceAsPer");
                     this.OnAcceptanceAsPerChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the associated <see cref="Coverage"/> entity.
+        /// </summary>
+        [Association("Coverage_RGReport", "CoverageID", "ID", IsForeignKey=true)]
+        public Coverage Coverage
+        {
+            get
+            {
+                if ((this._coverage == null))
+                {
+                    this._coverage = new EntityRef<Coverage>(this, "Coverage", this.FilterCoverage);
+                }
+                return this._coverage.Entity;
+            }
+            set
+            {
+                Coverage previous = this.Coverage;
+                if ((previous != value))
+                {
+                    this.ValidateProperty("Coverage", value);
+                    if ((value != null))
+                    {
+                        this.CoverageID = value.ID;
+                    }
+                    else
+                    {
+                        this.CoverageID = default(int);
+                    }
+                    this._coverage.Entity = value;
+                    this.RaisePropertyChanged("Coverage");
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'CoverageID' value.
+        /// </summary>
+        [DataMember()]
+        [RoundtripOriginal()]
+        public int CoverageID
+        {
+            get
+            {
+                return this._coverageID;
+            }
+            set
+            {
+                if ((this._coverageID != value))
+                {
+                    this.OnCoverageIDChanging(value);
+                    this.RaiseDataMemberChanging("CoverageID");
+                    this.ValidateProperty("CoverageID", value);
+                    this._coverageID = value;
+                    this.RaiseDataMemberChanged("CoverageID");
+                    this.OnCoverageIDChanged();
                 }
             }
         }
@@ -4577,6 +4742,11 @@ namespace RadiologyTracking.Web.Models
             }
         }
         
+        private bool FilterCoverage(Coverage entity)
+        {
+            return (entity.ID == this.CoverageID);
+        }
+        
         private bool FilterFixedPattern(FixedPattern entity)
         {
             return (entity.ID == this.FixedPatternID);
@@ -4634,13 +4804,17 @@ namespace RadiologyTracking.Web.Models
         
         private string _observationsText;
         
+        private EntityRef<Remark> _remark;
+        
         private int _remarkID;
+        
+        private string _remarkText;
         
         private EntityRef<RGReport> _rgReport;
         
         private int _rgReportID;
         
-        private RGReportRowType _rowType;
+        private int _rowTypeID;
         
         private string _segment;
         
@@ -4683,10 +4857,12 @@ namespace RadiologyTracking.Web.Models
         partial void OnObservationsTextChanged();
         partial void OnRemarkIDChanging(int value);
         partial void OnRemarkIDChanged();
+        partial void OnRemarkTextChanging(string value);
+        partial void OnRemarkTextChanged();
         partial void OnRGReportIDChanging(int value);
         partial void OnRGReportIDChanged();
-        partial void OnRowTypeChanging(RGReportRowType value);
-        partial void OnRowTypeChanged();
+        partial void OnRowTypeIDChanging(int value);
+        partial void OnRowTypeIDChanged();
         partial void OnSegmentChanging(string value);
         partial void OnSegmentChanged();
         partial void OnSensitivityChanging(string value);
@@ -4982,6 +5158,40 @@ namespace RadiologyTracking.Web.Models
         }
         
         /// <summary>
+        /// Gets or sets the associated <see cref="Remark"/> entity.
+        /// </summary>
+        [Association("Remark_RGReportRow", "RemarkID", "ID", IsForeignKey=true)]
+        public Remark Remark
+        {
+            get
+            {
+                if ((this._remark == null))
+                {
+                    this._remark = new EntityRef<Remark>(this, "Remark", this.FilterRemark);
+                }
+                return this._remark.Entity;
+            }
+            set
+            {
+                Remark previous = this.Remark;
+                if ((previous != value))
+                {
+                    this.ValidateProperty("Remark", value);
+                    if ((value != null))
+                    {
+                        this.RemarkID = value.ID;
+                    }
+                    else
+                    {
+                        this.RemarkID = default(int);
+                    }
+                    this._remark.Entity = value;
+                    this.RaisePropertyChanged("Remark");
+                }
+            }
+        }
+        
+        /// <summary>
         /// Gets or sets the 'RemarkID' value.
         /// </summary>
         [DataMember()]
@@ -5002,6 +5212,35 @@ namespace RadiologyTracking.Web.Models
                     this._remarkID = value;
                     this.RaiseDataMemberChanged("RemarkID");
                     this.OnRemarkIDChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'RemarkText' value.
+        /// </summary>
+        // The following attributes were not generated:
+        // 
+        // - The attribute 'System.ComponentModel.DataAnnotations.NotMappedAttribute' is not visible in the client project 'RadiologyTracking'. Are you missing an assembly reference?
+        // [NotMappedAttribute()]
+        // 
+        [DataMember()]
+        public string RemarkText
+        {
+            get
+            {
+                return this._remarkText;
+            }
+            set
+            {
+                if ((this._remarkText != value))
+                {
+                    this.OnRemarkTextChanging(value);
+                    this.RaiseDataMemberChanging("RemarkText");
+                    this.ValidateProperty("RemarkText", value);
+                    this._remarkText = value;
+                    this.RaiseDataMemberChanged("RemarkText");
+                    this.OnRemarkTextChanged();
                 }
             }
         }
@@ -5075,25 +5314,26 @@ namespace RadiologyTracking.Web.Models
         }
         
         /// <summary>
-        /// Gets or sets the 'RowType' value.
+        /// Gets or sets the 'RowTypeID' value.
         /// </summary>
         [DataMember()]
-        public RGReportRowType RowType
+        [RoundtripOriginal()]
+        public int RowTypeID
         {
             get
             {
-                return this._rowType;
+                return this._rowTypeID;
             }
             set
             {
-                if ((this._rowType != value))
+                if ((this._rowTypeID != value))
                 {
-                    this.OnRowTypeChanging(value);
-                    this.RaiseDataMemberChanging("RowType");
-                    this.ValidateProperty("RowType", value);
-                    this._rowType = value;
-                    this.RaiseDataMemberChanged("RowType");
-                    this.OnRowTypeChanged();
+                    this.OnRowTypeIDChanging(value);
+                    this.RaiseDataMemberChanging("RowTypeID");
+                    this.ValidateProperty("RowTypeID", value);
+                    this._rowTypeID = value;
+                    this.RaiseDataMemberChanged("RowTypeID");
+                    this.OnRowTypeIDChanged();
                 }
             }
         }
@@ -5351,6 +5591,11 @@ namespace RadiologyTracking.Web.Models
             return (entity.RGReportRowID == this.ID);
         }
         
+        private bool FilterRemark(Remark entity)
+        {
+            return (entity.ID == this.RemarkID);
+        }
+        
         private bool FilterRGReport(RGReport entity)
         {
             return (entity.ID == this.RGReportID);
@@ -5374,18 +5619,6 @@ namespace RadiologyTracking.Web.Models
         {
             return this._id;
         }
-    }
-    
-    public enum RGReportRowType
-    {
-        
-        FRESH = 0,
-        
-        REPAIR = 1,
-        
-        RESHOOT = 2,
-        
-        RETAKE = 3,
     }
     
     /// <summary>
@@ -6000,6 +6233,17 @@ namespace RadiologyTracking.Web.Services
         }
         
         /// <summary>
+        /// Gets the set of <see cref="Remark"/> entity instances that have been loaded into this <see cref="RadiologyContext"/> instance.
+        /// </summary>
+        public EntitySet<Remark> Remarks
+        {
+            get
+            {
+                return base.EntityContainer.GetEntitySet<Remark>();
+            }
+        }
+        
+        /// <summary>
         /// Gets the set of <see cref="Technician"/> entity instances that have been loaded into this <see cref="RadiologyContext"/> instance.
         /// </summary>
         public EntitySet<Technician> Technicians
@@ -6237,6 +6481,23 @@ namespace RadiologyTracking.Web.Services
         }
         
         /// <summary>
+        /// Gets an EntityQuery instance that can be used to load <see cref="RGReport"/> entity instances using the 'GetNewRGReport' query.
+        /// </summary>
+        /// <param name="strFPNo">The value for the 'strFPNo' parameter of the query.</param>
+        /// <param name="strCoverage">The value for the 'strCoverage' parameter of the query.</param>
+        /// <param name="rtNo">The value for the 'rtNo' parameter of the query.</param>
+        /// <returns>An EntityQuery that can be loaded to retrieve <see cref="RGReport"/> entity instances.</returns>
+        public EntityQuery<RGReport> GetNewRGReportQuery(string strFPNo, string strCoverage, string rtNo)
+        {
+            Dictionary<string, object> parameters = new Dictionary<string, object>();
+            parameters.Add("strFPNo", strFPNo);
+            parameters.Add("strCoverage", strCoverage);
+            parameters.Add("rtNo", rtNo);
+            this.ValidateMethod("GetNewRGReportQuery", parameters);
+            return base.CreateQuery<RGReport>("GetNewRGReport", parameters, false, false);
+        }
+        
+        /// <summary>
         /// Gets an EntityQuery instance that can be used to load <see cref="Observation"/> entity instances using the 'GetObservations' query.
         /// </summary>
         /// <returns>An EntityQuery that can be loaded to retrieve <see cref="Observation"/> entity instances.</returns>
@@ -6244,6 +6505,16 @@ namespace RadiologyTracking.Web.Services
         {
             this.ValidateMethod("GetObservationsQuery", null);
             return base.CreateQuery<Observation>("GetObservations", null, false, true);
+        }
+        
+        /// <summary>
+        /// Gets an EntityQuery instance that can be used to load <see cref="Remark"/> entity instances using the 'GetRemarks' query.
+        /// </summary>
+        /// <returns>An EntityQuery that can be loaded to retrieve <see cref="Remark"/> entity instances.</returns>
+        public EntityQuery<Remark> GetRemarksQuery()
+        {
+            this.ValidateMethod("GetRemarksQuery", null);
+            return base.CreateQuery<Remark>("GetRemarks", null, false, true);
         }
         
         /// <summary>
@@ -6656,6 +6927,27 @@ namespace RadiologyTracking.Web.Services
             QueryResult<FPTemplateRow> EndGetFPTemplateRowsByTemplate(IAsyncResult result);
             
             /// <summary>
+            /// Asynchronously invokes the 'GetNewRGReport' operation.
+            /// </summary>
+            /// <param name="strFPNo">The value for the 'strFPNo' parameter of this action.</param>
+            /// <param name="strCoverage">The value for the 'strCoverage' parameter of this action.</param>
+            /// <param name="rtNo">The value for the 'rtNo' parameter of this action.</param>
+            /// <param name="callback">Callback to invoke on completion.</param>
+            /// <param name="asyncState">Optional state object.</param>
+            /// <returns>An IAsyncResult that can be used to monitor the request.</returns>
+            [FaultContract(typeof(DomainServiceFault), Action="http://tempuri.org/RadiologyService/GetNewRGReportDomainServiceFault", Name="DomainServiceFault", Namespace="DomainServices")]
+            [OperationContract(AsyncPattern=true, Action="http://tempuri.org/RadiologyService/GetNewRGReport", ReplyAction="http://tempuri.org/RadiologyService/GetNewRGReportResponse")]
+            [WebGet()]
+            IAsyncResult BeginGetNewRGReport(string strFPNo, string strCoverage, string rtNo, AsyncCallback callback, object asyncState);
+            
+            /// <summary>
+            /// Completes the asynchronous operation begun by 'BeginGetNewRGReport'.
+            /// </summary>
+            /// <param name="result">The IAsyncResult returned from 'BeginGetNewRGReport'.</param>
+            /// <returns>The 'QueryResult' returned from the 'GetNewRGReport' operation.</returns>
+            QueryResult<RGReport> EndGetNewRGReport(IAsyncResult result);
+            
+            /// <summary>
             /// Asynchronously invokes the 'GetObservations' operation.
             /// </summary>
             /// <param name="callback">Callback to invoke on completion.</param>
@@ -6672,6 +6964,24 @@ namespace RadiologyTracking.Web.Services
             /// <param name="result">The IAsyncResult returned from 'BeginGetObservations'.</param>
             /// <returns>The 'QueryResult' returned from the 'GetObservations' operation.</returns>
             QueryResult<Observation> EndGetObservations(IAsyncResult result);
+            
+            /// <summary>
+            /// Asynchronously invokes the 'GetRemarks' operation.
+            /// </summary>
+            /// <param name="callback">Callback to invoke on completion.</param>
+            /// <param name="asyncState">Optional state object.</param>
+            /// <returns>An IAsyncResult that can be used to monitor the request.</returns>
+            [FaultContract(typeof(DomainServiceFault), Action="http://tempuri.org/RadiologyService/GetRemarksDomainServiceFault", Name="DomainServiceFault", Namespace="DomainServices")]
+            [OperationContract(AsyncPattern=true, Action="http://tempuri.org/RadiologyService/GetRemarks", ReplyAction="http://tempuri.org/RadiologyService/GetRemarksResponse")]
+            [WebGet()]
+            IAsyncResult BeginGetRemarks(AsyncCallback callback, object asyncState);
+            
+            /// <summary>
+            /// Completes the asynchronous operation begun by 'BeginGetRemarks'.
+            /// </summary>
+            /// <param name="result">The IAsyncResult returned from 'BeginGetRemarks'.</param>
+            /// <returns>The 'QueryResult' returned from the 'GetRemarks' operation.</returns>
+            QueryResult<Remark> EndGetRemarks(IAsyncResult result);
             
             /// <summary>
             /// Asynchronously invokes the 'GetRGReportRows' operation.
@@ -6805,6 +7115,7 @@ namespace RadiologyTracking.Web.Services
                 this.CreateEntitySet<Foundry>(EntitySetOperations.All);
                 this.CreateEntitySet<FPTemplateRow>(EntitySetOperations.All);
                 this.CreateEntitySet<Observation>(EntitySetOperations.All);
+                this.CreateEntitySet<Remark>(EntitySetOperations.None);
                 this.CreateEntitySet<RGReport>(EntitySetOperations.All);
                 this.CreateEntitySet<RGReportRow>(EntitySetOperations.All);
                 this.CreateEntitySet<Technician>(EntitySetOperations.All);

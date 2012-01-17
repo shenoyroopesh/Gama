@@ -13,5 +13,10 @@ namespace RadiologyTracking.Web.Models
         public int ID { get; set; }
 
         public String Value { get; set; }
+
+        public static Remark getRemark(string remark, RadiologyContext ctx)
+        {
+            return ctx.Remarks.FirstOrDefault(p => p.Value == remark);
+        }
     }
 }

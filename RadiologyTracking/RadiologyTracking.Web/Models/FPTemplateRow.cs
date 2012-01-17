@@ -28,6 +28,7 @@ namespace RadiologyTracking.Web.Models
             get
             {
                 if(this.FilmSizeID == 0) return  " ";
+                //TODO: see if context can be injected instead of using like this
                 using (RadiologyContext ctx = new RadiologyContext())
                 {
                     var filmSizes = ctx.FilmSizes.Where(p => p.ID == this.FilmSizeID);

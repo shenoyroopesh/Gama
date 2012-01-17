@@ -31,7 +31,6 @@ namespace RadiologyTracking.Web.Models
         public ICollection<Observation> Observations { get; set; }
 
         public int RemarkID { get; set; }
-
         public Remark Remark { get; set; }
 
         public int TechnicianID { get; set; }
@@ -51,6 +50,8 @@ namespace RadiologyTracking.Web.Models
         /// </summary>
         public RGReportRowType RowType { get; set; }
 
+        public int RowTypeID { get; set; }
+
         /// <summary>
         /// This property is only for setting observations for the row using a comma separated string of observations and not
         /// for anything else. This won't be saved in the database
@@ -60,7 +61,7 @@ namespace RadiologyTracking.Web.Models
         {
             get
             {
-                return string.Join(",", this.Observations.Select(p=>p.ToString()));
+                return string.Join(",", this.Observations.Select(p => p.ToString()));
             }
             set
             {
@@ -73,8 +74,11 @@ namespace RadiologyTracking.Web.Models
                 {
                     try
                     {
-                        Observation observation = new Observation(o);
-                        newObservations.Add(observation);
+                        using (RadiologyContext ctx = new RadiologyContext())
+                        {
+                            Observation observation = new Observation(o.Trim(), ctx);
+                            newObservations.Add(observation);
+                        }                        
                     }
                     catch (ArgumentException e)
                     {
@@ -84,6 +88,25 @@ namespace RadiologyTracking.Web.Models
                     //if all goes well, delete existing observations and add these ones
                     this.Observations.Clear();
                     newObservations.ForEach(p => this.Observations.Add(p));
+                }
+            }
+        }
+
+        /// <summary>
+        /// Only for setting or seeing Remark by using a string value
+        /// </summary>
+        [NotMapped]
+        public string RemarkText
+        {
+            get
+            {
+                return this.Remark.Value;
+            }
+            set
+            {                
+                using (RadiologyContext ctx = new RadiologyContext())
+                {
+                    this.Remark = Remark.getRemark(value, ctx);
                 }
             }
         }
