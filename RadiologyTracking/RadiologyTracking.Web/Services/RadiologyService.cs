@@ -645,6 +645,9 @@ namespace RadiologyTracking.Web.Services
 
         public void UpdateFPTemplateRow(FPTemplateRow currentFPTemplateRow)
         {
+            //required to avoid exception when multiple fptemplaterows are updated together. 
+            //The FilmSizeID will take care of the association
+            currentFPTemplateRow.FilmSize = null;
             this.DbContext.FPTemplateRows.AttachAsModified(currentFPTemplateRow, this.ChangeSet.GetOriginal(currentFPTemplateRow), this.DbContext);
         }
 

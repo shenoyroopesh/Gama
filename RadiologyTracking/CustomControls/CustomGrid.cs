@@ -21,20 +21,25 @@ namespace Vagsons.Controls
 
         public CustomGrid():base()
         {
-            this.CellEditEnded += new EventHandler<DataGridCellEditEndedEventArgs>(CustomGrid_CellEditEnded);
+            this.RowEditEnded += new EventHandler<DataGridRowEditEndedEventArgs>(CustomGrid_RowEditEnded);
+            this.BeginningEdit += new EventHandler<DataGridBeginningEditEventArgs>(CustomGrid_BeginningEdit);
+            this.MouseLeave += new MouseEventHandler(CustomGrid_MouseLeave);
+            this.MouseEnter += new MouseEventHandler(CustomGrid_MouseEnter);
+            this.MouseLeftButtonUp += new MouseButtonEventHandler(CustomGrid_MouseLeftButtonUp);
             this.LoadingRow += new EventHandler<DataGridRowEventArgs>(CustomGrid_LoadingRow);
             this.AutoGenerateColumns = false;
         }
 
-        /// <summary>
-        /// After the editing is completed, it is necessary to add the eventhandlers again
-        /// to all the cells of that row
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        void CustomGrid_CellEditEnded(object sender, DataGridCellEditEndedEventArgs e)
+        void CustomGrid_RowEditEnded(object sender, DataGridRowEditEndedEventArgs e)
         {
             CustomGrid_LoadingRow(sender, new DataGridRowEventArgs(e.Row));
+        }
+
+        void CustomGrid_BeginningEdit(object sender, DataGridBeginningEditEventArgs e)
+        {
+            //done here since when row enters edit mode, the textblock cannot capture the mouseup event
+            mouseDown = false;
+            clearAllSelection();
         }
 
         void CustomGrid_LoadingRow(object sender, DataGridRowEventArgs e)
@@ -51,9 +56,6 @@ namespace Vagsons.Controls
             cellContent.MouseEnter += new MouseEventHandler(cellContent_MouseEnter);
             cellContent.MouseLeftButtonDown += new MouseButtonEventHandler(cellContent_MouseLeftButtonDown);
             cellContent.MouseLeftButtonUp += new MouseButtonEventHandler(cellContent_MouseLeftButtonUp);
-            this.MouseLeave += new MouseEventHandler(CustomGrid_MouseLeave);
-            this.MouseEnter += new MouseEventHandler(CustomGrid_MouseEnter);
-            this.MouseLeftButtonUp += new MouseButtonEventHandler(CustomGrid_MouseLeftButtonUp);
         }
 
         void CustomGrid_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
@@ -83,16 +85,12 @@ namespace Vagsons.Controls
             mouseDown = false;
         }
 
+
         void cellContent_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            //clear all the selected cells
-            foreach (var item in selectedCells)
-            {
-                //make the background its original value
-                item.Key.Background = item.Value;
-            }                
-
-            selectedCells.Clear();
+            //if ctrl button is not held down, clear all selection
+            if((Keyboard.Modifiers & ModifierKeys.Control) == 0)
+                clearAllSelection();
 
             //if this is not textblock, it means it is in edit mode, so do not proceed further
             if (e.OriginalSource.GetType() != typeof(TextBlock))
@@ -100,6 +98,21 @@ namespace Vagsons.Controls
 
             mouseDown = true;
             selectCell(e.OriginalSource);
+        }
+
+        /// <summary>
+        /// Clears all the selected cells and reverts them back to their original state
+        /// </summary>
+        void clearAllSelection()
+        {
+            //clear all the selected cells
+            foreach (var item in selectedCells)
+            {
+                //make the background its original value
+                item.Key.Background = item.Value;
+            }
+
+            selectedCells.Clear();
         }
 
         void cellContent_MouseEnter(object sender, MouseEventArgs e)

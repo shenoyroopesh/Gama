@@ -3329,6 +3329,8 @@ namespace RadiologyTracking.Web.Models
         
         private int _filmSizeID;
         
+        private string _filmSizeString;
+        
         private EntityRef<FixedPatternTemplate> _fixedPatternTemplate;
         
         private int _fixedPatternTemplateID;
@@ -3360,6 +3362,8 @@ namespace RadiologyTracking.Web.Models
         partial void OnDesignationChanged();
         partial void OnFilmSizeIDChanging(int value);
         partial void OnFilmSizeIDChanged();
+        partial void OnFilmSizeStringChanging(string value);
+        partial void OnFilmSizeStringChanged();
         partial void OnFixedPatternTemplateIDChanging(int value);
         partial void OnFixedPatternTemplateIDChanged();
         partial void OnIDChanging(int value);
@@ -3491,6 +3495,35 @@ namespace RadiologyTracking.Web.Models
                     this._filmSizeID = value;
                     this.RaiseDataMemberChanged("FilmSizeID");
                     this.OnFilmSizeIDChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'FilmSizeString' value.
+        /// </summary>
+        // The following attributes were not generated:
+        // 
+        // - The attribute 'System.ComponentModel.DataAnnotations.NotMappedAttribute' is not visible in the client project 'RadiologyTracking'. Are you missing an assembly reference?
+        // [NotMappedAttribute()]
+        // 
+        [DataMember()]
+        public string FilmSizeString
+        {
+            get
+            {
+                return this._filmSizeString;
+            }
+            set
+            {
+                if ((this._filmSizeString != value))
+                {
+                    this.OnFilmSizeStringChanging(value);
+                    this.RaiseDataMemberChanging("FilmSizeString");
+                    this.ValidateProperty("FilmSizeString", value);
+                    this._filmSizeString = value;
+                    this.RaiseDataMemberChanged("FilmSizeString");
+                    this.OnFilmSizeStringChanged();
                 }
             }
         }

@@ -2080,7 +2080,11 @@
     <Style x:Key="AlignCenter" TargetType="sdk:DataGridCell">
         <Setter Property="HorizontalContentAlignment" Value="Center" />
     </Style>
-    
+
+    <Style x:Key="Stretch" TargetType="sdk:DataGridCell">
+        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+    </Style>
+
     <!--Combobox styling-->
     <ControlTemplate x:Key="ValidationToolTipTemplate">
         <Grid x:Name="Root" Margin="5,0" Opacity="0" RenderTransformOrigin="0,0">

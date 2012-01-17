@@ -72,8 +72,16 @@
             <local:BusyIndicator x:Name="busyIndicator" IsBusy="{Binding IsBusy, ElementName=FPTemplatesSource}">
                 <custom:CustomGrid Name="FPTemplatesDataGrid" Style="{StaticResource DataGridStyle}" 
                                    ColumnHeaderStyle="{StaticResource DataGridHeaderGlassEffect}"
-                                   CellStyle="{StaticResource AlignCenter}" MaxHeight="300" 
+                                   CellStyle="{StaticResource Stretch}" MaxHeight="300" 
                                    CanUserSortColumns="False">
+                    <custom:CustomGrid.Resources>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="TextAlignment" Value="Center" />
+                        </Style>
+                        <Style TargetType="TextBox" >
+                            <Setter Property="TextAlignment" Value="Center" />
+                        </Style>
+                    </custom:CustomGrid.Resources>
                     <custom:CustomGrid.Columns>
                         <sdk:DataGridTextColumn Header="SlNo" Binding="{Binding Path=SlNo, Mode=OneWay}"></sdk:DataGridTextColumn>
                         <sdk:DataGridTextColumn Header="Location" Binding="{Binding Path=Location, Mode=OneWay}"></sdk:DataGridTextColumn>
@@ -87,7 +95,7 @@
                         <sdk:DataGridTemplateColumn Header="Film Size">
                             <sdk:DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <TextBlock Text="{Binding Path=FilmSize.Name, Mode=OneWay}" VerticalAlignment="Center" />
+                                    <TextBlock Text="{Binding Path=FilmSizeString, Mode=TwoWay}" VerticalAlignment="Center" />
                                 </DataTemplate>
                             </sdk:DataGridTemplateColumn.CellTemplate>
                             <sdk:DataGridTemplateColumn.CellEditingTemplate>

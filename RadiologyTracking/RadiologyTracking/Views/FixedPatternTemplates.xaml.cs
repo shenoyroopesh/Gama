@@ -155,11 +155,12 @@ namespace RadiologyTracking.Views
                                                 FixedPatternTemplate = this.FixedPatternTemplate,
                                                 //auto increment sl no for each additional row
                                                 SlNo = ((DomainDataSourceView)FPTemplateRows).Count + 1,
-                                                Density = "    ",
-                                                Designation = "    ",
-                                                Location = "    ",
-                                                Segment = "    ",
-                                                Sensitivity = "    "
+                                                Density = " ",
+                                                Designation = " ",
+                                                Location = " ",
+                                                Segment = " ",
+                                                Sensitivity = " ",
+                                                FilmSizeString = " "
                                             };
 
             ((DomainDataSourceView)FPTemplateRows).Add(FPTemplateRow);
