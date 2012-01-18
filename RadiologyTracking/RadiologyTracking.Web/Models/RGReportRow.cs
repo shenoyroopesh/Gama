@@ -9,6 +9,11 @@ namespace RadiologyTracking.Web.Models
 {
     public class RGReportRow
     {
+        public RGReportRow()
+        {
+            this.Observations = new List<Observation>();
+        }
+
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ID { get; set; }
         public int SlNo { get; set; }
@@ -27,7 +32,7 @@ namespace RadiologyTracking.Web.Models
         public int FilmSizeID { get; set; }
         public FilmSize FilmSize { get; set; }
 
-        [Include, Composition]
+        [Include]
         public ICollection<Observation> Observations { get; set; }
 
         public int RemarkID { get; set; }
@@ -142,7 +147,7 @@ namespace RadiologyTracking.Web.Models
         {
             get
             {
-                return this.Remark.Value;
+                return this.Remark == null ? String.Empty : this.Remark.Value;
             }
             set
             {                

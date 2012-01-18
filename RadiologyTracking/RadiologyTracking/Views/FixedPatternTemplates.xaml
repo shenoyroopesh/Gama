@@ -29,13 +29,6 @@
                 <riaControls:Parameter ParameterName="strCoverage" Value="{Binding ElementName=cmbCoverage, Path=SelectedValue.CoverageName}" />
             </riaControls:DomainDataSource.QueryParameters>
         </riaControls:DomainDataSource>
-        <riaControls:DomainDataSource Name="FPTemplateRowsSource" AutoLoad="False" DomainContext="{StaticResource RadiologyContext}" 
-                                      QueryName="GetFPTemplateRowsByTemplateQuery">
-            <riaControls:DomainDataSource.QueryParameters>
-                <riaControls:Parameter ParameterName="fpTemplateID" Value="{Binding ElementName=txtFPTemplateID, Path=Text}"/>
-            </riaControls:DomainDataSource.QueryParameters>
-        </riaControls:DomainDataSource>
-
         <sdk:Label Name="headerLabel" Style="{StaticResource PageHeaderStyle}" Content="FIXED PATTERN TEMPLATES"/>
         <StackPanel Margin="50" HorizontalAlignment="Center">
             <Grid Margin="10" Width="Auto" HorizontalAlignment="Left">
@@ -101,7 +94,7 @@
                             <sdk:DataGridTemplateColumn.CellEditingTemplate>
                                 <DataTemplate>
                                     <ComboBox ItemsSource="{Binding Source={StaticResource FilmSizesSource}, Path=Data}"
-                                              SelectedValue="{Binding FilmSize, Mode=TwoWay}"
+                                              SelectedValue="{Binding Path=FilmSize, Mode=TwoWay}"
                                               DisplayMemberPath="Name" 
                                               Style="{StaticResource ComboBoxStyle}"
                                               ItemContainerStyle="{StaticResource ComboBoxItemStyle}"/>

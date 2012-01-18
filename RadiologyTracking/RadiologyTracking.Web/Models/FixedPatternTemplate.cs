@@ -9,6 +9,12 @@ namespace RadiologyTracking.Web.Models
 {
     public class FixedPatternTemplate
     {
+        public FixedPatternTemplate()
+        {
+            this.FPTemplateRows = new List<FPTemplateRow>();
+        }
+
+
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ID { get; set; }
 
@@ -19,7 +25,6 @@ namespace RadiologyTracking.Web.Models
         public Coverage Coverage { get; set; }
 
         [Include]
-        [Composition]
-        public ICollection<FPTemplateRow> FPTemplateRows;
+        public ICollection<FPTemplateRow> FPTemplateRows { get; set; }
     }
 }

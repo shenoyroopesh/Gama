@@ -33,9 +33,15 @@ namespace RadiologyTracking.Web.Models
         {
             //shallow copy properties
             fpTemplate.CopyTo(this, "ID");
-            this.ReportDate = DateTime.Now;
+            this.DateOfTest = this.ReportDate = DateTime.Now;
+            this.Shift = Shift.getShift("DAY", ctx); //defaulting so it can be saved
             this.Status = RGStatus.getStatus("PENDING", ctx);
+            
+
             RGReportRowType freshRowType = RGReportRowType.getRowType("FRESH", ctx);
+            if (fpTemplate.FPTemplateRows == null) return;
+
+            this.RGReportRows = new List<RGReportRow>();
 
             foreach (var row in fpTemplate.FPTemplateRows)
             {
@@ -46,6 +52,7 @@ namespace RadiologyTracking.Web.Models
                                             };
                 row.CopyTo(rgReportRow, "ID");
                 this.RGReportRows.Add(rgReportRow);
+                ctx.RGReportRows.Add(rgReportRow);
             }
         }
 
@@ -104,7 +111,7 @@ namespace RadiologyTracking.Web.Models
         public int StatusID { get; set; }
         public RGStatus Status { get; set; }
 
-        [Include, Composition]
+        [Include]
         public ICollection<RGReportRow> RGReportRows { get; set; }
         public String Result { get; set; }
     }

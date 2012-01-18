@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Web;
 using System.ComponentModel.DataAnnotations;
+using System.Data.Entity;
 
 namespace RadiologyTracking.Web.Models
 {
@@ -33,7 +35,7 @@ namespace RadiologyTracking.Web.Models
         /// <returns></returns>
         public static Energy getEnergyForThickness(int thickness, RadiologyContext ctx)
         {
-            return ctx.ThicknessRangesForEnergy.First(p=>p.ThicknessFrom <= thickness 
+            return ctx.ThicknessRangesForEnergy.Include(p => p.Energy).First(p => p.ThicknessFrom <= thickness
                                                     && p.ThicknessTo >= thickness)
                                                     .Energy;
         }

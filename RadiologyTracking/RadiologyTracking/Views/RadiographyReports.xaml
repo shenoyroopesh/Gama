@@ -36,6 +36,9 @@
                                    Name="RGDataGrid" Style="{StaticResource DataGridStyle}" 
                                    ColumnHeaderStyle="{StaticResource DataGridHeaderGlassEffect}"
                                    CellStyle="{StaticResource AlignCenter}" IsReadOnly="True">
+                    <custom:CustomGrid.Resources>
+                        <local:DateFormatter x:Key="FormatConverter" />
+                    </custom:CustomGrid.Resources>
                     <sdk:DataGrid.Columns>
                         <sdk:DataGridTextColumn Binding="{Binding Path=ReportNo, Mode=OneWay}" Header="Report No" Width="Auto" />
                         <sdk:DataGridTextColumn Binding="{Binding Path=ReportDate, Mode=OneWay, 

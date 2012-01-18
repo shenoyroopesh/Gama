@@ -47,7 +47,7 @@ namespace RadiologyTracking.Views
             btnAdd.Click += AddOperation;
             btnCancel.Click += CancelOperation;
             btnSave.Click += SaveOperation;
-            FPTemplateRowsSource.LoadedData += FPTemplateRowsSource_LoadedData;
+            //FPTemplateRowsSource.LoadedData += FPTemplateRowsSource_LoadedData;
         }
 
         /// <summary>
@@ -73,6 +73,7 @@ namespace RadiologyTracking.Views
             txtDrawingNo.SetBinding(TextBox.TextProperty, new Binding() { Source = this, Path = new PropertyPath("RGReport.DrawingNo"), Mode = BindingMode.TwoWay });
             RGReportDataGrid.SetBinding(CustomGrid.ItemsSourceProperty, new Binding() { Source = this, Path = new PropertyPath("RGReportRows") });
             btnAdd.SetBinding(Button.IsEnabledProperty, new Binding() { Source = this, Path = new PropertyPath("Enabled") });
+            btnFetch.SetBinding(Button.IsEnabledProperty, new Binding() { Source = this, Path = new PropertyPath("FetchEnabled") });
         }
 
         [CLSCompliant(false)]
@@ -136,11 +137,6 @@ namespace RadiologyTracking.Views
             }
         }
 
-        private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            DomainSource.Load();
-        }
-
         public override void AddOperation(object sender, RoutedEventArgs e)
         {
             //also give a few default empty string values so that UI copy operation is possible
@@ -166,13 +162,14 @@ namespace RadiologyTracking.Views
             base.domainDataSource_LoadedData(sender, e);
             //first item returned is the current fixed pattern template for the given combination of fixed pattern and coverage
             RGReport = (RGReport)((DomainDataSourceView)((DomainDataSource)sender).Data).GetItemAt(0);
+            RGReportRows = RGReport.RGReportRows;
             //FPTemplateRowsSource.Load();
         }
 
-        void FPTemplateRowsSource_LoadedData(object sender, LoadedDataEventArgs e)
-        {
-            RGReportRows = (DomainDataSourceView)((DomainDataSource)sender).Data;
-        }
+        //void FPTemplateRowsSource_LoadedData(object sender, LoadedDataEventArgs e)
+        //{
+        //    RGReportRows = (DomainDataSourceView)((DomainDataSource)sender).Data;
+        //}
 
         //Kept here only for the template column to work fine
         public override void DeleteOperation(object sender, RoutedEventArgs e)

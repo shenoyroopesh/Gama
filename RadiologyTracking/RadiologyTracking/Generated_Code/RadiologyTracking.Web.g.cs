@@ -2928,6 +2928,8 @@ namespace RadiologyTracking.Web.Models
         
         private int _fixedPatternID;
         
+        private EntityCollection<FPTemplateRow> _fpTemplateRows;
+        
         private int _id;
         
         #region Extensibility Method Definitions
@@ -3074,6 +3076,22 @@ namespace RadiologyTracking.Web.Models
         }
         
         /// <summary>
+        /// Gets the collection of associated <see cref="FPTemplateRow"/> entity instances.
+        /// </summary>
+        [Association("FixedPatternTemplate_FPTemplateRow", "ID", "FixedPatternTemplateID")]
+        public EntityCollection<FPTemplateRow> FPTemplateRows
+        {
+            get
+            {
+                if ((this._fpTemplateRows == null))
+                {
+                    this._fpTemplateRows = new EntityCollection<FPTemplateRow>(this, "FPTemplateRows", this.FilterFPTemplateRows, this.AttachFPTemplateRows, this.DetachFPTemplateRows);
+                }
+                return this._fpTemplateRows;
+            }
+        }
+        
+        /// <summary>
         /// Gets or sets the 'ID' value.
         /// </summary>
         // The following attributes were not generated:
@@ -3113,6 +3131,21 @@ namespace RadiologyTracking.Web.Models
         private bool FilterFixedPattern(FixedPattern entity)
         {
             return (entity.ID == this.FixedPatternID);
+        }
+        
+        private void AttachFPTemplateRows(FPTemplateRow entity)
+        {
+            entity.FixedPatternTemplate = this;
+        }
+        
+        private void DetachFPTemplateRows(FPTemplateRow entity)
+        {
+            entity.FixedPatternTemplate = null;
+        }
+        
+        private bool FilterFPTemplateRows(FPTemplateRow entity)
+        {
+            return (entity.FixedPatternTemplateID == this.ID);
         }
         
         /// <summary>
@@ -3548,6 +3581,11 @@ namespace RadiologyTracking.Web.Models
                 if ((previous != value))
                 {
                     this.ValidateProperty("FixedPatternTemplate", value);
+                    if ((previous != null))
+                    {
+                        this._fixedPatternTemplate.Entity = null;
+                        previous.FPTemplateRows.Remove(this);
+                    }
                     if ((value != null))
                     {
                         this.FixedPatternTemplateID = value.ID;
@@ -3557,6 +3595,10 @@ namespace RadiologyTracking.Web.Models
                         this.FixedPatternTemplateID = default(int);
                     }
                     this._fixedPatternTemplate.Entity = value;
+                    if ((value != null))
+                    {
+                        value.FPTemplateRows.Add(this);
+                    }
                     this.RaisePropertyChanged("FixedPatternTemplate");
                 }
             }
@@ -4607,7 +4649,6 @@ namespace RadiologyTracking.Web.Models
         /// Gets the collection of associated <see cref="RGReportRow"/> entity instances.
         /// </summary>
         [Association("RGReport_RGReportRow", "ID", "RGReportID")]
-        [Composition()]
         public EntityCollection<RGReportRow> RGReportRows
         {
             get
@@ -5148,7 +5189,6 @@ namespace RadiologyTracking.Web.Models
         /// Gets the collection of associated <see cref="Observation"/> entity instances.
         /// </summary>
         [Association("RGReportRow_Observation", "ID", "RGReportRowID")]
-        [Composition()]
         public EntityCollection<Observation> Observations
         {
             get
@@ -6266,6 +6306,17 @@ namespace RadiologyTracking.Web.Services
         }
         
         /// <summary>
+        /// Gets the set of <see cref="Observation"/> entity instances that have been loaded into this <see cref="RadiologyContext"/> instance.
+        /// </summary>
+        public EntitySet<Observation> Observations
+        {
+            get
+            {
+                return base.EntityContainer.GetEntitySet<Observation>();
+            }
+        }
+        
+        /// <summary>
         /// Gets the set of <see cref="Remark"/> entity instances that have been loaded into this <see cref="RadiologyContext"/> instance.
         /// </summary>
         public EntitySet<Remark> Remarks
@@ -6273,6 +6324,17 @@ namespace RadiologyTracking.Web.Services
             get
             {
                 return base.EntityContainer.GetEntitySet<Remark>();
+            }
+        }
+        
+        /// <summary>
+        /// Gets the set of <see cref="RGReportRow"/> entity instances that have been loaded into this <see cref="RadiologyContext"/> instance.
+        /// </summary>
+        public EntitySet<RGReportRow> RGReportRows
+        {
+            get
+            {
+                return base.EntityContainer.GetEntitySet<RGReportRow>();
             }
         }
         
@@ -6498,19 +6560,6 @@ namespace RadiologyTracking.Web.Services
         {
             this.ValidateMethod("GetFPTemplateRowsQuery", null);
             return base.CreateQuery<FPTemplateRow>("GetFPTemplateRows", null, false, true);
-        }
-        
-        /// <summary>
-        /// Gets an EntityQuery instance that can be used to load <see cref="FPTemplateRow"/> entity instances using the 'GetFPTemplateRowsByTemplate' query.
-        /// </summary>
-        /// <param name="fpTemplateID">The value for the 'fpTemplateID' parameter of the query.</param>
-        /// <returns>An EntityQuery that can be loaded to retrieve <see cref="FPTemplateRow"/> entity instances.</returns>
-        public EntityQuery<FPTemplateRow> GetFPTemplateRowsByTemplateQuery(int fpTemplateID)
-        {
-            Dictionary<string, object> parameters = new Dictionary<string, object>();
-            parameters.Add("fpTemplateID", fpTemplateID);
-            this.ValidateMethod("GetFPTemplateRowsByTemplateQuery", parameters);
-            return base.CreateQuery<FPTemplateRow>("GetFPTemplateRowsByTemplate", parameters, false, true);
         }
         
         /// <summary>
@@ -6938,26 +6987,6 @@ namespace RadiologyTracking.Web.Services
             /// <param name="result">The IAsyncResult returned from 'BeginGetFPTemplateRows'.</param>
             /// <returns>The 'QueryResult' returned from the 'GetFPTemplateRows' operation.</returns>
             QueryResult<FPTemplateRow> EndGetFPTemplateRows(IAsyncResult result);
-            
-            /// <summary>
-            /// Asynchronously invokes the 'GetFPTemplateRowsByTemplate' operation.
-            /// </summary>
-            /// <param name="fpTemplateID">The value for the 'fpTemplateID' parameter of this action.</param>
-            /// <param name="callback">Callback to invoke on completion.</param>
-            /// <param name="asyncState">Optional state object.</param>
-            /// <returns>An IAsyncResult that can be used to monitor the request.</returns>
-            [FaultContract(typeof(DomainServiceFault), Action="http://tempuri.org/RadiologyService/GetFPTemplateRowsByTemplateDomainServiceFault" +
-                "", Name="DomainServiceFault", Namespace="DomainServices")]
-            [OperationContract(AsyncPattern=true, Action="http://tempuri.org/RadiologyService/GetFPTemplateRowsByTemplate", ReplyAction="http://tempuri.org/RadiologyService/GetFPTemplateRowsByTemplateResponse")]
-            [WebGet()]
-            IAsyncResult BeginGetFPTemplateRowsByTemplate(int fpTemplateID, AsyncCallback callback, object asyncState);
-            
-            /// <summary>
-            /// Completes the asynchronous operation begun by 'BeginGetFPTemplateRowsByTemplate'.
-            /// </summary>
-            /// <param name="result">The IAsyncResult returned from 'BeginGetFPTemplateRowsByTemplate'.</param>
-            /// <returns>The 'QueryResult' returned from the 'GetFPTemplateRowsByTemplate' operation.</returns>
-            QueryResult<FPTemplateRow> EndGetFPTemplateRowsByTemplate(IAsyncResult result);
             
             /// <summary>
             /// Asynchronously invokes the 'GetNewRGReport' operation.

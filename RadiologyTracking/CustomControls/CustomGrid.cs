@@ -129,6 +129,10 @@ namespace Vagsons.Controls
                 return;
 
             TextBlock tblock = (TextBlock)c;
+
+            if (tblock.Parent.GetType() != typeof(DataGridCell))
+                return;
+
             DataGridCell cell = (DataGridCell)tblock.Parent;
 
             //if already added, return

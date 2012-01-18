@@ -54,13 +54,13 @@ namespace RadiologyTracking.Views
         {
             DataGridRow row = DataGridRow.GetRowContainingElement(sender as FrameworkElement);
             App.RGReport = (RGReport)row.DataContext;
-            Navigate("/EnterRGReport");
+            Navigate("/EnterRadioGraphyReport");
         }
 
         public override void AddOperation(object sender, RoutedEventArgs e)
         {
             App.RGReport = null;
-            Navigate("/EnterRGReport");
+            Navigate("/EnterRadioGraphyReport");
         }
     }
 }

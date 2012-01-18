@@ -27,6 +27,8 @@
                                OperationName="GetTechniciansQuery"/>
         <ex:ComboBoxDataSource x:Key="WeldersSource" DomainContext="{StaticResource RadiologyContext}"
                                OperationName="GetWeldersQuery" />
+        <ex:ComboBoxDataSource x:Key="ShiftsSource" DomainContext="{StaticResource RadiologyContext}"
+                               OperationName="GetShiftsQuery" />
     </UserControl.Resources>
     <Grid x:Name="LayoutRoot">
         <riaControls:DomainDataSource Name="RGReportSource" AutoLoad="False" DomainContext="{StaticResource RadiologyContext}" 
@@ -38,12 +40,12 @@
                 <riaControls:Parameter ParameterName="rtNo" Value="{Binding ElementName=txtRTNo, Path=Text}" />
             </riaControls:DomainDataSource.QueryParameters>
         </riaControls:DomainDataSource>
-        <riaControls:DomainDataSource Name="FPTemplateRowsSource" AutoLoad="False" DomainContext="{StaticResource RadiologyContext}" 
+        <!--<riaControls:DomainDataSource Name="FPTemplateRowsSource" AutoLoad="False" DomainContext="{StaticResource RadiologyContext}" 
                                       QueryName="GetFPTemplateRowsByTemplateQuery">
             <riaControls:DomainDataSource.QueryParameters>
                 <riaControls:Parameter ParameterName="fpTemplateID" Value="{Binding ElementName=txtFPTemplateID, Path=Text}"/>
             </riaControls:DomainDataSource.QueryParameters>
-        </riaControls:DomainDataSource>
+        </riaControls:DomainDataSource>-->
 
         <sdk:Label Name="headerLabel" Style="{StaticResource PageHeaderStyle}" Content="ENTER RADIOLOGY REPORT"/>
         <StackPanel Margin="50" HorizontalAlignment="Center">
@@ -67,16 +69,21 @@
                                     Converter={StaticResource NotOperatorValueConverter}}"
                           ItemContainerStyle="{StaticResource ComboBoxItemStyle}"
                           ItemsSource="{Binding Source={StaticResource CoveragesSource}, Path=Data}"
-                          SelectionChanged="ComboBox_SelectionChanged" DisplayMemberPath="CoverageName"/>
+                          DisplayMemberPath="CoverageName"/>
                 <TextBlock Text="RT No" FontWeight="Bold" Margin="10,0,0,0" VerticalAlignment="Center"/>
                 <TextBox Name="txtRTNo" MinWidth="50" Margin="10, 0, 10, 0" 
                          IsEnabled="{Binding ElementName=RGReportsSource, Path=HasChanges, 
                                     Converter={StaticResource NotOperatorValueConverter}}"/>
-                <Button Content="Create/Fetch" Click="FetchOperation"/>
+                <Button Content="Create/Fetch" Click="FetchOperation" Name="btnFetch"/>
             </StackPanel>
             <sdk:TabControl Width="Auto" Height="Auto">
                 <sdk:TabItem Header="Header">
                     <Grid Margin="10" Width="Auto" HorizontalAlignment="Stretch">
+                        <Grid.Resources>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="VerticalAlignment" Value="Center" />
+                            </Style>
+                        </Grid.Resources>
                         <Grid.RowDefinitions>
                             <RowDefinition></RowDefinition>
                             <RowDefinition></RowDefinition>
@@ -138,8 +145,8 @@
                                       IsEnabled="{Binding ElementName=RGReportsSource, Path=HasChanges, 
                                                 Converter={StaticResource NotOperatorValueConverter}}"
                                       ItemContainerStyle="{StaticResource ComboBoxItemStyle}"
-                                      ItemsSource="{Binding Source={StaticResource CoveragesSource}, Path=Data}"
-                                      SelectionChanged="ComboBox_SelectionChanged" DisplayMemberPath="CoverageName"/>
+                                      ItemsSource="{Binding Source={StaticResource ShiftsSource}, Path=Data}"
+                                      DisplayMemberPath="Value"/>
                         </StackPanel>
                         <TextBlock Text="Evaluation As Per" Grid.Column="4" Grid.Row="7" />
                         <TextBox Name="txtEvaluation" Grid.Column="6" Grid.Row="7" />
@@ -167,10 +174,10 @@
                                     </Style>
                                 </custom:CustomGrid.Resources>
                                 <custom:CustomGrid.Columns>
-                                    <sdk:DataGridTextColumn Header="SlNo" Binding="{Binding Path=SlNo, Mode=OneWay}"></sdk:DataGridTextColumn>
-                                    <sdk:DataGridTextColumn Header="Location" Binding="{Binding Path=Location, Mode=OneWay}"></sdk:DataGridTextColumn>
-                                    <sdk:DataGridTextColumn Header="Segment" Binding="{Binding Path=Segment, Mode=OneWay}"></sdk:DataGridTextColumn>
-                                    <sdk:DataGridTextColumn Header="Thickness" Binding="{Binding Path=Thickness, Mode=OneWay}"></sdk:DataGridTextColumn>
+                                    <sdk:DataGridTextColumn Header="SlNo" Binding="{Binding Path=SlNo, Mode=TwoWay}"></sdk:DataGridTextColumn>
+                                    <sdk:DataGridTextColumn Header="Location" Binding="{Binding Path=Location, Mode=TwoWay}"></sdk:DataGridTextColumn>
+                                    <sdk:DataGridTextColumn Header="Segment" Binding="{Binding Path=Segment, Mode=TwoWay}"></sdk:DataGridTextColumn>
+                                    <sdk:DataGridTextColumn Header="Thickness" Binding="{Binding Path=Thickness, Mode=TwoWay}"></sdk:DataGridTextColumn>
                                     <sdk:DataGridTextColumn Header="Energy" Binding="{Binding Path=Energy.Name, Mode=OneWay}"></sdk:DataGridTextColumn>
                                     <sdk:DataGridTextColumn Header="SFD" Binding="{Binding Path=SFD, Mode=TwoWay}"></sdk:DataGridTextColumn>
                                     <sdk:DataGridTextColumn Header="Designation" Binding="{Binding Path=Designation, Mode=TwoWay}"></sdk:DataGridTextColumn>
@@ -192,12 +199,12 @@
                                             </DataTemplate>
                                         </sdk:DataGridTemplateColumn.CellEditingTemplate>
                                     </sdk:DataGridTemplateColumn>
-                                    <sdk:DataGridTextColumn Header="Observation" Binding="{Binding Path=Observation, Mode=TwoWay}"></sdk:DataGridTextColumn>
-                                    <sdk:DataGridTextColumn Header="Remark" Binding="{Binding Path=Remark, Mode=TwoWay}"></sdk:DataGridTextColumn>
+                                    <sdk:DataGridTextColumn Header="Observation" Binding="{Binding Path=ObservationsText, Mode=TwoWay}"></sdk:DataGridTextColumn>
+                                    <sdk:DataGridTextColumn Header="Remark" Binding="{Binding Path=RemarkText, Mode=TwoWay}"></sdk:DataGridTextColumn>
                                     <sdk:DataGridTemplateColumn Header="Technician">
                                         <sdk:DataGridTemplateColumn.CellTemplate>
                                             <DataTemplate>
-                                                <TextBlock Text="{Binding Path=FilmSizeString, Mode=TwoWay}" VerticalAlignment="Center" />
+                                                <TextBlock Text="{Binding Path=Technician.Name, Mode=TwoWay}" VerticalAlignment="Center" />
                                             </DataTemplate>
                                         </sdk:DataGridTemplateColumn.CellTemplate>
                                         <sdk:DataGridTemplateColumn.CellEditingTemplate>
@@ -213,7 +220,7 @@
                                     <sdk:DataGridTemplateColumn Header="Welder">
                                         <sdk:DataGridTemplateColumn.CellTemplate>
                                             <DataTemplate>
-                                                <TextBlock Text="{Binding Path=FilmSizeString, Mode=TwoWay}" VerticalAlignment="Center" />
+                                                <TextBlock Text="{Binding Path=Welder.Name, Mode=TwoWay}" VerticalAlignment="Center" />
                                             </DataTemplate>
                                         </sdk:DataGridTemplateColumn.CellTemplate>
                                         <sdk:DataGridTemplateColumn.CellEditingTemplate>
@@ -242,6 +249,10 @@
                     </local:BusyIndicator>
                 </sdk:TabItem>
             </sdk:TabControl>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Status"  Grid.Column="0" Grid.Row="0" />
+                <TextBlock Name="lblStatus" Grid.Column="2" Grid.Row="0" />
+            </StackPanel>
             <StackPanel Orientation="Horizontal" Height="23" Margin="0,20,0,0" HorizontalAlignment="Center" Name="ButtonsPanel">
                 <Button Name="btnSave" Background="Transparent" Style="{StaticResource SaveButtonStyle}"/>
                 <Button Name="btnCancel" Margin="20,0,0,0" Style="{StaticResource CancelButtonStyle}" />

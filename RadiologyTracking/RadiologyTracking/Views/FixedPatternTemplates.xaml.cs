@@ -15,6 +15,7 @@ using Vagsons.Controls;
 using System.Windows.Data;
 using RadiologyTracking.Web.Services;
 using System.Collections;
+using System.ServiceModel.DomainServices.Client;
 
 namespace RadiologyTracking.Views
 {
@@ -48,7 +49,6 @@ namespace RadiologyTracking.Views
             btnAdd.Click += AddOperation;
             btnCancel.Click += CancelOperation;
             btnSave.Click += SaveOperation;
-            FPTemplateRowsSource.LoadedData += FPTemplateRowsSource_LoadedData;
         }
 
         /// <summary>
@@ -127,9 +127,9 @@ namespace RadiologyTracking.Views
         }
 
         //kept ienumerable, so that the loaded object from the datacontext can be directly assigned here
-        private IEnumerable _fPTemplateRows;
+        private EntityCollection<FPTemplateRow> _fPTemplateRows;
 
-        public IEnumerable FPTemplateRows
+        public EntityCollection<FPTemplateRow> FPTemplateRows
         {
             get
             {
@@ -154,7 +154,7 @@ namespace RadiologyTracking.Views
                                             {
                                                 FixedPatternTemplate = this.FixedPatternTemplate,
                                                 //auto increment sl no for each additional row
-                                                SlNo = ((DomainDataSourceView)FPTemplateRows).Count + 1,
+                                                SlNo = FPTemplateRows.Max(p => p.SlNo) + 1,
                                                 Density = " ",
                                                 Designation = " ",
                                                 Location = " ",
@@ -163,7 +163,7 @@ namespace RadiologyTracking.Views
                                                 FilmSizeString = " "
                                             };
 
-            ((DomainDataSourceView)FPTemplateRows).Add(FPTemplateRow);
+            FPTemplateRows.Add(FPTemplateRow);
             OnPropertyChanged("FPTemplateRows");
         }
 
@@ -172,12 +172,7 @@ namespace RadiologyTracking.Views
             base.domainDataSource_LoadedData(sender, e);
             //first item returned is the current fixed pattern template for the given combination of fixed pattern and coverage
             FixedPatternTemplate = (FixedPatternTemplate)((DomainDataSourceView)((DomainDataSource)sender).Data).GetItemAt(0);
-            FPTemplateRowsSource.Load();
-        }
-
-        void FPTemplateRowsSource_LoadedData(object sender, LoadedDataEventArgs e)
-        {
-            FPTemplateRows = (DomainDataSourceView)((DomainDataSource)sender).Data;
+            FPTemplateRows = FixedPatternTemplate.FPTemplateRows;
         }
 
         //Kept here only for the template column to work fine

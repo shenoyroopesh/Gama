@@ -13,5 +13,10 @@ namespace RadiologyTracking.Web.Models
         public int ID { get; set; }
 
         public String Value { get; set; }
+
+        public static Shift getShift(string value, RadiologyContext ctx)
+        {
+            return ctx.Shifts.First(p => p.Value == value);
+        }
     }
 }
