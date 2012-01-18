@@ -525,6 +525,7 @@ namespace RadiologyTracking.Web.Services
             }
 
             FixedPatternTemplate fpTemplate = this.DbContext.FixedPatternTemplates.Include(p => p.FPTemplateRows.Select(r => r.FilmSize))
+                                                                                  .Include(p=>p.FixedPattern.Customer)
                                                                                  .Where(p =>
                                                                                         p.FixedPattern.FPNo == fixedPattern.FPNo &&
                                                                                         p.Coverage.CoverageName == coverage.CoverageName).FirstOrDefault();
@@ -622,16 +623,6 @@ namespace RadiologyTracking.Web.Services
         {
             return this.DbContext.FPTemplateRows;
         }
-
-        /// <summary>
-        /// Based on FP Template ID
-        /// </summary>
-        /// <param name="fpTemplateID"></param>
-        /// <returns></returns>
-        //public IQueryable<FPTemplateRow> GetFPTemplateRowsByTemplate(int fpTemplateID)
-        //{
-        //    return this.DbContext.FPTemplateRows.Where(p=>p.FixedPatternTemplateID == fpTemplateID);
-        //}
 
         public void InsertFPTemplateRow(FPTemplateRow entity)
         {
@@ -750,7 +741,6 @@ namespace RadiologyTracking.Web.Services
             {
                 //create new report with existing fptemplate
                 rgReport = new RGReport(fpTemplate, rtNo, DbContext);
-                DbContext.RGReports.Add(rgReport);
                 return rgReport;
             }
             else

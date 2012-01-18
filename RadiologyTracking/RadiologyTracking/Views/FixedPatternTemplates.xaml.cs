@@ -175,10 +175,32 @@ namespace RadiologyTracking.Views
             FPTemplateRows = FixedPatternTemplate.FPTemplateRows;
         }
 
-        //Kept here only for the template column to work fine
+        /// <summary>
+        /// Overridden because the datasource for the grid is not a domaindataview
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         public override void DeleteOperation(object sender, RoutedEventArgs e)
         {
-            base.DeleteOperation(sender, e);
+            if (MessageBox.Show("Are you sure you want to delete this item?", "Confirm Delete", MessageBoxButton.OKCancel) == MessageBoxResult.Cancel)
+                return;
+
+            DataGridRow row = DataGridRow.GetRowContainingElement(sender as FrameworkElement);
+            //commit any unsaved changes to avoid an exception
+            if (Grid.CommitEdit())
+                FPTemplateRows.Remove((FPTemplateRow)row.DataContext);
+        }
+
+        /// <summary>
+        /// Have to update filmsize string manually
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void RowFilmSizeChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ComboBox cmb = (ComboBox)sender;
+            var row = ((DataGridCell)cmb.Parent).DataContext;
+            ((FPTemplateRow)row).FilmSizeString = ((FilmSize)cmb.SelectedValue).Name;
         }
     }
 }

@@ -36,7 +36,7 @@ namespace RadiologyTracking.Web.Models
             this.DateOfTest = this.ReportDate = DateTime.Now;
             this.Shift = Shift.getShift("DAY", ctx); //defaulting so it can be saved
             this.Status = RGStatus.getStatus("PENDING", ctx);
-            
+            this.RTNo = RTNo;
 
             RGReportRowType freshRowType = RGReportRowType.getRowType("FRESH", ctx);
             if (fpTemplate.FPTemplateRows == null) return;

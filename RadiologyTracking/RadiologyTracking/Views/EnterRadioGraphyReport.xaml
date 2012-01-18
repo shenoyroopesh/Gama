@@ -40,6 +40,15 @@
                 <riaControls:Parameter ParameterName="rtNo" Value="{Binding ElementName=txtRTNo, Path=Text}" />
             </riaControls:DomainDataSource.QueryParameters>
         </riaControls:DomainDataSource>
+        <riaControls:DomainDataSource Name="FixedPatternsSource" AutoLoad="False" DomainContext="{StaticResource RadiologyContext}"
+                                      QueryName="GetFixedPatternsQuery">
+            <riaControls:DomainDataSource.FilterDescriptors>
+                <riaControls:FilterDescriptor PropertyPath="FPNo" Operator="IsEqualTo" Value="{Binding ElementName=txtFPNo, Path=Text}" />
+            </riaControls:DomainDataSource.FilterDescriptors>
+            <riaControls:DomainDataSource.QueryParameters>
+                <riaControls:Parameter ParameterName="filter" Value="" />
+            </riaControls:DomainDataSource.QueryParameters>
+        </riaControls:DomainDataSource>
         <!--<riaControls:DomainDataSource Name="FPTemplateRowsSource" AutoLoad="False" DomainContext="{StaticResource RadiologyContext}" 
                                       QueryName="GetFPTemplateRowsByTemplateQuery">
             <riaControls:DomainDataSource.QueryParameters>

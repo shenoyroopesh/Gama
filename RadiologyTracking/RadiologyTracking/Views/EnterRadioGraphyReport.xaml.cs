@@ -163,13 +163,7 @@ namespace RadiologyTracking.Views
             //first item returned is the current fixed pattern template for the given combination of fixed pattern and coverage
             RGReport = (RGReport)((DomainDataSourceView)((DomainDataSource)sender).Data).GetItemAt(0);
             RGReportRows = RGReport.RGReportRows;
-            //FPTemplateRowsSource.Load();
         }
-
-        //void FPTemplateRowsSource_LoadedData(object sender, LoadedDataEventArgs e)
-        //{
-        //    RGReportRows = (DomainDataSourceView)((DomainDataSource)sender).Data;
-        //}
 
         //Kept here only for the template column to work fine
         public override void DeleteOperation(object sender, RoutedEventArgs e)
@@ -180,6 +174,8 @@ namespace RadiologyTracking.Views
         private void FetchOperation(object sender, RoutedEventArgs e)
         {
             DomainSource.Load();
+            //for fixed pattern related data
+            FixedPatternsSource.Load();
         }
     }
 }

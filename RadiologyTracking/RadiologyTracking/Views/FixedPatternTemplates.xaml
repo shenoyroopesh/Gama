@@ -97,7 +97,7 @@
                                               SelectedValue="{Binding Path=FilmSize, Mode=TwoWay}"
                                               DisplayMemberPath="Name" 
                                               Style="{StaticResource ComboBoxStyle}"
-                                              ItemContainerStyle="{StaticResource ComboBoxItemStyle}"/>
+                                              ItemContainerStyle="{StaticResource ComboBoxItemStyle}" SelectionChanged="RowFilmSizeChanged"/>
                                 </DataTemplate>
                             </sdk:DataGridTemplateColumn.CellEditingTemplate>
                         </sdk:DataGridTemplateColumn>
