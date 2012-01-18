@@ -38,9 +38,9 @@
                     </StackPanel>
                 </Border>
 
-                <Border x:Name="LinksBorder" Style="{StaticResource LinksBorderStyle}">
+                <Border x:Name="LinksBorder" Style="{StaticResource LinksBorderStyle}" >
+                    <StackPanel>
                     <StackPanel x:Name="LinksStackPanel" Style="{StaticResource LinksStackPanelStyle}">
-
                         <HyperlinkButton x:Name="Link1" Style="{StaticResource LinkStyle}" 
                                      NavigateUri="/Home" TargetName="ContentFrame" Content="{Binding Path=Strings.HomePageTitle, Source={StaticResource ApplicationResources}}"/>
 
@@ -80,6 +80,17 @@
                         <Rectangle x:Name="Divider9" Style="{StaticResource DividerStyle}"/>
                         <HyperlinkButton x:Name="Link10" Style="{StaticResource LinkStyle}" 
                                      NavigateUri="/FixedPatterns" TargetName="ContentFrame" Content="Fixed Patterns"/>
+                    </StackPanel>
+                        <StackPanel x:Name="Links2StackPanel" Style="{StaticResource LinksStackPanelStyle}">
+                            <HyperlinkButton x:Name="Link11" Style="{StaticResource LinkStyle}" 
+                                     NavigateUri="/RadiographyReports" TargetName="ContentFrame" Content="Radiography Reports"/>
+                            <Rectangle x:Name="Divider10" Style="{StaticResource DividerStyle}"/>
+                            <HyperlinkButton x:Name="Link12" Style="{StaticResource LinkStyle}" 
+                                     NavigateUri="/Technicians" TargetName="ContentFrame" Content="Technicians"/>
+                            <Rectangle x:Name="Divider11" Style="{StaticResource DividerStyle}"/>
+                            <HyperlinkButton x:Name="Link13" Style="{StaticResource LinkStyle}" 
+                                     NavigateUri="/Welders" TargetName="ContentFrame" Content="Welders"/>
+                        </StackPanel>
                     </StackPanel>
                 </Border>
             </Grid>
