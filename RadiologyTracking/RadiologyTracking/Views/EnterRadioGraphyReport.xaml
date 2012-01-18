@@ -72,7 +72,7 @@
                 <TextBox Name="txtRTNo" MinWidth="50" Margin="10, 0, 10, 0" 
                          IsEnabled="{Binding ElementName=RGReportsSource, Path=HasChanges, 
                                     Converter={StaticResource NotOperatorValueConverter}}"/>
-                <Button Content="Create/Fetch" />
+                <Button Content="Create/Fetch" Click="FetchOperation"/>
             </StackPanel>
             <sdk:TabControl Width="Auto" Height="Auto">
                 <sdk:TabItem Header="Header">

@@ -133,6 +133,12 @@
     <Compile Include="Views\Company.xaml.cs">
       <DependentUpon>Company.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Welders.xaml.cs">
+      <DependentUpon>Welders.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Technicians.xaml.cs">
+      <DependentUpon>Technicians.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\EnterRadioGraphyReport.xaml.cs">
       <DependentUpon>EnterRadioGraphyReport.xaml</DependentUpon>
     </Compile>
@@ -207,6 +213,14 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\Company.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Welders.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Technicians.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

@@ -23,15 +23,14 @@ namespace RadiologyTracking.Views
         public EnterRadioGraphyReport()
         {
             InitializeComponent();
-            if (App.FixedPattern == null)
+            if (App.RGReport == null)
             {
-                //Means landed here by mistake, just go back to fixed patterns page
-                Navigate("/FixedPatterns");
+                //Means new RG Report, allow add
             }
             else
             {
-                this.FixedPattern = App.FixedPattern;
-                DataContext = this.FixedPattern;
+                this.RGReport = App.RGReport;
+                DataContext = this.RGReport;
             }
 
             //wire up event handlers
@@ -56,18 +55,30 @@ namespace RadiologyTracking.Views
         /// </summary>
         private void SetBindings()
         {
-            txtFPNo.SetBinding(TextBlock.TextProperty, new Binding() { Source = this, Path = new PropertyPath("FixedPattern.FPNo") });
-            txtDescription.SetBinding(TextBlock.TextProperty, new Binding() { Source = this, Path = new PropertyPath("FixedPattern.Description") });
-            txtCustomer.SetBinding(TextBlock.TextProperty, new Binding() { Source = this, Path = new PropertyPath("FixedPattern.Customer.ShortName") });
-            txtFPTemplateID.SetBinding(TextBlock.TextProperty, new Binding() { Source = this, Path = new PropertyPath("FixedPatternTemplate.ID") });
-            FPTemplatesDataGrid.SetBinding(CustomGrid.ItemsSourceProperty, new Binding() { Source = this, Path = new PropertyPath("FPTemplateRows") });
+            lblFPNo.SetBinding(TextBlock.TextProperty, new Binding() { Source = this, Path = new PropertyPath("RGReport.FixedPattern.FPNo") });
+            lblCustomer.SetBinding(TextBlock.TextProperty, new Binding() { Source = this, Path = new PropertyPath("RGReport.FixedPattern.Customer.Name") });
+            lblDescription.SetBinding(TextBlock.TextProperty, new Binding() { Source = this, Path = new PropertyPath("RGReport.FixedPattern.Description") });
+            lblCoverage.SetBinding(TextBlock.TextProperty, new Binding() { Source = this, Path = new PropertyPath("RGReport.Coverage.Name") });
+            lblRTNo.SetBinding(TextBlock.TextProperty, new Binding() { Source = this, Path = new PropertyPath("RGReport.RTNo") });
+            txtReportNo.SetBinding(TextBox.TextProperty, new Binding() { Source = this, Path = new PropertyPath("RGReport.ReportNo"), Mode = BindingMode.TwoWay });
+            txtHeatNo.SetBinding(TextBox.TextProperty, new Binding() { Source = this, Path = new PropertyPath("RGReport.HeatNo"), Mode = BindingMode.TwoWay });
+            txtProcedureRef.SetBinding(TextBox.TextProperty, new Binding() { Source = this, Path = new PropertyPath("RGReport.ProcedureRef"), Mode = BindingMode.TwoWay });
+            txtSpecifications.SetBinding(TextBox.TextProperty, new Binding() { Source = this, Path = new PropertyPath("RGReport.Specifications"), Mode = BindingMode.TwoWay });
+            txtFilm.SetBinding(TextBox.TextProperty, new Binding() { Source = this, Path = new PropertyPath("RGReport.Film"), Mode = BindingMode.TwoWay });
+            ReportDatePicker.SetBinding(DatePicker.SelectedDateProperty, new Binding() { Source = this, Path = new PropertyPath("RGReport.ReportDate"), Mode = BindingMode.TwoWay });
+            TestDatePicker.SetBinding(DatePicker.SelectedDateProperty, new Binding() { Source = this, Path = new PropertyPath("RGReport.DateOfTest"), Mode = BindingMode.TwoWay });
+            cmbShift.SetBinding(ComboBox.SelectedValueProperty, new Binding() { Source = this, Path = new PropertyPath("RGReport.Shift"), Mode = BindingMode.TwoWay });
+            txtEvaluation.SetBinding(TextBox.TextProperty, new Binding() { Source = this, Path = new PropertyPath("RGReport.EvaluationAsPer"), Mode = BindingMode.TwoWay });
+            txtAcceptance.SetBinding(TextBox.TextProperty, new Binding() { Source = this, Path = new PropertyPath("RGReport.AcceptanceAsPer"), Mode = BindingMode.TwoWay });
+            txtDrawingNo.SetBinding(TextBox.TextProperty, new Binding() { Source = this, Path = new PropertyPath("RGReport.DrawingNo"), Mode = BindingMode.TwoWay });
+            RGReportDataGrid.SetBinding(CustomGrid.ItemsSourceProperty, new Binding() { Source = this, Path = new PropertyPath("RGReportRows") });
             btnAdd.SetBinding(Button.IsEnabledProperty, new Binding() { Source = this, Path = new PropertyPath("Enabled") });
         }
 
         [CLSCompliant(false)]
         public override CustomGrid Grid
         {
-            get { return this.FPTemplatesDataGrid; }
+            get { return this.RGReportDataGrid; }
         }
 
         public override DomainDataSource DomainSource
@@ -77,68 +88,51 @@ namespace RadiologyTracking.Views
 
         public override Type MainType
         {
-            get { return typeof(FPTemplateRow); }
+            get { return typeof(RGReportRow); }
         }
 
-        private FixedPattern _fixedPattern;
-
-        /// <summary>
-        /// Current Fixed Pattern for whom templates are being created currently
-        /// </summary>
-        public FixedPattern FixedPattern
+        public bool FetchEnabled
         {
-            get
-            {
-                return this._fixedPattern;
-            }
-            set
-            {
-                this._fixedPattern = value;
-                OnPropertyChanged("FixedPattern");
-            }
+            get { return (RGReport == null); }
         }
-
 
         public bool Enabled
         {
-            get
-            {
-                return !(FixedPatternTemplate == null);
-            }
+            get { return !(RGReport == null); }
         }
 
-        private FixedPatternTemplate _fixedPatternTemplate;
+        private RGReport _rgReport;
 
         /// <summary>
         /// Current Fixed Pattern Template
         /// </summary>
-        public FixedPatternTemplate FixedPatternTemplate
+        public RGReport RGReport
         {
             get
             {
-                return this._fixedPatternTemplate;
+                return this._rgReport;
             }
             set
             {
-                this._fixedPatternTemplate = value;
-                OnPropertyChanged("FixedPatternTemplate");
+                this._rgReport = value;
+                OnPropertyChanged("RGReport");
                 OnPropertyChanged("Enabled");
             }
         }
 
         //kept ienumerable, so that the loaded object from the datacontext can be directly assigned here
-        private IEnumerable _fPTemplateRows;
+        private IEnumerable _rgReportRows;
 
-        public IEnumerable FPTemplateRows
+        public IEnumerable RGReportRows
         {
             get
             {
-                return _fPTemplateRows;
+                return _rgReportRows;
             }
             set
             {
-                _fPTemplateRows = value;
-                OnPropertyChanged("FPTemplateRows");
+                _rgReportRows = value;
+                OnPropertyChanged("RGReportRows");
             }
         }
 
@@ -150,11 +144,11 @@ namespace RadiologyTracking.Views
         public override void AddOperation(object sender, RoutedEventArgs e)
         {
             //also give a few default empty string values so that UI copy operation is possible
-            FPTemplateRow FPTemplateRow = new FPTemplateRow()
+            RGReportRow RGReportRow = new RGReportRow()
                                             {
-                                                FixedPatternTemplate = this.FixedPatternTemplate,
+                                                RGReport = this.RGReport,
                                                 //auto increment sl no for each additional row
-                                                SlNo = ((DomainDataSourceView)FPTemplateRows).Count + 1,
+                                                SlNo = ((DomainDataSourceView)RGReportRows).Count + 1,
                                                 Density = " ",
                                                 Designation = " ",
                                                 Location = " ",
@@ -163,27 +157,32 @@ namespace RadiologyTracking.Views
                                                 FilmSizeString = " "
                                             };
 
-            ((DomainDataSourceView)FPTemplateRows).Add(FPTemplateRow);
-            OnPropertyChanged("FPTemplateRows");
+            ((DomainDataSourceView)RGReportRows).Add(RGReportRow);
+            OnPropertyChanged("RGReportRows");
         }
 
         public override void domainDataSource_LoadedData(object sender, LoadedDataEventArgs e)
         {
             base.domainDataSource_LoadedData(sender, e);
             //first item returned is the current fixed pattern template for the given combination of fixed pattern and coverage
-            FixedPatternTemplate = (FixedPatternTemplate)((DomainDataSourceView)((DomainDataSource)sender).Data).GetItemAt(0);
-            FPTemplateRowsSource.Load();
+            RGReport = (RGReport)((DomainDataSourceView)((DomainDataSource)sender).Data).GetItemAt(0);
+            //FPTemplateRowsSource.Load();
         }
 
         void FPTemplateRowsSource_LoadedData(object sender, LoadedDataEventArgs e)
         {
-            FPTemplateRows = (DomainDataSourceView)((DomainDataSource)sender).Data;
+            RGReportRows = (DomainDataSourceView)((DomainDataSource)sender).Data;
         }
 
         //Kept here only for the template column to work fine
         public override void DeleteOperation(object sender, RoutedEventArgs e)
         {
             base.DeleteOperation(sender, e);
+        }
+
+        private void FetchOperation(object sender, RoutedEventArgs e)
+        {
+            DomainSource.Load();
         }
     }
 }

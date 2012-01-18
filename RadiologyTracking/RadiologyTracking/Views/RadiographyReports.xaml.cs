@@ -40,7 +40,7 @@ namespace RadiologyTracking.Views
 
         public override Type MainType
         {
-            get { return typeof(FixedPattern); }
+            get { return typeof(RGReport); }
         }
 
         //Kept here only for the template column to work fine

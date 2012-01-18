@@ -317,3 +317,5 @@ D:\DotNet\Gama\RadiologyTracking\RadiologyTracking\obj\Debug\Views\FixedPatternT
 D:\DotNet\Gama\RadiologyTracking\RadiologyTracking\obj\Debug\Views\RadiographyReports.g.i.cs
 D:\DotNet\Gama\RadiologyTracking\RadiologyTracking\obj\Debug\Views\FixedPatterns.g.i.cs
 D:\DotNet\Gama\RadiologyTracking\RadiologyTracking\obj\Debug\Views\EnterRadioGraphyReport.g.i.cs
+D:\DotNet\Gama\RadiologyTracking\RadiologyTracking\obj\Debug\Views\Welders.g.i.cs
+D:\DotNet\Gama\RadiologyTracking\RadiologyTracking\obj\Debug\Views\Technicians.g.i.cs

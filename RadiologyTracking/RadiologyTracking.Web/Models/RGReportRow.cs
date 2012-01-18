@@ -52,6 +52,48 @@ namespace RadiologyTracking.Web.Models
 
         public int RowTypeID { get; set; }
 
+        [NotMapped]
+        public String FilmSizeString
+        {
+            get
+            {
+                if (this.FilmSizeID == 0) return " ";
+                //TODO: see if context can be injected instead of using like this
+                using (RadiologyContext ctx = new RadiologyContext())
+                {
+                    var filmSizes = ctx.FilmSizes.Where(p => p.ID == this.FilmSizeID);
+                    if (filmSizes.Count() > 0)
+                        return filmSizes.First().Name;
+                    else
+                        return " ";
+                }
+            }
+            set
+            {
+                int height, width;
+                try
+                {
+                    String[] dimensions = value.Split('X');
+                    height = Convert.ToInt32(dimensions[0]);
+                    width = Convert.ToInt32(dimensions[1]);
+                }
+                catch
+                {
+                    return;
+                }
+
+                using (RadiologyContext ctx = new RadiologyContext())
+                {
+                    var filmsizes = ctx.FilmSizes.Where(p => p.Height == height && p.Width == width);
+                    if (filmsizes.Count() > 0)
+                    {
+                        this.FilmSize = filmsizes.First();
+                        this.FilmSizeID = filmsizes.First().ID;
+                    }
+                }
+            }
+        }
+
         /// <summary>
         /// This property is only for setting observations for the row using a comma separated string of observations and not
         /// for anything else. This won't be saved in the database
