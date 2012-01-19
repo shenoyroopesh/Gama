@@ -61,7 +61,8 @@ namespace RadiologyTracking.Web.Utility
         /// </summary>
         /// <param name="source">Source from where to copy the object</param>
         /// <param name="destination">Destination object to be copied to</param>
-        /// <param name="excludeProperties">Comma separated names of properties that should not be copied</param>
+        /// <param name="excludeProperties">Comma separated names of properties that should not be copied. Also if entity names are included, 
+        /// then corresponding foreign key columns with name [entity]ID are also excluded</param>
         /// <returns></returns>
         public static void CopyTo(this Object source, Object destination, string excludeProperties)
         {
@@ -80,6 +81,10 @@ namespace RadiologyTracking.Web.Utility
             {
                 if ((!destProperty.CanWrite) || 
                     excluded.Contains(destProperty.Name))
+                    continue;
+
+                //for eg, if Welder is excluded, make sure that WelderID is also not copied without having to explicitly exclude WelderID
+                if (excluded.Contains(destProperty.Name.Replace("ID", ""))) 
                     continue;
 
                 var sourceProperty = SourceType.GetProperty(destProperty.Name);

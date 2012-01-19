@@ -3302,6 +3302,7 @@ namespace RadiologyTracking.Web.Models
         /// Gets or sets the 'ReportNumberPrefix' value.
         /// </summary>
         [DataMember()]
+        [Required()]
         public string ReportNumberPrefix
         {
             get
@@ -3826,204 +3827,6 @@ namespace RadiologyTracking.Web.Models
     }
     
     /// <summary>
-    /// The 'Observation' entity class.
-    /// </summary>
-    [DataContract(Namespace="http://schemas.datacontract.org/2004/07/RadiologyTracking.Web.Models")]
-    public sealed partial class Observation : Entity
-    {
-        
-        private EntityRef<Defect> _defect;
-        
-        private int _defectID;
-        
-        private int _id;
-        
-        private int _level;
-        
-        private int _rgReportRowID;
-        
-        #region Extensibility Method Definitions
-
-        /// <summary>
-        /// This method is invoked from the constructor once initialization is complete and
-        /// can be used for further object setup.
-        /// </summary>
-        partial void OnCreated();
-        partial void OnDefectIDChanging(int value);
-        partial void OnDefectIDChanged();
-        partial void OnIDChanging(int value);
-        partial void OnIDChanged();
-        partial void OnLevelChanging(int value);
-        partial void OnLevelChanged();
-        partial void OnRGReportRowIDChanging(int value);
-        partial void OnRGReportRowIDChanged();
-
-        #endregion
-        
-        
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Observation"/> class.
-        /// </summary>
-        public Observation()
-        {
-            this.OnCreated();
-        }
-        
-        /// <summary>
-        /// Gets or sets the associated <see cref="Defect"/> entity.
-        /// </summary>
-        [Association("Defect_Observation", "DefectID", "ID", IsForeignKey=true)]
-        public Defect Defect
-        {
-            get
-            {
-                if ((this._defect == null))
-                {
-                    this._defect = new EntityRef<Defect>(this, "Defect", this.FilterDefect);
-                }
-                return this._defect.Entity;
-            }
-            set
-            {
-                Defect previous = this.Defect;
-                if ((previous != value))
-                {
-                    this.ValidateProperty("Defect", value);
-                    if ((value != null))
-                    {
-                        this.DefectID = value.ID;
-                    }
-                    else
-                    {
-                        this.DefectID = default(int);
-                    }
-                    this._defect.Entity = value;
-                    this.RaisePropertyChanged("Defect");
-                }
-            }
-        }
-        
-        /// <summary>
-        /// Gets or sets the 'DefectID' value.
-        /// </summary>
-        [DataMember()]
-        [RoundtripOriginal()]
-        public int DefectID
-        {
-            get
-            {
-                return this._defectID;
-            }
-            set
-            {
-                if ((this._defectID != value))
-                {
-                    this.OnDefectIDChanging(value);
-                    this.RaiseDataMemberChanging("DefectID");
-                    this.ValidateProperty("DefectID", value);
-                    this._defectID = value;
-                    this.RaiseDataMemberChanged("DefectID");
-                    this.OnDefectIDChanged();
-                }
-            }
-        }
-        
-        /// <summary>
-        /// Gets or sets the 'ID' value.
-        /// </summary>
-        // The following attributes were not generated:
-        // 
-        // - The attribute 'System.ComponentModel.DataAnnotations.DatabaseGeneratedAttribute' is not visible in the client project 'RadiologyTracking'. Are you missing an assembly reference?
-        // [DatabaseGeneratedAttribute(Identity)]
-        // 
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        [DataMember()]
-        [Editable(false, AllowInitialValue=true)]
-        [Key()]
-        [RoundtripOriginal()]
-        public int ID
-        {
-            get
-            {
-                return this._id;
-            }
-            set
-            {
-                if ((this._id != value))
-                {
-                    this.OnIDChanging(value);
-                    this.ValidateProperty("ID", value);
-                    this._id = value;
-                    this.RaisePropertyChanged("ID");
-                    this.OnIDChanged();
-                }
-            }
-        }
-        
-        /// <summary>
-        /// Gets or sets the 'Level' value.
-        /// </summary>
-        [DataMember()]
-        public int Level
-        {
-            get
-            {
-                return this._level;
-            }
-            set
-            {
-                if ((this._level != value))
-                {
-                    this.OnLevelChanging(value);
-                    this.RaiseDataMemberChanging("Level");
-                    this.ValidateProperty("Level", value);
-                    this._level = value;
-                    this.RaiseDataMemberChanged("Level");
-                    this.OnLevelChanged();
-                }
-            }
-        }
-        
-        /// <summary>
-        /// Gets or sets the 'RGReportRowID' value.
-        /// </summary>
-        [DataMember()]
-        public int RGReportRowID
-        {
-            get
-            {
-                return this._rgReportRowID;
-            }
-            set
-            {
-                if ((this._rgReportRowID != value))
-                {
-                    this.OnRGReportRowIDChanging(value);
-                    this.RaiseDataMemberChanging("RGReportRowID");
-                    this.ValidateProperty("RGReportRowID", value);
-                    this._rgReportRowID = value;
-                    this.RaiseDataMemberChanged("RGReportRowID");
-                    this.OnRGReportRowIDChanged();
-                }
-            }
-        }
-        
-        private bool FilterDefect(Defect entity)
-        {
-            return (entity.ID == this.DefectID);
-        }
-        
-        /// <summary>
-        /// Computes a value from the key fields that uniquely identifies this entity instance.
-        /// </summary>
-        /// <returns>An object instance that uniquely identifies this entity instance.</returns>
-        public override object GetIdentity()
-        {
-            return this._id;
-        }
-    }
-    
-    /// <summary>
     /// The 'Remark' entity class.
     /// </summary>
     [DataContract(Namespace="http://schemas.datacontract.org/2004/07/RadiologyTracking.Web.Models")]
@@ -4166,11 +3969,15 @@ namespace RadiologyTracking.Web.Models
         
         private string _rtNo;
         
+        private EntityRef<Shift> _shift;
+        
         private int _shiftID;
         
         private string _sourceSize;
         
         private string _specifications;
+        
+        private EntityRef<RGStatus> _status;
         
         private int _statusID;
         
@@ -4686,6 +4493,40 @@ namespace RadiologyTracking.Web.Models
         }
         
         /// <summary>
+        /// Gets or sets the associated <see cref="Shift"/> entity.
+        /// </summary>
+        [Association("Shift_RGReport", "ShiftID", "ID", IsForeignKey=true)]
+        public Shift Shift
+        {
+            get
+            {
+                if ((this._shift == null))
+                {
+                    this._shift = new EntityRef<Shift>(this, "Shift", this.FilterShift);
+                }
+                return this._shift.Entity;
+            }
+            set
+            {
+                Shift previous = this.Shift;
+                if ((previous != value))
+                {
+                    this.ValidateProperty("Shift", value);
+                    if ((value != null))
+                    {
+                        this.ShiftID = value.ID;
+                    }
+                    else
+                    {
+                        this.ShiftID = default(int);
+                    }
+                    this._shift.Entity = value;
+                    this.RaisePropertyChanged("Shift");
+                }
+            }
+        }
+        
+        /// <summary>
         /// Gets or sets the 'ShiftID' value.
         /// </summary>
         [DataMember()]
@@ -4759,6 +4600,40 @@ namespace RadiologyTracking.Web.Models
         }
         
         /// <summary>
+        /// Gets or sets the associated <see cref="RGStatus"/> entity.
+        /// </summary>
+        [Association("RGStatus_RGReport", "StatusID", "ID", IsForeignKey=true)]
+        public RGStatus Status
+        {
+            get
+            {
+                if ((this._status == null))
+                {
+                    this._status = new EntityRef<RGStatus>(this, "Status", this.FilterStatus);
+                }
+                return this._status.Entity;
+            }
+            set
+            {
+                RGStatus previous = this.Status;
+                if ((previous != value))
+                {
+                    this.ValidateProperty("Status", value);
+                    if ((value != null))
+                    {
+                        this.StatusID = value.ID;
+                    }
+                    else
+                    {
+                        this.StatusID = default(int);
+                    }
+                    this._status.Entity = value;
+                    this.RaisePropertyChanged("Status");
+                }
+            }
+        }
+        
+        /// <summary>
         /// Gets or sets the 'StatusID' value.
         /// </summary>
         [DataMember()]
@@ -4808,6 +4683,16 @@ namespace RadiologyTracking.Web.Models
             return (entity.RGReportID == this.ID);
         }
         
+        private bool FilterShift(Shift entity)
+        {
+            return (entity.ID == this.ShiftID);
+        }
+        
+        private bool FilterStatus(RGStatus entity)
+        {
+            return (entity.ID == this.StatusID);
+        }
+        
         /// <summary>
         /// Computes a value from the key fields that uniquely identifies this entity instance.
         /// </summary>
@@ -4843,13 +4728,11 @@ namespace RadiologyTracking.Web.Models
         
         private string _location;
         
-        private EntityCollection<Observation> _observations;
-        
-        private string _observationsText;
+        private string _observations;
         
         private EntityRef<Remark> _remark;
         
-        private int _remarkID;
+        private Nullable<int> _remarkID;
         
         private string _remarkText;
         
@@ -4869,13 +4752,17 @@ namespace RadiologyTracking.Web.Models
         
         private EntityRef<Technician> _technician;
         
-        private int _technicianID;
+        private Nullable<int> _technicianID;
+        
+        private string _technicianText;
         
         private int _thickness;
         
         private EntityRef<Welder> _welder;
         
-        private int _welderID;
+        private Nullable<int> _welderID;
+        
+        private string _welderText;
         
         #region Extensibility Method Definitions
 
@@ -4898,9 +4785,9 @@ namespace RadiologyTracking.Web.Models
         partial void OnIDChanged();
         partial void OnLocationChanging(string value);
         partial void OnLocationChanged();
-        partial void OnObservationsTextChanging(string value);
-        partial void OnObservationsTextChanged();
-        partial void OnRemarkIDChanging(int value);
+        partial void OnObservationsChanging(string value);
+        partial void OnObservationsChanged();
+        partial void OnRemarkIDChanging(Nullable<int> value);
         partial void OnRemarkIDChanged();
         partial void OnRemarkTextChanging(string value);
         partial void OnRemarkTextChanged();
@@ -4916,12 +4803,16 @@ namespace RadiologyTracking.Web.Models
         partial void OnSFDChanged();
         partial void OnSlNoChanging(int value);
         partial void OnSlNoChanged();
-        partial void OnTechnicianIDChanging(int value);
+        partial void OnTechnicianIDChanging(Nullable<int> value);
         partial void OnTechnicianIDChanged();
+        partial void OnTechnicianTextChanging(string value);
+        partial void OnTechnicianTextChanged();
         partial void OnThicknessChanging(int value);
         partial void OnThicknessChanged();
-        partial void OnWelderIDChanging(int value);
+        partial void OnWelderIDChanging(Nullable<int> value);
         partial void OnWelderIDChanged();
+        partial void OnWelderTextChanging(string value);
+        partial void OnWelderTextChanged();
 
         #endregion
         
@@ -5186,46 +5077,25 @@ namespace RadiologyTracking.Web.Models
         }
         
         /// <summary>
-        /// Gets the collection of associated <see cref="Observation"/> entity instances.
+        /// Gets or sets the 'Observations' value.
         /// </summary>
-        [Association("RGReportRow_Observation", "ID", "RGReportRowID")]
-        public EntityCollection<Observation> Observations
-        {
-            get
-            {
-                if ((this._observations == null))
-                {
-                    this._observations = new EntityCollection<Observation>(this, "Observations", this.FilterObservations);
-                }
-                return this._observations;
-            }
-        }
-        
-        /// <summary>
-        /// Gets or sets the 'ObservationsText' value.
-        /// </summary>
-        // The following attributes were not generated:
-        // 
-        // - The attribute 'System.ComponentModel.DataAnnotations.NotMappedAttribute' is not visible in the client project 'RadiologyTracking'. Are you missing an assembly reference?
-        // [NotMappedAttribute()]
-        // 
         [DataMember()]
-        public string ObservationsText
+        public string Observations
         {
             get
             {
-                return this._observationsText;
+                return this._observations;
             }
             set
             {
-                if ((this._observationsText != value))
+                if ((this._observations != value))
                 {
-                    this.OnObservationsTextChanging(value);
-                    this.RaiseDataMemberChanging("ObservationsText");
-                    this.ValidateProperty("ObservationsText", value);
-                    this._observationsText = value;
-                    this.RaiseDataMemberChanged("ObservationsText");
-                    this.OnObservationsTextChanged();
+                    this.OnObservationsChanging(value);
+                    this.RaiseDataMemberChanging("Observations");
+                    this.ValidateProperty("Observations", value);
+                    this._observations = value;
+                    this.RaiseDataMemberChanged("Observations");
+                    this.OnObservationsChanged();
                 }
             }
         }
@@ -5256,7 +5126,7 @@ namespace RadiologyTracking.Web.Models
                     }
                     else
                     {
-                        this.RemarkID = default(int);
+                        this.RemarkID = default(Nullable<int>);
                     }
                     this._remark.Entity = value;
                     this.RaisePropertyChanged("Remark");
@@ -5269,7 +5139,7 @@ namespace RadiologyTracking.Web.Models
         /// </summary>
         [DataMember()]
         [RoundtripOriginal()]
-        public int RemarkID
+        public Nullable<int> RemarkID
         {
             get
             {
@@ -5533,7 +5403,7 @@ namespace RadiologyTracking.Web.Models
                     }
                     else
                     {
-                        this.TechnicianID = default(int);
+                        this.TechnicianID = default(Nullable<int>);
                     }
                     this._technician.Entity = value;
                     this.RaisePropertyChanged("Technician");
@@ -5546,7 +5416,7 @@ namespace RadiologyTracking.Web.Models
         /// </summary>
         [DataMember()]
         [RoundtripOriginal()]
-        public int TechnicianID
+        public Nullable<int> TechnicianID
         {
             get
             {
@@ -5562,6 +5432,35 @@ namespace RadiologyTracking.Web.Models
                     this._technicianID = value;
                     this.RaiseDataMemberChanged("TechnicianID");
                     this.OnTechnicianIDChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'TechnicianText' value.
+        /// </summary>
+        // The following attributes were not generated:
+        // 
+        // - The attribute 'System.ComponentModel.DataAnnotations.NotMappedAttribute' is not visible in the client project 'RadiologyTracking'. Are you missing an assembly reference?
+        // [NotMappedAttribute()]
+        // 
+        [DataMember()]
+        public string TechnicianText
+        {
+            get
+            {
+                return this._technicianText;
+            }
+            set
+            {
+                if ((this._technicianText != value))
+                {
+                    this.OnTechnicianTextChanging(value);
+                    this.RaiseDataMemberChanging("TechnicianText");
+                    this.ValidateProperty("TechnicianText", value);
+                    this._technicianText = value;
+                    this.RaiseDataMemberChanged("TechnicianText");
+                    this.OnTechnicianTextChanged();
                 }
             }
         }
@@ -5616,7 +5515,7 @@ namespace RadiologyTracking.Web.Models
                     }
                     else
                     {
-                        this.WelderID = default(int);
+                        this.WelderID = default(Nullable<int>);
                     }
                     this._welder.Entity = value;
                     this.RaisePropertyChanged("Welder");
@@ -5629,7 +5528,7 @@ namespace RadiologyTracking.Web.Models
         /// </summary>
         [DataMember()]
         [RoundtripOriginal()]
-        public int WelderID
+        public Nullable<int> WelderID
         {
             get
             {
@@ -5649,6 +5548,35 @@ namespace RadiologyTracking.Web.Models
             }
         }
         
+        /// <summary>
+        /// Gets or sets the 'WelderText' value.
+        /// </summary>
+        // The following attributes were not generated:
+        // 
+        // - The attribute 'System.ComponentModel.DataAnnotations.NotMappedAttribute' is not visible in the client project 'RadiologyTracking'. Are you missing an assembly reference?
+        // [NotMappedAttribute()]
+        // 
+        [DataMember()]
+        public string WelderText
+        {
+            get
+            {
+                return this._welderText;
+            }
+            set
+            {
+                if ((this._welderText != value))
+                {
+                    this.OnWelderTextChanging(value);
+                    this.RaiseDataMemberChanging("WelderText");
+                    this.ValidateProperty("WelderText", value);
+                    this._welderText = value;
+                    this.RaiseDataMemberChanged("WelderText");
+                    this.OnWelderTextChanged();
+                }
+            }
+        }
+        
         private bool FilterEnergy(Energy entity)
         {
             return (entity.ID == this.EnergyID);
@@ -5657,11 +5585,6 @@ namespace RadiologyTracking.Web.Models
         private bool FilterFilmSize(FilmSize entity)
         {
             return (entity.ID == this.FilmSizeID);
-        }
-        
-        private bool FilterObservations(Observation entity)
-        {
-            return (entity.RGReportRowID == this.ID);
         }
         
         private bool FilterRemark(Remark entity)
@@ -5682,6 +5605,206 @@ namespace RadiologyTracking.Web.Models
         private bool FilterWelder(Welder entity)
         {
             return (entity.ID == this.WelderID);
+        }
+        
+        /// <summary>
+        /// Computes a value from the key fields that uniquely identifies this entity instance.
+        /// </summary>
+        /// <returns>An object instance that uniquely identifies this entity instance.</returns>
+        public override object GetIdentity()
+        {
+            return this._id;
+        }
+    }
+    
+    /// <summary>
+    /// The 'RGStatus' entity class.
+    /// </summary>
+    [DataContract(Namespace="http://schemas.datacontract.org/2004/07/RadiologyTracking.Web.Models")]
+    public sealed partial class RGStatus : Entity
+    {
+        
+        private int _id;
+        
+        private string _status;
+        
+        #region Extensibility Method Definitions
+
+        /// <summary>
+        /// This method is invoked from the constructor once initialization is complete and
+        /// can be used for further object setup.
+        /// </summary>
+        partial void OnCreated();
+        partial void OnIDChanging(int value);
+        partial void OnIDChanged();
+        partial void OnStatusChanging(string value);
+        partial void OnStatusChanged();
+
+        #endregion
+        
+        
+        /// <summary>
+        /// Initializes a new instance of the <see cref="RGStatus"/> class.
+        /// </summary>
+        public RGStatus()
+        {
+            this.OnCreated();
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'ID' value.
+        /// </summary>
+        // The following attributes were not generated:
+        // 
+        // - The attribute 'System.ComponentModel.DataAnnotations.DatabaseGeneratedAttribute' is not visible in the client project 'RadiologyTracking'. Are you missing an assembly reference?
+        // [DatabaseGeneratedAttribute(Identity)]
+        // 
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [DataMember()]
+        [Editable(false, AllowInitialValue=true)]
+        [Key()]
+        [RoundtripOriginal()]
+        public int ID
+        {
+            get
+            {
+                return this._id;
+            }
+            set
+            {
+                if ((this._id != value))
+                {
+                    this.OnIDChanging(value);
+                    this.ValidateProperty("ID", value);
+                    this._id = value;
+                    this.RaisePropertyChanged("ID");
+                    this.OnIDChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'Status' value.
+        /// </summary>
+        [DataMember()]
+        public string Status
+        {
+            get
+            {
+                return this._status;
+            }
+            set
+            {
+                if ((this._status != value))
+                {
+                    this.OnStatusChanging(value);
+                    this.RaiseDataMemberChanging("Status");
+                    this.ValidateProperty("Status", value);
+                    this._status = value;
+                    this.RaiseDataMemberChanged("Status");
+                    this.OnStatusChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Computes a value from the key fields that uniquely identifies this entity instance.
+        /// </summary>
+        /// <returns>An object instance that uniquely identifies this entity instance.</returns>
+        public override object GetIdentity()
+        {
+            return this._id;
+        }
+    }
+    
+    /// <summary>
+    /// The 'Shift' entity class.
+    /// </summary>
+    [DataContract(Namespace="http://schemas.datacontract.org/2004/07/RadiologyTracking.Web.Models")]
+    public sealed partial class Shift : Entity
+    {
+        
+        private int _id;
+        
+        private string _value;
+        
+        #region Extensibility Method Definitions
+
+        /// <summary>
+        /// This method is invoked from the constructor once initialization is complete and
+        /// can be used for further object setup.
+        /// </summary>
+        partial void OnCreated();
+        partial void OnIDChanging(int value);
+        partial void OnIDChanged();
+        partial void OnValueChanging(string value);
+        partial void OnValueChanged();
+
+        #endregion
+        
+        
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Shift"/> class.
+        /// </summary>
+        public Shift()
+        {
+            this.OnCreated();
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'ID' value.
+        /// </summary>
+        // The following attributes were not generated:
+        // 
+        // - The attribute 'System.ComponentModel.DataAnnotations.DatabaseGeneratedAttribute' is not visible in the client project 'RadiologyTracking'. Are you missing an assembly reference?
+        // [DatabaseGeneratedAttribute(Identity)]
+        // 
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [DataMember()]
+        [Editable(false, AllowInitialValue=true)]
+        [Key()]
+        [RoundtripOriginal()]
+        public int ID
+        {
+            get
+            {
+                return this._id;
+            }
+            set
+            {
+                if ((this._id != value))
+                {
+                    this.OnIDChanging(value);
+                    this.ValidateProperty("ID", value);
+                    this._id = value;
+                    this.RaisePropertyChanged("ID");
+                    this.OnIDChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'Value' value.
+        /// </summary>
+        [DataMember()]
+        public string Value
+        {
+            get
+            {
+                return this._value;
+            }
+            set
+            {
+                if ((this._value != value))
+                {
+                    this.OnValueChanging(value);
+                    this.RaiseDataMemberChanging("Value");
+                    this.ValidateProperty("Value", value);
+                    this._value = value;
+                    this.RaiseDataMemberChanged("Value");
+                    this.OnValueChanged();
+                }
+            }
         }
         
         /// <summary>
@@ -6306,17 +6429,6 @@ namespace RadiologyTracking.Web.Services
         }
         
         /// <summary>
-        /// Gets the set of <see cref="Observation"/> entity instances that have been loaded into this <see cref="RadiologyContext"/> instance.
-        /// </summary>
-        public EntitySet<Observation> Observations
-        {
-            get
-            {
-                return base.EntityContainer.GetEntitySet<Observation>();
-            }
-        }
-        
-        /// <summary>
         /// Gets the set of <see cref="Remark"/> entity instances that have been loaded into this <see cref="RadiologyContext"/> instance.
         /// </summary>
         public EntitySet<Remark> Remarks
@@ -6335,6 +6447,28 @@ namespace RadiologyTracking.Web.Services
             get
             {
                 return base.EntityContainer.GetEntitySet<RGReportRow>();
+            }
+        }
+        
+        /// <summary>
+        /// Gets the set of <see cref="RGStatus"/> entity instances that have been loaded into this <see cref="RadiologyContext"/> instance.
+        /// </summary>
+        public EntitySet<RGStatus> RGStatus
+        {
+            get
+            {
+                return base.EntityContainer.GetEntitySet<RGStatus>();
+            }
+        }
+        
+        /// <summary>
+        /// Gets the set of <see cref="Shift"/> entity instances that have been loaded into this <see cref="RadiologyContext"/> instance.
+        /// </summary>
+        public EntitySet<Shift> Shifts
+        {
+            get
+            {
+                return base.EntityContainer.GetEntitySet<Shift>();
             }
         }
         
@@ -6580,16 +6714,6 @@ namespace RadiologyTracking.Web.Services
         }
         
         /// <summary>
-        /// Gets an EntityQuery instance that can be used to load <see cref="Observation"/> entity instances using the 'GetObservations' query.
-        /// </summary>
-        /// <returns>An EntityQuery that can be loaded to retrieve <see cref="Observation"/> entity instances.</returns>
-        public EntityQuery<Observation> GetObservationsQuery()
-        {
-            this.ValidateMethod("GetObservationsQuery", null);
-            return base.CreateQuery<Observation>("GetObservations", null, false, true);
-        }
-        
-        /// <summary>
         /// Gets an EntityQuery instance that can be used to load <see cref="Remark"/> entity instances using the 'GetRemarks' query.
         /// </summary>
         /// <returns>An EntityQuery that can be loaded to retrieve <see cref="Remark"/> entity instances.</returns>
@@ -6622,6 +6746,26 @@ namespace RadiologyTracking.Web.Services
             parameters.Add("toDate", toDate);
             this.ValidateMethod("GetRGReportsQuery", parameters);
             return base.CreateQuery<RGReport>("GetRGReports", parameters, false, true);
+        }
+        
+        /// <summary>
+        /// Gets an EntityQuery instance that can be used to load <see cref="RGStatus"/> entity instances using the 'GetRGStatuses' query.
+        /// </summary>
+        /// <returns>An EntityQuery that can be loaded to retrieve <see cref="RGStatus"/> entity instances.</returns>
+        public EntityQuery<RGStatus> GetRGStatusesQuery()
+        {
+            this.ValidateMethod("GetRGStatusesQuery", null);
+            return base.CreateQuery<RGStatus>("GetRGStatuses", null, false, true);
+        }
+        
+        /// <summary>
+        /// Gets an EntityQuery instance that can be used to load <see cref="Shift"/> entity instances using the 'GetShifts' query.
+        /// </summary>
+        /// <returns>An EntityQuery that can be loaded to retrieve <see cref="Shift"/> entity instances.</returns>
+        public EntityQuery<Shift> GetShiftsQuery()
+        {
+            this.ValidateMethod("GetShiftsQuery", null);
+            return base.CreateQuery<Shift>("GetShifts", null, false, true);
         }
         
         /// <summary>
@@ -7010,24 +7154,6 @@ namespace RadiologyTracking.Web.Services
             QueryResult<RGReport> EndGetNewRGReport(IAsyncResult result);
             
             /// <summary>
-            /// Asynchronously invokes the 'GetObservations' operation.
-            /// </summary>
-            /// <param name="callback">Callback to invoke on completion.</param>
-            /// <param name="asyncState">Optional state object.</param>
-            /// <returns>An IAsyncResult that can be used to monitor the request.</returns>
-            [FaultContract(typeof(DomainServiceFault), Action="http://tempuri.org/RadiologyService/GetObservationsDomainServiceFault", Name="DomainServiceFault", Namespace="DomainServices")]
-            [OperationContract(AsyncPattern=true, Action="http://tempuri.org/RadiologyService/GetObservations", ReplyAction="http://tempuri.org/RadiologyService/GetObservationsResponse")]
-            [WebGet()]
-            IAsyncResult BeginGetObservations(AsyncCallback callback, object asyncState);
-            
-            /// <summary>
-            /// Completes the asynchronous operation begun by 'BeginGetObservations'.
-            /// </summary>
-            /// <param name="result">The IAsyncResult returned from 'BeginGetObservations'.</param>
-            /// <returns>The 'QueryResult' returned from the 'GetObservations' operation.</returns>
-            QueryResult<Observation> EndGetObservations(IAsyncResult result);
-            
-            /// <summary>
             /// Asynchronously invokes the 'GetRemarks' operation.
             /// </summary>
             /// <param name="callback">Callback to invoke on completion.</param>
@@ -7082,6 +7208,42 @@ namespace RadiologyTracking.Web.Services
             /// <param name="result">The IAsyncResult returned from 'BeginGetRGReports'.</param>
             /// <returns>The 'QueryResult' returned from the 'GetRGReports' operation.</returns>
             QueryResult<RGReport> EndGetRGReports(IAsyncResult result);
+            
+            /// <summary>
+            /// Asynchronously invokes the 'GetRGStatuses' operation.
+            /// </summary>
+            /// <param name="callback">Callback to invoke on completion.</param>
+            /// <param name="asyncState">Optional state object.</param>
+            /// <returns>An IAsyncResult that can be used to monitor the request.</returns>
+            [FaultContract(typeof(DomainServiceFault), Action="http://tempuri.org/RadiologyService/GetRGStatusesDomainServiceFault", Name="DomainServiceFault", Namespace="DomainServices")]
+            [OperationContract(AsyncPattern=true, Action="http://tempuri.org/RadiologyService/GetRGStatuses", ReplyAction="http://tempuri.org/RadiologyService/GetRGStatusesResponse")]
+            [WebGet()]
+            IAsyncResult BeginGetRGStatuses(AsyncCallback callback, object asyncState);
+            
+            /// <summary>
+            /// Completes the asynchronous operation begun by 'BeginGetRGStatuses'.
+            /// </summary>
+            /// <param name="result">The IAsyncResult returned from 'BeginGetRGStatuses'.</param>
+            /// <returns>The 'QueryResult' returned from the 'GetRGStatuses' operation.</returns>
+            QueryResult<RGStatus> EndGetRGStatuses(IAsyncResult result);
+            
+            /// <summary>
+            /// Asynchronously invokes the 'GetShifts' operation.
+            /// </summary>
+            /// <param name="callback">Callback to invoke on completion.</param>
+            /// <param name="asyncState">Optional state object.</param>
+            /// <returns>An IAsyncResult that can be used to monitor the request.</returns>
+            [FaultContract(typeof(DomainServiceFault), Action="http://tempuri.org/RadiologyService/GetShiftsDomainServiceFault", Name="DomainServiceFault", Namespace="DomainServices")]
+            [OperationContract(AsyncPattern=true, Action="http://tempuri.org/RadiologyService/GetShifts", ReplyAction="http://tempuri.org/RadiologyService/GetShiftsResponse")]
+            [WebGet()]
+            IAsyncResult BeginGetShifts(AsyncCallback callback, object asyncState);
+            
+            /// <summary>
+            /// Completes the asynchronous operation begun by 'BeginGetShifts'.
+            /// </summary>
+            /// <param name="result">The IAsyncResult returned from 'BeginGetShifts'.</param>
+            /// <returns>The 'QueryResult' returned from the 'GetShifts' operation.</returns>
+            QueryResult<Shift> EndGetShifts(IAsyncResult result);
             
             /// <summary>
             /// Asynchronously invokes the 'GetTechnicians' operation.
@@ -7176,10 +7338,11 @@ namespace RadiologyTracking.Web.Services
                 this.CreateEntitySet<FixedPatternTemplate>(EntitySetOperations.All);
                 this.CreateEntitySet<Foundry>(EntitySetOperations.All);
                 this.CreateEntitySet<FPTemplateRow>(EntitySetOperations.All);
-                this.CreateEntitySet<Observation>(EntitySetOperations.All);
                 this.CreateEntitySet<Remark>(EntitySetOperations.None);
-                this.CreateEntitySet<RGReport>(EntitySetOperations.All);
+                this.CreateEntitySet<RGReport>((EntitySetOperations.Edit | EntitySetOperations.Remove));
                 this.CreateEntitySet<RGReportRow>(EntitySetOperations.All);
+                this.CreateEntitySet<RGStatus>(EntitySetOperations.None);
+                this.CreateEntitySet<Shift>(EntitySetOperations.None);
                 this.CreateEntitySet<Technician>(EntitySetOperations.All);
                 this.CreateEntitySet<ThicknessRangeForEnergy>(EntitySetOperations.All);
                 this.CreateEntitySet<Welder>(EntitySetOperations.All);

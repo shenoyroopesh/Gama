@@ -58,7 +58,7 @@ namespace RadiologyTracking.Web.Models
                     if (filmsizes.Count() > 0)
                     {
                         this.FilmSize = filmsizes.First();
-                        this.FilmSizeID = filmsizes.First().ID;
+                        if(this.FilmSize !=null) this.FilmSizeID = this.FilmSize.ID;
                     }
                 }
             }

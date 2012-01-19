@@ -525,7 +525,7 @@ namespace RadiologyTracking.Web.Services
             }
 
             FixedPatternTemplate fpTemplate = this.DbContext.FixedPatternTemplates.Include(p => p.FPTemplateRows.Select(r => r.FilmSize))
-                                                                                  .Include(p=>p.FixedPattern.Customer)
+                                                                                  .Include(p=>p.FixedPattern.Customer.Foundry)
                                                                                  .Where(p =>
                                                                                         p.FixedPattern.FPNo == fixedPattern.FPNo &&
                                                                                         p.Coverage.CoverageName == coverage.CoverageName).FirstOrDefault();
@@ -660,45 +660,6 @@ namespace RadiologyTracking.Web.Services
         }
         #endregion
 
-        #region Observations
-        public IQueryable<Observation> GetObservations()
-        {
-            return this.DbContext.Observations;
-        }
-
-        public void InsertObservation(Observation entity)
-        {
-            DbEntityEntry<Observation> entityEntry = this.DbContext.Entry(entity);
-            if ((entityEntry.State != EntityState.Detached))
-            {
-                entityEntry.State = EntityState.Added;
-            }
-            else
-            {
-                this.DbContext.Observations.Add(entity);
-            }
-        }
-
-        public void UpdateObservation(Observation currentObservation)
-        {
-            this.DbContext.Observations.AttachAsModified(currentObservation, this.ChangeSet.GetOriginal(currentObservation), this.DbContext);
-        }
-
-        public void DeleteObservation(Observation entity)
-        {
-            DbEntityEntry<Observation> entityEntry = this.DbContext.Entry(entity);
-            if ((entityEntry.State != EntityState.Deleted))
-            {
-                entityEntry.State = EntityState.Deleted;
-            }
-            else
-            {
-                this.DbContext.Observations.Attach(entity);
-                this.DbContext.Observations.Remove(entity);
-            }
-        }
-        #endregion
-
         #region Remarks
 
         public IQueryable<Remark> GetRemarks()
@@ -715,8 +676,8 @@ namespace RadiologyTracking.Web.Services
             fromDate = fromDate.Date;
             toDate = toDate.Date.AddDays(1);
             return this.DbContext.RGReports.Where(p =>
-                                                    p.ReportDate <= fromDate &&
-                                                    p.ReportDate >= toDate);
+                                                    p.ReportDate >= fromDate &&
+                                                    p.ReportDate <= toDate);
         }
 
 
@@ -733,48 +694,62 @@ namespace RadiologyTracking.Web.Services
             int coverageID = coverage.ID;
             FixedPatternTemplate fpTemplate = this.GetFixedPatternTemplateForFP(strFPNo, strCoverage);
 
-            var rgReport = DbContext.RGReports.Include(r=>r.RGReportRows).FirstOrDefault(p => p.FixedPatternID == fpID &&
-                                                                                        p.CoverageID == coverageID &&
-                                                                                        p.RTNo == rtNo);
+            //get the latest report in the sequence
+            //can't use Last() here, have to use first() since this gets converted into a store query
+            var rgReport = DbContext.RGReports.Include(r => r.RGReportRows.Select(p => p.Remark)).Include(p => p.Status)
+                                                            .Where(p => p.FixedPatternID == fpID &&
+                                                              p.CoverageID == coverageID &&
+                                                              p.RTNo == rtNo)
+                                                            .OrderByDescending(p => p.ID).FirstOrDefault();
+
+            String nextReportNumber = fpTemplate.FixedPattern.Customer.Foundry.getNextReportNumber(DbContext);
 
             if (rgReport == null)
             {
                 //create new report with existing fptemplate
-                rgReport = new RGReport(fpTemplate, rtNo, DbContext);
+                rgReport = new RGReport(fpTemplate, rtNo, nextReportNumber, DbContext);
+                this.DbContext.RGReports.Add(rgReport);
+                this.DbContext.SaveChanges();
                 return rgReport;
             }
             else
             {
                 //if this RT no is already complete, then no new report to be created
-                if (rgReport.Status.Status == "COMPLETE") return null;
+                if (rgReport.Status != null && rgReport.Status.Status == "COMPLETE") return null;
 
                 //if any remark for the earlier report is pending, return it again
                 if (rgReport.RGReportRows.Where(p => p.Remark == null).Count() > 0) 
                     return rgReport;
 
                 //else create a new child report
-                return new RGReport(rgReport, DbContext);
+                rgReport = new RGReport(rgReport, nextReportNumber, DbContext);
+                this.DbContext.RGReports.Add(rgReport);
+                this.DbContext.SaveChanges();
+                return rgReport;
             }
         }
 
-
-        public void InsertRGReport(RGReport entity)
-        {
-            DbEntityEntry<RGReport> entityEntry = this.DbContext.Entry(entity);
-            if ((entityEntry.State != EntityState.Detached))
-            {
-                entityEntry.State = EntityState.Added;
-            }
-            else
-            {
-                this.DbContext.RGReports.Add(entity);
-            }
-        }
+        //not needed since report is always first created on the server side and then sent to the client.
+        //public void InsertRGReport(RGReport entity)
+        //{
+        //    //set the appropriate status for the RG Report
+        //    entity.Status = this.GetStatus(entity, DbContext);
+        //    DbEntityEntry<RGReport> entityEntry = this.DbContext.Entry(entity);
+        //    if ((entityEntry.State != EntityState.Detached))
+        //    {
+        //        entityEntry.State = EntityState.Added;
+        //    }
+        //    else
+        //    {
+        //        this.DbContext.RGReports.Add(entity);
+        //    }
+        //}
 
         public void UpdateRGReport(RGReport currentRGReport)
         {
             this.DbContext.RGReports.AttachAsModified(currentRGReport, this.ChangeSet.GetOriginal(currentRGReport), this.DbContext);
         }
+
 
         public void DeleteRGReport(RGReport entity)
         {
@@ -790,6 +765,16 @@ namespace RadiologyTracking.Web.Services
             }
         }
         #endregion
+
+        #region RGStatus
+
+        public IQueryable<RGStatus> GetRGStatuses()
+        {
+            return this.DbContext.RGStatuses;
+        }
+
+        #endregion
+
 
         #region RG Report Rows
         public IQueryable<RGReportRow> GetRGReportRows()
@@ -812,6 +797,11 @@ namespace RadiologyTracking.Web.Services
 
         public void UpdateRGReportRow(RGReportRow currentRGReportRow)
         {
+            //to avoid EF exception. It will depend on the fk ids to map the relationships correctly
+            currentRGReportRow.FilmSize = null;
+            currentRGReportRow.Technician = null;
+            currentRGReportRow.Welder = null;
+            currentRGReportRow.Remark = null;
             this.DbContext.RGReportRows.AttachAsModified(currentRGReportRow, this.ChangeSet.GetOriginal(currentRGReportRow), this.DbContext);
         }
 
@@ -830,6 +820,15 @@ namespace RadiologyTracking.Web.Services
         }
         #endregion
 
+        #region Shifts
+        public IQueryable<Shift> GetShifts()
+        {
+            return this.DbContext.Shifts;
+        }
+
+
+        #endregion
+        
         #region Technicians
         public IQueryable<Technician> GetTechnicians()
         {

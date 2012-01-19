@@ -46,13 +46,31 @@ namespace RadiologyTracking.Views
         {
             if(companyForm.ValidateItem())
                 if (companyForm.CommitEdit())
-                    ctx.SubmitChanges(BaseCRUDView.OnFormSubmitCompleted, null);
+                    ctx.SubmitChanges(OnFormSubmitCompleted, null);
         }
 
         private void btnCancel_Click(object sender, RoutedEventArgs e)
         {
             if(companyForm.CommitEdit())
                 ctx.RejectChanges();
+        }
+
+        /// <summary>
+        /// This is used to handle the domaincontext submit operation result, and check whether there are any errors. 
+        /// If not, user is show success message
+        /// </summary>
+        /// <param name="so"></param>
+        public void OnFormSubmitCompleted(SubmitOperation so)
+        {
+            if (so.HasError)
+            {
+                MessageBox.Show(string.Format("Submit Failed: {0}", so.Error.Message), "Error", MessageBoxButton.OK);
+                so.MarkErrorAsHandled();
+            }
+            else
+            {
+                MessageBox.Show("Saved Successfully", "Success", MessageBoxButton.OK);
+            }
         }
     }
 }

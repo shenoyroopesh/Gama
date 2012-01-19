@@ -66,7 +66,7 @@ namespace RadiologyTracking.Views
         /// Since it is common to all views, instead of repeating everywhere it is created as a single function
         /// </summary>
         /// <param name="so"></param>
-        public static void OnFormSubmitCompleted(SubmitOperation so)
+        public virtual void OnFormSubmitCompleted(SubmitOperation so)
         {
             if (so.HasError)
             {
@@ -114,7 +114,7 @@ namespace RadiologyTracking.Views
             if (Grid.IsValid)
                 //commit any unsaved changes to avoid an exception
                 if (Grid.CommitEdit())
-                    DomainSource.DomainContext.SubmitChanges(BaseCRUDView.OnFormSubmitCompleted, null);
+                    DomainSource.DomainContext.SubmitChanges(OnFormSubmitCompleted, null);
         }
 
         /// <summary>

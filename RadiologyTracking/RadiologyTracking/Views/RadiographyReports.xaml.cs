@@ -25,6 +25,9 @@ namespace RadiologyTracking.Views
             InitializeComponent();
             DomainSource.LoadedData += domainDataSource_LoadedData;
             btnAdd.Click += AddOperation;
+
+            fromDatePicker.SelectedDate = fromDatePicker.DisplayDate = DateTime.Now.AddDays(-15);
+            toDatePicker.SelectedDate = toDatePicker.DisplayDate = DateTime.Now;
         }
 
         [CLSCompliant(false)]

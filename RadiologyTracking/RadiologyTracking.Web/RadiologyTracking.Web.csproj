@@ -122,7 +122,6 @@
     <Compile Include="Models\Remark.cs" />
     <Compile Include="Models\RGReportRowType.cs" />
     <Compile Include="Models\RGReport.cs" />
-    <Compile Include="Models\RGReportSource.cs" />
     <Compile Include="Models\RGReportRow.cs" />
     <Compile Include="Models\RGStatus.cs" />
     <Compile Include="Models\Shift.cs" />
@@ -181,7 +180,7 @@
         <WebProjectProperties>
           <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>7168</DevelopmentServerPort>
+          <DevelopmentServerPort>3318</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>http://localhost/RadiologyTracking.Web</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>

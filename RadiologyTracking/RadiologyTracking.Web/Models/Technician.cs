@@ -11,5 +11,10 @@ namespace RadiologyTracking.Web.Models
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ID { get; set; }
         public String Name { get; set; }
+
+        public static Technician getTechnician(string name, RadiologyContext ctx)
+        {
+            return ctx.Technicians.FirstOrDefault(p => p.Name.ToUpper() == name.ToUpper());
+        }
     }
 }

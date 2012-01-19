@@ -16,7 +16,7 @@ namespace RadiologyTracking.Web.Models
 
         public static Remark getRemark(string remark, RadiologyContext ctx)
         {
-            return ctx.Remarks.FirstOrDefault(p => p.Value == remark);
+            return ctx.Remarks.FirstOrDefault(p => p.Value.ToUpper() == remark.ToUpper());
         }
     }
 }

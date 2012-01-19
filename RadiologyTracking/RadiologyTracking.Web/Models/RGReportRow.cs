@@ -9,11 +9,6 @@ namespace RadiologyTracking.Web.Models
 {
     public class RGReportRow
     {
-        public RGReportRow()
-        {
-            this.Observations = new List<Observation>();
-        }
-
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ID { get; set; }
         public int SlNo { get; set; }
@@ -32,16 +27,15 @@ namespace RadiologyTracking.Web.Models
         public int FilmSizeID { get; set; }
         public FilmSize FilmSize { get; set; }
 
-        [Include]
-        public ICollection<Observation> Observations { get; set; }
+        public String Observations { get; set; }
 
-        public int RemarkID { get; set; }
+        public int? RemarkID { get; set; }
         public Remark Remark { get; set; }
 
-        public int TechnicianID { get; set; }
+        public int? TechnicianID { get; set; }
         public Technician Technician { get; set; }
 
-        public int WelderID { get; set; }
+        public int? WelderID { get; set; }
         public Welder Welder { get; set; }
 
         public int RGReportID { get; set; }
@@ -100,46 +94,6 @@ namespace RadiologyTracking.Web.Models
         }
 
         /// <summary>
-        /// This property is only for setting observations for the row using a comma separated string of observations and not
-        /// for anything else. This won't be saved in the database
-        /// </summary>
-        [NotMapped]
-        public String ObservationsText
-        {
-            get
-            {
-                return string.Join(",", this.Observations.Select(p => p.ToString()));
-            }
-            set
-            {
-                //break the text up and create a new observation object for each of the text. If any 
-                // segment not parse well just ignore it
-
-                List<Observation> newObservations = new List<Observation>();
-                String[] obs = value.Split(',');
-                foreach (var o in obs)
-                {
-                    try
-                    {
-                        using (RadiologyContext ctx = new RadiologyContext())
-                        {
-                            Observation observation = new Observation(o.Trim(), ctx);
-                            newObservations.Add(observation);
-                        }                        
-                    }
-                    catch (ArgumentException e)
-                    {
-                        continue;
-                    }
-
-                    //if all goes well, delete existing observations and add these ones
-                    this.Observations.Clear();
-                    newObservations.ForEach(p => this.Observations.Add(p));
-                }
-            }
-        }
-
-        /// <summary>
         /// Only for setting or seeing Remark by using a string value
         /// </summary>
         [NotMapped]
@@ -147,16 +101,83 @@ namespace RadiologyTracking.Web.Models
         {
             get
             {
-                return this.Remark == null ? String.Empty : this.Remark.Value;
+                if (this.RemarkID == 0 || this.RemarkID == null) return " ";
+                //TODO: see if context can be injected instead of using like this
+                using (RadiologyContext ctx = new RadiologyContext())
+                {
+                    var remarks = ctx.Remarks.Where(p => p.ID == this.RemarkID);
+                    if (remarks.Count() > 0)
+                        return remarks.First().Value;
+                    else
+                        return " ";
+                }
             }
             set
             {                
                 using (RadiologyContext ctx = new RadiologyContext())
                 {
                     this.Remark = Remark.getRemark(value, ctx);
+                    if (this.Remark != null) this.RemarkID = this.Remark.ID;
                 }
             }
         }
 
+        /// <summary>
+        /// Only for setting or seeing Welder by using a string value
+        /// </summary>
+        [NotMapped]
+        public string WelderText
+        {
+            get
+            {
+                if (this.WelderID == 0 || this.WelderID == null) return " ";
+                //TODO: see if context can be injected instead of using like this
+                using (RadiologyContext ctx = new RadiologyContext())
+                {
+                    var welders = ctx.Welders.Where(p => p.ID == this.WelderID);
+                    if (welders.Count() > 0)
+                        return welders.First().Name;
+                    else
+                        return " ";
+                }
+            }
+            set
+            {
+                using (RadiologyContext ctx = new RadiologyContext())
+                {
+                    this.Welder = Welder.getWelder(value, ctx);
+                    if (this.Welder != null) this.WelderID = this.Welder.ID;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Only for setting or seeing Technician by using a string value
+        /// </summary>
+        [NotMapped]
+        public string TechnicianText
+        {
+            get
+            {
+                if (this.TechnicianID == 0 || this.TechnicianID == null) return " ";
+                //TODO: see if context can be injected instead of using like this
+                using (RadiologyContext ctx = new RadiologyContext())
+                {
+                    var technicians = ctx.Technicians.Where(p => p.ID == this.TechnicianID);
+                    if (technicians.Count() > 0)
+                        return technicians.First().Name;
+                    else
+                        return " ";
+                }
+            }
+            set
+            {
+                using (RadiologyContext ctx = new RadiologyContext())
+                {
+                    this.Technician = Technician.getTechnician(value, ctx);
+                    if (this.Technician != null) this.TechnicianID = this.Technician.ID;
+                }
+            }
+        }
     }
 }

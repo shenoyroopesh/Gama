@@ -21,9 +21,17 @@
                                       DomainContext="{StaticResource RadiologyContext}">
             <riaControls:DomainDataSource.QueryParameters>
                 <riaControls:Parameter ParameterName="fromDate" Value="{Binding ElementName=fromDatePicker, Path=SelectedDate}" />
-                <riaControls:Parameter ParameterName="toDate" Value="{Binding ElementName=fromDatePicker, Path=SelectedDate}" />
+                <riaControls:Parameter ParameterName="toDate" Value="{Binding ElementName=toDatePicker, Path=SelectedDate}" />
             </riaControls:DomainDataSource.QueryParameters>
         </riaControls:DomainDataSource>
+        <riaControls:DomainDataSource AutoLoad="True" Name="FPDomainSource" QueryName="GetFixedPatternsQuery" 
+                                      DomainContext="{StaticResource RadiologyContext}" >
+            <riaControls:DomainDataSource.QueryParameters>
+                <riaControls:Parameter ParameterName="filter" Value="" />
+            </riaControls:DomainDataSource.QueryParameters>
+        </riaControls:DomainDataSource>
+        <riaControls:DomainDataSource AutoLoad="True" Name="CoverageDomainSource" QueryName="GetCoveragesQuery" 
+                                      DomainContext="{StaticResource RadiologyContext}" />
         <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
             <StackPanel Height="30" HorizontalAlignment="Left" Orientation="Horizontal" VerticalAlignment="Top" Margin="20">
                 <sdk:Label Content="From:" Margin="3" VerticalAlignment="Center" />

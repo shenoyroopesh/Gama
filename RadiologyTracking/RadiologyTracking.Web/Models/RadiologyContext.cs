@@ -30,10 +30,8 @@ namespace RadiologyTracking.Web.Models
         public DbSet<FixedPatternTemplate> FixedPatternTemplates { get; set; }
         public DbSet<Foundry> Foundries { get; set; }
         public DbSet<FPTemplateRow> FPTemplateRows { get; set; }
-        public DbSet<Observation> Observations { get; set; }
         public DbSet<Remark> Remarks { get; set; }
         public DbSet<RGReport> RGReports { get; set; }
-        public DbSet<RGReportSource> RGReportSources { get; set; }
         public DbSet<RGReportRow> RGReportRows { get; set; }
         public DbSet<RGReportRowType> RGReportRowTypes { get; set; }
         public DbSet<RGStatus> RGStatuses { get; set; }

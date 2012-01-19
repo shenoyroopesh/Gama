@@ -29,7 +29,7 @@ namespace RadiologyTracking.Web.Models
         /// </summary>
         /// <param name="fpTemplate"></param>
         /// <param name="ctx">Database Context with reference which to create the object</param>
-        public RGReport(FixedPatternTemplate fpTemplate, string RTNo, RadiologyContext ctx)
+        public RGReport(FixedPatternTemplate fpTemplate, string RTNo, string ReportNo, RadiologyContext ctx)
         {
             //shallow copy properties
             fpTemplate.CopyTo(this, "ID");
@@ -37,6 +37,7 @@ namespace RadiologyTracking.Web.Models
             this.Shift = Shift.getShift("DAY", ctx); //defaulting so it can be saved
             this.Status = RGStatus.getStatus("PENDING", ctx);
             this.RTNo = RTNo;
+            this.ReportNo = ReportNo;
 
             RGReportRowType freshRowType = RGReportRowType.getRowType("FRESH", ctx);
             if (fpTemplate.FPTemplateRows == null) return;
@@ -46,13 +47,13 @@ namespace RadiologyTracking.Web.Models
             foreach (var row in fpTemplate.FPTemplateRows)
             {
                 RGReportRow rgReportRow = new RGReportRow() 
-                                            { 
+                                            {
                                                 RowType = freshRowType, 
-                                                Energy = Energy.getEnergyForThickness(row.Thickness, ctx)
+                                                Energy = Energy.getEnergyForThickness(row.Thickness, ctx),
+                                                Observations = " " //for grid to work fine
                                             };
-                row.CopyTo(rgReportRow, "ID");
+                row.CopyTo(rgReportRow, "ID,FilmSizeString");
                 this.RGReportRows.Add(rgReportRow);
-                ctx.RGReportRows.Add(rgReportRow);
             }
         }
 
@@ -61,10 +62,13 @@ namespace RadiologyTracking.Web.Models
         /// </summary>
         /// <param name="rgReport">RG Report on which to base this report</param>
         /// <param name="ctx">Database Context with reference which to create the object</param>
-        public RGReport(RGReport parentRGReport, RadiologyContext ctx)
+        public RGReport(RGReport parentRGReport, String ReportNo, RadiologyContext ctx)
         {
             parentRGReport.CopyTo(this, "ID,ReportDate,RGReportRows");
             this.ReportDate = DateTime.Now;
+            this.ReportNo = ReportNo;
+            this.RGReportRows = new List<RGReportRow>();
+            
             //only those rows to be copied which are do not have ACCEPTABLE as remark in the previous report
             int SlNo = 1;
             foreach (var row in parentRGReport.RGReportRows)
@@ -72,10 +76,15 @@ namespace RadiologyTracking.Web.Models
                 if (row.Remark.Value == "ACCEPTABLE") continue;
 
                 //row type for this row depends on the corresponding parent rows remarks
-                RGReportRow reportRow = new RGReportRow() { RowType = RGReportRowType.getRowType(row.Remark.Value, ctx) };
+                RGReportRow reportRow = new RGReportRow() { 
+                                                             RowType = RGReportRowType.getRowType(row.Remark.Value, ctx),
+                                                             Observations = " "
+                                                          };
                 row.CopyTo(reportRow,
-                    "ID,RGReportID,RGReport,Observations,Remarks,ObservationsText,TechnicianID,Technician,WelderID,Welder,RowType");
-                row.SlNo = SlNo++;
+                    "ID,RGReport,Observations,Remark,RemarkText,ObservationsText,"+
+                    "Technician,TechnicianText,Welder,WelderText,RowType,ReportNo");
+                reportRow.SlNo = SlNo++;
+                this.RGReportRows.Add(reportRow);
             }
         }
 
@@ -90,7 +99,6 @@ namespace RadiologyTracking.Web.Models
         public Coverage Coverage { get; set; }
 
         public String LeadScreen { get; set; }
-        public ICollection<RGReportSource> Sources { get; set; }
         public String SourceSize { get; set; }
         public String RTNo { get; set; }
         public String ReportNo { get; set; }
