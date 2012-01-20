@@ -191,6 +191,32 @@ namespace RadiologyTracking.Views
                 FPTemplateRows.Remove((FPTemplateRow)row.DataContext);
         }
 
+        public override void SaveOperation(object sender, RoutedEventArgs e)
+        {
+            //validations on each row
+            foreach (var row in FPTemplateRows)
+            {
+                //sl no should be unique
+                var duplicateRow = FPTemplateRows.FirstOrDefault(p => p.SlNo == row.SlNo && p != row);
+                if (duplicateRow != null)
+                {
+                    MessageBox.Show("Sl no " + row.SlNo + " has been repeated twice, Correct this before saving");
+                    return;
+                }
+
+                //Location + segment uniqueness validation validation
+                var conflictingRow = FPTemplateRows.FirstOrDefault(p => p.SlNo != row.SlNo && p.Location == row.Location && p.Segment == row.Segment);
+                if (conflictingRow != null)
+                {
+                    MessageBox.Show("Rows with Sl No " + row.SlNo + " and " + conflictingRow.SlNo + " have the same location and segments. Correct this before saving");
+                    return;
+                }
+            }
+
+            base.SaveOperation(sender, e);
+        }
+
+
         /// <summary>
         /// Have to update filmsize string manually
         /// </summary>

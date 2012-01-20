@@ -24,19 +24,29 @@ namespace RadiologyTracking.Views
         public EnterRadioGraphyReport()
         {
             InitializeComponent();
+
             if (App.RGReport == null)
             {
                 //Means new RG Report, allow add
+                this.IsEditMode = false;
+                
             }
             else
             {
                 this.RGReport = App.RGReport;
                 DataContext = this.RGReport;
+                this.IsEditMode = true;
+
+                //set the query parameter here, the binding in the xaml is not working fine
+                this.EditRGReportsSource.QueryParameters[0].Value = this.RGReport.ReportNo;
             }
 
-            //wire up event handlers
+            //wire up event handlers            
             AddEventHandlers();
             SetBindings();
+
+            if (IsEditMode) DomainSource.Load();
+            
         }
 
         /// <summary>
@@ -55,28 +65,32 @@ namespace RadiologyTracking.Views
         /// </summary>
         private void SetBindings()
         {
-            lblFPNo.SetBinding(TextBlock.TextProperty, new Binding() { Source = this, Path = new PropertyPath("RGReport.FixedPattern.FPNo") });
-            lblCustomer.SetBinding(TextBlock.TextProperty, new Binding() { Source = this, Path = new PropertyPath("RGReport.FixedPattern.Customer.CustomerName") });
-            lblDescription.SetBinding(TextBlock.TextProperty, new Binding() { Source = this, Path = new PropertyPath("RGReport.FixedPattern.Description") });
-            lblCoverage.SetBinding(TextBlock.TextProperty, new Binding() { Source = this, Path = new PropertyPath("RGReport.Coverage.CoverageName") });
-            lblRTNo.SetBinding(TextBlock.TextProperty, new Binding() { Source = this, Path = new PropertyPath("RGReport.RTNo") });
-            txtLeadScreen.SetBinding(TextBox.TextProperty, new Binding() { Source = this, Path = new PropertyPath("RGReport.LeadScreen"), Mode = BindingMode.TwoWay });
-            txtSourceSize.SetBinding(TextBox.TextProperty, new Binding() { Source = this, Path = new PropertyPath("RGReport.SourceSize"), Mode = BindingMode.TwoWay });
-            txtReportNo.SetBinding(TextBox.TextProperty, new Binding() { Source = this, Path = new PropertyPath("RGReport.ReportNo"), Mode = BindingMode.TwoWay });
-            txtHeatNo.SetBinding(TextBox.TextProperty, new Binding() { Source = this, Path = new PropertyPath("RGReport.HeatNo"), Mode = BindingMode.TwoWay });
-            txtProcedureRef.SetBinding(TextBox.TextProperty, new Binding() { Source = this, Path = new PropertyPath("RGReport.ProcedureRef"), Mode = BindingMode.TwoWay });
-            txtSpecifications.SetBinding(TextBox.TextProperty, new Binding() { Source = this, Path = new PropertyPath("RGReport.Specifications"), Mode = BindingMode.TwoWay });
-            txtFilm.SetBinding(TextBox.TextProperty, new Binding() { Source = this, Path = new PropertyPath("RGReport.Film"), Mode = BindingMode.TwoWay });
-            ReportDatePicker.SetBinding(DatePicker.SelectedDateProperty, new Binding() { Source = this, Path = new PropertyPath("RGReport.ReportDate"), Mode = BindingMode.TwoWay });
-            TestDatePicker.SetBinding(DatePicker.SelectedDateProperty, new Binding() { Source = this, Path = new PropertyPath("RGReport.DateOfTest"), Mode = BindingMode.TwoWay });
-            cmbShift.SetBinding(ComboBox.SelectedValueProperty, new Binding() { Source = this, Path = new PropertyPath("RGReport.Shift"), Mode = BindingMode.TwoWay });
-            txtEvaluation.SetBinding(TextBox.TextProperty, new Binding() { Source = this, Path = new PropertyPath("RGReport.EvaluationAsPer"), Mode = BindingMode.TwoWay });
-            txtAcceptance.SetBinding(TextBox.TextProperty, new Binding() { Source = this, Path = new PropertyPath("RGReport.AcceptanceAsPer"), Mode = BindingMode.TwoWay });
-            txtDrawingNo.SetBinding(TextBox.TextProperty, new Binding() { Source = this, Path = new PropertyPath("RGReport.DrawingNo"), Mode = BindingMode.TwoWay });
-            RGReportDataGrid.SetBinding(CustomGrid.ItemsSourceProperty, new Binding() { Source = this, Path = new PropertyPath("RGReportRows") });
-            btnAdd.SetBinding(Button.IsEnabledProperty, new Binding() { Source = this, Path = new PropertyPath("Enabled") });
-            btnFetch.SetBinding(Button.IsEnabledProperty, new Binding() { Source = this, Path = new PropertyPath("FetchEnabled") });
+            BindToPage(lblFixedPatternID, TextBlock.TextProperty, "RGReport.FixedPatternID", BindingMode.OneWay);
+            BindToPage(lblRGReportID, TextBlock.TextProperty, "RGReport.ID", BindingMode.OneWay);
+            BindToPage(lblStatus, TextBlock.TextProperty, "RGReport.Status.Status", BindingMode.OneWay);
+            BindToPage(lblFPNo, TextBlock.TextProperty, "RGReport.FixedPattern.FPNo", BindingMode.OneWay);
+            BindToPage(lblCustomer, TextBlock.TextProperty, "RGReport.FixedPattern.Customer.CustomerName", BindingMode.OneWay);
+            BindToPage(lblDescription, TextBlock.TextProperty, "RGReport.FixedPattern.Description", BindingMode.OneWay);
+            BindToPage(lblCoverage, TextBlock.TextProperty, "RGReport.Coverage.CoverageName", BindingMode.OneWay);
+            BindToPage(lblRTNo, TextBlock.TextProperty, "RGReport.RTNo", BindingMode.OneWay);
+            BindToPage(txtLeadScreen, TextBox.TextProperty, "RGReport.LeadScreen");
+            BindToPage(txtSourceSize, TextBox.TextProperty, "RGReport.SourceSize");
+            BindToPage(txtReportNo, TextBox.TextProperty, "RGReport.ReportNo");
+            BindToPage(txtHeatNo, TextBox.TextProperty, "RGReport.HeatNo");
+            BindToPage(txtProcedureRef, TextBox.TextProperty, "RGReport.ProcedureRef");
+            BindToPage(txtSpecifications, TextBox.TextProperty, "RGReport.Specifications");
+            BindToPage(txtFilm, TextBox.TextProperty, "RGReport.Film");
+            BindToPage(ReportDatePicker, DatePicker.SelectedDateProperty, "RGReport.ReportDate");
+            BindToPage(TestDatePicker, DatePicker.SelectedDateProperty, "RGReport.DateOfTest");
+            BindToPage(cmbShift, ComboBox.SelectedValueProperty, "RGReport.Shift");
+            BindToPage(txtEvaluation, TextBox.TextProperty, "RGReport.EvaluationAsPer");
+            BindToPage(txtAcceptance, TextBox.TextProperty, "RGReport.AcceptanceAsPer");
+            BindToPage(txtDrawingNo, TextBox.TextProperty, "RGReport.DrawingNo");
+            BindToPage(RGReportDataGrid, CustomGrid.ItemsSourceProperty, "RGReportRows");
+            BindToPage(btnAdd, Button.IsEnabledProperty, "Enabled", BindingMode.OneWay);
+            BindToPage(btnFetch, Button.IsEnabledProperty, "FetchEnabled", BindingMode.OneWay);
         }
+
 
         [CLSCompliant(false)]
         public override CustomGrid Grid
@@ -86,7 +100,7 @@ namespace RadiologyTracking.Views
 
         public override DomainDataSource DomainSource
         {
-            get { return this.RGReportSource; }
+            get { return IsEditMode? this.EditRGReportsSource : this.RGReportSource; }
         }
 
         public override Type MainType
@@ -94,9 +108,11 @@ namespace RadiologyTracking.Views
             get { return typeof(RGReportRow); }
         }
 
+        public bool IsEditMode { get; set; }
+
         public bool FetchEnabled
         {
-            get { return (RGReport == null); }
+            get { return !IsEditMode; }
         }
 
         public bool Enabled
@@ -120,6 +136,7 @@ namespace RadiologyTracking.Views
                 this._rgReport = value;
                 OnPropertyChanged("RGReport");
                 OnPropertyChanged("Enabled");
+                OnPropertyChanged("FetchEnabled");
             }
         }
 
@@ -155,7 +172,10 @@ namespace RadiologyTracking.Views
                                                 FilmSizeString = " ",
                                                 RemarkText = " ",
                                                 TechnicianText = " ",
-                                                WelderText = " "
+                                                WelderText = " ",
+                                                RowType = ((RadiologyContext)DomainSource.DomainContext)
+                                                                .RGReportRowTypes
+                                                                .FirstOrDefault(p => p.Value == "FRESH")
                                             };
 
             RGReportRows.Add(RGReportRow);
@@ -174,6 +194,8 @@ namespace RadiologyTracking.Views
 
             RGReport = (RGReport)((DomainDataSourceView)((DomainDataSource)sender).Data).GetItemAt(0);
             RGReportRows = RGReport.RGReportRows;
+            //now that fixedpatternid is available
+            FixedPatternsSource.Load();
         }
 
         //Kept here only for the template column to work fine
@@ -190,18 +212,38 @@ namespace RadiologyTracking.Views
 
         private void FetchOperation(object sender, RoutedEventArgs e)
         {
+            this.IsEditMode = false;
+            this.RGReportDataGrid.CommitEdit();
+            if (DomainSource.HasChanges) DomainSource.RejectChanges();
             DomainSource.Load();
-            //for fixed pattern related data
-            FixedPatternsSource.Load();
         }
 
 
         public override void SaveOperation(object sender, RoutedEventArgs e)
         {
-            MessageBoxResult result;
+            //validations on each row
+            foreach (var row in RGReportRows)
+            {
+                //sl no should be unique
+                var duplicateRow = RGReportRows.FirstOrDefault(p => p.SlNo == row.SlNo && p != row);
+                if (duplicateRow != null)
+                {
+                    MessageBox.Show("Sl no " + row.SlNo + " has been repeated twice, Correct this before saving");
+                    return;
+                }
+
+                //Location + segment uniqueness validation validation
+                var conflictingRow = RGReportRows.FirstOrDefault(p => p.SlNo != row.SlNo && p.Location == row.Location && p.Segment == row.Segment);
+                if (conflictingRow != null)
+                {
+                    MessageBox.Show("Rows with Sl No " + row.SlNo + " and " + conflictingRow.SlNo + " have the same location and segments. Correct this before saving");
+                    return;
+                }
+            }
             
             /** FOR SIMPLICITY OF DESIGN, SERVER DEPENDS ON THE CLIENT TO SET THE STATUS. THIS IS IMPORTANT! WITHOUT THIS THE LOGIC WILL FAIL **/
 
+            MessageBoxResult result;
             if (RGReportRows.Where(p => p.RemarkText.Trim() == String.Empty).Count() > 0)
             {
                 result = MessageBox.Show("Save Incomplete Report. Fetching this RT No will fetch Same Report again", 
@@ -280,6 +322,7 @@ namespace RadiologyTracking.Views
         {
             ComboBox cmb = (ComboBox)sender;
             var row = ((DataGridCell)cmb.Parent).DataContext;
+            if (cmb.SelectedValue == null) return;
             ((FPTemplateRow)row).FilmSizeString = ((FilmSize)cmb.SelectedValue).Name;
         }
 

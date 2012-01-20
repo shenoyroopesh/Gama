@@ -11,6 +11,7 @@ using System.Windows.Shapes;
 using System.ServiceModel.DomainServices.Client;
 using Vagsons.Controls;
 using System.ComponentModel;
+using System.Windows.Data;
 
 namespace RadiologyTracking.Views
 {
@@ -142,6 +143,13 @@ namespace RadiologyTracking.Views
         {
             if (Grid.CommitEdit())
                 DomainSource.DomainContext.RejectChanges();
+        }
+
+
+        public void BindToPage(FrameworkElement element, DependencyProperty prop, String path, BindingMode mode = BindingMode.TwoWay)
+        {
+            element.SetBinding(prop, new Binding() { Source = this, Path = new PropertyPath(path), Mode = mode });
+            OnPropertyChanged(element.Name);
         }
 
 

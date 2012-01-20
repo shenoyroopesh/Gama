@@ -17,7 +17,7 @@
     </UserControl.Resources>    
     <Grid x:Name="LayoutRoot" Background="White">
         <sdk:Label Name="headerLabel" Style="{StaticResource PageHeaderStyle}" Content="RADIOLOGY REPORTS"/>
-        <riaControls:DomainDataSource AutoLoad="True" Name="RGDomainDataSource" QueryName="GetRGReportsQuery"
+        <riaControls:DomainDataSource AutoLoad="True" Name="RGDomainDataSource" QueryName="GetRGReportsByDateQuery"
                                       DomainContext="{StaticResource RadiologyContext}">
             <riaControls:DomainDataSource.QueryParameters>
                 <riaControls:Parameter ParameterName="fromDate" Value="{Binding ElementName=fromDatePicker, Path=SelectedDate}" />
@@ -63,14 +63,6 @@
                                 <DataTemplate>
                                     <Button Name="grdEditButton" Tag="{Binding}" Style="{StaticResource EditButtonStyle}"
                                             Click="EditOperation"/>
-                                </DataTemplate>
-                            </sdk:DataGridTemplateColumn.CellTemplate>
-                        </sdk:DataGridTemplateColumn>
-                        <sdk:DataGridTemplateColumn Header="Delete" Width="Auto">
-                            <sdk:DataGridTemplateColumn.CellTemplate>
-                                <DataTemplate>
-                                    <Button Name="grdDeleteButton" Click="DeleteOperation" Tag="{Binding}" 
-                                            Style="{StaticResource DeleteButtonStyle}"/>
                                 </DataTemplate>
                             </sdk:DataGridTemplateColumn.CellTemplate>
                         </sdk:DataGridTemplateColumn>

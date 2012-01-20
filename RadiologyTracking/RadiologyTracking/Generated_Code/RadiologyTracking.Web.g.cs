@@ -4740,6 +4740,8 @@ namespace RadiologyTracking.Web.Models
         
         private int _rgReportID;
         
+        private EntityRef<RGReportRowType> _rowType;
+        
         private int _rowTypeID;
         
         private string _segment;
@@ -5257,6 +5259,40 @@ namespace RadiologyTracking.Web.Models
         }
         
         /// <summary>
+        /// Gets or sets the associated <see cref="RGReportRowType"/> entity.
+        /// </summary>
+        [Association("RGReportRowType_RGReportRow", "RowTypeID", "ID", IsForeignKey=true)]
+        public RGReportRowType RowType
+        {
+            get
+            {
+                if ((this._rowType == null))
+                {
+                    this._rowType = new EntityRef<RGReportRowType>(this, "RowType", this.FilterRowType);
+                }
+                return this._rowType.Entity;
+            }
+            set
+            {
+                RGReportRowType previous = this.RowType;
+                if ((previous != value))
+                {
+                    this.ValidateProperty("RowType", value);
+                    if ((value != null))
+                    {
+                        this.RowTypeID = value.ID;
+                    }
+                    else
+                    {
+                        this.RowTypeID = default(int);
+                    }
+                    this._rowType.Entity = value;
+                    this.RaisePropertyChanged("RowType");
+                }
+            }
+        }
+        
+        /// <summary>
         /// Gets or sets the 'RowTypeID' value.
         /// </summary>
         [DataMember()]
@@ -5597,6 +5633,11 @@ namespace RadiologyTracking.Web.Models
             return (entity.ID == this.RGReportID);
         }
         
+        private bool FilterRowType(RGReportRowType entity)
+        {
+            return (entity.ID == this.RowTypeID);
+        }
+        
         private bool FilterTechnician(Technician entity)
         {
             return (entity.ID == this.TechnicianID);
@@ -5605,6 +5646,106 @@ namespace RadiologyTracking.Web.Models
         private bool FilterWelder(Welder entity)
         {
             return (entity.ID == this.WelderID);
+        }
+        
+        /// <summary>
+        /// Computes a value from the key fields that uniquely identifies this entity instance.
+        /// </summary>
+        /// <returns>An object instance that uniquely identifies this entity instance.</returns>
+        public override object GetIdentity()
+        {
+            return this._id;
+        }
+    }
+    
+    /// <summary>
+    /// The 'RGReportRowType' entity class.
+    /// </summary>
+    [DataContract(Namespace="http://schemas.datacontract.org/2004/07/RadiologyTracking.Web.Models")]
+    public sealed partial class RGReportRowType : Entity
+    {
+        
+        private int _id;
+        
+        private string _value;
+        
+        #region Extensibility Method Definitions
+
+        /// <summary>
+        /// This method is invoked from the constructor once initialization is complete and
+        /// can be used for further object setup.
+        /// </summary>
+        partial void OnCreated();
+        partial void OnIDChanging(int value);
+        partial void OnIDChanged();
+        partial void OnValueChanging(string value);
+        partial void OnValueChanged();
+
+        #endregion
+        
+        
+        /// <summary>
+        /// Initializes a new instance of the <see cref="RGReportRowType"/> class.
+        /// </summary>
+        public RGReportRowType()
+        {
+            this.OnCreated();
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'ID' value.
+        /// </summary>
+        // The following attributes were not generated:
+        // 
+        // - The attribute 'System.ComponentModel.DataAnnotations.DatabaseGeneratedAttribute' is not visible in the client project 'RadiologyTracking'. Are you missing an assembly reference?
+        // [DatabaseGeneratedAttribute(Identity)]
+        // 
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [DataMember()]
+        [Editable(false, AllowInitialValue=true)]
+        [Key()]
+        [RoundtripOriginal()]
+        public int ID
+        {
+            get
+            {
+                return this._id;
+            }
+            set
+            {
+                if ((this._id != value))
+                {
+                    this.OnIDChanging(value);
+                    this.ValidateProperty("ID", value);
+                    this._id = value;
+                    this.RaisePropertyChanged("ID");
+                    this.OnIDChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'Value' value.
+        /// </summary>
+        [DataMember()]
+        public string Value
+        {
+            get
+            {
+                return this._value;
+            }
+            set
+            {
+                if ((this._value != value))
+                {
+                    this.OnValueChanging(value);
+                    this.RaiseDataMemberChanging("Value");
+                    this.ValidateProperty("Value", value);
+                    this._value = value;
+                    this.RaiseDataMemberChanged("Value");
+                    this.OnValueChanged();
+                }
+            }
         }
         
         /// <summary>
@@ -6451,6 +6592,17 @@ namespace RadiologyTracking.Web.Services
         }
         
         /// <summary>
+        /// Gets the set of <see cref="RGReportRowType"/> entity instances that have been loaded into this <see cref="RadiologyContext"/> instance.
+        /// </summary>
+        public EntitySet<RGReportRowType> RGReportRowTypes
+        {
+            get
+            {
+                return base.EntityContainer.GetEntitySet<RGReportRowType>();
+            }
+        }
+        
+        /// <summary>
         /// Gets the set of <see cref="RGStatus"/> entity instances that have been loaded into this <see cref="RadiologyContext"/> instance.
         /// </summary>
         public EntitySet<RGStatus> RGStatus
@@ -6736,16 +6888,39 @@ namespace RadiologyTracking.Web.Services
         /// <summary>
         /// Gets an EntityQuery instance that can be used to load <see cref="RGReport"/> entity instances using the 'GetRGReports' query.
         /// </summary>
+        /// <param name="RGReportNo">The value for the 'RGReportNo' parameter of the query.</param>
+        /// <returns>An EntityQuery that can be loaded to retrieve <see cref="RGReport"/> entity instances.</returns>
+        public EntityQuery<RGReport> GetRGReportsQuery(string RGReportNo)
+        {
+            Dictionary<string, object> parameters = new Dictionary<string, object>();
+            parameters.Add("RGReportNo", RGReportNo);
+            this.ValidateMethod("GetRGReportsQuery", parameters);
+            return base.CreateQuery<RGReport>("GetRGReports", parameters, false, true);
+        }
+        
+        /// <summary>
+        /// Gets an EntityQuery instance that can be used to load <see cref="RGReport"/> entity instances using the 'GetRGReportsByDate' query.
+        /// </summary>
         /// <param name="fromDate">The value for the 'fromDate' parameter of the query.</param>
         /// <param name="toDate">The value for the 'toDate' parameter of the query.</param>
         /// <returns>An EntityQuery that can be loaded to retrieve <see cref="RGReport"/> entity instances.</returns>
-        public EntityQuery<RGReport> GetRGReportsQuery(DateTime fromDate, DateTime toDate)
+        public EntityQuery<RGReport> GetRGReportsByDateQuery(DateTime fromDate, DateTime toDate)
         {
             Dictionary<string, object> parameters = new Dictionary<string, object>();
             parameters.Add("fromDate", fromDate);
             parameters.Add("toDate", toDate);
-            this.ValidateMethod("GetRGReportsQuery", parameters);
-            return base.CreateQuery<RGReport>("GetRGReports", parameters, false, true);
+            this.ValidateMethod("GetRGReportsByDateQuery", parameters);
+            return base.CreateQuery<RGReport>("GetRGReportsByDate", parameters, false, true);
+        }
+        
+        /// <summary>
+        /// Gets an EntityQuery instance that can be used to load <see cref="RGReportRowType"/> entity instances using the 'GetRGRowTypes' query.
+        /// </summary>
+        /// <returns>An EntityQuery that can be loaded to retrieve <see cref="RGReportRowType"/> entity instances.</returns>
+        public EntityQuery<RGReportRowType> GetRGRowTypesQuery()
+        {
+            this.ValidateMethod("GetRGRowTypesQuery", null);
+            return base.CreateQuery<RGReportRowType>("GetRGRowTypes", null, false, true);
         }
         
         /// <summary>
@@ -7192,15 +7367,14 @@ namespace RadiologyTracking.Web.Services
             /// <summary>
             /// Asynchronously invokes the 'GetRGReports' operation.
             /// </summary>
-            /// <param name="fromDate">The value for the 'fromDate' parameter of this action.</param>
-            /// <param name="toDate">The value for the 'toDate' parameter of this action.</param>
+            /// <param name="RGReportNo">The value for the 'RGReportNo' parameter of this action.</param>
             /// <param name="callback">Callback to invoke on completion.</param>
             /// <param name="asyncState">Optional state object.</param>
             /// <returns>An IAsyncResult that can be used to monitor the request.</returns>
             [FaultContract(typeof(DomainServiceFault), Action="http://tempuri.org/RadiologyService/GetRGReportsDomainServiceFault", Name="DomainServiceFault", Namespace="DomainServices")]
             [OperationContract(AsyncPattern=true, Action="http://tempuri.org/RadiologyService/GetRGReports", ReplyAction="http://tempuri.org/RadiologyService/GetRGReportsResponse")]
             [WebGet()]
-            IAsyncResult BeginGetRGReports(DateTime fromDate, DateTime toDate, AsyncCallback callback, object asyncState);
+            IAsyncResult BeginGetRGReports(string RGReportNo, AsyncCallback callback, object asyncState);
             
             /// <summary>
             /// Completes the asynchronous operation begun by 'BeginGetRGReports'.
@@ -7208,6 +7382,44 @@ namespace RadiologyTracking.Web.Services
             /// <param name="result">The IAsyncResult returned from 'BeginGetRGReports'.</param>
             /// <returns>The 'QueryResult' returned from the 'GetRGReports' operation.</returns>
             QueryResult<RGReport> EndGetRGReports(IAsyncResult result);
+            
+            /// <summary>
+            /// Asynchronously invokes the 'GetRGReportsByDate' operation.
+            /// </summary>
+            /// <param name="fromDate">The value for the 'fromDate' parameter of this action.</param>
+            /// <param name="toDate">The value for the 'toDate' parameter of this action.</param>
+            /// <param name="callback">Callback to invoke on completion.</param>
+            /// <param name="asyncState">Optional state object.</param>
+            /// <returns>An IAsyncResult that can be used to monitor the request.</returns>
+            [FaultContract(typeof(DomainServiceFault), Action="http://tempuri.org/RadiologyService/GetRGReportsByDateDomainServiceFault", Name="DomainServiceFault", Namespace="DomainServices")]
+            [OperationContract(AsyncPattern=true, Action="http://tempuri.org/RadiologyService/GetRGReportsByDate", ReplyAction="http://tempuri.org/RadiologyService/GetRGReportsByDateResponse")]
+            [WebGet()]
+            IAsyncResult BeginGetRGReportsByDate(DateTime fromDate, DateTime toDate, AsyncCallback callback, object asyncState);
+            
+            /// <summary>
+            /// Completes the asynchronous operation begun by 'BeginGetRGReportsByDate'.
+            /// </summary>
+            /// <param name="result">The IAsyncResult returned from 'BeginGetRGReportsByDate'.</param>
+            /// <returns>The 'QueryResult' returned from the 'GetRGReportsByDate' operation.</returns>
+            QueryResult<RGReport> EndGetRGReportsByDate(IAsyncResult result);
+            
+            /// <summary>
+            /// Asynchronously invokes the 'GetRGRowTypes' operation.
+            /// </summary>
+            /// <param name="callback">Callback to invoke on completion.</param>
+            /// <param name="asyncState">Optional state object.</param>
+            /// <returns>An IAsyncResult that can be used to monitor the request.</returns>
+            [FaultContract(typeof(DomainServiceFault), Action="http://tempuri.org/RadiologyService/GetRGRowTypesDomainServiceFault", Name="DomainServiceFault", Namespace="DomainServices")]
+            [OperationContract(AsyncPattern=true, Action="http://tempuri.org/RadiologyService/GetRGRowTypes", ReplyAction="http://tempuri.org/RadiologyService/GetRGRowTypesResponse")]
+            [WebGet()]
+            IAsyncResult BeginGetRGRowTypes(AsyncCallback callback, object asyncState);
+            
+            /// <summary>
+            /// Completes the asynchronous operation begun by 'BeginGetRGRowTypes'.
+            /// </summary>
+            /// <param name="result">The IAsyncResult returned from 'BeginGetRGRowTypes'.</param>
+            /// <returns>The 'QueryResult' returned from the 'GetRGRowTypes' operation.</returns>
+            QueryResult<RGReportRowType> EndGetRGRowTypes(IAsyncResult result);
             
             /// <summary>
             /// Asynchronously invokes the 'GetRGStatuses' operation.
@@ -7341,6 +7553,7 @@ namespace RadiologyTracking.Web.Services
                 this.CreateEntitySet<Remark>(EntitySetOperations.None);
                 this.CreateEntitySet<RGReport>((EntitySetOperations.Edit | EntitySetOperations.Remove));
                 this.CreateEntitySet<RGReportRow>(EntitySetOperations.All);
+                this.CreateEntitySet<RGReportRowType>(EntitySetOperations.None);
                 this.CreateEntitySet<RGStatus>(EntitySetOperations.None);
                 this.CreateEntitySet<Shift>(EntitySetOperations.None);
                 this.CreateEntitySet<Technician>(EntitySetOperations.All);

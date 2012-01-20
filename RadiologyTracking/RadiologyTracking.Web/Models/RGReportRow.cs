@@ -86,7 +86,6 @@ namespace RadiologyTracking.Web.Models
                     var filmsizes = ctx.FilmSizes.Where(p => p.Height == height && p.Width == width);
                     if (filmsizes.Count() > 0)
                     {
-                        this.FilmSize = filmsizes.First();
                         this.FilmSizeID = filmsizes.First().ID;
                     }
                 }
@@ -116,8 +115,14 @@ namespace RadiologyTracking.Web.Models
             {                
                 using (RadiologyContext ctx = new RadiologyContext())
                 {
-                    this.Remark = Remark.getRemark(value, ctx);
-                    if (this.Remark != null) this.RemarkID = this.Remark.ID;
+                    try
+                    {
+                        this.RemarkID = Remark.getRemark(value, ctx).ID;
+                    }
+                    catch
+                    {
+                        //do nothing
+                    }
                 }
             }
         }
@@ -145,8 +150,14 @@ namespace RadiologyTracking.Web.Models
             {
                 using (RadiologyContext ctx = new RadiologyContext())
                 {
-                    this.Welder = Welder.getWelder(value, ctx);
-                    if (this.Welder != null) this.WelderID = this.Welder.ID;
+                    try
+                    {
+                        this.WelderID = Welder.getWelder(value, ctx).ID;
+                    }
+                    catch
+                    {
+                        //do nothing
+                    }
                 }
             }
         }
@@ -174,8 +185,14 @@ namespace RadiologyTracking.Web.Models
             {
                 using (RadiologyContext ctx = new RadiologyContext())
                 {
-                    this.Technician = Technician.getTechnician(value, ctx);
-                    if (this.Technician != null) this.TechnicianID = this.Technician.ID;
+                    try
+                    {
+                        this.TechnicianID = Technician.getTechnician(value, ctx).ID;
+                    }
+                    catch
+                    {
+                        //do nothing
+                    }
                 }
             }
         }

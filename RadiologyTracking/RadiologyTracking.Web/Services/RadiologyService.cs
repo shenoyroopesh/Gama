@@ -670,7 +670,15 @@ namespace RadiologyTracking.Web.Services
         #endregion
 
         #region RG Reports
-        public IQueryable<RGReport> GetRGReports(DateTime fromDate, DateTime toDate)
+
+        public IQueryable<RGReport> GetRGReports(String RGReportNo)
+        {
+            var report = this.DbContext.RGReports.Include(p => p.RGReportRows.Select(r => r.Remark))
+                                            .Where(p => p.ReportNo == RGReportNo);
+            return report;
+        }
+
+        public IQueryable<RGReport> GetRGReportsByDate(DateTime fromDate, DateTime toDate)
         {
             //to ensure that time component of the date does not make some dates get excluded
             fromDate = fromDate.Date;
@@ -679,7 +687,6 @@ namespace RadiologyTracking.Web.Services
                                                     p.ReportDate >= fromDate &&
                                                     p.ReportDate <= toDate);
         }
-
 
         public RGReport GetNewRGReport(String strFPNo, String strCoverage, String rtNo)
         {
@@ -775,6 +782,15 @@ namespace RadiologyTracking.Web.Services
 
         #endregion
 
+
+        #region RGRowTypes
+
+        public IQueryable<RGReportRowType> GetRGRowTypes()
+        {
+            return this.DbContext.RGReportRowTypes;
+        }
+
+        #endregion
 
         #region RG Report Rows
         public IQueryable<RGReportRow> GetRGReportRows()

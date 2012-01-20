@@ -27,6 +27,7 @@ namespace Vagsons.Controls
             this.MouseEnter += new MouseEventHandler(CustomGrid_MouseEnter);
             this.MouseLeftButtonUp += new MouseButtonEventHandler(CustomGrid_MouseLeftButtonUp);
             this.LoadingRow += new EventHandler<DataGridRowEventArgs>(CustomGrid_LoadingRow);
+            this.GotFocus += new RoutedEventHandler(CustomGrid_GotFocus);
             this.AutoGenerateColumns = false;
         }
 
@@ -179,9 +180,42 @@ namespace Vagsons.Controls
                 else
                     base.OnKeyDown(e);
             }
+            else if (!(new List<Key>(){Key.Enter, Key.Escape, Key.F2, Key.Escape, Key.Right, Key.Left, Key.Up, 
+                                       Key.Down, Key.Ctrl, Key.Shift, Key.Alt, Key.Unknown}).Contains(e.Key))
+            {
+                //any other key, start editing
+                bool isShifty = ((Keyboard.Modifiers & ModifierKeys.Shift) == ModifierKeys.Shift);
+                string letter = e.Key.ToString();
+                letter = letter.ToLower().Replace("numpad", ""); //remove 'numpad' if it appears
+                letter = (isShifty ? letter.ToUpper() : letter.ToLower());
+                this.Tag = letter;
+
+                //beginedit will fire the focus event
+                //if we try to access the textbox here its text will not be set
+                this.BeginEdit();
+            }
             else
             {
                 base.OnKeyDown(e);
+            }
+        }
+
+        /// <summary>
+        /// handle cell begin editing
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        void CustomGrid_GotFocus(object sender, RoutedEventArgs e)
+        {
+            if (this.Tag != null)
+            {
+                var box = this.CurrentColumn.GetCellContent(CurrentItem);
+                if (box.GetType() == typeof(TextBox))
+                {
+                    ((TextBox)box).Text = this.Tag.ToString();
+                    ((TextBox)box).SelectionStart = 1; //move editing cursor to end of text
+                }                
+                this.Tag = null;
             }
         }
     }
