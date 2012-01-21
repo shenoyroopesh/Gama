@@ -27,8 +27,14 @@ namespace RadiologyTracking.Web.Models
 
         public int Area
         {
-            get {
+            get
+            {
                 return Width * Height;
+            }
+
+            private set
+            {
+
             }
         }
     }

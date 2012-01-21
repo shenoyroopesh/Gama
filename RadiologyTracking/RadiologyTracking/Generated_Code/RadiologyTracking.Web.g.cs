@@ -2420,6 +2420,270 @@ namespace RadiologyTracking.Web.Models
     }
     
     /// <summary>
+    /// The 'FilmStockReportRow' entity class.
+    /// </summary>
+    [DataContract(Namespace="http://schemas.datacontract.org/2004/07/RadiologyTracking.Web.Models")]
+    public sealed partial class FilmStockReportRow : Entity
+    {
+        
+        private int _closingStock;
+        
+        private int _consumed;
+        
+        private DateTime _date;
+        
+        private Guid _id;
+        
+        private int _openingStock;
+        
+        private int _receivedFromHO;
+        
+        private int _sentToHO;
+        
+        #region Extensibility Method Definitions
+
+        /// <summary>
+        /// This method is invoked from the constructor once initialization is complete and
+        /// can be used for further object setup.
+        /// </summary>
+        partial void OnCreated();
+        partial void OnClosingStockChanging(int value);
+        partial void OnClosingStockChanged();
+        partial void OnConsumedChanging(int value);
+        partial void OnConsumedChanged();
+        partial void OnDateChanging(DateTime value);
+        partial void OnDateChanged();
+        partial void OnIDChanging(Guid value);
+        partial void OnIDChanged();
+        partial void OnOpeningStockChanging(int value);
+        partial void OnOpeningStockChanged();
+        partial void OnReceivedFromHOChanging(int value);
+        partial void OnReceivedFromHOChanged();
+        partial void OnSentToHOChanging(int value);
+        partial void OnSentToHOChanged();
+
+        #endregion
+        
+        
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FilmStockReportRow"/> class.
+        /// </summary>
+        public FilmStockReportRow()
+        {
+            this.OnCreated();
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'ClosingStock' value.
+        /// </summary>
+        // The following attributes were not generated:
+        // 
+        // - The attribute 'System.ComponentModel.DataAnnotations.NotMappedAttribute' is not visible in the client project 'RadiologyTracking'. Are you missing an assembly reference?
+        // [NotMappedAttribute()]
+        // 
+        [DataMember()]
+        public int ClosingStock
+        {
+            get
+            {
+                return this._closingStock;
+            }
+            set
+            {
+                if ((this._closingStock != value))
+                {
+                    this.OnClosingStockChanging(value);
+                    this.RaiseDataMemberChanging("ClosingStock");
+                    this.ValidateProperty("ClosingStock", value);
+                    this._closingStock = value;
+                    this.RaiseDataMemberChanged("ClosingStock");
+                    this.OnClosingStockChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'Consumed' value.
+        /// </summary>
+        // The following attributes were not generated:
+        // 
+        // - The attribute 'System.ComponentModel.DataAnnotations.NotMappedAttribute' is not visible in the client project 'RadiologyTracking'. Are you missing an assembly reference?
+        // [NotMappedAttribute()]
+        // 
+        [DataMember()]
+        public int Consumed
+        {
+            get
+            {
+                return this._consumed;
+            }
+            set
+            {
+                if ((this._consumed != value))
+                {
+                    this.OnConsumedChanging(value);
+                    this.RaiseDataMemberChanging("Consumed");
+                    this.ValidateProperty("Consumed", value);
+                    this._consumed = value;
+                    this.RaiseDataMemberChanged("Consumed");
+                    this.OnConsumedChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'Date' value.
+        /// </summary>
+        // The following attributes were not generated:
+        // 
+        // - The attribute 'System.ComponentModel.DataAnnotations.NotMappedAttribute' is not visible in the client project 'RadiologyTracking'. Are you missing an assembly reference?
+        // [NotMappedAttribute()]
+        // 
+        [DataMember()]
+        public DateTime Date
+        {
+            get
+            {
+                return this._date;
+            }
+            set
+            {
+                if ((this._date != value))
+                {
+                    this.OnDateChanging(value);
+                    this.RaiseDataMemberChanging("Date");
+                    this.ValidateProperty("Date", value);
+                    this._date = value;
+                    this.RaiseDataMemberChanged("Date");
+                    this.OnDateChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'ID' value.
+        /// </summary>
+        [DataMember()]
+        [Editable(false, AllowInitialValue=true)]
+        [Key()]
+        [RoundtripOriginal()]
+        public Guid ID
+        {
+            get
+            {
+                return this._id;
+            }
+            set
+            {
+                if ((this._id != value))
+                {
+                    this.OnIDChanging(value);
+                    this.ValidateProperty("ID", value);
+                    this._id = value;
+                    this.RaisePropertyChanged("ID");
+                    this.OnIDChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'OpeningStock' value.
+        /// </summary>
+        // The following attributes were not generated:
+        // 
+        // - The attribute 'System.ComponentModel.DataAnnotations.NotMappedAttribute' is not visible in the client project 'RadiologyTracking'. Are you missing an assembly reference?
+        // [NotMappedAttribute()]
+        // 
+        [DataMember()]
+        public int OpeningStock
+        {
+            get
+            {
+                return this._openingStock;
+            }
+            set
+            {
+                if ((this._openingStock != value))
+                {
+                    this.OnOpeningStockChanging(value);
+                    this.RaiseDataMemberChanging("OpeningStock");
+                    this.ValidateProperty("OpeningStock", value);
+                    this._openingStock = value;
+                    this.RaiseDataMemberChanged("OpeningStock");
+                    this.OnOpeningStockChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'ReceivedFromHO' value.
+        /// </summary>
+        // The following attributes were not generated:
+        // 
+        // - The attribute 'System.ComponentModel.DataAnnotations.NotMappedAttribute' is not visible in the client project 'RadiologyTracking'. Are you missing an assembly reference?
+        // [NotMappedAttribute()]
+        // 
+        [DataMember()]
+        public int ReceivedFromHO
+        {
+            get
+            {
+                return this._receivedFromHO;
+            }
+            set
+            {
+                if ((this._receivedFromHO != value))
+                {
+                    this.OnReceivedFromHOChanging(value);
+                    this.RaiseDataMemberChanging("ReceivedFromHO");
+                    this.ValidateProperty("ReceivedFromHO", value);
+                    this._receivedFromHO = value;
+                    this.RaiseDataMemberChanged("ReceivedFromHO");
+                    this.OnReceivedFromHOChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'SentToHO' value.
+        /// </summary>
+        // The following attributes were not generated:
+        // 
+        // - The attribute 'System.ComponentModel.DataAnnotations.NotMappedAttribute' is not visible in the client project 'RadiologyTracking'. Are you missing an assembly reference?
+        // [NotMappedAttribute()]
+        // 
+        [DataMember()]
+        public int SentToHO
+        {
+            get
+            {
+                return this._sentToHO;
+            }
+            set
+            {
+                if ((this._sentToHO != value))
+                {
+                    this.OnSentToHOChanging(value);
+                    this.RaiseDataMemberChanging("SentToHO");
+                    this.ValidateProperty("SentToHO", value);
+                    this._sentToHO = value;
+                    this.RaiseDataMemberChanged("SentToHO");
+                    this.OnSentToHOChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Computes a value from the key fields that uniquely identifies this entity instance.
+        /// </summary>
+        /// <returns>An object instance that uniquely identifies this entity instance.</returns>
+        public override object GetIdentity()
+        {
+            return this._id;
+        }
+    }
+    
+    /// <summary>
     /// The 'FilmTransaction' entity class.
     /// </summary>
     [DataContract(Namespace="http://schemas.datacontract.org/2004/07/RadiologyTracking.Web.Models")]
@@ -2901,6 +3165,161 @@ namespace RadiologyTracking.Web.Models
         private bool FilterCustomer(Customer entity)
         {
             return (entity.ID == this.CustomerID);
+        }
+        
+        /// <summary>
+        /// Computes a value from the key fields that uniquely identifies this entity instance.
+        /// </summary>
+        /// <returns>An object instance that uniquely identifies this entity instance.</returns>
+        public override object GetIdentity()
+        {
+            return this._id;
+        }
+    }
+    
+    /// <summary>
+    /// The 'FixedPatternPerformanceRow' entity class.
+    /// </summary>
+    [DataContract(Namespace="http://schemas.datacontract.org/2004/07/RadiologyTracking.Web.Models")]
+    public sealed partial class FixedPatternPerformanceRow : Entity
+    {
+        
+        private DateTime _date;
+        
+        private Guid _id;
+        
+        private EntityCollection<LocationClass> _locations;
+        
+        private string _rtNo;
+        
+        #region Extensibility Method Definitions
+
+        /// <summary>
+        /// This method is invoked from the constructor once initialization is complete and
+        /// can be used for further object setup.
+        /// </summary>
+        partial void OnCreated();
+        partial void OnDateChanging(DateTime value);
+        partial void OnDateChanged();
+        partial void OnIDChanging(Guid value);
+        partial void OnIDChanged();
+        partial void OnRTNoChanging(string value);
+        partial void OnRTNoChanged();
+
+        #endregion
+        
+        
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FixedPatternPerformanceRow"/> class.
+        /// </summary>
+        public FixedPatternPerformanceRow()
+        {
+            this.OnCreated();
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'Date' value.
+        /// </summary>
+        // The following attributes were not generated:
+        // 
+        // - The attribute 'System.ComponentModel.DataAnnotations.NotMappedAttribute' is not visible in the client project 'RadiologyTracking'. Are you missing an assembly reference?
+        // [NotMappedAttribute()]
+        // 
+        [DataMember()]
+        public DateTime Date
+        {
+            get
+            {
+                return this._date;
+            }
+            set
+            {
+                if ((this._date != value))
+                {
+                    this.OnDateChanging(value);
+                    this.RaiseDataMemberChanging("Date");
+                    this.ValidateProperty("Date", value);
+                    this._date = value;
+                    this.RaiseDataMemberChanged("Date");
+                    this.OnDateChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'ID' value.
+        /// </summary>
+        [DataMember()]
+        [Editable(false, AllowInitialValue=true)]
+        [Key()]
+        [RoundtripOriginal()]
+        public Guid ID
+        {
+            get
+            {
+                return this._id;
+            }
+            set
+            {
+                if ((this._id != value))
+                {
+                    this.OnIDChanging(value);
+                    this.ValidateProperty("ID", value);
+                    this._id = value;
+                    this.RaisePropertyChanged("ID");
+                    this.OnIDChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets the collection of associated <see cref="LocationClass"/> entity instances.
+        /// </summary>
+        [Association("LocationClass", "ID", "FixedPatternPerformanceRowID")]
+        public EntityCollection<LocationClass> Locations
+        {
+            get
+            {
+                if ((this._locations == null))
+                {
+                    this._locations = new EntityCollection<LocationClass>(this, "Locations", this.FilterLocations);
+                }
+                return this._locations;
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'RTNo' value.
+        /// </summary>
+        // The following attributes were not generated:
+        // 
+        // - The attribute 'System.ComponentModel.DataAnnotations.NotMappedAttribute' is not visible in the client project 'RadiologyTracking'. Are you missing an assembly reference?
+        // [NotMappedAttribute()]
+        // 
+        [DataMember()]
+        public string RTNo
+        {
+            get
+            {
+                return this._rtNo;
+            }
+            set
+            {
+                if ((this._rtNo != value))
+                {
+                    this.OnRTNoChanging(value);
+                    this.RaiseDataMemberChanging("RTNo");
+                    this.ValidateProperty("RTNo", value);
+                    this._rtNo = value;
+                    this.RaiseDataMemberChanged("RTNo");
+                    this.OnRTNoChanged();
+                }
+            }
+        }
+        
+        private bool FilterLocations(LocationClass entity)
+        {
+            return (entity.FixedPatternPerformanceRowID == this.ID);
         }
         
         /// <summary>
@@ -3814,6 +4233,161 @@ namespace RadiologyTracking.Web.Models
         private bool FilterFixedPatternTemplate(FixedPatternTemplate entity)
         {
             return (entity.ID == this.FixedPatternTemplateID);
+        }
+        
+        /// <summary>
+        /// Computes a value from the key fields that uniquely identifies this entity instance.
+        /// </summary>
+        /// <returns>An object instance that uniquely identifies this entity instance.</returns>
+        public override object GetIdentity()
+        {
+            return this._id;
+        }
+    }
+    
+    /// <summary>
+    /// The 'LocationClass' entity class.
+    /// </summary>
+    [DataContract(Namespace="http://schemas.datacontract.org/2004/07/RadiologyTracking.Web.Models")]
+    public sealed partial class LocationClass : Entity
+    {
+        
+        private Guid _fixedPatternPerformanceRowID;
+        
+        private Guid _id;
+        
+        private string _location;
+        
+        private EntityCollection<SegmentClass> _segments;
+        
+        #region Extensibility Method Definitions
+
+        /// <summary>
+        /// This method is invoked from the constructor once initialization is complete and
+        /// can be used for further object setup.
+        /// </summary>
+        partial void OnCreated();
+        partial void OnFixedPatternPerformanceRowIDChanging(Guid value);
+        partial void OnFixedPatternPerformanceRowIDChanged();
+        partial void OnIDChanging(Guid value);
+        partial void OnIDChanged();
+        partial void OnLocationChanging(string value);
+        partial void OnLocationChanged();
+
+        #endregion
+        
+        
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LocationClass"/> class.
+        /// </summary>
+        public LocationClass()
+        {
+            this.OnCreated();
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'FixedPatternPerformanceRowID' value.
+        /// </summary>
+        // The following attributes were not generated:
+        // 
+        // - The attribute 'System.ComponentModel.DataAnnotations.NotMappedAttribute' is not visible in the client project 'RadiologyTracking'. Are you missing an assembly reference?
+        // [NotMappedAttribute()]
+        // 
+        [DataMember()]
+        public Guid FixedPatternPerformanceRowID
+        {
+            get
+            {
+                return this._fixedPatternPerformanceRowID;
+            }
+            set
+            {
+                if ((this._fixedPatternPerformanceRowID != value))
+                {
+                    this.OnFixedPatternPerformanceRowIDChanging(value);
+                    this.RaiseDataMemberChanging("FixedPatternPerformanceRowID");
+                    this.ValidateProperty("FixedPatternPerformanceRowID", value);
+                    this._fixedPatternPerformanceRowID = value;
+                    this.RaiseDataMemberChanged("FixedPatternPerformanceRowID");
+                    this.OnFixedPatternPerformanceRowIDChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'ID' value.
+        /// </summary>
+        [DataMember()]
+        [Editable(false, AllowInitialValue=true)]
+        [Key()]
+        [RoundtripOriginal()]
+        public Guid ID
+        {
+            get
+            {
+                return this._id;
+            }
+            set
+            {
+                if ((this._id != value))
+                {
+                    this.OnIDChanging(value);
+                    this.ValidateProperty("ID", value);
+                    this._id = value;
+                    this.RaisePropertyChanged("ID");
+                    this.OnIDChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'Location' value.
+        /// </summary>
+        // The following attributes were not generated:
+        // 
+        // - The attribute 'System.ComponentModel.DataAnnotations.NotMappedAttribute' is not visible in the client project 'RadiologyTracking'. Are you missing an assembly reference?
+        // [NotMappedAttribute()]
+        // 
+        [DataMember()]
+        public string Location
+        {
+            get
+            {
+                return this._location;
+            }
+            set
+            {
+                if ((this._location != value))
+                {
+                    this.OnLocationChanging(value);
+                    this.RaiseDataMemberChanging("Location");
+                    this.ValidateProperty("Location", value);
+                    this._location = value;
+                    this.RaiseDataMemberChanged("Location");
+                    this.OnLocationChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets the collection of associated <see cref="SegmentClass"/> entity instances.
+        /// </summary>
+        [Association("SegmentClass", "ID", "LocationID")]
+        public EntityCollection<SegmentClass> Segments
+        {
+            get
+            {
+                if ((this._segments == null))
+                {
+                    this._segments = new EntityCollection<SegmentClass>(this, "Segments", this.FilterSegments);
+                }
+                return this._segments;
+            }
+        }
+        
+        private bool FilterSegments(SegmentClass entity)
+        {
+            return (entity.LocationID == this.ID);
         }
         
         /// <summary>
@@ -5859,6 +6433,171 @@ namespace RadiologyTracking.Web.Models
     }
     
     /// <summary>
+    /// The 'SegmentClass' entity class.
+    /// </summary>
+    [DataContract(Namespace="http://schemas.datacontract.org/2004/07/RadiologyTracking.Web.Models")]
+    public sealed partial class SegmentClass : Entity
+    {
+        
+        private Guid _id;
+        
+        private Guid _locationID;
+        
+        private string _observations;
+        
+        private string _segment;
+        
+        #region Extensibility Method Definitions
+
+        /// <summary>
+        /// This method is invoked from the constructor once initialization is complete and
+        /// can be used for further object setup.
+        /// </summary>
+        partial void OnCreated();
+        partial void OnIDChanging(Guid value);
+        partial void OnIDChanged();
+        partial void OnLocationIDChanging(Guid value);
+        partial void OnLocationIDChanged();
+        partial void OnObservationsChanging(string value);
+        partial void OnObservationsChanged();
+        partial void OnSegmentChanging(string value);
+        partial void OnSegmentChanged();
+
+        #endregion
+        
+        
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SegmentClass"/> class.
+        /// </summary>
+        public SegmentClass()
+        {
+            this.OnCreated();
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'ID' value.
+        /// </summary>
+        [DataMember()]
+        [Editable(false, AllowInitialValue=true)]
+        [Key()]
+        [RoundtripOriginal()]
+        public Guid ID
+        {
+            get
+            {
+                return this._id;
+            }
+            set
+            {
+                if ((this._id != value))
+                {
+                    this.OnIDChanging(value);
+                    this.ValidateProperty("ID", value);
+                    this._id = value;
+                    this.RaisePropertyChanged("ID");
+                    this.OnIDChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'LocationID' value.
+        /// </summary>
+        // The following attributes were not generated:
+        // 
+        // - The attribute 'System.ComponentModel.DataAnnotations.NotMappedAttribute' is not visible in the client project 'RadiologyTracking'. Are you missing an assembly reference?
+        // [NotMappedAttribute()]
+        // 
+        [DataMember()]
+        public Guid LocationID
+        {
+            get
+            {
+                return this._locationID;
+            }
+            set
+            {
+                if ((this._locationID != value))
+                {
+                    this.OnLocationIDChanging(value);
+                    this.RaiseDataMemberChanging("LocationID");
+                    this.ValidateProperty("LocationID", value);
+                    this._locationID = value;
+                    this.RaiseDataMemberChanged("LocationID");
+                    this.OnLocationIDChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'Observations' value.
+        /// </summary>
+        // The following attributes were not generated:
+        // 
+        // - The attribute 'System.ComponentModel.DataAnnotations.NotMappedAttribute' is not visible in the client project 'RadiologyTracking'. Are you missing an assembly reference?
+        // [NotMappedAttribute()]
+        // 
+        [DataMember()]
+        public string Observations
+        {
+            get
+            {
+                return this._observations;
+            }
+            set
+            {
+                if ((this._observations != value))
+                {
+                    this.OnObservationsChanging(value);
+                    this.RaiseDataMemberChanging("Observations");
+                    this.ValidateProperty("Observations", value);
+                    this._observations = value;
+                    this.RaiseDataMemberChanged("Observations");
+                    this.OnObservationsChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'Segment' value.
+        /// </summary>
+        // The following attributes were not generated:
+        // 
+        // - The attribute 'System.ComponentModel.DataAnnotations.NotMappedAttribute' is not visible in the client project 'RadiologyTracking'. Are you missing an assembly reference?
+        // [NotMappedAttribute()]
+        // 
+        [DataMember()]
+        public string Segment
+        {
+            get
+            {
+                return this._segment;
+            }
+            set
+            {
+                if ((this._segment != value))
+                {
+                    this.OnSegmentChanging(value);
+                    this.RaiseDataMemberChanging("Segment");
+                    this.ValidateProperty("Segment", value);
+                    this._segment = value;
+                    this.RaiseDataMemberChanged("Segment");
+                    this.OnSegmentChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Computes a value from the key fields that uniquely identifies this entity instance.
+        /// </summary>
+        /// <returns>An object instance that uniquely identifies this entity instance.</returns>
+        public override object GetIdentity()
+        {
+            return this._id;
+        }
+    }
+    
+    /// <summary>
     /// The 'Shift' entity class.
     /// </summary>
     [DataContract(Namespace="http://schemas.datacontract.org/2004/07/RadiologyTracking.Web.Models")]
@@ -6504,6 +7243,17 @@ namespace RadiologyTracking.Web.Services
         }
         
         /// <summary>
+        /// Gets the set of <see cref="FilmStockReportRow"/> entity instances that have been loaded into this <see cref="RadiologyContext"/> instance.
+        /// </summary>
+        public EntitySet<FilmStockReportRow> FilmStockReportRows
+        {
+            get
+            {
+                return base.EntityContainer.GetEntitySet<FilmStockReportRow>();
+            }
+        }
+        
+        /// <summary>
         /// Gets the set of <see cref="FilmTransaction"/> entity instances that have been loaded into this <see cref="RadiologyContext"/> instance.
         /// </summary>
         public EntitySet<FilmTransaction> FilmTransactions
@@ -6511,6 +7261,17 @@ namespace RadiologyTracking.Web.Services
             get
             {
                 return base.EntityContainer.GetEntitySet<FilmTransaction>();
+            }
+        }
+        
+        /// <summary>
+        /// Gets the set of <see cref="FixedPatternPerformanceRow"/> entity instances that have been loaded into this <see cref="RadiologyContext"/> instance.
+        /// </summary>
+        public EntitySet<FixedPatternPerformanceRow> FixedPatternPerformanceRows
+        {
+            get
+            {
+                return base.EntityContainer.GetEntitySet<FixedPatternPerformanceRow>();
             }
         }
         
@@ -6766,6 +7527,23 @@ namespace RadiologyTracking.Web.Services
         }
         
         /// <summary>
+        /// Gets an EntityQuery instance that can be used to load <see cref="FilmStockReportRow"/> entity instances using the 'GetFilmStockReport' query.
+        /// </summary>
+        /// <param name="foundryId">The value for the 'foundryId' parameter of the query.</param>
+        /// <param name="fromDate">The value for the 'fromDate' parameter of the query.</param>
+        /// <param name="toDate">The value for the 'toDate' parameter of the query.</param>
+        /// <returns>An EntityQuery that can be loaded to retrieve <see cref="FilmStockReportRow"/> entity instances.</returns>
+        public EntityQuery<FilmStockReportRow> GetFilmStockReportQuery(int foundryId, DateTime fromDate, DateTime toDate)
+        {
+            Dictionary<string, object> parameters = new Dictionary<string, object>();
+            parameters.Add("foundryId", foundryId);
+            parameters.Add("fromDate", fromDate);
+            parameters.Add("toDate", toDate);
+            this.ValidateMethod("GetFilmStockReportQuery", parameters);
+            return base.CreateQuery<FilmStockReportRow>("GetFilmStockReport", parameters, false, true);
+        }
+        
+        /// <summary>
         /// Gets an EntityQuery instance that can be used to load <see cref="FilmTransaction"/> entity instances using the 'GetFilmTransactions' query.
         /// </summary>
         /// <returns>An EntityQuery that can be loaded to retrieve <see cref="FilmTransaction"/> entity instances.</returns>
@@ -6788,6 +7566,19 @@ namespace RadiologyTracking.Web.Services
             parameters.Add("toDate", toDate);
             this.ValidateMethod("GetFilmTransactionsByDateQuery", parameters);
             return base.CreateQuery<FilmTransaction>("GetFilmTransactionsByDate", parameters, false, true);
+        }
+        
+        /// <summary>
+        /// Gets an EntityQuery instance that can be used to load <see cref="FixedPatternPerformanceRow"/> entity instances using the 'GetFixedPatternPerformanceReport' query.
+        /// </summary>
+        /// <param name="fpNo">The value for the 'fpNo' parameter of the query.</param>
+        /// <returns>An EntityQuery that can be loaded to retrieve <see cref="FixedPatternPerformanceRow"/> entity instances.</returns>
+        public EntityQuery<FixedPatternPerformanceRow> GetFixedPatternPerformanceReportQuery(string fpNo)
+        {
+            Dictionary<string, object> parameters = new Dictionary<string, object>();
+            parameters.Add("fpNo", fpNo);
+            this.ValidateMethod("GetFixedPatternPerformanceReportQuery", parameters);
+            return base.CreateQuery<FixedPatternPerformanceRow>("GetFixedPatternPerformanceReport", parameters, false, true);
         }
         
         /// <summary>
@@ -6886,6 +7677,19 @@ namespace RadiologyTracking.Web.Services
         }
         
         /// <summary>
+        /// Gets an EntityQuery instance that can be used to load <see cref="RGReportRow"/> entity instances using the 'GetRGReportRowsByFPNo' query.
+        /// </summary>
+        /// <param name="fpNo">The value for the 'fpNo' parameter of the query.</param>
+        /// <returns>An EntityQuery that can be loaded to retrieve <see cref="RGReportRow"/> entity instances.</returns>
+        public EntityQuery<RGReportRow> GetRGReportRowsByFPNoQuery(string fpNo)
+        {
+            Dictionary<string, object> parameters = new Dictionary<string, object>();
+            parameters.Add("fpNo", fpNo);
+            this.ValidateMethod("GetRGReportRowsByFPNoQuery", parameters);
+            return base.CreateQuery<RGReportRow>("GetRGReportRowsByFPNo", parameters, false, true);
+        }
+        
+        /// <summary>
         /// Gets an EntityQuery instance that can be used to load <see cref="RGReport"/> entity instances using the 'GetRGReports' query.
         /// </summary>
         /// <param name="RGReportNo">The value for the 'RGReportNo' parameter of the query.</param>
@@ -6911,6 +7715,19 @@ namespace RadiologyTracking.Web.Services
             parameters.Add("toDate", toDate);
             this.ValidateMethod("GetRGReportsByDateQuery", parameters);
             return base.CreateQuery<RGReport>("GetRGReportsByDate", parameters, false, true);
+        }
+        
+        /// <summary>
+        /// Gets an EntityQuery instance that can be used to load <see cref="RGReport"/> entity instances using the 'GetRGReportsByFPNo' query.
+        /// </summary>
+        /// <param name="fpNo">The value for the 'fpNo' parameter of the query.</param>
+        /// <returns>An EntityQuery that can be loaded to retrieve <see cref="RGReport"/> entity instances.</returns>
+        public EntityQuery<RGReport> GetRGReportsByFPNoQuery(string fpNo)
+        {
+            Dictionary<string, object> parameters = new Dictionary<string, object>();
+            parameters.Add("fpNo", fpNo);
+            this.ValidateMethod("GetRGReportsByFPNoQuery", parameters);
+            return base.CreateQuery<RGReport>("GetRGReportsByFPNo", parameters, false, true);
         }
         
         /// <summary>
@@ -7176,6 +7993,27 @@ namespace RadiologyTracking.Web.Services
             QueryResult<FilmSize> EndGetFilmSizes(IAsyncResult result);
             
             /// <summary>
+            /// Asynchronously invokes the 'GetFilmStockReport' operation.
+            /// </summary>
+            /// <param name="foundryId">The value for the 'foundryId' parameter of this action.</param>
+            /// <param name="fromDate">The value for the 'fromDate' parameter of this action.</param>
+            /// <param name="toDate">The value for the 'toDate' parameter of this action.</param>
+            /// <param name="callback">Callback to invoke on completion.</param>
+            /// <param name="asyncState">Optional state object.</param>
+            /// <returns>An IAsyncResult that can be used to monitor the request.</returns>
+            [FaultContract(typeof(DomainServiceFault), Action="http://tempuri.org/RadiologyService/GetFilmStockReportDomainServiceFault", Name="DomainServiceFault", Namespace="DomainServices")]
+            [OperationContract(AsyncPattern=true, Action="http://tempuri.org/RadiologyService/GetFilmStockReport", ReplyAction="http://tempuri.org/RadiologyService/GetFilmStockReportResponse")]
+            [WebGet()]
+            IAsyncResult BeginGetFilmStockReport(int foundryId, DateTime fromDate, DateTime toDate, AsyncCallback callback, object asyncState);
+            
+            /// <summary>
+            /// Completes the asynchronous operation begun by 'BeginGetFilmStockReport'.
+            /// </summary>
+            /// <param name="result">The IAsyncResult returned from 'BeginGetFilmStockReport'.</param>
+            /// <returns>The 'QueryResult' returned from the 'GetFilmStockReport' operation.</returns>
+            QueryResult<FilmStockReportRow> EndGetFilmStockReport(IAsyncResult result);
+            
+            /// <summary>
             /// Asynchronously invokes the 'GetFilmTransactions' operation.
             /// </summary>
             /// <param name="callback">Callback to invoke on completion.</param>
@@ -7212,6 +8050,26 @@ namespace RadiologyTracking.Web.Services
             /// <param name="result">The IAsyncResult returned from 'BeginGetFilmTransactionsByDate'.</param>
             /// <returns>The 'QueryResult' returned from the 'GetFilmTransactionsByDate' operation.</returns>
             QueryResult<FilmTransaction> EndGetFilmTransactionsByDate(IAsyncResult result);
+            
+            /// <summary>
+            /// Asynchronously invokes the 'GetFixedPatternPerformanceReport' operation.
+            /// </summary>
+            /// <param name="fpNo">The value for the 'fpNo' parameter of this action.</param>
+            /// <param name="callback">Callback to invoke on completion.</param>
+            /// <param name="asyncState">Optional state object.</param>
+            /// <returns>An IAsyncResult that can be used to monitor the request.</returns>
+            [FaultContract(typeof(DomainServiceFault), Action="http://tempuri.org/RadiologyService/GetFixedPatternPerformanceReportDomainService" +
+                "Fault", Name="DomainServiceFault", Namespace="DomainServices")]
+            [OperationContract(AsyncPattern=true, Action="http://tempuri.org/RadiologyService/GetFixedPatternPerformanceReport", ReplyAction="http://tempuri.org/RadiologyService/GetFixedPatternPerformanceReportResponse")]
+            [WebGet()]
+            IAsyncResult BeginGetFixedPatternPerformanceReport(string fpNo, AsyncCallback callback, object asyncState);
+            
+            /// <summary>
+            /// Completes the asynchronous operation begun by 'BeginGetFixedPatternPerformanceReport'.
+            /// </summary>
+            /// <param name="result">The IAsyncResult returned from 'BeginGetFixedPatternPerformanceReport'.</param>
+            /// <returns>The 'QueryResult' returned from the 'GetFixedPatternPerformanceReport' operation.</returns>
+            QueryResult<FixedPatternPerformanceRow> EndGetFixedPatternPerformanceReport(IAsyncResult result);
             
             /// <summary>
             /// Asynchronously invokes the 'GetFixedPatterns' operation.
@@ -7365,6 +8223,25 @@ namespace RadiologyTracking.Web.Services
             QueryResult<RGReportRow> EndGetRGReportRows(IAsyncResult result);
             
             /// <summary>
+            /// Asynchronously invokes the 'GetRGReportRowsByFPNo' operation.
+            /// </summary>
+            /// <param name="fpNo">The value for the 'fpNo' parameter of this action.</param>
+            /// <param name="callback">Callback to invoke on completion.</param>
+            /// <param name="asyncState">Optional state object.</param>
+            /// <returns>An IAsyncResult that can be used to monitor the request.</returns>
+            [FaultContract(typeof(DomainServiceFault), Action="http://tempuri.org/RadiologyService/GetRGReportRowsByFPNoDomainServiceFault", Name="DomainServiceFault", Namespace="DomainServices")]
+            [OperationContract(AsyncPattern=true, Action="http://tempuri.org/RadiologyService/GetRGReportRowsByFPNo", ReplyAction="http://tempuri.org/RadiologyService/GetRGReportRowsByFPNoResponse")]
+            [WebGet()]
+            IAsyncResult BeginGetRGReportRowsByFPNo(string fpNo, AsyncCallback callback, object asyncState);
+            
+            /// <summary>
+            /// Completes the asynchronous operation begun by 'BeginGetRGReportRowsByFPNo'.
+            /// </summary>
+            /// <param name="result">The IAsyncResult returned from 'BeginGetRGReportRowsByFPNo'.</param>
+            /// <returns>The 'QueryResult' returned from the 'GetRGReportRowsByFPNo' operation.</returns>
+            QueryResult<RGReportRow> EndGetRGReportRowsByFPNo(IAsyncResult result);
+            
+            /// <summary>
             /// Asynchronously invokes the 'GetRGReports' operation.
             /// </summary>
             /// <param name="RGReportNo">The value for the 'RGReportNo' parameter of this action.</param>
@@ -7402,6 +8279,25 @@ namespace RadiologyTracking.Web.Services
             /// <param name="result">The IAsyncResult returned from 'BeginGetRGReportsByDate'.</param>
             /// <returns>The 'QueryResult' returned from the 'GetRGReportsByDate' operation.</returns>
             QueryResult<RGReport> EndGetRGReportsByDate(IAsyncResult result);
+            
+            /// <summary>
+            /// Asynchronously invokes the 'GetRGReportsByFPNo' operation.
+            /// </summary>
+            /// <param name="fpNo">The value for the 'fpNo' parameter of this action.</param>
+            /// <param name="callback">Callback to invoke on completion.</param>
+            /// <param name="asyncState">Optional state object.</param>
+            /// <returns>An IAsyncResult that can be used to monitor the request.</returns>
+            [FaultContract(typeof(DomainServiceFault), Action="http://tempuri.org/RadiologyService/GetRGReportsByFPNoDomainServiceFault", Name="DomainServiceFault", Namespace="DomainServices")]
+            [OperationContract(AsyncPattern=true, Action="http://tempuri.org/RadiologyService/GetRGReportsByFPNo", ReplyAction="http://tempuri.org/RadiologyService/GetRGReportsByFPNoResponse")]
+            [WebGet()]
+            IAsyncResult BeginGetRGReportsByFPNo(string fpNo, AsyncCallback callback, object asyncState);
+            
+            /// <summary>
+            /// Completes the asynchronous operation begun by 'BeginGetRGReportsByFPNo'.
+            /// </summary>
+            /// <param name="result">The IAsyncResult returned from 'BeginGetRGReportsByFPNo'.</param>
+            /// <returns>The 'QueryResult' returned from the 'GetRGReportsByFPNo' operation.</returns>
+            QueryResult<RGReport> EndGetRGReportsByFPNo(IAsyncResult result);
             
             /// <summary>
             /// Asynchronously invokes the 'GetRGRowTypes' operation.
@@ -7545,16 +8441,20 @@ namespace RadiologyTracking.Web.Services
                 this.CreateEntitySet<Direction>(EntitySetOperations.None);
                 this.CreateEntitySet<Energy>(EntitySetOperations.All);
                 this.CreateEntitySet<FilmSize>(EntitySetOperations.All);
+                this.CreateEntitySet<FilmStockReportRow>(EntitySetOperations.None);
                 this.CreateEntitySet<FilmTransaction>(EntitySetOperations.All);
                 this.CreateEntitySet<FixedPattern>(EntitySetOperations.All);
+                this.CreateEntitySet<FixedPatternPerformanceRow>(EntitySetOperations.None);
                 this.CreateEntitySet<FixedPatternTemplate>(EntitySetOperations.All);
                 this.CreateEntitySet<Foundry>(EntitySetOperations.All);
                 this.CreateEntitySet<FPTemplateRow>(EntitySetOperations.All);
+                this.CreateEntitySet<LocationClass>(EntitySetOperations.None);
                 this.CreateEntitySet<Remark>(EntitySetOperations.None);
                 this.CreateEntitySet<RGReport>((EntitySetOperations.Edit | EntitySetOperations.Remove));
                 this.CreateEntitySet<RGReportRow>(EntitySetOperations.All);
                 this.CreateEntitySet<RGReportRowType>(EntitySetOperations.None);
                 this.CreateEntitySet<RGStatus>(EntitySetOperations.None);
+                this.CreateEntitySet<SegmentClass>(EntitySetOperations.None);
                 this.CreateEntitySet<Shift>(EntitySetOperations.None);
                 this.CreateEntitySet<Technician>(EntitySetOperations.All);
                 this.CreateEntitySet<ThicknessRangeForEnergy>(EntitySetOperations.All);

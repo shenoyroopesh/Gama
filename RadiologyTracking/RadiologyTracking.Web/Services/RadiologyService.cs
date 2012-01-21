@@ -15,6 +15,7 @@ namespace RadiologyTracking.Web.Services
     using System.ServiceModel.DomainServices.EntityFramework;
     using System.Data.Entity;
     using System.Web.Security;
+    using System.Collections;
 
     [EnableClientAccess()]
     [RequiresAuthentication()]
@@ -309,8 +310,8 @@ namespace RadiologyTracking.Web.Services
             fromDate = fromDate.Date;
             toDate = toDate.Date.AddDays(1);
             return this.DbContext.FilmTransactions.Where(p =>
-                                                            p.Date >= fromDate  &&
-                                                                p.Date <= toDate );
+                                                            p.Date >= fromDate &&
+                                                                p.Date <= toDate).OrderBy(p => p.Date);
         }
 
         public void InsertFilmTransaction(FilmTransaction entity)
@@ -353,20 +354,20 @@ namespace RadiologyTracking.Web.Services
         /// <param name="fromDate"></param>
         /// <param name="toDate"></param>
         /// <returns></returns>
-        public IQueryable GetFilmStockReport(Foundry foundry, DateTime fromDate, DateTime toDate)
+        public IEnumerable<FilmStockReportRow> GetFilmStockReport(int foundryId, DateTime fromDate, DateTime toDate)
         {
             var sentToHO = this.DbContext.Directions.Single(p => p.Value == "SENT_TO_HO");
 
-            var transactions = this.DbContext.FilmTransactions.Where(p => p.Foundry.Equals(foundry))
+            var transactions = this.DbContext.FilmTransactions.Where(p => p.FoundryID.Equals(foundryId))
                 .Select(p => new
                 {
                     Date = p.Date,
-                    SentToHO = p.Direction == sentToHO ? p.Area : 0,
+                    SentToHO = p.Direction.ID == sentToHO.ID ? p.Area : 0,
                     Consumed = 0,
-                    ReceivedFromHO = p.Direction == sentToHO ? 0 : p.Area
+                    ReceivedFromHO = p.Direction.ID == sentToHO.ID ? 0 : p.Area
                 });
 
-            var consumptions = this.DbContext.RGReportRows.Where(p => p.RGReport.FixedPattern.Customer.Foundry.Equals(foundry))
+            var consumptions = this.DbContext.RGReportRows.Where(p => p.RGReport.FixedPattern.Customer.FoundryID.Equals(foundryId))
                                                             .Select(p => new
                                                             {
                                                                 Date = p.RGReport.ReportDate,
@@ -375,10 +376,10 @@ namespace RadiologyTracking.Web.Services
                                                                 ReceivedFromHO = 0
                                                             });
 
-            var all = transactions.Union(consumptions);
+            var all = transactions.Union(consumptions).ToList();
 
             var allByDate = from a in all
-                            group a by a.Date into g
+                            group a by a.Date.Date into g
                             select new
                             {
                                 Date = g.Key,
@@ -391,31 +392,33 @@ namespace RadiologyTracking.Web.Services
 
             var openingStockonFromDate = allByDate.Where(p => p.Date < fromDate).Sum(p => p.ReceivedFromHO - p.SentToHO - p.Consumed);
 
-            var stock = from r in allByDateInSpan
-                        //opening stock for each date, since openingStockonFromDate is calculated at one shot, remaining should be fast enough
-                        let openingStock = openingStockonFromDate + allByDateInSpan
-                                                                    .Where(p => p.Date < r.Date)
-                                                                    .Sum(p => p.ReceivedFromHO - p.SentToHO - p.Consumed)
-                        select new
-                        {
-                            Date = r.Date,
-                            OpeningStock = openingStock,
-                            SentToHO = r.SentToHO,
-                            Consumed = r.Consumed,
-                            ReceivedFromHO = r.ReceivedFromHO,
-                            ClosingStock = openingStock + r.ReceivedFromHO - r.SentToHO - r.Consumed
-                        };
+            var stock = (from r in allByDateInSpan
+                         //opening stock for each date, since openingStockonFromDate is calculated at one shot, remaining should be fast enough
+                         let openingStock = openingStockonFromDate + allByDateInSpan
+                                                                     .Where(p => p.Date < r.Date)
+                                                                     .Sum(p => p.ReceivedFromHO - p.SentToHO - p.Consumed)
+                         select new FilmStockReportRow
+                         {
+                             ID = Guid.NewGuid(), //just to ensure rows are unique
+                             Date = r.Date,
+                             OpeningStock = openingStock,
+                             SentToHO = r.SentToHO,
+                             Consumed = r.Consumed,
+                             ReceivedFromHO = r.ReceivedFromHO,
+                             ClosingStock = openingStock + r.ReceivedFromHO - r.SentToHO - r.Consumed
+                         }).OrderBy(p => p.Date);
 
             return stock;
         }
 
-        public IQueryable GetFilmConsumptionReport(DateTime fromDate, DateTime toDate)
+        public IQueryable GetFilmConsumptionReport(int foundryId, DateTime fromDate, DateTime toDate)
         {
             return from r in this.DbContext.RGReportRows
+                   where r.RGReport.FixedPattern.Customer.FoundryID == foundryId
                    group r by new { r.RGReport, r.Energy, r.FilmSize, r.RowType } into g
                    select new
                    {
-                       Report = g.Key.RGReport,
+                       Report = g.Key.RGReport.RTNo,
                        Energy = g.Key.Energy,
                        FilmSize = g.Key.FilmSize,
                        RowType = g.Key.RowType,
@@ -465,33 +468,69 @@ namespace RadiologyTracking.Web.Services
                 this.DbContext.FixedPatterns.Remove(entity);
             }
         }
-        
 
-        public IQueryable GetFixedPatternPerformanceReport(String fpNo)
+
+        public IEnumerable<FixedPatternPerformanceRow> GetFixedPatternPerformanceReport(string fpNo)
         {
-            return from r in this.DbContext.RGReportRows
-                   where r.RGReport.FixedPattern.FPNo == fpNo
-                   group r by new { r.RGReport.RTNo, r.RGReport.ReportDate } into g
-                   select new
-                   {
-                       RTNo = g.Key.RTNo,
-                       Date = g.Key.ReportDate,
-                       Locations = from rep in g
-                                   group rep by new { rep.Location, rep.Segment, rep.Observations } into repg
-                                   select new
-                                   {
-                                       Location = repg.Key.Location,
-                                       Segments = from row in repg
-                                                  group repg by new { repg.Key.Segment, repg.Key.Observations } into segg
-                                                  select new
-                                                  {
-                                                      Segment = segg.Key,
-                                                      Observations = String.Join(",", segg.Key.Observations
-                                                                                        .Select(p => p.ToString())
-                                                                                        .ToList())
-                                                  }
-                                   }
-                   };
+            var ctx = this.DbContext;
+
+            //fetch required rows from database first, then form the complex object - linq to entities doesn't support
+            //creating complex objects directly
+            var rows = (from r in ctx.RGReportRows
+                       where r.RGReport != null &&
+                       r.RGReport.FixedPattern.FPNo == fpNo
+                       select new
+                       {
+                           RTNo = r.RGReport.RTNo,
+                           ReportDate = r.RGReport.ReportDate,
+                           Location = r.Location,
+                           Segment = r.Segment,
+                           Observations = r.Observations
+                       }).ToList();
+
+
+            var report = (from r in rows
+                         orderby r.RTNo, r.ReportDate
+                         group r by new { r.RTNo, r.ReportDate } into g
+                         select new FixedPatternPerformanceRow
+                         {
+                             ID = Guid.NewGuid(),
+                             RTNo = g.Key.RTNo,
+                             Date = g.Key.ReportDate,
+                             Locations = (from rep in g
+                                         group rep by new { rep.Location } into repg
+                                         select new LocationClass
+                                         {
+                                             ID = Guid.NewGuid(),
+                                             Location = repg.Key.Location,
+                                             Segments = (from row in repg.Select(p => new { p.Segment, p.Observations }).ToArray()
+                                                        group row by new { row.Segment, row.Observations } into segg
+                                                        select new SegmentClass
+                                                        {
+                                                            ID = Guid.NewGuid(),
+                                                            Segment = segg.Key.Segment,
+                                                            Observations = segg.Key.Observations
+                                                        }).ToList()
+                                         }).ToList()
+                         }).ToList();
+
+            #region update the guids for childs
+
+            foreach(var row in report)
+            {
+                foreach (var loc in row.Locations)
+                {
+                    loc.FixedPatternPerformanceRowID = row.ID;
+                    foreach (var seg in loc.Segments)
+                    {
+                        seg.LocationID = loc.ID;
+                    }
+                }
+            }
+
+            #endregion
+
+            return report;
         }
 
         #endregion
@@ -673,9 +712,8 @@ namespace RadiologyTracking.Web.Services
 
         public IQueryable<RGReport> GetRGReports(String RGReportNo)
         {
-            var report = this.DbContext.RGReports.Include(p => p.RGReportRows.Select(r => r.Remark))
+            return this.DbContext.RGReports.Include(p => p.RGReportRows.Select(r => r.Remark))
                                             .Where(p => p.ReportNo == RGReportNo);
-            return report;
         }
 
         public IQueryable<RGReport> GetRGReportsByDate(DateTime fromDate, DateTime toDate)
@@ -686,6 +724,13 @@ namespace RadiologyTracking.Web.Services
             return this.DbContext.RGReports.Where(p =>
                                                     p.ReportDate >= fromDate &&
                                                     p.ReportDate <= toDate);
+        }
+
+
+        public IQueryable<RGReport> GetRGReportsByFPNo(String fpNo)
+        {
+            return this.DbContext.RGReports.Include(p => p.FixedPattern)
+                                            .Where(p => p.FixedPattern.FPNo == fpNo);
         }
 
         public RGReport GetNewRGReport(String strFPNo, String strCoverage, String rtNo)
@@ -781,8 +826,7 @@ namespace RadiologyTracking.Web.Services
         }
 
         #endregion
-
-
+        
         #region RGRowTypes
 
         public IQueryable<RGReportRowType> GetRGRowTypes()
@@ -796,6 +840,11 @@ namespace RadiologyTracking.Web.Services
         public IQueryable<RGReportRow> GetRGReportRows()
         {
             return this.DbContext.RGReportRows;
+        }
+
+        public IQueryable<RGReportRow> GetRGReportRowsByFPNo(string fpNo)
+        {
+            return this.DbContext.RGReportRows.Where(p => p.RGReport.FixedPattern.FPNo == fpNo);
         }
 
         public void InsertRGReportRow(RGReportRow entity)

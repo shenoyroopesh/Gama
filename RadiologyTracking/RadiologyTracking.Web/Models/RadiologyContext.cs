@@ -39,5 +39,13 @@ namespace RadiologyTracking.Web.Models
         public DbSet<Technician> Technicians { get; set; }
         public DbSet<Welder> Welders { get; set; }
         public DbSet<ThicknessRangeForEnergy> ThicknessRangesForEnergy { get; set; }
+
+        //following are added only for reports, though they will create a few empty tables in the db, there
+        //is no way around it for now. This is the path of least resistance
+
+        public DbSet<FilmStockReportRow> FilmStockReportRows { get; set; }
+        public DbSet<LocationClass> Locations { get; set; }
+        public DbSet<SegmentClass> Segments { get; set; }
+        public DbSet<FixedPatternPerformanceRow> FixedPatternPerformanceRows { get; set; }
     }
 }

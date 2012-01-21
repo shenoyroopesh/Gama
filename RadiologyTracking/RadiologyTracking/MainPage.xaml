@@ -90,11 +90,17 @@
                             <Rectangle x:Name="Divider11" Style="{StaticResource DividerStyle}"/>
                             <HyperlinkButton x:Name="Link13" Style="{StaticResource LinkStyle}" 
                                      NavigateUri="/Welders" TargetName="ContentFrame" Content="Welders"/>
+                            <Rectangle x:Name="Divider12" Style="{StaticResource DividerStyle}"/>
+                            <HyperlinkButton x:Name="Link14" Style="{StaticResource LinkStyle}" 
+                                     NavigateUri="/FixedPatternPerformance" TargetName="ContentFrame" Content="FP Performance"/>
+                            <Rectangle x:Name="Divider13" Style="{StaticResource DividerStyle}"/>
+                            <HyperlinkButton x:Name="Link15" Style="{StaticResource LinkStyle}" 
+                                     NavigateUri="/FilmStockReport" TargetName="ContentFrame" Content="Film Stock Report"/>
                         </StackPanel>
                     </StackPanel>
                 </Border>
             </Grid>
-            <Border Style="{StaticResource LoginContainerStyle}">
+            <Border Style="{StaticResource LoginContainerStyle}" >
                 <login:LoginStatus/>
             </Border>
         </Grid>

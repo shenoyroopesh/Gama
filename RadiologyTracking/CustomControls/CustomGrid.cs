@@ -145,7 +145,11 @@ namespace Vagsons.Controls
 
         protected override void OnKeyDown(KeyEventArgs e)
         {
-            if (e.Key == Key.V && (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
+            if (this.IsReadOnly)
+            {
+                base.OnKeyDown(e);
+            }
+            else if (e.Key == Key.V && (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
             {
                 string text = copiedText;
 

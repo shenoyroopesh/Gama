@@ -57,8 +57,7 @@ namespace RadiologyTracking.Web.Models
                     var filmsizes = ctx.FilmSizes.Where(p => p.Height == height && p.Width == width);
                     if (filmsizes.Count() > 0)
                     {
-                        this.FilmSize = filmsizes.First();
-                        if(this.FilmSize !=null) this.FilmSizeID = this.FilmSize.ID;
+                        this.FilmSizeID = filmsizes.First().ID;
                     }
                 }
             }

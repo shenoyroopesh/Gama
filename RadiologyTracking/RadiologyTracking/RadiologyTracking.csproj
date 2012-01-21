@@ -62,6 +62,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Data.Services.Client, Version=5.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Windows" />
     <Reference Include="mscorlib" />
@@ -113,6 +114,7 @@
       <DependentUpon>ErrorResources.resx</DependentUpon>
     </Compile>
     <Compile Include="Controls\DateFormatter.cs" />
+    <Compile Include="DataGridExtensions.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Models\LoginInfo.cs" />
     <Compile Include="Models\User.partial.cs" />
@@ -132,6 +134,12 @@
     <Compile Include="Views\BaseCRUDView.cs" />
     <Compile Include="Views\Company.xaml.cs">
       <DependentUpon>Company.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\FilmStockReport.xaml.cs">
+      <DependentUpon>FilmStockReport.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\FixedPatternPerformance.xaml.cs">
+      <DependentUpon>FixedPatternPerformance.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Welders.xaml.cs">
       <DependentUpon>Welders.xaml</DependentUpon>
@@ -215,6 +223,14 @@
     <Page Include="Views\Company.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\FilmStockReport.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\FixedPatternPerformance.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Welders.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -339,6 +355,10 @@
     <None Include="Properties\OutOfBrowserSettings.xml" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\BindableDataGrid\BindableDataGrid.csproj">
+      <Project>{53277F89-C6C2-4C57-939E-4ECB23EAE4BD}</Project>
+      <Name>BindableDataGrid</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ComboBoxExtensions\ComboBoxExtensions.csproj">
       <Project>{4B47504F-AC43-4A3E-9990-FA1183CD1F1F}</Project>
       <Name>ComboBoxExtensions</Name>
