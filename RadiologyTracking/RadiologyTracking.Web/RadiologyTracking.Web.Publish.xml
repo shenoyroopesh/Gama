@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<publishData>
+  <publishProfile publishUrl="D:\DotNet\DeploymentFolder\BUILD1" deleteExistingFiles="True" ftpAnonymousLogin="False" ftpPassiveMode="True" msdeploySite="" msdeploySiteID="" msdeployRemoteSitePhysicalPath="" msdeployAllowUntrustedCertificate="False" msdeploySkipExtraFilesOnServer="True" msdeployMarkAsApp="False" profileName="Profile1" publishMethod="FileSystem" replaceMatchingFiles="False" userName="" savePWD="False" userPWD="" SelectedForPublish="True">
+    <file relUrl="RadiologyTrackingTestPage.html" publishTime="01/04/2012 20:11:08" />
+    <file relUrl="bin/EntityFramework.dll" publishTime="01/07/2012 23:59:37" />
+    <file relUrl="packages.config" publishTime="01/17/2012 22:14:21" />
+    <file relUrl="bin/RadiologyTracking.Web.dll" publishTime="01/24/2012 01:56:20" />
+    <file relUrl="bin/Microsoft.ServiceModel.DomainServices.EntityFramework.dll" publishTime="01/07/2012 23:59:37" />
+    <file relUrl="bin/EntityFramework.Migrations.dll" publishTime="01/17/2012 22:14:12" />
+    <file relUrl="bin/EntityFramework.xml" publishTime="01/07/2012 23:59:37" />
+    <file relUrl="RadiologyTrackingTestPage.aspx" publishTime="01/04/2012 20:11:08" />
+    <file relUrl="bin/RadiologyTracking.Web.pdb" publishTime="01/24/2012 01:56:20" />
+    <file relUrl="Web.config" publishTime="01/24/2012 02:00:06" />
+    <file relUrl="Global.asax" publishTime="01/09/2012 14:51:33" />
+    <file relUrl="Silverlight.js" publishTime="01/04/2012 20:11:08" />
+    <file relUrl="ClientBin/RadiologyTracking.xap" publishTime="01/24/2012 01:56:26" />
+  </publishProfile>
+</publishData>

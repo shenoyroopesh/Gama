@@ -69,10 +69,8 @@
                     </sdk:DataGrid.Columns>
                 </custom:CustomGrid>
             </local:BusyIndicator>
-            <StackPanel Orientation="Horizontal" Height="23" Margin="0,20,0,0" HorizontalAlignment="Center">
-                <Button Margin="100,0,0,0" Name="btnAdd" VerticalAlignment="Top" Width="75" Style="{StaticResource AddButtonStyle}"
-                        Content="Enter New Report"/>
-            </StackPanel>
+            <Button Margin="20" Name="btnAdd" Width="75" Style="{StaticResource AddButtonStyle}"
+                    HorizontalAlignment="Right"/>
         </StackPanel>
     </Grid>
 </views:BaseCRUDView>

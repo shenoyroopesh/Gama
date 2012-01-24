@@ -21,13 +21,17 @@ namespace Vagsons.Controls
 
         public CustomGrid():base()
         {
-            this.RowEditEnded += new EventHandler<DataGridRowEditEndedEventArgs>(CustomGrid_RowEditEnded);
-            this.BeginningEdit += new EventHandler<DataGridBeginningEditEventArgs>(CustomGrid_BeginningEdit);
-            this.MouseLeave += new MouseEventHandler(CustomGrid_MouseLeave);
-            this.MouseEnter += new MouseEventHandler(CustomGrid_MouseEnter);
-            this.MouseLeftButtonUp += new MouseButtonEventHandler(CustomGrid_MouseLeftButtonUp);
-            this.LoadingRow += new EventHandler<DataGridRowEventArgs>(CustomGrid_LoadingRow);
-            this.GotFocus += new RoutedEventHandler(CustomGrid_GotFocus);
+            //no point in adding these event handlers if the grid is readonly
+            if (!this.IsReadOnly)
+            {
+                this.RowEditEnded += new EventHandler<DataGridRowEditEndedEventArgs>(CustomGrid_RowEditEnded);
+                this.BeginningEdit += new EventHandler<DataGridBeginningEditEventArgs>(CustomGrid_BeginningEdit);
+                this.MouseLeave += new MouseEventHandler(CustomGrid_MouseLeave);
+                this.MouseEnter += new MouseEventHandler(CustomGrid_MouseEnter);
+                this.MouseLeftButtonUp += new MouseButtonEventHandler(CustomGrid_MouseLeftButtonUp);
+                this.LoadingRow += new EventHandler<DataGridRowEventArgs>(CustomGrid_LoadingRow);
+                this.GotFocus += new RoutedEventHandler(CustomGrid_GotFocus);
+            }
             this.AutoGenerateColumns = false;
         }
 
@@ -185,12 +189,17 @@ namespace Vagsons.Controls
                     base.OnKeyDown(e);
             }
             else if (!(new List<Key>(){Key.Enter, Key.Escape, Key.F2, Key.Escape, Key.Right, Key.Left, Key.Up, 
-                                       Key.Down, Key.Ctrl, Key.Shift, Key.Alt, Key.Unknown}).Contains(e.Key))
+                                       Key.Down, Key.Ctrl, Key.Shift, Key.Alt, Key.Unknown, Key.Tab,
+                                        Key.Back, Key.Insert, Key.Home, Key.End, Key.PageDown, Key.PageUp,
+                                        Key.Delete}).Contains(e.Key))
             {
                 //any other key, start editing
                 bool isShifty = ((Keyboard.Modifiers & ModifierKeys.Shift) == ModifierKeys.Shift);
                 string letter = e.Key.ToString();
                 letter = letter.ToLower().Replace("numpad", ""); //remove 'numpad' if it appears
+                //if D+ number (d9 for eg) appears, replace it
+                if (letter.Length > 1) letter = letter.ToLower().Replace("d", "");
+
                 letter = (isShifty ? letter.ToUpper() : letter.ToLower());
                 this.Tag = letter;
 

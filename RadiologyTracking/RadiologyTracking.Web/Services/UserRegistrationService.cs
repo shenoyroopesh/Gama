@@ -29,8 +29,7 @@
         /// Role to which users will be added by default.
         /// </summary>
         public const string DefaultRole = "Registered Users";
-
-
+        
         public IQueryable GetUsers(string filter)
         {
             return Membership.GetAllUsers().Cast<MembershipUser>()
@@ -43,6 +42,8 @@
         /// <param name="user">The registration information for this user.</param>
         /// <param name="password">The password for the new user.</param>
         [Invoke(HasSideEffects = true)]
+        [RequiresAuthentication]
+        [RequiresRole("admin")]
         public CreateUserStatus CreateUser(RegistrationData user,
             [Required(ErrorMessageResourceName = "ValidationErrorRequiredField", ErrorMessageResourceType = typeof(ValidationErrorResources))]
             [RegularExpression("^.*[^a-zA-Z0-9].*$", ErrorMessageResourceName = "ValidationErrorBadPasswordStrength", ErrorMessageResourceType = typeof(ValidationErrorResources))]
@@ -72,9 +73,12 @@
                 return UserRegistrationService.ConvertStatus(createStatus);
             }
 
-            // Assign the user to the default role.
+            // Assign the user to the default role if the given role does not exist
             // This will fail if role management is disabled.
-            Roles.AddUserToRole(user.UserName, UserRegistrationService.DefaultRole);
+            if (Roles.RoleExists(user.Role))
+                Roles.AddUserToRole(user.UserName, user.Role);
+            else 
+                Roles.AddUserToRole(user.UserName, UserRegistrationService.DefaultRole);
 
             // Set the friendly name (profile setting).
             // This will fail if the web.config is configured incorrectly.
@@ -112,6 +116,15 @@
             {
                 String resetPwd = membershipUser.ResetPassword();
                 membershipUser.ChangePassword(resetPwd, password);
+            }
+
+            if (Roles.RoleExists(user.Role))
+            {
+                foreach (var role in Roles.GetRolesForUser(user.UserName))
+                {
+                    Roles.RemoveUserFromRole(user.UserName, role);
+                }
+                Roles.AddUserToRole(user.UserName, user.Role);
             }
 
             // Set the friendly name (profile setting).

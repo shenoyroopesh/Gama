@@ -9,13 +9,24 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
     mc:Ignorable="d"
-    d:DataContext="{d:DesignInstance Type=web:RegistrationData}">
+    d:DataContext="{d:DesignInstance Type=web:RegistrationData}"
+    xmlns:riaControls="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.DomainServices" 
+    xmlns:my="clr-namespace:RadiologyTracking.Web.Models" xmlns:my1="clr-namespace:RadiologyTracking.Web.Services" 
+    xmlns:sdk="http://schemas.microsoft.com/winfx/2006/xaml/presentation/sdk"
+    xmlns:custom="clr-namespace:Vagsons.Controls;assembly=CustomControls"
+    xmlns:ex="clr-namespace:ComboBoxExtensions;assembly=ComboBoxExtensions"
+    xmlns:views="clr-namespace:RadiologyTracking.Views">
 
+    <StackPanel.Resources>
+        <my1:RadiologyContext x:Key="RadiologyContext" />
+        <ex:ComboBoxDataSource x:Key="FoundryDataSource" DomainContext="{StaticResource RadiologyContext}" OperationName="GetFoundriesQuery" />
+    </StackPanel.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
+        <riaControls:DomainDataSource Name="DomainSource" DomainContext="{StaticResource RadiologyContext}" />
 
         <local:BusyIndicator x:Name="busyIndicator" BusyContent="{Binding Path=Strings.BusyIndicatorRegisteringUser, Source={StaticResource ApplicationResources}}"
                              IsBusy="{Binding IsRegistering}">
@@ -28,15 +39,11 @@
                               Style="{StaticResource DataFormStyle}" />
         </local:BusyIndicator>
 
-        <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,10,0">
+        <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,10,0">
             <Button x:Name="registerButton" Content="{Binding Path=Strings.OKButton, Source={StaticResource ApplicationResources}}" Click="RegisterButton_Click" Style="{StaticResource RegisterLoginButtonStyle}" IsEnabled="{Binding IsRegistering, Converter={StaticResource NotOperatorValueConverter}}" />
             <Button x:Name="registerCancel" Content="{Binding Path=Strings.CancelButton, Source={StaticResource ApplicationResources}}" Click="CancelButton_Click" Style="{StaticResource RegisterLoginButtonStyle}" />
         </StackPanel>
 
-        <StackPanel Style="{StaticResource RegisterLoginLinkPanelStyle}" Grid.Row="1">
-            <TextBlock Text="{Binding Path=Strings.AlreadyRegisteredLabel, Source={StaticResource ApplicationResources}}" Style="{StaticResource CommentStyle}" />
-            <HyperlinkButton x:Name="backToLogin" Content="{Binding Path=Strings.BackToLoginButton, Source={StaticResource ApplicationResources}}" Click="BackToLogin_Click" IsEnabled="{Binding IsRegistering, Converter={StaticResource NotOperatorValueConverter}}" />
-        </StackPanel>
     </Grid>
 
 </StackPanel>

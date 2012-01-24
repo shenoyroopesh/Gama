@@ -4,14 +4,15 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    d:DesignHeight="480" d:DesignWidth="640" 
+    d:DesignHeight="600" d:DesignWidth="640" 
     xmlns:riaControls="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.DomainServices" 
     xmlns:my="clr-namespace:RadiologyTracking.Web.Models" xmlns:my1="clr-namespace:RadiologyTracking.Web.Services" 
     xmlns:sdk="http://schemas.microsoft.com/winfx/2006/xaml/presentation/sdk"
     xmlns:custom="clr-namespace:Vagsons.Controls;assembly=CustomControls"
     xmlns:local="clr-namespace:RadiologyTracking.Controls"
     xmlns:ex="clr-namespace:ComboBoxExtensions;assembly=ComboBoxExtensions"
-    xmlns:views="clr-namespace:RadiologyTracking.Views">
+    xmlns:views="clr-namespace:RadiologyTracking.Views"
+    xmlns:dtGrid="clr-namespace:BindableDataGrid;assembly=BindableDataGrid">
 
     <UserControl.Resources>
         <my1:RadiologyContext x:Key="RadiologyContext" />
@@ -67,247 +68,243 @@
 
         <sdk:Label Name="headerLabel" Style="{StaticResource PageHeaderStyle}" Content="ENTER RADIOLOGY REPORT"/>
         <ScrollViewer Margin="0, 50,0,0 ">
-            <StackPanel Margin="50, 0, 50,0" HorizontalAlignment="Center">
-                <StackPanel Orientation="Horizontal" Margin="10">
-                    <StackPanel.Resources>
-                        <Style TargetType="TextBlock" >
-                            <Setter Property="FontWeight" Value="Bold" />
-                            <Setter Property="VerticalAlignment" Value="Center" />
-                        </Style>
-                    </StackPanel.Resources>
-                    <!-- Note that the below controls' isEnabled is bound to negative of whether RGReportsSource has changes, meaning
+            <local:BusyIndicator x:Name="busyIndicator">
+                <StackPanel Margin="50, 0, 50,0" HorizontalAlignment="Center">
+                    <StackPanel Orientation="Horizontal" Margin="10">
+                        <StackPanel.Resources>
+                            <Style TargetType="TextBlock" >
+                                <Setter Property="FontWeight" Value="Bold" />
+                                <Setter Property="VerticalAlignment" Value="Center" />
+                            </Style>
+                        </StackPanel.Resources>
+                        <!-- Note that the below controls' isEnabled is bound to negative of whether RGReportsSource has changes, meaning
                 it will be disabled when there are pending changes-->
-                    <TextBlock Text="FP No"/>
-                    <TextBox Name="txtFPNo" MinWidth="50" Margin="10, 0, 10, 0" 
+                        <TextBlock Text="FP No"/>
+                        <TextBox Name="txtFPNo" MinWidth="50" Margin="10, 0, 10, 0" 
                          IsEnabled="{Binding ElementName=RGReportsSource, Path=HasChanges, 
                                     Converter={StaticResource NotOperatorValueConverter}}"/>
-                    <TextBlock Text="Select Coverage:" Margin="0,0,10,0"/>
-                    <ComboBox Width="100" HorizontalAlignment="Left" Name="cmbCoverage"
+                        <TextBlock Text="Select Coverage:" Margin="0,0,10,0"/>
+                        <ComboBox Width="100" HorizontalAlignment="Left" Name="cmbCoverage"
                           Style="{StaticResource ComboBoxStyle}"
                           IsEnabled="{Binding ElementName=RGReportsSource, Path=HasChanges, 
                                     Converter={StaticResource NotOperatorValueConverter}}"
                           ItemContainerStyle="{StaticResource ComboBoxItemStyle}"
                           ItemsSource="{Binding Source={StaticResource CoveragesSource}, Path=Data}"
                           DisplayMemberPath="CoverageName"/>
-                    <TextBlock Text="RT No" FontWeight="Bold" Margin="10,0,0,0" VerticalAlignment="Center"/>
-                    <TextBox Name="txtRTNo" MinWidth="50" Margin="10, 0, 10, 0" 
+                        <TextBlock Text="RT No" FontWeight="Bold" Margin="10,0,0,0" VerticalAlignment="Center"/>
+                        <TextBox Name="txtRTNo" MinWidth="50" Margin="10, 0, 10, 0" 
                          IsEnabled="{Binding ElementName=RGReportsSource, Path=HasChanges, 
                                     Converter={StaticResource NotOperatorValueConverter}}"/>
-                    <Button Content="Create/Fetch" Click="FetchOperation" Name="btnFetch"/>
-                </StackPanel>
-                <sdk:TabControl Width="Auto" Height="Auto">
-                    <sdk:TabItem Header="Header">
-                        <Grid Margin="10" Width="Auto" HorizontalAlignment="Stretch">
-                            <Grid.Resources>
-                                <Style TargetType="TextBlock">
-                                    <Setter Property="VerticalAlignment" Value="Center" />
-                                </Style>
-                            </Grid.Resources>
-                            <Grid.RowDefinitions>
-                                <RowDefinition></RowDefinition>
-                                <RowDefinition></RowDefinition>
-                                <RowDefinition></RowDefinition>
-                                <RowDefinition Height="20"></RowDefinition>
-                                <RowDefinition></RowDefinition>
-                                <RowDefinition></RowDefinition>
-                                <RowDefinition></RowDefinition>
-                                <RowDefinition></RowDefinition>
-                                <RowDefinition></RowDefinition>
-                                <RowDefinition></RowDefinition>
-                                <RowDefinition></RowDefinition>
-                            </Grid.RowDefinitions>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition></ColumnDefinition>
-                                <ColumnDefinition Width="20"></ColumnDefinition>
-                                <ColumnDefinition></ColumnDefinition>
-                                <ColumnDefinition Width="50"></ColumnDefinition>
-                                <ColumnDefinition></ColumnDefinition>
-                                <ColumnDefinition Width="20"></ColumnDefinition>
-                                <ColumnDefinition></ColumnDefinition>
-                                <ColumnDefinition></ColumnDefinition>
-                            </Grid.ColumnDefinitions>
-                            <TextBlock Text="FP No"  Grid.Column="0" Grid.Row="0" />
-                            <TextBlock Name="lblFPNo" Grid.Column="2" Grid.Row="0" />
-                            <TextBlock Text="Customer" Grid.Column="0" Grid.Row="1" />
-                            <TextBlock Name="lblCustomer" Grid.Column="2" Grid.Row="1" />
-                            <TextBlock Text="Coverage"  Grid.Column="0" Grid.Row="2" />
-                            <TextBlock Name="lblCoverage" Grid.Column="2" Grid.Row="2" />
-                            <TextBlock Text="Description"   Grid.Column="4" Grid.Row="0" />
-                            <TextBlock Name="lblDescription" Grid.Column="6" Grid.Row="0" />
-                            <TextBlock Text="Lead Screen (Front/Black)" TextWrapping="Wrap"   Grid.Column="4" Grid.Row="1" />
-                            <TextBox Name="txtLeadScreen" Grid.Column="6" Grid.Row="1"  />
-                            <TextBlock Text="Source/S.Size"  Grid.Column="4" Grid.Row="2" />
-                            <TextBox Name="txtSourceSize" Grid.Column="6" Grid.Row="2"  />
-                            <TextBlock Name="lblRGReportID" Visibility="Collapsed"/>
-                            <TextBlock Name="lblFixedPatternID" Visibility="Collapsed"/>
+                        <Button Content="Create/Fetch" Click="FetchOperation" Name="btnFetch"/>
+                    </StackPanel>
+                    <Grid Margin="10" Width="Auto" HorizontalAlignment="Stretch">
+                        <Grid.Resources>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="VerticalAlignment" Value="Center" />
+                            </Style>
+                        </Grid.Resources>
+                        <Grid.RowDefinitions>
+                            <RowDefinition></RowDefinition>
+                            <RowDefinition></RowDefinition>
+                            <RowDefinition></RowDefinition>
+                            <RowDefinition Height="20"></RowDefinition>
+                            <RowDefinition></RowDefinition>
+                            <RowDefinition></RowDefinition>
+                            <RowDefinition></RowDefinition>
+                            <RowDefinition></RowDefinition>
+                            <RowDefinition></RowDefinition>
+                            <RowDefinition></RowDefinition>
+                            <RowDefinition></RowDefinition>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition></ColumnDefinition>
+                            <ColumnDefinition Width="20"></ColumnDefinition>
+                            <ColumnDefinition></ColumnDefinition>
+                            <ColumnDefinition Width="50"></ColumnDefinition>
+                            <ColumnDefinition></ColumnDefinition>
+                            <ColumnDefinition Width="20"></ColumnDefinition>
+                            <ColumnDefinition></ColumnDefinition>
+                            <ColumnDefinition></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="FP No"  Grid.Column="0" Grid.Row="0" />
+                        <TextBlock Name="lblFPNo" Grid.Column="2" Grid.Row="0" />
+                        <TextBlock Text="Customer" Grid.Column="0" Grid.Row="1" />
+                        <TextBlock Name="lblCustomer" Grid.Column="2" Grid.Row="1" />
+                        <TextBlock Text="Coverage"  Grid.Column="0" Grid.Row="2" />
+                        <TextBlock Name="lblCoverage" Grid.Column="2" Grid.Row="2" />
+                        <TextBlock Text="Description"   Grid.Column="4" Grid.Row="0" />
+                        <TextBlock Name="lblDescription" Grid.Column="6" Grid.Row="0" />
+                        <TextBlock Text="Lead Screen (Front/Black)" TextWrapping="Wrap"   Grid.Column="4" Grid.Row="1" />
+                        <TextBox Name="txtLeadScreen" Grid.Column="6" Grid.Row="1"  />
+                        <TextBlock Text="Source/S.Size"  Grid.Column="4" Grid.Row="2" />
+                        <TextBox Name="txtSourceSize" Grid.Column="6" Grid.Row="2"  />
+                        <TextBlock Name="lblRGReportID" Visibility="Collapsed"/>
+                        <TextBlock Name="lblFixedPatternID" Visibility="Collapsed"/>
 
-                            <TextBlock Text="RT No"  Grid.Column="0" Grid.Row="5" />
-                            <TextBlock Name="lblRTNo"  Grid.Column="2" Grid.Row="5" />
-                            <TextBlock Text="Report No"   Grid.Column="0" Grid.Row="6" />
-                            <TextBox Name="txtReportNo" Grid.Column="2" Grid.Row="6" />
-                            <TextBlock Text="Heat No" TextWrapping="Wrap"   Grid.Column="0" Grid.Row="7" />
-                            <TextBox Name="txtHeatNo" Grid.Column="2" Grid.Row="7" />
-                            <TextBlock Text="Procedure Ref" TextWrapping="Wrap"   Grid.Column="0" Grid.Row="8" />
-                            <TextBox Name="txtProcedureRef" Grid.Column="2" Grid.Row="8"  />
-                            <TextBlock Text="Specifications" TextWrapping="Wrap"   Grid.Column="0" Grid.Row="9" />
-                            <TextBox Name="txtSpecifications" Grid.Column="2" Grid.Row="9" />
-                            <TextBlock Text="Report Date" TextWrapping="Wrap"   Grid.Column="0" Grid.Row="10" />
-                            <sdk:DatePicker Name="ReportDatePicker" Grid.Column="2" Grid.Row="10"  />
+                        <TextBlock Text="RT No"  Grid.Column="0" Grid.Row="5" />
+                        <TextBlock Name="lblRTNo"  Grid.Column="2" Grid.Row="5" />
+                        <TextBlock Text="Report No"   Grid.Column="0" Grid.Row="6" />
+                        <TextBox Name="txtReportNo" Grid.Column="2" Grid.Row="6" />
+                        <TextBlock Text="Heat No" TextWrapping="Wrap"   Grid.Column="0" Grid.Row="7" />
+                        <TextBox Name="txtHeatNo" Grid.Column="2" Grid.Row="7" />
+                        <TextBlock Text="Procedure Ref" TextWrapping="Wrap"   Grid.Column="0" Grid.Row="8" />
+                        <TextBox Name="txtProcedureRef" Grid.Column="2" Grid.Row="8"  />
+                        <TextBlock Text="Specifications" TextWrapping="Wrap"   Grid.Column="0" Grid.Row="9" />
+                        <TextBox Name="txtSpecifications" Grid.Column="2" Grid.Row="9" />
+                        <TextBlock Text="Report Date" TextWrapping="Wrap"   Grid.Column="0" Grid.Row="10" />
+                        <sdk:DatePicker Name="ReportDatePicker" Grid.Column="2" Grid.Row="10"  />
 
-                            <TextBlock Text="Film"  Grid.Column="4" Grid.Row="5" />
-                            <TextBox Name="txtFilm"  Grid.Column="6" Grid.Row="5" />
-                            <TextBlock Text="Date Of Test"   Grid.Column="4" Grid.Row="6" />
-                            <sdk:DatePicker Name="TestDatePicker" Grid.Column="6" Grid.Row="6"  />
-                            <StackPanel Orientation="Horizontal" Grid.Column="7" Grid.Row="6">
-                                <TextBlock Text="Shift" />
-                                <ComboBox Name="cmbShift" Width="Auto" HorizontalAlignment="Left" 
+                        <TextBlock Text="Film"  Grid.Column="4" Grid.Row="5" />
+                        <TextBox Name="txtFilm"  Grid.Column="6" Grid.Row="5" />
+                        <TextBlock Text="Date Of Test"   Grid.Column="4" Grid.Row="6" />
+                        <sdk:DatePicker Name="TestDatePicker" Grid.Column="6" Grid.Row="6"  />
+                        <StackPanel Orientation="Horizontal" Grid.Column="7" Grid.Row="6">
+                            <TextBlock Text="Shift" />
+                            <ComboBox Name="cmbShift" Width="Auto" HorizontalAlignment="Left" 
                                       Style="{StaticResource ComboBoxStyle}"
                                       IsEnabled="{Binding ElementName=RGReportsSource, Path=HasChanges, 
                                                 Converter={StaticResource NotOperatorValueConverter}}"
                                       ItemContainerStyle="{StaticResource ComboBoxItemStyle}"
                                       ItemsSource="{Binding Source={StaticResource ShiftsSource}, Path=Data}"
                                       DisplayMemberPath="Value"/>
-                            </StackPanel>
-                            <TextBlock Text="Evaluation As Per" Grid.Column="4" Grid.Row="7" />
-                            <TextBox Name="txtEvaluation" Grid.Column="6" Grid.Row="7" />
-                            <TextBlock Text="Acceptance As Per" TextWrapping="Wrap"   Grid.Column="4" Grid.Row="8" />
-                            <TextBox Name="txtAcceptance" Grid.Column="6" Grid.Row="8"  />
-                            <TextBlock Text="Drawing No" TextWrapping="Wrap"   Grid.Column="4" Grid.Row="9" />
-                            <TextBox Name="txtDrawingNo" Grid.Column="6" Grid.Row="9"  />
-                        </Grid>
-                    </sdk:TabItem>
+                        </StackPanel>
+                        <TextBlock Text="Evaluation As Per" Grid.Column="4" Grid.Row="7" />
+                        <TextBox Name="txtEvaluation" Grid.Column="6" Grid.Row="7" />
+                        <TextBlock Text="Acceptance As Per" TextWrapping="Wrap"   Grid.Column="4" Grid.Row="8" />
+                        <TextBox Name="txtAcceptance" Grid.Column="6" Grid.Row="8"  />
+                        <TextBlock Text="Drawing No" TextWrapping="Wrap"   Grid.Column="4" Grid.Row="9" />
+                        <TextBox Name="txtDrawingNo" Grid.Column="6" Grid.Row="9"  />
+                        <TextBlock Text="Status:" Grid.Column="4" Grid.Row="10"  />
+                        <TextBlock Name="lblStatus" FontWeight="Bold" Grid.Column="6" Grid.Row="10" />
+                    </Grid>
 
-                    <sdk:TabItem Header="Details">
-
-                        <local:BusyIndicator x:Name="busyIndicator" IsBusy="{Binding IsBusy, ElementName=RGReportSource}">
-                            <StackPanel>
-                                <custom:CustomGrid Name="RGReportDataGrid" Style="{StaticResource DataGridStyle}" 
+                    <StackPanel>
+                        <custom:CustomGrid Name="RGReportDataGrid" Style="{StaticResource DataGridStyle}" 
                                    ColumnHeaderStyle="{StaticResource DataGridHeaderGlassEffect}"
                                    CellStyle="{StaticResource Stretch}" MaxHeight="300" 
                                    CanUserSortColumns="True">
-                                    <custom:CustomGrid.Resources>
-                                        <Style TargetType="TextBlock">
-                                            <Setter Property="TextAlignment" Value="Center" />
-                                        </Style>
-                                        <Style TargetType="TextBox" >
-                                            <Setter Property="TextAlignment" Value="Center" />
-                                        </Style>
-                                    </custom:CustomGrid.Resources>
-                                    <custom:CustomGrid.Columns>
-                                        <sdk:DataGridTextColumn Header="SlNo" Binding="{Binding Path=SlNo, Mode=TwoWay}"></sdk:DataGridTextColumn>
-                                        <sdk:DataGridTextColumn Header="Location" Binding="{Binding Path=Location, Mode=TwoWay}"></sdk:DataGridTextColumn>
-                                        <sdk:DataGridTextColumn Header="Segment" Binding="{Binding Path=Segment, Mode=TwoWay}"></sdk:DataGridTextColumn>
-                                        <sdk:DataGridTextColumn Header="Thickness" Binding="{Binding Path=Thickness, Mode=TwoWay}"></sdk:DataGridTextColumn>
-                                        <sdk:DataGridTemplateColumn Header="Energy">
-                                            <sdk:DataGridTemplateColumn.CellTemplate>
-                                                <DataTemplate>
-                                                    <TextBlock Text="{Binding Path=Energy.Name, Mode=OneWay}" VerticalAlignment="Center" />
-                                                </DataTemplate>
-                                            </sdk:DataGridTemplateColumn.CellTemplate>
-                                            <sdk:DataGridTemplateColumn.CellEditingTemplate>
-                                                <DataTemplate>
-                                                    <ComboBox ItemsSource="{Binding Source={StaticResource EnergySource}, Path=Data}"
+                            <custom:CustomGrid.Resources>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="TextAlignment" Value="Center" />
+                                </Style>
+                                <Style TargetType="TextBox" >
+                                    <Setter Property="TextAlignment" Value="Center" />
+                                </Style>
+                            </custom:CustomGrid.Resources>
+                            <custom:CustomGrid.Columns>
+                                <sdk:DataGridTextColumn Header="SlNo" Binding="{Binding Path=SlNo, Mode=TwoWay}"></sdk:DataGridTextColumn>
+                                <sdk:DataGridTextColumn Header="Location" Binding="{Binding Path=Location, Mode=TwoWay}"></sdk:DataGridTextColumn>
+                                <sdk:DataGridTextColumn Header="Segment" Binding="{Binding Path=Segment, Mode=TwoWay}"></sdk:DataGridTextColumn>
+                                <sdk:DataGridTextColumn Header="Thickness" Binding="{Binding Path=Thickness, Mode=TwoWay}"></sdk:DataGridTextColumn>
+                                <sdk:DataGridTemplateColumn Header="Energy">
+                                    <sdk:DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Path=Energy.Name, Mode=OneWay}" VerticalAlignment="Center" />
+                                        </DataTemplate>
+                                    </sdk:DataGridTemplateColumn.CellTemplate>
+                                    <sdk:DataGridTemplateColumn.CellEditingTemplate>
+                                        <DataTemplate>
+                                            <ComboBox ItemsSource="{Binding Source={StaticResource EnergySource}, Path=Data}"
                                               SelectedValue="{Binding Energy, Mode=TwoWay}"
                                               DisplayMemberPath="Name" 
                                               Style="{StaticResource ComboBoxStyle}"
                                               ItemContainerStyle="{StaticResource ComboBoxItemStyle}"/>
-                                                </DataTemplate>
-                                            </sdk:DataGridTemplateColumn.CellEditingTemplate>
-                                        </sdk:DataGridTemplateColumn>
-                                        <sdk:DataGridTextColumn Header="SFD" Binding="{Binding Path=SFD, Mode=TwoWay}"></sdk:DataGridTextColumn>
-                                        <sdk:DataGridTextColumn Header="Designation" Binding="{Binding Path=Designation, Mode=TwoWay}"></sdk:DataGridTextColumn>
-                                        <sdk:DataGridTextColumn Header="Sensitivity" Binding="{Binding Path=Sensitivity, Mode=TwoWay}"></sdk:DataGridTextColumn>
-                                        <sdk:DataGridTextColumn Header="Density" Binding="{Binding Path=Density, Mode=TwoWay}"></sdk:DataGridTextColumn>
-                                        <sdk:DataGridTemplateColumn Header="Film Size">
-                                            <sdk:DataGridTemplateColumn.CellTemplate>
-                                                <DataTemplate>
-                                                    <TextBlock Text="{Binding Path=FilmSizeString, Mode=TwoWay}" VerticalAlignment="Center" />
-                                                </DataTemplate>
-                                            </sdk:DataGridTemplateColumn.CellTemplate>
-                                            <sdk:DataGridTemplateColumn.CellEditingTemplate>
-                                                <DataTemplate>
-                                                    <ComboBox ItemsSource="{Binding Source={StaticResource FilmSizesSource}, Path=Data}"
+                                        </DataTemplate>
+                                    </sdk:DataGridTemplateColumn.CellEditingTemplate>
+                                </sdk:DataGridTemplateColumn>
+                                <sdk:DataGridTextColumn Header="SFD" Binding="{Binding Path=SFD, Mode=TwoWay}"></sdk:DataGridTextColumn>
+                                <sdk:DataGridTextColumn Header="Designation" Binding="{Binding Path=Designation, Mode=TwoWay}"></sdk:DataGridTextColumn>
+                                <sdk:DataGridTextColumn Header="Sensitivity" Binding="{Binding Path=Sensitivity, Mode=TwoWay}"></sdk:DataGridTextColumn>
+                                <sdk:DataGridTextColumn Header="Density" Binding="{Binding Path=Density, Mode=TwoWay}"></sdk:DataGridTextColumn>
+                                <sdk:DataGridTemplateColumn Header="Film Size">
+                                    <sdk:DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Path=FilmSizeString, Mode=TwoWay}" VerticalAlignment="Center" />
+                                        </DataTemplate>
+                                    </sdk:DataGridTemplateColumn.CellTemplate>
+                                    <sdk:DataGridTemplateColumn.CellEditingTemplate>
+                                        <DataTemplate>
+                                            <ComboBox ItemsSource="{Binding Source={StaticResource FilmSizesSource}, Path=Data}"
                                               SelectedValue="{Binding FilmSize, Mode=TwoWay}"
                                               DisplayMemberPath="Name" 
                                               Style="{StaticResource ComboBoxStyle}"
                                               ItemContainerStyle="{StaticResource ComboBoxItemStyle}" SelectionChanged="FilmSizeChanged"/>
-                                                </DataTemplate>
-                                            </sdk:DataGridTemplateColumn.CellEditingTemplate>
-                                        </sdk:DataGridTemplateColumn>
-                                        <sdk:DataGridTextColumn Header="Observation" Binding="{Binding Path=Observations, Mode=TwoWay}"></sdk:DataGridTextColumn>
-                                        <sdk:DataGridTemplateColumn Header="Remark">
-                                            <sdk:DataGridTemplateColumn.CellTemplate>
-                                                <DataTemplate>
-                                                    <TextBlock Text="{Binding Path=RemarkText, Mode=TwoWay}" VerticalAlignment="Center" />
-                                                </DataTemplate>
-                                            </sdk:DataGridTemplateColumn.CellTemplate>
-                                            <sdk:DataGridTemplateColumn.CellEditingTemplate>
-                                                <DataTemplate>
-                                                    <ComboBox ItemsSource="{Binding Source={StaticResource RemarksSource}, Path=Data}"
+                                        </DataTemplate>
+                                    </sdk:DataGridTemplateColumn.CellEditingTemplate>
+                                </sdk:DataGridTemplateColumn>
+                                <sdk:DataGridTextColumn Header="Observation" Binding="{Binding Path=Observations, Mode=TwoWay}"></sdk:DataGridTextColumn>
+                                <sdk:DataGridTemplateColumn Header="Remark">
+                                    <sdk:DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Path=RemarkText, Mode=TwoWay}" VerticalAlignment="Center" />
+                                        </DataTemplate>
+                                    </sdk:DataGridTemplateColumn.CellTemplate>
+                                    <sdk:DataGridTemplateColumn.CellEditingTemplate>
+                                        <DataTemplate>
+                                            <ComboBox ItemsSource="{Binding Source={StaticResource RemarksSource}, Path=Data}"
                                               SelectedValue="{Binding Remark, Mode=TwoWay}"
                                               DisplayMemberPath="Value" 
                                               Style="{StaticResource ComboBoxStyle}"
                                               ItemContainerStyle="{StaticResource ComboBoxItemStyle}" SelectionChanged="RemarkChanged"/>
-                                                </DataTemplate>
-                                            </sdk:DataGridTemplateColumn.CellEditingTemplate>
-                                        </sdk:DataGridTemplateColumn>
-                                        <sdk:DataGridTemplateColumn Header="Technician">
-                                            <sdk:DataGridTemplateColumn.CellTemplate>
-                                                <DataTemplate>
-                                                    <TextBlock Text="{Binding Path=TechnicianText, Mode=TwoWay}" VerticalAlignment="Center" />
-                                                </DataTemplate>
-                                            </sdk:DataGridTemplateColumn.CellTemplate>
-                                            <sdk:DataGridTemplateColumn.CellEditingTemplate>
-                                                <DataTemplate>
-                                                    <ComboBox ItemsSource="{Binding Source={StaticResource TechniciansSource}, Path=Data}"
+                                        </DataTemplate>
+                                    </sdk:DataGridTemplateColumn.CellEditingTemplate>
+                                </sdk:DataGridTemplateColumn>
+                                <sdk:DataGridTemplateColumn Header="Technician">
+                                    <sdk:DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Path=TechnicianText, Mode=TwoWay}" VerticalAlignment="Center" />
+                                        </DataTemplate>
+                                    </sdk:DataGridTemplateColumn.CellTemplate>
+                                    <sdk:DataGridTemplateColumn.CellEditingTemplate>
+                                        <DataTemplate>
+                                            <ComboBox ItemsSource="{Binding Source={StaticResource TechniciansSource}, Path=Data}"
                                               SelectedValue="{Binding Technician, Mode=TwoWay}"
                                               DisplayMemberPath="Name" 
                                               Style="{StaticResource ComboBoxStyle}"
                                               ItemContainerStyle="{StaticResource ComboBoxItemStyle}" SelectionChanged="TechnicianChanged"/>
-                                                </DataTemplate>
-                                            </sdk:DataGridTemplateColumn.CellEditingTemplate>
-                                        </sdk:DataGridTemplateColumn>
-                                        <sdk:DataGridTemplateColumn Header="Welder">
-                                            <sdk:DataGridTemplateColumn.CellTemplate>
-                                                <DataTemplate>
-                                                    <TextBlock Text="{Binding Path=WelderText, Mode=TwoWay}" VerticalAlignment="Center" />
-                                                </DataTemplate>
-                                            </sdk:DataGridTemplateColumn.CellTemplate>
-                                            <sdk:DataGridTemplateColumn.CellEditingTemplate>
-                                                <DataTemplate>
-                                                    <ComboBox ItemsSource="{Binding Source={StaticResource WeldersSource}, Path=Data}"
+                                        </DataTemplate>
+                                    </sdk:DataGridTemplateColumn.CellEditingTemplate>
+                                </sdk:DataGridTemplateColumn>
+                                <sdk:DataGridTemplateColumn Header="Welder">
+                                    <sdk:DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Path=WelderText, Mode=TwoWay}" VerticalAlignment="Center" />
+                                        </DataTemplate>
+                                    </sdk:DataGridTemplateColumn.CellTemplate>
+                                    <sdk:DataGridTemplateColumn.CellEditingTemplate>
+                                        <DataTemplate>
+                                            <ComboBox ItemsSource="{Binding Source={StaticResource WeldersSource}, Path=Data}"
                                               SelectedValue="{Binding Welder, Mode=TwoWay}"
                                               DisplayMemberPath="Name" 
                                               Style="{StaticResource ComboBoxStyle}"
                                               ItemContainerStyle="{StaticResource ComboBoxItemStyle}" SelectionChanged="WelderChanged"/>
-                                                </DataTemplate>
-                                            </sdk:DataGridTemplateColumn.CellEditingTemplate>
-                                        </sdk:DataGridTemplateColumn>
+                                        </DataTemplate>
+                                    </sdk:DataGridTemplateColumn.CellEditingTemplate>
+                                </sdk:DataGridTemplateColumn>
 
-                                        <sdk:DataGridTemplateColumn Header="Delete" Width="Auto">
-                                            <sdk:DataGridTemplateColumn.CellTemplate>
-                                                <DataTemplate>
-                                                    <Button Name="grdDeleteButton" Click="DeleteOperation" Tag="{Binding}" 
+                                <sdk:DataGridTemplateColumn Header="Delete" Width="Auto">
+                                    <sdk:DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Button Name="grdDeleteButton" Click="DeleteOperation" Tag="{Binding}" 
                                             Style="{StaticResource DeleteButtonStyle}"/>
-                                                </DataTemplate>
-                                            </sdk:DataGridTemplateColumn.CellTemplate>
-                                        </sdk:DataGridTemplateColumn>
-                                    </custom:CustomGrid.Columns>
-                                </custom:CustomGrid>
-                                <Button Margin="100,0,50,0" Name="btnAdd" HorizontalAlignment="Right" Width="75" Style="{StaticResource AddButtonStyle}"/>
-                            </StackPanel>
-                        </local:BusyIndicator>
-                    </sdk:TabItem>
-                </sdk:TabControl>
-                <StackPanel Orientation="Horizontal" Margin="20, 20, 0, 0">
-                    <TextBlock Text="Status:" />
-                    <TextBlock Name="lblStatus" FontWeight="Bold" />
+                                        </DataTemplate>
+                                    </sdk:DataGridTemplateColumn.CellTemplate>
+                                </sdk:DataGridTemplateColumn>
+                            </custom:CustomGrid.Columns>
+                        </custom:CustomGrid>
+                        <Button Margin="100,0,50,0" Name="btnAdd" HorizontalAlignment="Right" Width="75" Style="{StaticResource AddButtonStyle}"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="20, 20, 0, 0">
+                        <TextBlock Text="Total Area of films Submitted:" />
+                        <TextBlock Name="txtTotalArea" />
+                    </StackPanel>
+                    <dtGrid:BindableDataGrid Name="energyAreas" HeadersVisibility="None" HorizontalAlignment="Left" Margin="20,10,0,0" />
+                    <StackPanel Orientation="Horizontal" Height="23" Margin="0,20,0,0" HorizontalAlignment="Center" Name="ButtonsPanel">
+                        <Button Name="btnSave" Background="Transparent" Style="{StaticResource SaveButtonStyle}"/>
+                        <Button Name="btnCancel" Margin="20,0,0,0" Style="{StaticResource CancelButtonStyle}" />
+                    </StackPanel>
                 </StackPanel>
-                <StackPanel Orientation="Horizontal" Height="23" Margin="0,20,0,0" HorizontalAlignment="Center" Name="ButtonsPanel">
-                    <Button Name="btnSave" Background="Transparent" Style="{StaticResource SaveButtonStyle}"/>
-                    <Button Name="btnCancel" Margin="20,0,0,0" Style="{StaticResource CancelButtonStyle}" />
-                </StackPanel>
-            </StackPanel>
+            </local:BusyIndicator>
         </ScrollViewer>
     </Grid>
 </views:BaseCRUDView>

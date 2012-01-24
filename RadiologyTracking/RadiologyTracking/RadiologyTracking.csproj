@@ -135,6 +135,18 @@
     <Compile Include="Views\Company.xaml.cs">
       <DependentUpon>Company.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\CastingStatusReport.xaml.cs">
+      <DependentUpon>CastingStatusReport.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\FinalRadioGraphyReport.xaml.cs">
+      <DependentUpon>FinalRadioGraphyReport.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\FilmConsumptionReport.xaml.cs">
+      <DependentUpon>FilmConsumptionReport.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ShiftWisePerformance.xaml.cs">
+      <DependentUpon>ShiftWisePerformance.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\FilmStockReport.xaml.cs">
       <DependentUpon>FilmStockReport.xaml</DependentUpon>
     </Compile>
@@ -221,6 +233,22 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\Company.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\CastingStatusReport.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\FinalRadioGraphyReport.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\FilmConsumptionReport.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\ShiftWisePerformance.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -385,6 +413,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\details-icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\print.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Silverlight\$(SilverlightVersion)\Microsoft.Silverlight.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

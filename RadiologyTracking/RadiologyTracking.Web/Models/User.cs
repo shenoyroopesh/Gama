@@ -22,5 +22,7 @@ using RadiologyTracking.Web.Models;
         /// Used for identifying which Foundry this user belongs to
         /// </summary>
         public string Foundry { get; set; }
+        
+        public string Role { get; set; }
     }
 }

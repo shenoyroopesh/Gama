@@ -11,6 +11,7 @@
     using System.Windows.Controls;
     using System.Windows.Input;
     using RadiologyTracking.Web;
+    using RadiologyTracking.Web.Services;
 
     /// <summary>
     /// Form that presents the <see cref="RegistrationData"/> and performs the registration process.
@@ -21,6 +22,7 @@
         private RegistrationData registrationData = new RegistrationData();
         private UserRegistrationContext userRegistrationContext = new UserRegistrationContext();
         private TextBox userNameTextBox;
+        RadiologyContext context
 
         /// <summary>
         /// Creates a new <see cref="RegistrationForm"/> instance.
@@ -31,6 +33,21 @@
 
             // Set the DataContext of this control to the Registration instance to allow for easy binding.
             this.DataContext = this.registrationData;
+            context = new RadiologyContext();
+            context.GetRoles(OnRolesReceived, null); 
+        }
+
+        void  OnRolesReceived(InvokeOperation<IEnumerable<String>> invOp)
+        {
+ 	        if (invOp.HasError)
+            {
+                MessageBox.Show(string.Format("Method Failed: {0}", invOp.Error.Message));
+                invOp.MarkErrorAsHandled();
+            }
+            else
+            {
+                Roles = invOp.Value;
+            }
         }
 
         /// <summary>
@@ -41,6 +58,9 @@
         {
             this.parentWindow = window;
         }
+
+
+        public IEnumerable<String> Roles { get; set; }
 
         /// <summary>
         /// Wire up the Password and PasswordConfirmation accessors as the fields get generated.
@@ -73,6 +93,18 @@
                 ComboBox questionComboBox = new ComboBox();
                 questionComboBox.ItemsSource = RegistrationForm.GetSecurityQuestions();
                 e.Field.ReplaceTextBox(questionComboBox, ComboBox.SelectedItemProperty, binding => binding.Converter = new TargetNullValueConverter());
+            }
+            else if (e.PropertyName == "Foundry")
+            {
+                ComboBox foundryCombobox = new ComboBox();
+                foundryCombobox.ItemsSource = ((RadiologyContext)DomainSource.DataContext).Foundries.Select(p => p.FoundryName);
+                e.Field.ReplaceTextBox(foundryCombobox, ComboBox.SelectedItemProperty);
+            }
+            else if (e.PropertyName == "Role")
+            {
+                ComboBox roleCombobox = new ComboBox();
+                roleCombobox.ItemsSource = Roles;
+                e.Field.ReplaceTextBox(roleCombobox, ComboBox.SelectedItemProperty);
             }
         }
 

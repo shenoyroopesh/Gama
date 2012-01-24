@@ -96,6 +96,15 @@
                             <Rectangle x:Name="Divider13" Style="{StaticResource DividerStyle}"/>
                             <HyperlinkButton x:Name="Link15" Style="{StaticResource LinkStyle}" 
                                      NavigateUri="/FilmStockReport" TargetName="ContentFrame" Content="Film Stock Report"/>
+                            <Rectangle x:Name="Divider14" Style="{StaticResource DividerStyle}"/>
+                            <HyperlinkButton x:Name="Link16" Style="{StaticResource LinkStyle}" 
+                                     NavigateUri="/ShiftWisePerformance" TargetName="ContentFrame" Content="ShiftWise Perf"/>
+                            <Rectangle x:Name="Divider15" Style="{StaticResource DividerStyle}"/>
+                            <HyperlinkButton x:Name="Link17" Style="{StaticResource LinkStyle}" 
+                                     NavigateUri="/FilmConsumptionReport" TargetName="ContentFrame" Content="Film Consumption"/>
+                            <Rectangle x:Name="Divider16" Style="{StaticResource DividerStyle}"/>
+                            <HyperlinkButton x:Name="Link18" Style="{StaticResource LinkStyle}" 
+                                     NavigateUri="/CastingStatusReport" TargetName="ContentFrame" Content="Casting Status"/>
                         </StackPanel>
                     </StackPanel>
                 </Border>

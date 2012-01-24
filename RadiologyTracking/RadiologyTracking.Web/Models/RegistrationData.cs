@@ -48,6 +48,13 @@
         [StringLength(128, ErrorMessageResourceName = "ValidationErrorBadAnswerLength", ErrorMessageResourceType = typeof(ValidationErrorResources))]
         public string Answer { get; set; }
 
+        [Display(Order=7, Name="Foundry")]
         public string Foundry { get; set; }
+
+        /// <summary>
+        /// Role to which the user should be assigned. In this application, every user will have only a single role
+        /// </summary>
+        [Display(Order = 8, Name= "Role")]
+        public string Role { get; set; }
     }
 }

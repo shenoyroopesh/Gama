@@ -16,6 +16,8 @@ using System.Windows.Data;
 using RadiologyTracking.Web.Services;
 using System.Collections;
 using System.ServiceModel.DomainServices.Client;
+using BindableDataGrid.Data;
+using RadiologyTracking.Controls;
 
 namespace RadiologyTracking.Views
 {
@@ -29,7 +31,7 @@ namespace RadiologyTracking.Views
             {
                 //Means new RG Report, allow add
                 this.IsEditMode = false;
-                
+
             }
             else
             {
@@ -46,7 +48,7 @@ namespace RadiologyTracking.Views
             SetBindings();
 
             if (IsEditMode) DomainSource.Load();
-            
+
         }
 
         /// <summary>
@@ -65,6 +67,7 @@ namespace RadiologyTracking.Views
         /// </summary>
         private void SetBindings()
         {
+            BindToPage(txtTotalArea, TextBlock.TextProperty, "TotalArea", BindingMode.OneWay);
             BindToPage(lblFixedPatternID, TextBlock.TextProperty, "RGReport.FixedPatternID", BindingMode.OneWay);
             BindToPage(lblRGReportID, TextBlock.TextProperty, "RGReport.ID", BindingMode.OneWay);
             BindToPage(lblStatus, TextBlock.TextProperty, "RGReport.Status.Status", BindingMode.OneWay);
@@ -89,6 +92,7 @@ namespace RadiologyTracking.Views
             BindToPage(RGReportDataGrid, CustomGrid.ItemsSourceProperty, "RGReportRows");
             BindToPage(btnAdd, Button.IsEnabledProperty, "Enabled", BindingMode.OneWay);
             BindToPage(btnFetch, Button.IsEnabledProperty, "FetchEnabled", BindingMode.OneWay);
+            BindToPage(busyIndicator, BusyIndicator.IsBusyProperty, "DomainSource.IsBusy", BindingMode.OneWay);
         }
 
 
@@ -100,7 +104,7 @@ namespace RadiologyTracking.Views
 
         public override DomainDataSource DomainSource
         {
-            get { return IsEditMode? this.EditRGReportsSource : this.RGReportSource; }
+            get { return IsEditMode ? this.EditRGReportsSource : this.RGReportSource; }
         }
 
         public override Type MainType
@@ -156,6 +160,54 @@ namespace RadiologyTracking.Views
             }
         }
 
+        /// <summary>
+        /// Total area for the entire report
+        /// </summary>
+        public String TotalArea
+        {
+            get
+            {
+                return (RGReportRows == null ? 0 : RGReportRows.Sum(p => p.FilmSize.Area)).ToString() + " Sq. Inches";
+            }
+        }
+
+        public void updateEnergyWiseArea()
+        {
+            RadiologyContext ctx = (RadiologyContext)this.DomainSource.DomainContext;
+            DataTable dt = new DataTable("EnergyTable");
+            AddTextColumn(dt, "HeadRow", "HeadRow");
+            DataRow headerRow = new DataRow();
+            DataRow actualRow = new DataRow();
+            headerRow["HeadRow"] = "Isotope";
+            actualRow["HeadRow"] = "Sq. Inches";
+
+            foreach (var e in ctx.Energies)
+            {
+                AddTextColumn(dt, e.Name, e.Name);
+                headerRow[e.Name] = e.Name;
+                actualRow[e.Name] = RGReportRows.Where(p => p.EnergyID == e.ID).Sum(p => p.FilmSize.Area);
+            }
+
+            dt.Rows.Add(headerRow); 
+            dt.Rows.Add(actualRow);
+
+            energyAreas.DataSource = dt;
+            energyAreas.DataBind();
+        }
+
+        private static void AddTextColumn(DataTable reportTable, String columnName, String caption)
+        {
+            DataColumn dc = new DataColumn(columnName);
+            dc.Caption = caption;
+            dc.ReadOnly = true;
+            dc.DataType = typeof(String);
+            dc.AllowResize = true;
+            dc.AllowSort = false;
+            dc.AllowReorder = false;
+            reportTable.Columns.Add(dc);
+        }
+
+
         public override void AddOperation(object sender, RoutedEventArgs e)
         {
             //also give a few default empty string values so that UI copy operation is possible
@@ -196,6 +248,8 @@ namespace RadiologyTracking.Views
             RGReportRows = RGReport.RGReportRows;
             //now that fixedpatternid is available
             FixedPatternsSource.Load();
+            updateEnergyWiseArea();
+            OnPropertyChanged("TotalArea");
         }
 
         //Kept here only for the template column to work fine
@@ -240,18 +294,18 @@ namespace RadiologyTracking.Views
                     return;
                 }
             }
-            
+
             /** FOR SIMPLICITY OF DESIGN, SERVER DEPENDS ON THE CLIENT TO SET THE STATUS. THIS IS IMPORTANT! WITHOUT THIS THE LOGIC WILL FAIL **/
 
             MessageBoxResult result;
             if (RGReportRows.Where(p => p.RemarkText.Trim() == String.Empty).Count() > 0)
             {
-                result = MessageBox.Show("Save Incomplete Report. Fetching this RT No will fetch Same Report again", 
-                    "Confirm Save", MessageBoxButton.OKCancel);                
+                result = MessageBox.Show("Save Incomplete Report. Fetching this RT No will fetch Same Report again",
+                    "Confirm Save", MessageBoxButton.OKCancel);
             }
             else if (RGReportRows.Where(p => p.RemarkText.ToUpper() != "ACCEPTABLE").Count() > 0)
             {
-                result = MessageBox.Show("Mark Casting as Pending. At least one report is needed after this for this RT No", 
+                result = MessageBox.Show("Mark Casting as Pending. At least one report is needed after this for this RT No",
                     "Confirm Save", MessageBoxButton.OKCancel);
 
                 if (result != MessageBoxResult.Cancel)
@@ -259,10 +313,10 @@ namespace RadiologyTracking.Views
             }
             else
             {
-                result = MessageBox.Show("Mark Casting as complete. This will be Last Report for this RT No.", 
+                result = MessageBox.Show("Mark Casting as complete. This will be Last Report for this RT No.",
                     "Confirm Save", MessageBoxButton.OKCancel);
 
-                if (result != MessageBoxResult.Cancel) 
+                if (result != MessageBoxResult.Cancel)
                     RGReport.Status = ((RadiologyContext)DomainSource.DomainContext).RGStatus.FirstOrDefault(p => p.Status == "COMPLETE");
             }
 
@@ -271,10 +325,13 @@ namespace RadiologyTracking.Views
                 return;
 
             base.SaveOperation(sender, e);
+
+            //update the energy grid
+            updateEnergyWiseArea();
         }
 
         #region combobox change handlers
-        
+
         //TODO: Check if these four methods can be abstracted into one method
 
         /// <summary>

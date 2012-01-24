@@ -47,5 +47,11 @@ namespace RadiologyTracking.Web.Models
         public DbSet<LocationClass> Locations { get; set; }
         public DbSet<SegmentClass> Segments { get; set; }
         public DbSet<FixedPatternPerformanceRow> FixedPatternPerformanceRows { get; set; }
+        public DbSet<ShiftWisePerformanceRow> ShiftWisePerformanceRows { get; set; }
+        public DbSet<FilmAreaRow> FilmAreaRows { get; set; }
+        public DbSet<FilmConsumptionReportRow> FilmConsumptionReportRows { get; set; }
+        public DbSet<RTStatusReportRow> RTStatusReportRows { get; set; }
+        public DbSet<FinalRTReport> FinalRTReports { get; set; }
+        public DbSet<FinalRTReportRow> FinalRTReportRows { get; set; }
     }
 }

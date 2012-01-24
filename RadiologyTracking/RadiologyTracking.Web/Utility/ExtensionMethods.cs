@@ -79,12 +79,11 @@ namespace RadiologyTracking.Web.Utility
 
             foreach (var destProperty in properties)
             {
-                if ((!destProperty.CanWrite) || 
-                    excluded.Contains(destProperty.Name))
+                if ((!destProperty.CanWrite) || (excluded != null && excluded.Contains(destProperty.Name)))
                     continue;
 
                 //for eg, if Welder is excluded, make sure that WelderID is also not copied without having to explicitly exclude WelderID
-                if (excluded.Contains(destProperty.Name.Replace("ID", ""))) 
+                if (excluded != null && excluded.Contains(destProperty.Name.Replace("ID", ""))) 
                     continue;
 
                 var sourceProperty = SourceType.GetProperty(destProperty.Name);

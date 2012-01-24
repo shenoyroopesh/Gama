@@ -16,6 +16,8 @@ namespace RadiologyTracking.Web.Services
     using System.Data.Entity;
     using System.Web.Security;
     using System.Collections;
+    using System.Data.Objects;
+    using RadiologyTracking.Web.Utility;
 
     [EnableClientAccess()]
     [RequiresAuthentication()]
@@ -411,18 +413,28 @@ namespace RadiologyTracking.Web.Services
             return stock;
         }
 
-        public IQueryable GetFilmConsumptionReport(int foundryId, DateTime fromDate, DateTime toDate)
+        public IEnumerable<FilmConsumptionReportRow> GetFilmConsumptionReport(int foundryId, DateTime fromDate, DateTime toDate)
         {
-            return from r in this.DbContext.RGReportRows
-                   where r.RGReport.FixedPattern.Customer.FoundryID == foundryId
-                   group r by new { r.RGReport, r.Energy, r.FilmSize, r.RowType } into g
-                   select new
+
+            var intermediate = (from r in this.DbContext.RGReportRows
+                                orderby r.RGReport.ReportDate, r.RGReport.ReportNo
+                                let rowFID = r.RGReport.FixedPattern.Customer.FoundryID
+                                where rowFID == (foundryId == -1 ? rowFID : foundryId)
+                                && r.RowType.Value != "RETAKE"               //retakes are not considered in the film consumption report
+                                group r by new { r.RGReport, r.RGReport.FixedPattern, r.Energy, r.RowType } into g
+                                select new { Key = g.Key, Area = g.Sum(p => p.FilmSize.Area) }).ToList();
+
+            return from g in intermediate
+                   select new FilmConsumptionReportRow
                    {
-                       Report = g.Key.RGReport.RTNo,
-                       Energy = g.Key.Energy,
-                       FilmSize = g.Key.FilmSize,
-                       RowType = g.Key.RowType,
-                       Area = g.Sum(p => p.FilmSize.Area)
+                       ID = Guid.NewGuid(),
+                       ReportNo = g.Key.RGReport.ReportNo,
+                       Date = g.Key.RGReport.ReportDate.ToString("dd-MM-yyyy"),
+                       FPNo = g.Key.RGReport.FixedPattern.FPNo,
+                       RTNo = g.Key.RGReport.RTNo,
+                       Energy = g.Key.Energy.Name,
+                       RowType = g.Key.RowType.Value,
+                       Area = g.Area
                    };
         }
 
@@ -781,21 +793,79 @@ namespace RadiologyTracking.Web.Services
             }
         }
 
-        //not needed since report is always first created on the server side and then sent to the client.
-        //public void InsertRGReport(RGReport entity)
-        //{
-        //    //set the appropriate status for the RG Report
-        //    entity.Status = this.GetStatus(entity, DbContext);
-        //    DbEntityEntry<RGReport> entityEntry = this.DbContext.Entry(entity);
-        //    if ((entityEntry.State != EntityState.Detached))
-        //    {
-        //        entityEntry.State = EntityState.Added;
-        //    }
-        //    else
-        //    {
-        //        this.DbContext.RGReports.Add(entity);
-        //    }
-        //}
+
+        public IEnumerable<RTStatusReportRow> GetRTStatus(int foundryId, DateTime fromDate, DateTime toDate)
+        {
+            //from date and to date to not consider time
+            fromDate = fromDate.Date;
+            toDate = toDate.Date.AddDays(1);
+
+            var intermediate = (from r in this.DbContext.RGReports
+                                let rowFId = r.FixedPattern.Customer.FoundryID
+                                where rowFId == (foundryId == -1 ? rowFId : foundryId)
+                                && r.ReportDate >= fromDate && r.ReportDate < toDate
+                                group r by new { r.FixedPattern, r.RTNo } into g
+                                select new
+                                {
+                                    ID = Guid.NewGuid(),
+                                    FPNo = g.Key.FixedPattern.FPNo,
+                                    RTNo = g.Key.RTNo,
+                                    Date = g.OrderByDescending(p => p.ReportDate).FirstOrDefault().ReportDate,
+                                    Repairs = g.Select(r => r.RGReportRows.Where(p => p.Remark != null).Where(p => p.Remark.Value == "REPAIR").Count()).Sum(),
+                                    Retakes = g.Select(r => r.RGReportRows.Where(p => p.Remark != null).Where(p => p.Remark.Value == "RETAKE").Count()).Sum(),
+                                    Reshoots = g.Select(r => r.RGReportRows.Where(p => p.Remark != null).Where(p => p.Remark.Value == "RESHOOT").Count()).Sum()
+                                }).ToList();
+
+            return from r in intermediate
+                   select new RTStatusReportRow
+                   {
+                       ID = r.ID,
+                       FPNo = r.FPNo,
+                       RTNo = r.RTNo,
+                       Date = r.Date.ToString("dd/MM/yyyy"),
+                       Repairs = r.Repairs.ToString(),
+                       Retakes = r.Retakes.ToString(),
+                       Reshoots = r.Reshoots.ToString()
+                   };
+        }
+
+
+        public FinalRTReport GetFinalRTReport(string rtNo)
+        {
+            //get the latest report in the sequence
+            //can't use Last() here, have to use first() since this gets converted into a store query
+            var rgReport = DbContext.RGReports.Where(p => p.RTNo == rtNo)
+                                .OrderByDescending(p => p.ID).FirstOrDefault();
+
+            FinalRTReport finalReport = new FinalRTReport();
+            rgReport.CopyTo(finalReport, "ReportDate,DateOfTest"); //since they are of different types it could cause issues
+            finalReport.DateOfTest = rgReport.DateOfTest.ToString("dd-MM-yyyy");
+            finalReport.ReportDate = rgReport.ReportDate.ToString("dd-MM-yyyy");
+
+            List<FinalRTReportRow> finalRows = new List<FinalRTReportRow>();
+
+            //get the latest rows for all locations for this rt no
+
+            var reportRows = (from r in this.DbContext.RGReportRows
+                             where r.RGReport.RTNo == rtNo
+                             group r by new { r.Location, r.Segment } into g
+                             //latest row for each combination
+                             let latest = g.Where(p => p.Remark != null).OrderByDescending(p => p.RGReport.ReportDate).FirstOrDefault()
+                             select latest).ToList();
+
+            foreach (var r in reportRows)
+            {
+                FinalRTReportRow row = new FinalRTReportRow();
+                r.CopyTo(row, string.Empty); 
+                //set parent id
+                row.FinalRTReportID = finalReport.ID;
+                finalRows.Add(row);
+            }
+
+            finalReport.FinalRTReportRows = finalRows;
+
+            return finalReport;
+        }
 
         public void UpdateRGReport(RGReport currentRGReport)
         {
@@ -885,6 +955,16 @@ namespace RadiologyTracking.Web.Services
         }
         #endregion
 
+        #region Roles
+
+        public IEnumerable<String> GetRoles()
+        {
+            return Roles.GetAllRoles();
+        }
+
+        #endregion
+
+
         #region Shifts
         public IQueryable<Shift> GetShifts()
         {
@@ -932,36 +1012,75 @@ namespace RadiologyTracking.Web.Services
             }
         }
 
-        public IQueryable GetShiftWisePerformanceReport(DateTime fromDate, DateTime toDate, Technician technician = null)
+        /// <summary>
+        /// Gets the shiftwise performance report of retake percentages by number and area
+        /// </summary>
+        /// <param name="fromDate"></param>
+        /// <param name="toDate"></param>
+        /// <param name="technicianId"></param>
+        /// <returns></returns>
+        public IEnumerable<ShiftWisePerformanceRow> GetShiftWisePerformanceReport(DateTime fromDate, DateTime toDate, int technicianId = -1)
         {
             var retake = this.DbContext.Remarks.Single(p => p.Value == "RETAKE");
 
-            return from r in this.DbContext.RGReportRows
-                   where r.Technician == (technician == null ? r.Technician : technician)
-                   && r.RGReport.ReportDate >= fromDate && r.RGReport.ReportDate <= toDate
-                   group r by new { r.RGReport.ReportDate, r.RGReport.Shift } into g
-                   let total = g.Count()
-                   let retakes = g.Where(p => p.Remark == retake).Count()
-                   let totalArea = g.Sum(p => p.FilmSize.Area)
-                   let retakeArea = g.Where(p => p.Remark == retake).Sum(p => p.FilmSize.Area)
-                   select new
-                   {
-                       Technicians = String.Join(",", g.Select(p => p.Technician.Name).ToList()),
-                       Date = g.Key.ReportDate,
-                       Shift = g.Key.Shift,
-                       FilmArea = from f in g
-                                  group f by f.FilmSize into fg
-                                  select new
-                                  {
-                                      FilmSize = fg.Key,
-                                      Total = fg.Count(),
-                                      RT = fg.Where(p => p.Remark == retake).Count()
-                                  },
-                       TotalFilmsTaken = total,
-                       TotalRetakes = retakes,
-                       RTPercent = (retakes * 100 / total),
-                       RTPercentByArea = (retakeArea * 100 / totalArea)
-                   };
+            //fetch from database, grouping can cause include to fail silently
+            var intermediate1 = (from r in this.DbContext.RGReportRows
+                                    .Include("FilmSize")
+                                    .Include("Technician")
+                                    .Include("Remark")
+                                    .Include("RGReport")
+                                    .Include("RGReport.Shift")
+                                orderby r.RGReport.ReportDate, r.RGReport.Shift
+                                where r.Technician.ID == (technicianId == -1 ? r.Technician.ID : technicianId)
+                                && r.RGReport.ReportDate >= fromDate && r.RGReport.ReportDate <= toDate
+                                select r).ToList();
+
+            var intermediate2 = from r in intermediate1
+                                group r by new
+                                {
+                                    Date = r.RGReport.ReportDate.Date,
+                                    r.RGReport.Shift
+                                } into g
+                                select g;
+
+            //process and structure
+            var report = (from g in intermediate2
+                         let total = g.Count()
+                         let retakeCollection = g.Where(p => p.Remark != null).Where(p => p.Remark.ID == retake.ID)
+                         let retakes = retakeCollection.Count()
+                         let totalArea = g.Sum(p => p.FilmSize.Area)
+                         let retakeArea = retakeCollection.Sum(p => p.FilmSize.Area)
+                         select new ShiftWisePerformanceRow
+                         {
+                             ID = Guid.NewGuid(),
+                             Technicians = String.Join(",", g.Select(p => p.Technician.Name).Distinct().ToList()),
+                             Date = g.Key.Date.ToString("dd-MM-yyyy"),
+                             Shift = g.Key.Shift.Value,
+                             FilmAreaRows = (from f in g
+                                            group f by f.FilmSize into fg
+                                            select new FilmAreaRow
+                                            {
+                                                ID = Guid.NewGuid(),
+                                                FilmSize = fg.Key.Name,
+                                                Total = fg.Count(),
+                                                RT = fg.Where(p => p.Remark != null).Where(p => p.Remark.ID == retake.ID).Count()
+                                            }).ToList(),
+                             TotalFilmsTaken = total,
+                             TotalRetakes = retakes,
+                             RTPercent = (retakes * 10000 / total) /100.0,
+                             RTPercentByArea = (retakeArea * 10000 / totalArea) / 100.0
+                         }).ToList();
+
+            //fill parent guids in child rows
+            foreach (var row in report)
+            {
+                foreach (var fa in row.FilmAreaRows)
+                {
+                    fa.ShiftWisePerformanceRowID = row.ID;
+                }
+            }
+
+            return report;
         }
         #endregion
 

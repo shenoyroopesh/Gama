@@ -345,3 +345,7 @@ D:\DotNet\Gama\RadiologyTracking\RadiologyTracking\Bin\Debug\ru\System.Xml.Linq.
 D:\DotNet\Gama\RadiologyTracking\RadiologyTracking\Bin\Debug\zh-Hans\System.Xml.Linq.resources.dll
 D:\DotNet\Gama\RadiologyTracking\RadiologyTracking\Bin\Debug\zh-Hant\System.Xml.Linq.resources.dll
 D:\DotNet\Gama\RadiologyTracking\RadiologyTracking\obj\Debug\Views\FilmStockReport.g.i.cs
+D:\DotNet\Gama\RadiologyTracking\RadiologyTracking\obj\Debug\Views\ShiftWisePerformance.g.i.cs
+D:\DotNet\Gama\RadiologyTracking\RadiologyTracking\obj\Debug\Views\FilmConsumptionReport.g.i.cs
+D:\DotNet\Gama\RadiologyTracking\RadiologyTracking\obj\Debug\Views\CastingStatusReport.g.i.cs
+D:\DotNet\Gama\RadiologyTracking\RadiologyTracking\obj\Debug\Views\FinalRadioGraphyReport.g.i.cs

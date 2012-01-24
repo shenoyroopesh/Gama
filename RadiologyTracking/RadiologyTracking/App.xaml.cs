@@ -36,6 +36,8 @@ using RadiologyTracking.Web.Models;
         public static FixedPattern FixedPattern { get; set; }
 
         public static RGReport RGReport { get; set; }
+
+        public static FinalRTReport FinalReport { get; set; }
         
         private void Application_Startup(object sender, StartupEventArgs e)
         {
