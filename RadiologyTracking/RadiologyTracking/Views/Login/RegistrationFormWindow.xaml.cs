@@ -17,6 +17,7 @@ namespace RadiologyTracking.Views
         public RegistrationFormWindow()
         {
             InitializeComponent();
+            RegistrationForm.SetParentWindow(this);
         }
 
         private void OKButton_Click(object sender, RoutedEventArgs e)

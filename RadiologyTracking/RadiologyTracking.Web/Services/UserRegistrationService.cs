@@ -63,21 +63,11 @@
         [RequiresRole("admin")]
         public void CreateUser(RegistrationData user,
             [Required(ErrorMessageResourceName = "ValidationErrorRequiredField", ErrorMessageResourceType = typeof(ValidationErrorResources))]
-            [RegularExpression("^.*[^a-zA-Z0-9].*$", ErrorMessageResourceName = "ValidationErrorBadPasswordStrength", ErrorMessageResourceType = typeof(ValidationErrorResources))]
-            [StringLength(50, MinimumLength = 7, ErrorMessageResourceName = "ValidationErrorBadPasswordLength", ErrorMessageResourceType = typeof(ValidationErrorResources))]
             string password)
         {
             if (user == null)
             {
                 throw new ArgumentNullException("user");
-            }
-
-            // Run this BEFORE creating the user to make sure roles are enabled and the default role is available.
-            //
-            // If there is a problem with the role manager, it is better to fail now than to fail after the user is created.
-            if (!Roles.RoleExists(UserRegistrationService.DefaultRole))
-            {
-                Roles.CreateRole(UserRegistrationService.DefaultRole);
             }
 
             // NOTE: ASP.NET by default uses SQL Server Express to create the user database. 
@@ -100,23 +90,13 @@
         }
 
         [RequiresAuthentication, RequiresRole("admin")]
-        public void EditUser(RegistrationData user, 
-            [RegularExpression("^.*[^a-zA-Z0-9].*$", ErrorMessageResourceName = "ValidationErrorBadPasswordStrength", ErrorMessageResourceType = typeof(ValidationErrorResources))]
-            [StringLength(50, MinimumLength = 7, ErrorMessageResourceName = "ValidationErrorBadPasswordLength", ErrorMessageResourceType = typeof(ValidationErrorResources))]
-            string password = "")
+        public void EditUser(RegistrationData user, string password = "")
         {
             if (user == null)
             {
                 throw new ArgumentNullException("user");
             }
 
-            // Run this BEFORE creating the user to make sure roles are enabled and the default role is available.
-            //
-            // If there is a problem with the role manager, it is better to fail now than to fail after the user is created.
-            if (!Roles.RoleExists(UserRegistrationService.DefaultRole))
-            {
-                Roles.CreateRole(UserRegistrationService.DefaultRole);
-            }
             MembershipUser membershipUser = Membership.GetUser(user.UserName);
 
             if (password != "")
@@ -145,9 +125,26 @@
         [RequiresAuthentication, RequiresRole("admin")]
         public bool DeleteUser(String userName)
         {
+            //do not delete admin under any circumstances
+            if (userName == "admin") return false;
+
             return Membership.DeleteUser(userName);
         }
+
+        /// <summary>
+        /// This is used to change the password of the current logged in user if she wishes so. Note that username is not taken as a parameter, 
+        /// and is determined from the current logged in data
+        /// </summary>
+        /// <param name="oldPassword"></param>
+        /// <param name="newPassword"></param>
+        [RequiresAuthentication()]
+        public bool ChangePassword(String oldPassword, String newPassword)
+        {
+            MembershipUser mUser = Membership.GetUser();
+            return mUser.ChangePassword(oldPassword, newPassword);
+        }
     }
+
 
     /// <summary>
     /// An enumeration of the values that can be returned from <see cref="UserRegistrationService.CreateUser"/>

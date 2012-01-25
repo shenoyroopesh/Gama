@@ -67,6 +67,8 @@
 
         <StackPanel x:Name="welcomeControls" Style="{StaticResource LoginPanelStyle}">
             <TextBlock x:Name="welcomeText" Style="{StaticResource WelcomeTextStyle}"/>
+            <TextBlock Text="  |  " Style="{StaticResource SpacerStyle}"/>
+            <Button x:Name="passwordButton" Style="{StaticResource LoginRegisterLinkStyle}" Content="Change Password" Click="passwordButton_Click"/>
         </StackPanel>
 
         <StackPanel x:Name="logoutControls" Style="{StaticResource LoginPanelStyle}">

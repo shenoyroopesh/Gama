@@ -17,16 +17,11 @@
     xmlns:ex="clr-namespace:ComboBoxExtensions;assembly=ComboBoxExtensions"
     xmlns:views="clr-namespace:RadiologyTracking.Views">
 
-    <StackPanel.Resources>
-        <my1:RadiologyContext x:Key="RadiologyContext" />
-        <ex:ComboBoxDataSource x:Key="FoundryDataSource" DomainContext="{StaticResource RadiologyContext}" OperationName="GetFoundriesQuery" />
-    </StackPanel.Resources>
-    <Grid>
+     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <riaControls:DomainDataSource Name="DomainSource" DomainContext="{StaticResource RadiologyContext}" />
 
         <local:BusyIndicator x:Name="busyIndicator" BusyContent="{Binding Path=Strings.BusyIndicatorRegisteringUser, Source={StaticResource ApplicationResources}}"
                              IsBusy="{Binding IsRegistering}">

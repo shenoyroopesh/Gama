@@ -687,6 +687,38 @@ namespace RadiologyTracking.Web
         }
         
         /// <summary>
+        /// Asynchronously invokes the 'ChangePassword' method of the DomainService.
+        /// </summary>
+        /// <param name="oldPassword">The value for the 'oldPassword' parameter of this action.</param>
+        /// <param name="newPassword">The value for the 'newPassword' parameter of this action.</param>
+        /// <param name="callback">Callback to invoke when the operation completes.</param>
+        /// <param name="userState">Value to pass to the callback.  It can be <c>null</c>.</param>
+        /// <returns>An operation instance that can be used to manage the asynchronous request.</returns>
+        public InvokeOperation<bool> ChangePassword(string oldPassword, string newPassword, Action<InvokeOperation<bool>> callback, object userState)
+        {
+            Dictionary<string, object> parameters = new Dictionary<string, object>();
+            parameters.Add("oldPassword", oldPassword);
+            parameters.Add("newPassword", newPassword);
+            this.ValidateMethod("ChangePassword", parameters);
+            return ((InvokeOperation<bool>)(this.InvokeOperation("ChangePassword", typeof(bool), parameters, true, callback, userState)));
+        }
+        
+        /// <summary>
+        /// Asynchronously invokes the 'ChangePassword' method of the DomainService.
+        /// </summary>
+        /// <param name="oldPassword">The value for the 'oldPassword' parameter of this action.</param>
+        /// <param name="newPassword">The value for the 'newPassword' parameter of this action.</param>
+        /// <returns>An operation instance that can be used to manage the asynchronous request.</returns>
+        public InvokeOperation<bool> ChangePassword(string oldPassword, string newPassword)
+        {
+            Dictionary<string, object> parameters = new Dictionary<string, object>();
+            parameters.Add("oldPassword", oldPassword);
+            parameters.Add("newPassword", newPassword);
+            this.ValidateMethod("ChangePassword", parameters);
+            return ((InvokeOperation<bool>)(this.InvokeOperation("ChangePassword", typeof(bool), parameters, true, null, null)));
+        }
+        
+        /// <summary>
         /// Asynchronously invokes the 'CreateUser' method of the DomainService.
         /// </summary>
         /// <param name="user">The value for the 'user' parameter of this action.</param>
@@ -694,7 +726,7 @@ namespace RadiologyTracking.Web
         /// <param name="callback">Callback to invoke when the operation completes.</param>
         /// <param name="userState">Value to pass to the callback.  It can be <c>null</c>.</param>
         /// <returns>An operation instance that can be used to manage the asynchronous request.</returns>
-        public InvokeOperation CreateUser(RegistrationData user, [RegularExpression("^.*[^a-zA-Z0-9].*$", ErrorMessageResourceName="ValidationErrorBadPasswordStrength", ErrorMessageResourceType=typeof(ValidationErrorResources))] [Required(ErrorMessageResourceName="ValidationErrorRequiredField", ErrorMessageResourceType=typeof(ValidationErrorResources))] [StringLength(50, ErrorMessageResourceName="ValidationErrorBadPasswordLength", ErrorMessageResourceType=typeof(ValidationErrorResources), MinimumLength=7)] string password, Action<InvokeOperation> callback, object userState)
+        public InvokeOperation CreateUser(RegistrationData user, [Required(ErrorMessageResourceName="ValidationErrorRequiredField", ErrorMessageResourceType=typeof(ValidationErrorResources))] string password, Action<InvokeOperation> callback, object userState)
         {
             Dictionary<string, object> parameters = new Dictionary<string, object>();
             parameters.Add("user", user);
@@ -709,7 +741,7 @@ namespace RadiologyTracking.Web
         /// <param name="user">The value for the 'user' parameter of this action.</param>
         /// <param name="password">The value for the 'password' parameter of this action.</param>
         /// <returns>An operation instance that can be used to manage the asynchronous request.</returns>
-        public InvokeOperation CreateUser(RegistrationData user, [RegularExpression("^.*[^a-zA-Z0-9].*$", ErrorMessageResourceName="ValidationErrorBadPasswordStrength", ErrorMessageResourceType=typeof(ValidationErrorResources))] [Required(ErrorMessageResourceName="ValidationErrorRequiredField", ErrorMessageResourceType=typeof(ValidationErrorResources))] [StringLength(50, ErrorMessageResourceName="ValidationErrorBadPasswordLength", ErrorMessageResourceType=typeof(ValidationErrorResources), MinimumLength=7)] string password)
+        public InvokeOperation CreateUser(RegistrationData user, [Required(ErrorMessageResourceName="ValidationErrorRequiredField", ErrorMessageResourceType=typeof(ValidationErrorResources))] string password)
         {
             Dictionary<string, object> parameters = new Dictionary<string, object>();
             parameters.Add("user", user);
@@ -754,7 +786,7 @@ namespace RadiologyTracking.Web
         /// <param name="callback">Callback to invoke when the operation completes.</param>
         /// <param name="userState">Value to pass to the callback.  It can be <c>null</c>.</param>
         /// <returns>An operation instance that can be used to manage the asynchronous request.</returns>
-        public InvokeOperation EditUser(RegistrationData user, [RegularExpression("^.*[^a-zA-Z0-9].*$", ErrorMessageResourceName="ValidationErrorBadPasswordStrength", ErrorMessageResourceType=typeof(ValidationErrorResources))] [StringLength(50, ErrorMessageResourceName="ValidationErrorBadPasswordLength", ErrorMessageResourceType=typeof(ValidationErrorResources), MinimumLength=7)] string password, Action<InvokeOperation> callback, object userState)
+        public InvokeOperation EditUser(RegistrationData user, string password, Action<InvokeOperation> callback, object userState)
         {
             Dictionary<string, object> parameters = new Dictionary<string, object>();
             parameters.Add("user", user);
@@ -769,7 +801,7 @@ namespace RadiologyTracking.Web
         /// <param name="user">The value for the 'user' parameter of this action.</param>
         /// <param name="password">The value for the 'password' parameter of this action.</param>
         /// <returns>An operation instance that can be used to manage the asynchronous request.</returns>
-        public InvokeOperation EditUser(RegistrationData user, [RegularExpression("^.*[^a-zA-Z0-9].*$", ErrorMessageResourceName="ValidationErrorBadPasswordStrength", ErrorMessageResourceType=typeof(ValidationErrorResources))] [StringLength(50, ErrorMessageResourceName="ValidationErrorBadPasswordLength", ErrorMessageResourceType=typeof(ValidationErrorResources), MinimumLength=7)] string password)
+        public InvokeOperation EditUser(RegistrationData user, string password)
         {
             Dictionary<string, object> parameters = new Dictionary<string, object>();
             parameters.Add("user", user);
@@ -815,6 +847,25 @@ namespace RadiologyTracking.Web
         [ServiceContract()]
         public interface IUserRegistrationServiceContract
         {
+            
+            /// <summary>
+            /// Asynchronously invokes the 'ChangePassword' operation.
+            /// </summary>
+            /// <param name="oldPassword">The value for the 'oldPassword' parameter of this action.</param>
+            /// <param name="newPassword">The value for the 'newPassword' parameter of this action.</param>
+            /// <param name="callback">Callback to invoke on completion.</param>
+            /// <param name="asyncState">Optional state object.</param>
+            /// <returns>An IAsyncResult that can be used to monitor the request.</returns>
+            [FaultContract(typeof(DomainServiceFault), Action="http://tempuri.org/UserRegistrationService/ChangePasswordDomainServiceFault", Name="DomainServiceFault", Namespace="DomainServices")]
+            [OperationContract(AsyncPattern=true, Action="http://tempuri.org/UserRegistrationService/ChangePassword", ReplyAction="http://tempuri.org/UserRegistrationService/ChangePasswordResponse")]
+            IAsyncResult BeginChangePassword(string oldPassword, string newPassword, AsyncCallback callback, object asyncState);
+            
+            /// <summary>
+            /// Completes the asynchronous operation begun by 'BeginChangePassword'.
+            /// </summary>
+            /// <param name="result">The IAsyncResult returned from 'BeginChangePassword'.</param>
+            /// <returns>The 'Boolean' returned from the 'ChangePassword' operation.</returns>
+            bool EndChangePassword(IAsyncResult result);
             
             /// <summary>
             /// Asynchronously invokes the 'CreateUser' operation.

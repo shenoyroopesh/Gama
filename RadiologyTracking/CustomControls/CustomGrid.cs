@@ -18,8 +18,11 @@ namespace Vagsons.Controls
         bool mouseDown = false;
         Dictionary<DataGridCell, Brush> selectedCells = new Dictionary<DataGridCell, Brush>();
         String copiedText = String.Empty;
+        bool isEditAllowed = true;
 
-        public CustomGrid():base()
+
+        public CustomGrid()
+            : base()
         {
             //no point in adding these event handlers if the grid is readonly
             if (!this.IsReadOnly)
@@ -33,12 +36,25 @@ namespace Vagsons.Controls
                 this.GotFocus += new RoutedEventHandler(CustomGrid_GotFocus);
             }
             this.AutoGenerateColumns = false;
+
+            //if edit is not allowed, first make edit and delete columns disappear
+            if (!isEditAllowed)
+            {
+                foreach (var column in this.Columns)
+                {
+                    if (column.Header.ToString().ToLower() == "edit" || column.Header.ToString().ToLower() == "delete")
+                    {
+                        column.Visibility = System.Windows.Visibility.Collapsed;
+                    }
+                }
+            }
         }
 
         void CustomGrid_RowEditEnded(object sender, DataGridRowEditEndedEventArgs e)
         {
             CustomGrid_LoadingRow(sender, new DataGridRowEventArgs(e.Row));
         }
+
 
         void CustomGrid_BeginningEdit(object sender, DataGridBeginningEditEventArgs e)
         {
@@ -49,11 +65,27 @@ namespace Vagsons.Controls
 
         void CustomGrid_LoadingRow(object sender, DataGridRowEventArgs e)
         {
+            int itemID = 0;
+
+            Type t = e.Row.DataContext.GetType();
+            var property = t.GetProperty("ID");
+            if (property != null && property.GetType() == typeof(int))
+                itemID = Convert.ToInt32(property.GetValue(e.Row.DataContext, null));
+
+
             foreach (var column in this.Columns)
             {
                 FrameworkElement cellContent = column.GetCellContent(e.Row);
-                addCellEventHandlers(cellContent);
+                if (isEditAllowed || itemID == 0) // for new items with id zero, allow editing
+                {
+                    addCellEventHandlers(cellContent);
+                }
+                else
+                {
+                    
+                }
             }
+
         }
 
         void addCellEventHandlers(FrameworkElement cellContent)
@@ -81,10 +113,10 @@ namespace Vagsons.Controls
         /// <param name="e"></param>
         void CustomGrid_MouseLeave(object sender, MouseEventArgs e)
         {
-            if(mouseDown)
+            if (mouseDown)
                 CaptureMouse();
         }
-        
+
         void cellContent_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             mouseDown = false;
@@ -94,7 +126,7 @@ namespace Vagsons.Controls
         void cellContent_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             //if ctrl button is not held down, clear all selection
-            if((Keyboard.Modifiers & ModifierKeys.Control) == 0)
+            if ((Keyboard.Modifiers & ModifierKeys.Control) == 0)
                 clearAllSelection();
 
             //if this is not textblock, it means it is in edit mode, so do not proceed further
@@ -127,7 +159,7 @@ namespace Vagsons.Controls
                 selectCell(e.OriginalSource);
             }
         }
-   
+
         void selectCell(Object c)
         {
             if (c.GetType() != typeof(TextBlock))
@@ -227,7 +259,7 @@ namespace Vagsons.Controls
                 {
                     ((TextBox)box).Text = this.Tag.ToString();
                     ((TextBox)box).SelectionStart = 1; //move editing cursor to end of text
-                }                
+                }
                 this.Tag = null;
             }
         }

@@ -12,17 +12,16 @@
     using System.Windows.Input;
     using RadiologyTracking.Web;
     using RadiologyTracking.Web.Services;
+    using RadiologyTracking.Views;
 
     /// <summary>
     /// Form that presents the <see cref="RegistrationData"/> and performs the registration process.
     /// </summary>
     public partial class RegistrationForm : StackPanel
     {
-        private LoginRegistrationWindow parentWindow;
-        private RegistrationData registrationData = new RegistrationData();
+        private RegistrationFormWindow parentWindow;
         private UserRegistrationContext userRegistrationContext = new UserRegistrationContext();
         private TextBox userNameTextBox;
-        RadiologyContext context;
 
         /// <summary>
         /// Creates a new <see cref="RegistrationForm"/> instance.
@@ -30,37 +29,24 @@
         public RegistrationForm()
         {
             InitializeComponent();
-
-            // Set the DataContext of this control to the Registration instance to allow for easy binding.
-            this.DataContext = this.registrationData;
-            context = new RadiologyContext();
-            context.GetRoles(OnRolesReceived, null); 
         }
 
-        void  OnRolesReceived(InvokeOperation<IEnumerable<String>> invOp)
-        {
- 	        if (invOp.HasError)
-            {
-                MessageBox.Show(string.Format("Method Failed: {0}", invOp.Error.Message));
-                invOp.MarkErrorAsHandled();
-            }
-            else
-            {
-                Roles = invOp.Value;
-            }
-        }
 
         /// <summary>
         /// Sets the parent window for the current <see cref="RegistrationForm"/>.
         /// </summary>
         /// <param name="window">The window to use as the parent.</param>
-        public void SetParentWindow(LoginRegistrationWindow window)
+        public void SetParentWindow(RegistrationFormWindow window)
         {
             this.parentWindow = window;
         }
 
 
         public IEnumerable<String> Roles { get; set; }
+
+        public IEnumerable<String> Foundries { get; set; }
+
+        public bool IsEditing { get; set; }
 
         /// <summary>
         /// Wire up the Password and PasswordConfirmation accessors as the fields get generated.
@@ -71,6 +57,8 @@
             // Put all the fields in adding mode
             e.Field.Mode = DataFieldMode.AddNew;
 
+            var registrationData = DataContext as RegistrationData;
+
             if (e.PropertyName == "UserName")
             {
                 this.userNameTextBox = (TextBox)e.Field.Content;
@@ -80,18 +68,18 @@
             {
                 PasswordBox passwordBox = new PasswordBox();
                 e.Field.ReplaceTextBox(passwordBox, PasswordBox.PasswordProperty);
-                this.registrationData.PasswordAccessor = () => passwordBox.Password;
+                registrationData.PasswordAccessor = () => passwordBox.Password;
             }
             else if (e.PropertyName == "PasswordConfirmation")
             {
                 PasswordBox passwordConfirmationBox = new PasswordBox();
                 e.Field.ReplaceTextBox(passwordConfirmationBox, PasswordBox.PasswordProperty);
-                this.registrationData.PasswordConfirmationAccessor = () => passwordConfirmationBox.Password;
+                registrationData.PasswordConfirmationAccessor = () => passwordConfirmationBox.Password;
             }
             else if (e.PropertyName == "Foundry")
             {
                 ComboBox foundryCombobox = new ComboBox();
-                foundryCombobox.ItemsSource = ((RadiologyContext)DomainSource.DataContext).Foundries.Select(p => p.FoundryName);
+                foundryCombobox.ItemsSource = Foundries;
                 e.Field.ReplaceTextBox(foundryCombobox, ComboBox.SelectedItemProperty);
             }
             else if (e.PropertyName == "Role")
@@ -110,18 +98,7 @@
         /// <param name="e">The event arguments.</param>
         private void UserNameLostFocus(object sender, RoutedEventArgs e)
         {
-            this.registrationData.UserNameEntered(((TextBox)sender).Text);
-        }
-
-        /// <summary>
-        /// Returns a list of the resource strings defined in <see cref="SecurityQuestions" />.
-        /// </summary>
-        private static IEnumerable<string> GetSecurityQuestions()
-        {
-            // Use reflection to grab all the localized security questions
-            return from propertyInfo in typeof(SecurityQuestions).GetProperties()
-                   where propertyInfo.PropertyType.Equals(typeof(string))
-                   select (string)propertyInfo.GetValue(null, null);
+            (DataContext as RegistrationData).UserNameEntered(((TextBox)sender).Text);
         }
 
         /// <summary>
@@ -131,16 +108,40 @@
         {
             // We need to force validation since we are not using the standard OK button from the DataForm.
             // Without ensuring the form is valid, we would get an exception invoking the operation if the entity is invalid.
-            if (this.registerForm.ValidateItem())
+            if (this.ValidateItem())
             {
-                this.registrationData.CurrentOperation = this.userRegistrationContext.CreateUser(
-                    this.registrationData,
-                    this.registrationData.Password,
-                    this.RegistrationOperation_Completed, null);
-
-                this.parentWindow.AddPendingOperation(this.registrationData.CurrentOperation);
+                var registrationData = DataContext as RegistrationData;
+                if (IsEditing)
+                {
+                    registrationData.CurrentOperation = this.userRegistrationContext.EditUser(
+                                                                        registrationData,
+                                                                        registrationData.Password,
+                                                                        RegistrationOperation_Completed, null);
+                }
+                else
+                {
+                    registrationData.CurrentOperation = this.userRegistrationContext.CreateUser(
+                                                                        registrationData,
+                                                                        registrationData.Password,
+                                                                        RegistrationOperation_Completed, null);
+                }
             }
         }
+
+        private bool ValidateItem()
+        {
+            var data = DataContext as RegistrationData;
+            if (data.isEditing && data.Password == "")
+            {
+                //check is mainly in password, which is not needed now
+                return true;
+            }
+            else
+            {
+                return this.registerForm.ValidateItem();
+            }
+        }
+
 
         /// <summary>
         /// Completion handler for the registration operation. 
@@ -158,41 +159,9 @@
                 }
                 else
                 {
-                    ErrorWindow.CreateNew(ErrorResources.ErrorWindowGenericError);
+                    this.parentWindow.Close();
                 }
             }
-        }
-
-        /// <summary>
-        /// Completion handler for the login operation that occurs after a successful registration and login attempt.
-        /// This will close the window. If the operation fails, an <see cref="ErrorWindow"/> will display the error message.
-        /// </summary>
-        /// <param name="loginOperation">The <see cref="LoginOperation"/> that has completed.</param>
-        private void LoginOperation_Completed(LoginOperation loginOperation)
-        {
-            if (!loginOperation.IsCanceled)
-            {
-                this.parentWindow.DialogResult = true;
-
-                if (loginOperation.HasError)
-                {
-                    ErrorWindow.CreateNew(string.Format(System.Globalization.CultureInfo.CurrentUICulture, ErrorResources.ErrorLoginAfterRegistrationFailed, loginOperation.Error.Message));
-                    loginOperation.MarkErrorAsHandled();
-                }
-                else if (loginOperation.LoginSuccess == false)
-                {
-                    // The operation was successful, but the actual login was not
-                    ErrorWindow.CreateNew(string.Format(System.Globalization.CultureInfo.CurrentUICulture, ErrorResources.ErrorLoginAfterRegistrationFailed, ErrorResources.ErrorBadUserNameOrPassword));
-                }
-            }
-        }
-
-        /// <summary>
-        /// Switches to the login window.
-        /// </summary>
-        private void BackToLogin_Click(object sender, RoutedEventArgs e)
-        {
-            this.parentWindow.NavigateToLogin();
         }
 
         /// <summary>
@@ -201,11 +170,13 @@
         /// </summary>
         private void CancelButton_Click(object sender, EventArgs e)
         {
-            if (this.registrationData.CurrentOperation != null && this.registrationData.CurrentOperation.CanCancel)
+            var registrationData = DataContext as RegistrationData;
+
+            if (registrationData.CurrentOperation != null && registrationData.CurrentOperation.CanCancel)
             {
-                this.registrationData.CurrentOperation.Cancel();
+                registrationData.CurrentOperation.Cancel();
             }
-            else
+            else if (this.parentWindow != null)
             {
                 this.parentWindow.DialogResult = false;
             }

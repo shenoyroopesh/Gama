@@ -1,4 +1,4 @@
-﻿namespace RadiologyTracking.Web
+﻿namespace RadiologyTracking.LoginUI
 {
     using System;
     using System.ComponentModel.DataAnnotations;
@@ -7,15 +7,39 @@
     using RadiologyTracking.Web.Resources;
 
     /// <summary>
-    /// Extensions to provide client side custom validation and data binding to <see cref="RegistrationData"/>.
+    /// This internal entity is used to ease the binding between the UI controls (DataForm and the label displaying a validation error) and the log on credentials entered by the user.
     /// </summary>
-    public partial class RegistrationData
+    public class ChangePasswordInfo : ComplexObject
     {
         private OperationBase currentOperation;
 
-        [Display(AutoGenerateField=false)]
-        public bool isEditing { get; set; }
+                /// <summary>
+        /// Gets or sets a function that returns the password.
+        /// </summary>
+        internal Func<string> OldPasswordAccessor { get; set; }
 
+        /// <summary>
+        /// Gets and sets the password.
+        /// </summary>
+        [Display(Order=0, Name="Old Password")]
+        [Required(ErrorMessageResourceName = "ValidationErrorRequiredField", ErrorMessageResourceType = typeof(ValidationErrorResources))]
+        public string OldPassword
+        {
+            get
+            {
+                return (this.OldPasswordAccessor == null) ? string.Empty : this.OldPasswordAccessor();
+            }
+            set
+            {
+                this.ValidateProperty("OldPassword", value);
+
+                // Do not store the password in a private field as it should not be stored in memory in plain-text.
+                // Instead, the supplied PasswordAccessor serves as the backing store for the value.
+
+                this.RaisePropertyChanged("OldPassword");
+            }
+        }
+        
         /// <summary>
         /// Gets or sets a function that returns the password.
         /// </summary>
@@ -24,22 +48,18 @@
         /// <summary>
         /// Gets and sets the password.
         /// </summary>
+        [Display(Order=1, Name="New Password")]
         [Required(ErrorMessageResourceName = "ValidationErrorRequiredField", ErrorMessageResourceType = typeof(ValidationErrorResources))]
-        [Display(Order = 2, Name = "PasswordLabel", Description = "PasswordDescription", ResourceType = typeof(RegistrationDataResources))]
         public string Password
         {
             get
             {
                 return (this.PasswordAccessor == null) ? string.Empty : this.PasswordAccessor();
             }
-
             set
             {
-                if ((!isEditing) || value != "")
-                {
-                    this.ValidateProperty("Password", value);
-                    this.CheckPasswordConfirmation();
-                }
+                this.ValidateProperty("Password", value);
+
                 // Do not store the password in a private field as it should not be stored in memory in plain-text.
                 // Instead, the supplied PasswordAccessor serves as the backing store for the value.
 
@@ -56,7 +76,7 @@
         /// Gets and sets the password confirmation string.
         /// </summary>
         [Required(ErrorMessageResourceName = "ValidationErrorRequiredField", ErrorMessageResourceType = typeof(ValidationErrorResources))]
-        [Display(Order = 3, Name = "PasswordConfirmationLabel", ResourceType = typeof(RegistrationDataResources))]
+        [Display(Order = 2, Name = "PasswordConfirmationLabel", ResourceType = typeof(RegistrationDataResources))]
         public string PasswordConfirmation
         {
             get
@@ -66,16 +86,35 @@
 
             set
             {
-                if ((!isEditing) || value != "")
-                {
-                    this.ValidateProperty("PasswordConfirmation", value);
-                    this.CheckPasswordConfirmation();
-                }
+                this.ValidateProperty("PasswordConfirmation", value);
+                this.CheckPasswordConfirmation();
+
 
                 // Do not store the password in a private field as it should not be stored in memory in plain-text.  
                 // Instead, the supplied PasswordAccessor serves as the backing store for the value.
 
                 this.RaisePropertyChanged("PasswordConfirmation");
+            }
+        }
+
+        /// <summary>
+        /// Checks to ensure the password and confirmation match.
+        /// If they don't match, a validation error is added.
+        /// </summary>
+        private void CheckPasswordConfirmation()
+        {
+            // If either of the passwords has not yet been entered, then don't test for equality between the fields.
+            // The Required attribute will ensure a value has been entered for both fields.
+            if (string.IsNullOrWhiteSpace(this.Password)
+                || string.IsNullOrWhiteSpace(this.PasswordConfirmation))
+            {
+                return;
+            }
+
+            // If the values are different, then add a validation error with both members specified
+            if (this.Password != this.PasswordConfirmation)
+            {
+                this.ValidationErrors.Add(new ValidationResult(ValidationErrorResources.ValidationErrorPasswordConfirmationMismatch, new string[] { "PasswordConfirmation", "Password" }));
             }
         }
 
@@ -110,10 +149,10 @@
         }
 
         /// <summary>
-        /// Gets a value indicating whether the user is presently being registered or logged in.
+        /// Gets a value indicating whether the user is presently being logged in.
         /// </summary>
         [Display(AutoGenerateField = false)]
-        public bool IsRegistering
+        public bool IsChanging
         {
             get
             {
@@ -127,53 +166,7 @@
         /// </summary>
         private void CurrentOperationChanged()
         {
-            this.RaisePropertyChanged("IsRegistering");
-        }
-
-        /// <summary>
-        /// Checks to ensure the password and confirmation match.
-        /// If they don't match, a validation error is added.
-        /// </summary>
-        private void CheckPasswordConfirmation()
-        {
-            // If either of the passwords has not yet been entered, then don't test for equality between the fields.
-            // The Required attribute will ensure a value has been entered for both fields.
-            if (string.IsNullOrWhiteSpace(this.Password)
-                || string.IsNullOrWhiteSpace(this.PasswordConfirmation))
-            {
-                return;
-            }
-
-            // If the values are different, then add a validation error with both members specified
-            if (this.Password != this.PasswordConfirmation)
-            {
-                this.ValidationErrors.Add(new ValidationResult(ValidationErrorResources.ValidationErrorPasswordConfirmationMismatch, new string[] { "PasswordConfirmation", "Password" }));
-            }
-        }
-
-        /// <summary>
-        /// Perform logic after the UserName value has been entered.
-        /// </summary>
-        /// <param name="userName">The user name value that was entered.</param>
-        /// <remarks>
-        /// Allow the form to indicate when the value has been completely entered.
-        /// Using the OnUserNameChanged method can lead to a premature call before the user has finished entering the value in the form.
-        /// </remarks>
-        internal void UserNameEntered(string userName)
-        {
-            // Auto-Fill FriendlyName to match UserName for new entities when there is not a friendly name specified
-            if (string.IsNullOrWhiteSpace(this.FriendlyName))
-            {
-                this.FriendlyName = userName;
-            }
-        }
-
-        /// <summary>
-        /// Creates a new <see cref="LoginParameters"/> initialized with this entity's data (IsPersistent will default to false).
-        /// </summary>
-        public LoginParameters ToLoginParameters()
-        {
-            return new LoginParameters(this.UserName, this.Password, false, null);
+            this.RaisePropertyChanged("IsChanging");
         }
     }
 }

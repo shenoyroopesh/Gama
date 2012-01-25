@@ -350,3 +350,5 @@ D:\DotNet\Gama\RadiologyTracking\RadiologyTracking\obj\Debug\Views\FilmConsumpti
 D:\DotNet\Gama\RadiologyTracking\RadiologyTracking\obj\Debug\Views\CastingStatusReport.g.i.cs
 D:\DotNet\Gama\RadiologyTracking\RadiologyTracking\obj\Debug\Views\FinalRadioGraphyReport.g.i.cs
 D:\DotNet\Gama\RadiologyTracking\RadiologyTracking\obj\Debug\Views\Login\RegistrationFormWindow.g.i.cs
+D:\DotNet\Gama\RadiologyTracking\RadiologyTracking\obj\Debug\Views\Login\ChangePassword.g.i.cs
+D:\DotNet\Gama\RadiologyTracking\RadiologyTracking\obj\Debug\Views\Login\ChangePasswordWindow.g.i.cs

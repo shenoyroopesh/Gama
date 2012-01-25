@@ -83,5 +83,11 @@
                 VisualStateManager.GoToState(this, (WebContext.Current.User.IsAuthenticated) ? "loggedIn" : "loggedOut", true);
             }
         }
+
+        private void passwordButton_Click(object sender, RoutedEventArgs e)
+        {
+            ChangePasswordWindow window = new ChangePasswordWindow();
+            window.Show();
+        }
     }
 }

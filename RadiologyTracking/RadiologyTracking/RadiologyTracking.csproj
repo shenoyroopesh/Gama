@@ -117,6 +117,7 @@
     <Compile Include="DataGridExtensions.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Models\LoginInfo.cs" />
+    <Compile Include="Models\ChangePasswordInfo.cs" />
     <Compile Include="Models\User.partial.cs" />
     <Compile Include="Models\RegistrationData.partial.cs" />
     <Compile Include="Controls\BusyIndicator.cs" />
@@ -143,6 +144,12 @@
     </Compile>
     <Compile Include="Views\FilmConsumptionReport.xaml.cs">
       <DependentUpon>FilmConsumptionReport.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Login\ChangePassword.xaml.cs">
+      <DependentUpon>ChangePassword.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Login\ChangePasswordWindow.xaml.cs">
+      <DependentUpon>ChangePasswordWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Login\RegistrationFormWindow.xaml.cs">
       <DependentUpon>RegistrationFormWindow.xaml</DependentUpon>
@@ -248,6 +255,14 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\FilmConsumptionReport.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Login\ChangePassword.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Login\ChangePasswordWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

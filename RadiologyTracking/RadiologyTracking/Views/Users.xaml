@@ -35,6 +35,14 @@
                                 </DataTemplate>
                             </sdk:DataGridTemplateColumn.CellTemplate>
                         </sdk:DataGridTemplateColumn>
+                        <sdk:DataGridTemplateColumn Header="Edit" Width="Auto">
+                            <sdk:DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Button Name="grdDeleteButton" Tag="{Binding}" Style="{StaticResource DeleteButtonStyle}"
+                                            Click="DeleteOperation"/>
+                                </DataTemplate>
+                            </sdk:DataGridTemplateColumn.CellTemplate>
+                        </sdk:DataGridTemplateColumn>
                     </sdk:DataGrid.Columns>
                 </custom:CustomGrid>
             </local:BusyIndicator>
