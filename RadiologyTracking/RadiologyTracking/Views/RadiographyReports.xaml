@@ -58,7 +58,7 @@
                         <sdk:DataGridTextColumn Binding="{Binding Path=FixedPattern.Description, Mode=OneWay}" Header="Description" 
                                                 Width="Auto" />
                         <sdk:DataGridTextColumn Binding="{Binding Path=Coverage.CoverageName, Mode=OneWay}" Header="Coverage" Width="Auto" />
-                        <sdk:DataGridTemplateColumn Header="Templates" Width="Auto">
+                        <sdk:DataGridTemplateColumn Header="Edit" Width="Auto">
                             <sdk:DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <Button Name="grdEditButton" Tag="{Binding}" Style="{StaticResource EditButtonStyle}"

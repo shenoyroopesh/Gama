@@ -43,8 +43,7 @@ namespace RadiologyTracking.Web.Utility
         {
             User user = new User()
             {
-                Name = membershipUser.UserName,
-                Roles = Roles.GetRolesForUser(membershipUser.UserName)
+                Name = membershipUser.UserName
             };
             ProfileBase p = ProfileBase.Create(user.Name);
             user.Foundry = (string)p.GetPropertyValue("Foundry");

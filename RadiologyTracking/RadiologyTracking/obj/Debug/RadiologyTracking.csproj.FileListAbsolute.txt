@@ -349,3 +349,4 @@ D:\DotNet\Gama\RadiologyTracking\RadiologyTracking\obj\Debug\Views\ShiftWisePerf
 D:\DotNet\Gama\RadiologyTracking\RadiologyTracking\obj\Debug\Views\FilmConsumptionReport.g.i.cs
 D:\DotNet\Gama\RadiologyTracking\RadiologyTracking\obj\Debug\Views\CastingStatusReport.g.i.cs
 D:\DotNet\Gama\RadiologyTracking\RadiologyTracking\obj\Debug\Views\FinalRadioGraphyReport.g.i.cs
+D:\DotNet\Gama\RadiologyTracking\RadiologyTracking\obj\Debug\Views\Login\RegistrationFormWindow.g.i.cs

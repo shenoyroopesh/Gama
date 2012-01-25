@@ -144,6 +144,9 @@
     <Compile Include="Views\FilmConsumptionReport.xaml.cs">
       <DependentUpon>FilmConsumptionReport.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Login\RegistrationFormWindow.xaml.cs">
+      <DependentUpon>RegistrationFormWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\ShiftWisePerformance.xaml.cs">
       <DependentUpon>ShiftWisePerformance.xaml</DependentUpon>
     </Compile>
@@ -247,6 +250,10 @@
     <Page Include="Views\FilmConsumptionReport.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Login\RegistrationFormWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ShiftWisePerformance.xaml">
       <Generator>MSBuild:Compile</Generator>

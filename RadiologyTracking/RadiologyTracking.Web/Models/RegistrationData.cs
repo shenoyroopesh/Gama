@@ -17,14 +17,6 @@
         [StringLength(255, MinimumLength = 4, ErrorMessageResourceName = "ValidationErrorBadUserNameLength", ErrorMessageResourceType = typeof(ValidationErrorResources))]
         public string UserName { get; set; }
 
-        /// <summary>
-        /// Gets and sets the email address.
-        /// </summary>
-        [Required(ErrorMessageResourceName = "ValidationErrorRequiredField", ErrorMessageResourceType = typeof(ValidationErrorResources))]
-        [Display(Order = 2, Name = "EmailLabel", ResourceType = typeof(RegistrationDataResources))]
-        [RegularExpression(@"^([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$",
-                           ErrorMessageResourceName = "ValidationErrorInvalidEmail", ErrorMessageResourceType = typeof(ValidationErrorResources))]
-        public string Email { get; set; }
 
         /// <summary>
         /// Gets and sets the friendly name of the user.
@@ -33,28 +25,14 @@
         [StringLength(255, MinimumLength = 0, ErrorMessageResourceName = "ValidationErrorBadFriendlyNameLength", ErrorMessageResourceType = typeof(ValidationErrorResources))]
         public string FriendlyName { get; set; }
 
-        /// <summary>
-        /// Gets and sets the security question.
-        /// </summary>
-        [Required(ErrorMessageResourceName = "ValidationErrorRequiredField", ErrorMessageResourceType = typeof(ValidationErrorResources))]
-        [Display(Order = 5, Name = "SecurityQuestionLabel", ResourceType = typeof(RegistrationDataResources))]
-        public string Question { get; set; }
 
-        /// <summary>
-        /// Gets and sets the answer to the security question.
-        /// </summary>
-        [Required(ErrorMessageResourceName = "ValidationErrorRequiredField", ErrorMessageResourceType = typeof(ValidationErrorResources))]
-        [Display(Order = 6, Name = "SecurityAnswerLabel", ResourceType = typeof(RegistrationDataResources))]
-        [StringLength(128, ErrorMessageResourceName = "ValidationErrorBadAnswerLength", ErrorMessageResourceType = typeof(ValidationErrorResources))]
-        public string Answer { get; set; }
-
-        [Display(Order=7, Name="Foundry")]
+        [Display(Order=4, Name="Foundry")]
         public string Foundry { get; set; }
 
         /// <summary>
         /// Role to which the user should be assigned. In this application, every user will have only a single role
         /// </summary>
-        [Display(Order = 8, Name= "Role")]
+        [Display(Order = 5, Name= "Role")]
         public string Role { get; set; }
     }
 }

@@ -105,6 +105,9 @@
                             <Rectangle x:Name="Divider16" Style="{StaticResource DividerStyle}"/>
                             <HyperlinkButton x:Name="Link18" Style="{StaticResource LinkStyle}" 
                                      NavigateUri="/CastingStatusReport" TargetName="ContentFrame" Content="Casting Status"/>
+                            <Rectangle x:Name="Divider17" Style="{StaticResource DividerStyle}"/>
+                            <HyperlinkButton x:Name="Link19" Style="{StaticResource LinkStyle}" 
+                                     NavigateUri="/Users" TargetName="ContentFrame" Content="Users"/>
                         </StackPanel>
                     </StackPanel>
                 </Border>

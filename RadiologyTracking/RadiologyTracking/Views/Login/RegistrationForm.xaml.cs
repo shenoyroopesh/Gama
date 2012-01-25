@@ -22,7 +22,7 @@
         private RegistrationData registrationData = new RegistrationData();
         private UserRegistrationContext userRegistrationContext = new UserRegistrationContext();
         private TextBox userNameTextBox;
-        RadiologyContext context
+        RadiologyContext context;
 
         /// <summary>
         /// Creates a new <see cref="RegistrationForm"/> instance.
@@ -88,12 +88,6 @@
                 e.Field.ReplaceTextBox(passwordConfirmationBox, PasswordBox.PasswordProperty);
                 this.registrationData.PasswordConfirmationAccessor = () => passwordConfirmationBox.Password;
             }
-            else if (e.PropertyName == "Question")
-            {
-                ComboBox questionComboBox = new ComboBox();
-                questionComboBox.ItemsSource = RegistrationForm.GetSecurityQuestions();
-                e.Field.ReplaceTextBox(questionComboBox, ComboBox.SelectedItemProperty, binding => binding.Converter = new TargetNullValueConverter());
-            }
             else if (e.PropertyName == "Foundry")
             {
                 ComboBox foundryCombobox = new ComboBox();
@@ -153,7 +147,7 @@
         /// If there was an error, an <see cref="ErrorWindow"/> is displayed to the user.
         /// Otherwise, this triggers a login operation that will automatically log in the just registered user.
         /// </summary>
-        private void RegistrationOperation_Completed(InvokeOperation<CreateUserStatus> operation)
+        private void RegistrationOperation_Completed(InvokeOperation operation)
         {
             if (!operation.IsCanceled)
             {
@@ -161,19 +155,6 @@
                 {
                     ErrorWindow.CreateNew(operation.Error);
                     operation.MarkErrorAsHandled();
-                }
-                else if (operation.Value == CreateUserStatus.Success)
-                {
-                    this.registrationData.CurrentOperation = WebContext.Current.Authentication.Login(this.registrationData.ToLoginParameters(), this.LoginOperation_Completed, null);
-                    this.parentWindow.AddPendingOperation(this.registrationData.CurrentOperation);
-                }
-                else if (operation.Value == CreateUserStatus.DuplicateUserName)
-                {
-                    this.registrationData.ValidationErrors.Add(new ValidationResult(ErrorResources.CreateUserStatusDuplicateUserName, new string[] { "UserName" }));
-                }
-                else if (operation.Value == CreateUserStatus.DuplicateEmail)
-                {
-                    this.registrationData.ValidationErrors.Add(new ValidationResult(ErrorResources.CreateUserStatusDuplicateEmail, new string[] { "Email" }));
                 }
                 else
                 {

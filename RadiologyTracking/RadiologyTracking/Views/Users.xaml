@@ -5,9 +5,41 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     d:DesignWidth="640" d:DesignHeight="480" xmlns:sdk="http://schemas.microsoft.com/winfx/2006/xaml/presentation/sdk"
-    xmlns:views="clr-namespace:RadiologyTracking.Views">
-    
+    xmlns:views="clr-namespace:RadiologyTracking.Views"
+    xmlns:custom="clr-namespace:Vagsons.Controls;assembly=CustomControls"
+    xmlns:local="clr-namespace:RadiologyTracking.Controls"
+    xmlns:ex="clr-namespace:ComboBoxExtensions;assembly=ComboBoxExtensions">
+
     <Grid x:Name="LayoutRoot" Background="White">
-        <sdk:DataGrid AutoGenerateColumns="False" HorizontalAlignment="Left" Margin="50,74,0,0" Name="dataGrid1" VerticalAlignment="Top" MinHeight="100" />
+        <sdk:Label Name="headerLabel" Style="{StaticResource PageHeaderStyle}" Content="RADIOLOGY REPORTS"/>
+        <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,20,0,0">
+            <local:BusyIndicator x:Name="busyIndicator">
+                <custom:CustomGrid Name="UsersDataGrid" Style="{StaticResource DataGridStyle}" 
+                               ItemsSource="{Binding}"
+                                   ColumnHeaderStyle="{StaticResource DataGridHeaderGlassEffect}"
+                                   CellStyle="{StaticResource AlignCenter}" IsReadOnly="True">
+                    <custom:CustomGrid.Resources>
+                        <local:DateFormatter x:Key="FormatConverter" />
+                    </custom:CustomGrid.Resources>
+                    <sdk:DataGrid.Columns>
+                        <sdk:DataGridTextColumn Binding="{Binding Path=UserName, Mode=OneWay}" Header="User Name" Width="Auto" />
+                        <sdk:DataGridTextColumn Binding="{Binding Path=FriendlyName, Mode=OneWay}"
+                                                Header="Friendly Name" Width="Auto" />
+                        <sdk:DataGridTextColumn Binding="{Binding Path=Foundry, Mode=OneWay}" Header="Foundry" Width="Auto" />
+                        <sdk:DataGridTextColumn Binding="{Binding Path=Role, Mode=OneWay}" Header="Role" Width="Auto" />
+                        <sdk:DataGridTemplateColumn Header="Edit" Width="Auto">
+                            <sdk:DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Button Name="grdEditButton" Tag="{Binding}" Style="{StaticResource EditButtonStyle}"
+                                            Click="EditOperation"/>
+                                </DataTemplate>
+                            </sdk:DataGridTemplateColumn.CellTemplate>
+                        </sdk:DataGridTemplateColumn>
+                    </sdk:DataGrid.Columns>
+                </custom:CustomGrid>
+            </local:BusyIndicator>
+            <Button Margin="20" Name="btnAdd" Width="75" Style="{StaticResource AddButtonStyle}"
+                    HorizontalAlignment="Right" Click="AddOperation"/>
+        </StackPanel>
     </Grid>
 </UserControl>

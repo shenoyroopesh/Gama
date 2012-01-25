@@ -288,28 +288,6 @@ namespace RadiologyTracking.Web
         }
     }
     
-    public enum CreateUserStatus
-    {
-        
-        Success = 0,
-        
-        InvalidUserName = 1,
-        
-        InvalidPassword = 2,
-        
-        InvalidQuestion = 3,
-        
-        InvalidAnswer = 4,
-        
-        InvalidEmail = 5,
-        
-        DuplicateUserName = 6,
-        
-        DuplicateEmail = 7,
-        
-        Failure = 8,
-    }
-    
     /// <summary>
     /// The 'RegistrationData' class.
     /// </summary>
@@ -317,15 +295,9 @@ namespace RadiologyTracking.Web
     public sealed partial class RegistrationData : ComplexObject
     {
         
-        private string _answer;
-        
-        private string _email;
-        
         private string _foundry;
         
         private string _friendlyName;
-        
-        private string _question;
         
         private string _role;
         
@@ -338,16 +310,10 @@ namespace RadiologyTracking.Web
         /// can be used for further object setup.
         /// </summary>
         partial void OnCreated();
-        partial void OnAnswerChanging(string value);
-        partial void OnAnswerChanged();
-        partial void OnEmailChanging(string value);
-        partial void OnEmailChanged();
         partial void OnFoundryChanging(string value);
         partial void OnFoundryChanged();
         partial void OnFriendlyNameChanging(string value);
         partial void OnFriendlyNameChanged();
-        partial void OnQuestionChanging(string value);
-        partial void OnQuestionChanged();
         partial void OnRoleChanging(string value);
         partial void OnRoleChanged();
         partial void OnUserNameChanging(string value);
@@ -365,65 +331,10 @@ namespace RadiologyTracking.Web
         }
         
         /// <summary>
-        /// Gets or sets the 'Answer' value.
-        /// </summary>
-        [DataMember()]
-        [Display(Name="SecurityAnswerLabel", Order=6, ResourceType=typeof(RegistrationDataResources))]
-        [Required(ErrorMessageResourceName="ValidationErrorRequiredField", ErrorMessageResourceType=typeof(ValidationErrorResources))]
-        [StringLength(128, ErrorMessageResourceName="ValidationErrorBadAnswerLength", ErrorMessageResourceType=typeof(ValidationErrorResources))]
-        public string Answer
-        {
-            get
-            {
-                return this._answer;
-            }
-            set
-            {
-                if ((this._answer != value))
-                {
-                    this.OnAnswerChanging(value);
-                    this.RaiseDataMemberChanging("Answer");
-                    this.ValidateProperty("Answer", value);
-                    this._answer = value;
-                    this.RaiseDataMemberChanged("Answer");
-                    this.OnAnswerChanged();
-                }
-            }
-        }
-        
-        /// <summary>
-        /// Gets or sets the 'Email' value.
-        /// </summary>
-        [DataMember()]
-        [Display(Name="EmailLabel", Order=2, ResourceType=typeof(RegistrationDataResources))]
-        [RegularExpression("^([\\w-\\.]+)@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.)|(([\\w-]+\\.)+))([a-zA-Z]{2,4" +
-            "}|[0-9]{1,3})(\\]?)$", ErrorMessageResourceName="ValidationErrorInvalidEmail", ErrorMessageResourceType=typeof(ValidationErrorResources))]
-        [Required(ErrorMessageResourceName="ValidationErrorRequiredField", ErrorMessageResourceType=typeof(ValidationErrorResources))]
-        public string Email
-        {
-            get
-            {
-                return this._email;
-            }
-            set
-            {
-                if ((this._email != value))
-                {
-                    this.OnEmailChanging(value);
-                    this.RaiseDataMemberChanging("Email");
-                    this.ValidateProperty("Email", value);
-                    this._email = value;
-                    this.RaiseDataMemberChanged("Email");
-                    this.OnEmailChanged();
-                }
-            }
-        }
-        
-        /// <summary>
         /// Gets or sets the 'Foundry' value.
         /// </summary>
         [DataMember()]
-        [Display(Name="Foundry", Order=7)]
+        [Display(Name="Foundry", Order=4)]
         public string Foundry
         {
             get
@@ -471,36 +382,10 @@ namespace RadiologyTracking.Web
         }
         
         /// <summary>
-        /// Gets or sets the 'Question' value.
-        /// </summary>
-        [DataMember()]
-        [Display(Name="SecurityQuestionLabel", Order=5, ResourceType=typeof(RegistrationDataResources))]
-        [Required(ErrorMessageResourceName="ValidationErrorRequiredField", ErrorMessageResourceType=typeof(ValidationErrorResources))]
-        public string Question
-        {
-            get
-            {
-                return this._question;
-            }
-            set
-            {
-                if ((this._question != value))
-                {
-                    this.OnQuestionChanging(value);
-                    this.RaiseDataMemberChanging("Question");
-                    this.ValidateProperty("Question", value);
-                    this._question = value;
-                    this.RaiseDataMemberChanged("Question");
-                    this.OnQuestionChanged();
-                }
-            }
-        }
-        
-        /// <summary>
         /// Gets or sets the 'Role' value.
         /// </summary>
         [DataMember()]
-        [Display(Name="Role", Order=8)]
+        [Display(Name="Role", Order=5)]
         public string Role
         {
             get
@@ -563,8 +448,6 @@ namespace RadiologyTracking.Web
         
         private string _name = string.Empty;
         
-        private string _role;
-        
         private IEnumerable<string> _roles;
         
         #region Extensibility Method Definitions
@@ -580,8 +463,6 @@ namespace RadiologyTracking.Web
         partial void OnFriendlyNameChanged();
         partial void OnNameChanging(string value);
         partial void OnNameChanged();
-        partial void OnRoleChanging(string value);
-        partial void OnRoleChanged();
         partial void OnRolesChanging(IEnumerable<string> value);
         partial void OnRolesChanged();
 
@@ -667,30 +548,6 @@ namespace RadiologyTracking.Web
                     this.RaisePropertyChanged("Name");
                     this.OnNameChanged();
                     this.RaisePropertyChanged("IsAuthenticated");
-                }
-            }
-        }
-        
-        /// <summary>
-        /// Gets or sets the 'Role' value.
-        /// </summary>
-        [DataMember()]
-        public string Role
-        {
-            get
-            {
-                return this._role;
-            }
-            set
-            {
-                if ((this._role != value))
-                {
-                    this.OnRoleChanging(value);
-                    this.RaiseDataMemberChanging("Role");
-                    this.ValidateProperty("Role", value);
-                    this._role = value;
-                    this.RaiseDataMemberChanged("Role");
-                    this.OnRoleChanged();
                 }
             }
         }
@@ -837,13 +694,13 @@ namespace RadiologyTracking.Web
         /// <param name="callback">Callback to invoke when the operation completes.</param>
         /// <param name="userState">Value to pass to the callback.  It can be <c>null</c>.</param>
         /// <returns>An operation instance that can be used to manage the asynchronous request.</returns>
-        public InvokeOperation<CreateUserStatus> CreateUser(RegistrationData user, [RegularExpression("^.*[^a-zA-Z0-9].*$", ErrorMessageResourceName="ValidationErrorBadPasswordStrength", ErrorMessageResourceType=typeof(ValidationErrorResources))] [Required(ErrorMessageResourceName="ValidationErrorRequiredField", ErrorMessageResourceType=typeof(ValidationErrorResources))] [StringLength(50, ErrorMessageResourceName="ValidationErrorBadPasswordLength", ErrorMessageResourceType=typeof(ValidationErrorResources), MinimumLength=7)] string password, Action<InvokeOperation<CreateUserStatus>> callback, object userState)
+        public InvokeOperation CreateUser(RegistrationData user, [RegularExpression("^.*[^a-zA-Z0-9].*$", ErrorMessageResourceName="ValidationErrorBadPasswordStrength", ErrorMessageResourceType=typeof(ValidationErrorResources))] [Required(ErrorMessageResourceName="ValidationErrorRequiredField", ErrorMessageResourceType=typeof(ValidationErrorResources))] [StringLength(50, ErrorMessageResourceName="ValidationErrorBadPasswordLength", ErrorMessageResourceType=typeof(ValidationErrorResources), MinimumLength=7)] string password, Action<InvokeOperation> callback, object userState)
         {
             Dictionary<string, object> parameters = new Dictionary<string, object>();
             parameters.Add("user", user);
             parameters.Add("password", password);
             this.ValidateMethod("CreateUser", parameters);
-            return ((InvokeOperation<CreateUserStatus>)(this.InvokeOperation("CreateUser", typeof(CreateUserStatus), parameters, true, callback, userState)));
+            return this.InvokeOperation("CreateUser", typeof(void), parameters, true, callback, userState);
         }
         
         /// <summary>
@@ -852,13 +709,13 @@ namespace RadiologyTracking.Web
         /// <param name="user">The value for the 'user' parameter of this action.</param>
         /// <param name="password">The value for the 'password' parameter of this action.</param>
         /// <returns>An operation instance that can be used to manage the asynchronous request.</returns>
-        public InvokeOperation<CreateUserStatus> CreateUser(RegistrationData user, [RegularExpression("^.*[^a-zA-Z0-9].*$", ErrorMessageResourceName="ValidationErrorBadPasswordStrength", ErrorMessageResourceType=typeof(ValidationErrorResources))] [Required(ErrorMessageResourceName="ValidationErrorRequiredField", ErrorMessageResourceType=typeof(ValidationErrorResources))] [StringLength(50, ErrorMessageResourceName="ValidationErrorBadPasswordLength", ErrorMessageResourceType=typeof(ValidationErrorResources), MinimumLength=7)] string password)
+        public InvokeOperation CreateUser(RegistrationData user, [RegularExpression("^.*[^a-zA-Z0-9].*$", ErrorMessageResourceName="ValidationErrorBadPasswordStrength", ErrorMessageResourceType=typeof(ValidationErrorResources))] [Required(ErrorMessageResourceName="ValidationErrorRequiredField", ErrorMessageResourceType=typeof(ValidationErrorResources))] [StringLength(50, ErrorMessageResourceName="ValidationErrorBadPasswordLength", ErrorMessageResourceType=typeof(ValidationErrorResources), MinimumLength=7)] string password)
         {
             Dictionary<string, object> parameters = new Dictionary<string, object>();
             parameters.Add("user", user);
             parameters.Add("password", password);
             this.ValidateMethod("CreateUser", parameters);
-            return ((InvokeOperation<CreateUserStatus>)(this.InvokeOperation("CreateUser", typeof(CreateUserStatus), parameters, true, null, null)));
+            return this.InvokeOperation("CreateUser", typeof(void), parameters, true, null, null);
         }
         
         /// <summary>
@@ -890,35 +747,57 @@ namespace RadiologyTracking.Web
         }
         
         /// <summary>
-        /// Asynchronously invokes the 'UpdateUser' method of the DomainService.
+        /// Asynchronously invokes the 'EditUser' method of the DomainService.
         /// </summary>
         /// <param name="user">The value for the 'user' parameter of this action.</param>
         /// <param name="password">The value for the 'password' parameter of this action.</param>
         /// <param name="callback">Callback to invoke when the operation completes.</param>
         /// <param name="userState">Value to pass to the callback.  It can be <c>null</c>.</param>
         /// <returns>An operation instance that can be used to manage the asynchronous request.</returns>
-        public InvokeOperation<CreateUserStatus> UpdateUser(RegistrationData user, [RegularExpression("^.*[^a-zA-Z0-9].*$", ErrorMessageResourceName="ValidationErrorBadPasswordStrength", ErrorMessageResourceType=typeof(ValidationErrorResources))] [StringLength(50, ErrorMessageResourceName="ValidationErrorBadPasswordLength", ErrorMessageResourceType=typeof(ValidationErrorResources), MinimumLength=7)] string password, Action<InvokeOperation<CreateUserStatus>> callback, object userState)
+        public InvokeOperation EditUser(RegistrationData user, [RegularExpression("^.*[^a-zA-Z0-9].*$", ErrorMessageResourceName="ValidationErrorBadPasswordStrength", ErrorMessageResourceType=typeof(ValidationErrorResources))] [StringLength(50, ErrorMessageResourceName="ValidationErrorBadPasswordLength", ErrorMessageResourceType=typeof(ValidationErrorResources), MinimumLength=7)] string password, Action<InvokeOperation> callback, object userState)
         {
             Dictionary<string, object> parameters = new Dictionary<string, object>();
             parameters.Add("user", user);
             parameters.Add("password", password);
-            this.ValidateMethod("UpdateUser", parameters);
-            return ((InvokeOperation<CreateUserStatus>)(this.InvokeOperation("UpdateUser", typeof(CreateUserStatus), parameters, true, callback, userState)));
+            this.ValidateMethod("EditUser", parameters);
+            return this.InvokeOperation("EditUser", typeof(void), parameters, true, callback, userState);
         }
         
         /// <summary>
-        /// Asynchronously invokes the 'UpdateUser' method of the DomainService.
+        /// Asynchronously invokes the 'EditUser' method of the DomainService.
         /// </summary>
         /// <param name="user">The value for the 'user' parameter of this action.</param>
         /// <param name="password">The value for the 'password' parameter of this action.</param>
         /// <returns>An operation instance that can be used to manage the asynchronous request.</returns>
-        public InvokeOperation<CreateUserStatus> UpdateUser(RegistrationData user, [RegularExpression("^.*[^a-zA-Z0-9].*$", ErrorMessageResourceName="ValidationErrorBadPasswordStrength", ErrorMessageResourceType=typeof(ValidationErrorResources))] [StringLength(50, ErrorMessageResourceName="ValidationErrorBadPasswordLength", ErrorMessageResourceType=typeof(ValidationErrorResources), MinimumLength=7)] string password)
+        public InvokeOperation EditUser(RegistrationData user, [RegularExpression("^.*[^a-zA-Z0-9].*$", ErrorMessageResourceName="ValidationErrorBadPasswordStrength", ErrorMessageResourceType=typeof(ValidationErrorResources))] [StringLength(50, ErrorMessageResourceName="ValidationErrorBadPasswordLength", ErrorMessageResourceType=typeof(ValidationErrorResources), MinimumLength=7)] string password)
         {
             Dictionary<string, object> parameters = new Dictionary<string, object>();
             parameters.Add("user", user);
             parameters.Add("password", password);
-            this.ValidateMethod("UpdateUser", parameters);
-            return ((InvokeOperation<CreateUserStatus>)(this.InvokeOperation("UpdateUser", typeof(CreateUserStatus), parameters, true, null, null)));
+            this.ValidateMethod("EditUser", parameters);
+            return this.InvokeOperation("EditUser", typeof(void), parameters, true, null, null);
+        }
+        
+        /// <summary>
+        /// Asynchronously invokes the 'GetUsers' method of the DomainService.
+        /// </summary>
+        /// <param name="callback">Callback to invoke when the operation completes.</param>
+        /// <param name="userState">Value to pass to the callback.  It can be <c>null</c>.</param>
+        /// <returns>An operation instance that can be used to manage the asynchronous request.</returns>
+        public InvokeOperation<IEnumerable<RegistrationData>> GetUsers(Action<InvokeOperation<IEnumerable<RegistrationData>>> callback, object userState)
+        {
+            this.ValidateMethod("GetUsers", null);
+            return ((InvokeOperation<IEnumerable<RegistrationData>>)(this.InvokeOperation("GetUsers", typeof(IEnumerable<RegistrationData>), null, true, callback, userState)));
+        }
+        
+        /// <summary>
+        /// Asynchronously invokes the 'GetUsers' method of the DomainService.
+        /// </summary>
+        /// <returns>An operation instance that can be used to manage the asynchronous request.</returns>
+        public InvokeOperation<IEnumerable<RegistrationData>> GetUsers()
+        {
+            this.ValidateMethod("GetUsers", null);
+            return ((InvokeOperation<IEnumerable<RegistrationData>>)(this.InvokeOperation("GetUsers", typeof(IEnumerable<RegistrationData>), null, true, null, null)));
         }
         
         /// <summary>
@@ -953,8 +832,7 @@ namespace RadiologyTracking.Web
             /// Completes the asynchronous operation begun by 'BeginCreateUser'.
             /// </summary>
             /// <param name="result">The IAsyncResult returned from 'BeginCreateUser'.</param>
-            /// <returns>The 'CreateUserStatus' returned from the 'CreateUser' operation.</returns>
-            CreateUserStatus EndCreateUser(IAsyncResult result);
+            void EndCreateUser(IAsyncResult result);
             
             /// <summary>
             /// Asynchronously invokes the 'DeleteUser' operation.
@@ -975,23 +853,39 @@ namespace RadiologyTracking.Web
             bool EndDeleteUser(IAsyncResult result);
             
             /// <summary>
-            /// Asynchronously invokes the 'UpdateUser' operation.
+            /// Asynchronously invokes the 'EditUser' operation.
             /// </summary>
             /// <param name="user">The value for the 'user' parameter of this action.</param>
             /// <param name="password">The value for the 'password' parameter of this action.</param>
             /// <param name="callback">Callback to invoke on completion.</param>
             /// <param name="asyncState">Optional state object.</param>
             /// <returns>An IAsyncResult that can be used to monitor the request.</returns>
-            [FaultContract(typeof(DomainServiceFault), Action="http://tempuri.org/UserRegistrationService/UpdateUserDomainServiceFault", Name="DomainServiceFault", Namespace="DomainServices")]
-            [OperationContract(AsyncPattern=true, Action="http://tempuri.org/UserRegistrationService/UpdateUser", ReplyAction="http://tempuri.org/UserRegistrationService/UpdateUserResponse")]
-            IAsyncResult BeginUpdateUser(RegistrationData user, string password, AsyncCallback callback, object asyncState);
+            [FaultContract(typeof(DomainServiceFault), Action="http://tempuri.org/UserRegistrationService/EditUserDomainServiceFault", Name="DomainServiceFault", Namespace="DomainServices")]
+            [OperationContract(AsyncPattern=true, Action="http://tempuri.org/UserRegistrationService/EditUser", ReplyAction="http://tempuri.org/UserRegistrationService/EditUserResponse")]
+            IAsyncResult BeginEditUser(RegistrationData user, string password, AsyncCallback callback, object asyncState);
             
             /// <summary>
-            /// Completes the asynchronous operation begun by 'BeginUpdateUser'.
+            /// Completes the asynchronous operation begun by 'BeginEditUser'.
             /// </summary>
-            /// <param name="result">The IAsyncResult returned from 'BeginUpdateUser'.</param>
-            /// <returns>The 'CreateUserStatus' returned from the 'UpdateUser' operation.</returns>
-            CreateUserStatus EndUpdateUser(IAsyncResult result);
+            /// <param name="result">The IAsyncResult returned from 'BeginEditUser'.</param>
+            void EndEditUser(IAsyncResult result);
+            
+            /// <summary>
+            /// Asynchronously invokes the 'GetUsers' operation.
+            /// </summary>
+            /// <param name="callback">Callback to invoke on completion.</param>
+            /// <param name="asyncState">Optional state object.</param>
+            /// <returns>An IAsyncResult that can be used to monitor the request.</returns>
+            [FaultContract(typeof(DomainServiceFault), Action="http://tempuri.org/UserRegistrationService/GetUsersDomainServiceFault", Name="DomainServiceFault", Namespace="DomainServices")]
+            [OperationContract(AsyncPattern=true, Action="http://tempuri.org/UserRegistrationService/GetUsers", ReplyAction="http://tempuri.org/UserRegistrationService/GetUsersResponse")]
+            IAsyncResult BeginGetUsers(AsyncCallback callback, object asyncState);
+            
+            /// <summary>
+            /// Completes the asynchronous operation begun by 'BeginGetUsers'.
+            /// </summary>
+            /// <param name="result">The IAsyncResult returned from 'BeginGetUsers'.</param>
+            /// <returns>The 'IEnumerable`1' returned from the 'GetUsers' operation.</returns>
+            IEnumerable<RegistrationData> EndGetUsers(IAsyncResult result);
         }
         
         internal sealed class UserRegistrationContextEntityContainer : EntityContainer

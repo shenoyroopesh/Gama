@@ -30,10 +30,27 @@
         /// </summary>
         public const string DefaultRole = "Registered Users";
         
-        public IQueryable GetUsers(string filter)
+        /// <summary>
+        /// This method gets all the registration data for the users
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerable<RegistrationData> GetUsers()
         {
-            return Membership.GetAllUsers().Cast<MembershipUser>()
-                    .Select(p => p.GetUser()).AsQueryable();
+            var users = Membership.GetAllUsers();
+            List<RegistrationData> registeredUsers = new List<RegistrationData>();
+            foreach (MembershipUser mUser in users)
+            {
+                var user = mUser.GetUser();
+                RegistrationData data = new RegistrationData()
+                                        {
+                                            UserName = user.Name,
+                                            Role = Roles.GetRolesForUser(user.Name).FirstOrDefault(),
+                                            Foundry = user.Foundry,
+                                            FriendlyName = user.FriendlyName
+                                        };
+                registeredUsers.Add(data);
+            }
+            return registeredUsers;
         }
 
         /// <summary>
@@ -44,7 +61,7 @@
         [Invoke(HasSideEffects = true)]
         [RequiresAuthentication]
         [RequiresRole("admin")]
-        public CreateUserStatus CreateUser(RegistrationData user,
+        public void CreateUser(RegistrationData user,
             [Required(ErrorMessageResourceName = "ValidationErrorRequiredField", ErrorMessageResourceType = typeof(ValidationErrorResources))]
             [RegularExpression("^.*[^a-zA-Z0-9].*$", ErrorMessageResourceName = "ValidationErrorBadPasswordStrength", ErrorMessageResourceType = typeof(ValidationErrorResources))]
             [StringLength(50, MinimumLength = 7, ErrorMessageResourceName = "ValidationErrorBadPasswordLength", ErrorMessageResourceType = typeof(ValidationErrorResources))]
@@ -65,13 +82,7 @@
 
             // NOTE: ASP.NET by default uses SQL Server Express to create the user database. 
             // CreateUser will fail if you do not have SQL Server Express installed.
-            MembershipCreateStatus createStatus;
-            Membership.CreateUser(user.UserName, password, user.Email, user.Question, user.Answer, true, null, out createStatus);
-
-            if (createStatus != MembershipCreateStatus.Success)
-            {
-                return UserRegistrationService.ConvertStatus(createStatus);
-            }
+            Membership.CreateUser(user.UserName, password);
 
             // Assign the user to the default role if the given role does not exist
             // This will fail if role management is disabled.
@@ -86,12 +97,10 @@
             profile.SetPropertyValue("FriendlyName", user.FriendlyName);
             profile.SetPropertyValue("Foundry", user.Foundry);
             profile.Save();
-
-            return CreateUserStatus.Success;
         }
 
         [RequiresAuthentication, RequiresRole("admin")]
-        public CreateUserStatus UpdateUser(RegistrationData user,
+        public void EditUser(RegistrationData user, 
             [RegularExpression("^.*[^a-zA-Z0-9].*$", ErrorMessageResourceName = "ValidationErrorBadPasswordStrength", ErrorMessageResourceType = typeof(ValidationErrorResources))]
             [StringLength(50, MinimumLength = 7, ErrorMessageResourceName = "ValidationErrorBadPasswordLength", ErrorMessageResourceType = typeof(ValidationErrorResources))]
             string password = "")
@@ -109,8 +118,6 @@
                 Roles.CreateRole(UserRegistrationService.DefaultRole);
             }
             MembershipUser membershipUser = Membership.GetUser(user.UserName);
-            membershipUser.Email = user.Email;
-            Membership.UpdateUser(membershipUser);
 
             if (password != "")
             {
@@ -133,30 +140,12 @@
             profile.SetPropertyValue("FriendlyName", user.FriendlyName);
             profile.SetPropertyValue("Foundry", user.Foundry);
             profile.Save();
-
-            return CreateUserStatus.Success;
         }
 
         [RequiresAuthentication, RequiresRole("admin")]
         public bool DeleteUser(String userName)
         {
             return Membership.DeleteUser(userName);
-        }
-
-        private static CreateUserStatus ConvertStatus(MembershipCreateStatus createStatus)
-        {
-            switch (createStatus)
-            {
-                case MembershipCreateStatus.Success: return CreateUserStatus.Success;
-                case MembershipCreateStatus.InvalidUserName: return CreateUserStatus.InvalidUserName;
-                case MembershipCreateStatus.InvalidPassword: return CreateUserStatus.InvalidPassword;
-                case MembershipCreateStatus.InvalidQuestion: return CreateUserStatus.InvalidQuestion;
-                case MembershipCreateStatus.InvalidAnswer: return CreateUserStatus.InvalidAnswer;
-                case MembershipCreateStatus.InvalidEmail: return CreateUserStatus.InvalidEmail;
-                case MembershipCreateStatus.DuplicateUserName: return CreateUserStatus.DuplicateUserName;
-                case MembershipCreateStatus.DuplicateEmail: return CreateUserStatus.DuplicateEmail;
-                default: return CreateUserStatus.Failure;
-            }
         }
     }
 
