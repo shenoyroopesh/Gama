@@ -224,3 +224,14 @@ D:\DotNet\Gama\RadiologyTracking\CustomControls\Bin\Debug\uk\System.Windows.Cont
 D:\DotNet\Gama\RadiologyTracking\CustomControls\Bin\Debug\vi\System.Windows.Controls.Input.resources.dll
 D:\DotNet\Gama\RadiologyTracking\CustomControls\Bin\Debug\zh-Hans\System.Windows.Controls.Input.resources.dll
 D:\DotNet\Gama\RadiologyTracking\CustomControls\Bin\Debug\zh-Hant\System.Windows.Controls.Input.resources.dll
+D:\DotNet\Gama\RadiologyTracking\CustomControls\Bin\Debug\System.ServiceModel.DomainServices.Client.dll
+D:\DotNet\Gama\RadiologyTracking\CustomControls\Bin\Debug\System.ServiceModel.DomainServices.Client.xml
+D:\DotNet\Gama\RadiologyTracking\CustomControls\Bin\Debug\de\System.ServiceModel.DomainServices.Client.resources.dll
+D:\DotNet\Gama\RadiologyTracking\CustomControls\Bin\Debug\es\System.ServiceModel.DomainServices.Client.resources.dll
+D:\DotNet\Gama\RadiologyTracking\CustomControls\Bin\Debug\fr\System.ServiceModel.DomainServices.Client.resources.dll
+D:\DotNet\Gama\RadiologyTracking\CustomControls\Bin\Debug\it\System.ServiceModel.DomainServices.Client.resources.dll
+D:\DotNet\Gama\RadiologyTracking\CustomControls\Bin\Debug\ja\System.ServiceModel.DomainServices.Client.resources.dll
+D:\DotNet\Gama\RadiologyTracking\CustomControls\Bin\Debug\ko\System.ServiceModel.DomainServices.Client.resources.dll
+D:\DotNet\Gama\RadiologyTracking\CustomControls\Bin\Debug\ru\System.ServiceModel.DomainServices.Client.resources.dll
+D:\DotNet\Gama\RadiologyTracking\CustomControls\Bin\Debug\zh-Hans\System.ServiceModel.DomainServices.Client.resources.dll
+D:\DotNet\Gama\RadiologyTracking\CustomControls\Bin\Debug\zh-Hant\System.ServiceModel.DomainServices.Client.resources.dll

@@ -27,6 +27,7 @@ namespace RadiologyTracking.Views
         RadiologyContext ctx;
 
         public CastingStatusReport()
+            : base()
         {
             InitializeComponent();
             fromDatePicker.SelectedDate = fromDatePicker.DisplayDate = DateTime.Now.AddDays(-15);

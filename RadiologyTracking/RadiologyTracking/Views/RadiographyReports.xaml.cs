@@ -21,6 +21,7 @@ namespace RadiologyTracking.Views
     public partial class RadiographyReports : BaseCRUDView
     {
         public RadiographyReports()
+            : base()
         {
             InitializeComponent();
             DomainSource.LoadedData += domainDataSource_LoadedData;

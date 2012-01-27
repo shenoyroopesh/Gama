@@ -18,7 +18,7 @@ namespace RadiologyTracking.Web.Models
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ID { get; set; }
 
-        public int FixedPatternID { get; set; }
+        public int? FixedPatternID { get; set; }
         public FixedPattern FixedPattern { get; set; }
 
         public int CoverageID { get; set; }

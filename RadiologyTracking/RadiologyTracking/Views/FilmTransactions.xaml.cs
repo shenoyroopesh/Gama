@@ -20,6 +20,7 @@ namespace RadiologyTracking.Views
     public partial class FilmTransactions : BaseCRUDView
     {
         public FilmTransactions()
+            : base()
         {
             InitializeComponent();
             DomainSource.LoadedData += domainDataSource_LoadedData;
@@ -45,6 +46,22 @@ namespace RadiologyTracking.Views
         public override Type MainType
         {
             get { return typeof(FilmTransaction); }
+        }
+
+        public override String ChangeContext
+        {
+            get
+            {
+                return "Film Transaction";
+            }
+        }
+
+        public override String ChangeContextProperty
+        {
+            get
+            {
+                return "Challan No.";
+            }
         }
 
         //Kept here only for the template column to work fine

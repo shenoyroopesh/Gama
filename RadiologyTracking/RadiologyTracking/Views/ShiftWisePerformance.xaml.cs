@@ -26,6 +26,7 @@ namespace RadiologyTracking.Views
         RadiologyContext ctx;
         DataTable reportTable;
         public ShiftWisePerformance()
+            : base()
         {
             InitializeComponent();
             fromDatePicker.SelectedDate = fromDatePicker.DisplayDate = DateTime.Now.AddDays(-15);

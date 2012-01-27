@@ -19,6 +19,7 @@ namespace RadiologyTracking.Web.Models
         //TODO: check out whether this can be made user id later
         public String ByWhom { get; set; }
 
+        [Required]
         public String Why { get; set; }
     }
 }

@@ -17,6 +17,7 @@ namespace RadiologyTracking.Views
     public partial class ThicknessToEnergyType : BaseCRUDView
     {
         public ThicknessToEnergyType()
+            : base()
         {
             InitializeComponent();
             DomainSource.LoadedData += domainDataSource_LoadedData;
@@ -39,6 +40,22 @@ namespace RadiologyTracking.Views
         public override Type MainType
         {
             get { return typeof(ThicknessRangeForEnergy); }
+        }
+
+        public override String ChangeContext
+        {
+            get
+            {
+                return "Thicness Ranges for Energy";
+            }
+        }
+
+        public override String ChangeContextProperty
+        {
+            get
+            {
+                return "Energy";
+            }
         }
 
         //Kept here only for the template column to work fine

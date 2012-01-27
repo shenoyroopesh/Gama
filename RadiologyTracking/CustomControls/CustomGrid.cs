@@ -10,6 +10,7 @@ using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using System.Collections.Generic;
 using System.Collections;
+using System.IO;
 
 namespace Vagsons.Controls
 {
@@ -18,7 +19,56 @@ namespace Vagsons.Controls
         bool mouseDown = false;
         Dictionary<DataGridCell, Brush> selectedCells = new Dictionary<DataGridCell, Brush>();
         String copiedText = String.Empty;
-        bool isEditAllowed = true;
+
+        static bool isEditAllowed = true;
+        static bool isDeleteAllowed = true;
+        private bool setVisiblity = false;
+
+        public static bool IsEditAllowed
+        {
+            get
+            {
+                return isEditAllowed;
+            }
+            set
+            {
+                isEditAllowed = value;
+                isDeleteAllowed = value;
+            }
+        }
+
+        public static bool IsDeleteAllowed
+        {
+            get { return isDeleteAllowed; }
+            set
+            {
+                isDeleteAllowed = value;
+            }
+        }
+
+        private Dictionary<int, Object> _changedEntities;
+
+        /// <summary>
+        /// tracks the changed entities in the item source for this grid along with their ids
+        /// </summary>
+        public Dictionary<int, Object> ChangedEntities
+        {
+            get
+            {
+                if (_changedEntities == null)
+                    _changedEntities = new Dictionary<int, object>();
+
+                return _changedEntities;
+            }
+        }
+
+        /// <summary>
+        /// Clears all the changes, use when you cancel changes, otherwise changes will remain in the table
+        /// </summary>
+        public void ClearChangedEntities()
+        {
+            this.ChangedEntities.Clear();
+        }
 
 
         public CustomGrid()
@@ -36,7 +86,11 @@ namespace Vagsons.Controls
                 this.GotFocus += new RoutedEventHandler(CustomGrid_GotFocus);
             }
             this.AutoGenerateColumns = false;
+        }
 
+
+        private void setEditDeleteVisibility()
+        {
             //if edit is not allowed, first make edit and delete columns disappear
             if (!isEditAllowed)
             {
@@ -44,8 +98,9 @@ namespace Vagsons.Controls
                 {
                     if (column.Header.ToString().ToLower() == "edit" || column.Header.ToString().ToLower() == "delete")
                     {
-                        column.Visibility = System.Windows.Visibility.Collapsed;
+                        column.Visibility = System.Windows.Visibility.Collapsed;                        
                     }
+                    setVisiblity = true;                    
                 }
             }
         }
@@ -61,31 +116,46 @@ namespace Vagsons.Controls
             //done here since when row enters edit mode, the textblock cannot capture the mouseup event
             mouseDown = false;
             clearAllSelection();
+
+            //track the original value of this item before it is edited
+            var original = this.SelectedItem.Clone();
+            var originalID = getID(original);
+            var obj = new Object();
+
+            //add only if not exists already, no point adding the same entity again and again
+            if (!ChangedEntities.TryGetValue(originalID, out obj)) 
+                ChangedEntities.Add(originalID, original);
+        }
+
+        private int getID(object item)
+        {
+            int itemID = 0;
+            Type t = item.GetType();
+            var property = t.GetProperty("ID");
+            if (property != null)
+            {
+                Int32.TryParse(property.GetValue(item, null).ToString(), out itemID);
+            }
+            return itemID;
         }
 
         void CustomGrid_LoadingRow(object sender, DataGridRowEventArgs e)
         {
-            int itemID = 0;
+            //do this if not already done
+            if(!setVisiblity) setEditDeleteVisibility();
 
-            Type t = e.Row.DataContext.GetType();
-            var property = t.GetProperty("ID");
-            if (property != null && property.GetType() == typeof(int))
-                itemID = Convert.ToInt32(property.GetValue(e.Row.DataContext, null));
-
-
+            int itemID = getID(e.Row.DataContext);
+            
             foreach (var column in this.Columns)
             {
                 FrameworkElement cellContent = column.GetCellContent(e.Row);
-                if (isEditAllowed || itemID == 0) // for new items with id zero, allow editing
+                addCellEventHandlers(cellContent);
+                
+                if (!CustomGrid.isEditAllowed && itemID != 0) // Only for new items with id zero, allow editing if editing is disallowed
                 {
-                    addCellEventHandlers(cellContent);
+                    (cellContent.Parent as DataGridCell).IsEnabled = false;
                 }
-                else
-                {
-                    
-                }
-            }
-
+            }            
         }
 
         void addCellEventHandlers(FrameworkElement cellContent)

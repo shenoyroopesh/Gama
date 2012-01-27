@@ -12,6 +12,8 @@
     /// </summary>
     public partial class LoginStatus : UserControl
     {
+        MainPage mainPage;
+
         /// <summary>
         /// Creates a new <see cref="LoginStatus"/> instance.
         /// </summary>
@@ -35,7 +37,14 @@
         private void LoginButton_Click(object sender, RoutedEventArgs e)
         {
             LoginRegistrationWindow loginWindow = new LoginRegistrationWindow();
-            loginWindow.Show();
+            if (mainPage != null)
+            {
+                mainPage.LoginAndGoHome();
+            }
+            else
+            {
+                loginWindow.Show();
+            }
         }
 
         private void LogoutButton_Click(object sender, RoutedEventArgs e)
@@ -46,6 +55,11 @@
                 {
                     ErrorWindow.CreateNew(logoutOperation.Error);
                     logoutOperation.MarkErrorAsHandled();
+                }
+                else
+                {
+                    //force login again
+                    LoginButton_Click(sender, e);
                 }
             }, /* userState */ null);
         }

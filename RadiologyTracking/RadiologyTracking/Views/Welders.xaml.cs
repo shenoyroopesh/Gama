@@ -20,6 +20,7 @@ namespace RadiologyTracking.Views
     public partial class Welders : BaseCRUDView
     {
         public Welders()
+            : base()
         {
             InitializeComponent();
             DomainSource.LoadedData += domainDataSource_LoadedData;
@@ -43,6 +44,23 @@ namespace RadiologyTracking.Views
         {
             get { return typeof(Welder); }
         }
+
+        public override String ChangeContext
+        {
+            get
+            {
+                return "Welder";
+            }
+        }
+
+        public override String ChangeContextProperty
+        {
+            get
+            {
+                return "Name";
+            }
+        }
+
 
         //Kept here only for the template column to work fine
         public override void DeleteOperation(object sender, RoutedEventArgs e)

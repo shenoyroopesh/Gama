@@ -56,7 +56,7 @@
             if (WebContext.Current.User.IsAuthenticated == false)
             {
                 e.Cancel = true;
-                LoginOrGoToMain(e.Uri);
+                LoginAndGoHome();
             }
         }
 
@@ -64,7 +64,7 @@
         /// This method forces the user to login if she has not already logged in
         /// </summary>
         /// <param name="uri"></param>
-        private void LoginOrGoToMain(Uri uri)
+        public void LoginAndGoHome()
         {
             if (WebContext.Current.User.IsAuthenticated == false)
             {
@@ -75,7 +75,7 @@
                             if(WebContext.Current.User.IsAuthenticated)
                             {
                                 // Try again!
-                                ContentFrame.Navigate(new Uri(uri.ToString(), UriKind.Relative));
+                                ContentFrame.Navigate(new Uri("/Home", UriKind.Relative));
                             }
                         };
                 loginRegistrationWindow.Show();

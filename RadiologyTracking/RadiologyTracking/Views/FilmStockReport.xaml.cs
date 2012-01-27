@@ -24,6 +24,7 @@ namespace RadiologyTracking.Views
     public partial class FilmStockReport : BaseCRUDView
     {
         public FilmStockReport()
+            : base()
         {
             InitializeComponent();
             fromDatePicker.SelectedDate = fromDatePicker.DisplayDate = DateTime.Now.AddDays(-15);

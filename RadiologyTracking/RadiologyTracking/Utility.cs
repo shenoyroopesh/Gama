@@ -9,6 +9,9 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using System.Reflection;
+using RadiologyTracking.Web.Models;
+using System.Collections.Generic;
+using System.ServiceModel.DomainServices.Client;
 
 namespace RadiologyTracking
 {
@@ -37,6 +40,48 @@ namespace RadiologyTracking
                 //means no parent in this chain
                 return null;
             }
+        }
+
+
+        public static List<Change> GetChanges<T>(T oldEntity, T newEntity, string changeContext, string user)
+        {
+            Type type = oldEntity.GetType();
+            List<Change> changes = new List<Change>();
+
+            //check each property for change
+            foreach (var property in type.GetProperties())
+            {
+                //avoid comparing ids for associated ids, depend on properties
+                if(property.Name.Contains("ID"))
+                    continue;
+
+                //avoid checking property from Entity types
+                if (typeof(Entity).GetProperty(property.Name) != null)
+                    continue;
+
+                var oldPropertyValue = property.GetValue(oldEntity, null);
+                var newPropertyValue = property.GetValue(newEntity, null);
+
+                //do not track adding new values, only modification and deletion of values
+                if (String.IsNullOrEmpty(oldPropertyValue.ToString().Trim()))
+                    continue;
+
+                if (!((newPropertyValue ?? new object()).Equals(oldPropertyValue)))
+                {
+                    changes.Add(new Change()
+                                    {
+                                        What = property.Name,
+                                        Where = changeContext,
+                                        FromValue = (oldPropertyValue ?? "").ToString(),
+                                        ToValue = (newPropertyValue ?? "").ToString(),
+                                        Why = null, //this will be given by the user
+                                        When = DateTime.Now,
+                                        ByWhom = user
+                                    });
+                }
+            }
+
+            return changes;
         }
     }
 }

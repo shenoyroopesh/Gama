@@ -24,6 +24,7 @@ namespace RadiologyTracking.Views
     public partial class EnterRadioGraphyReport : BaseCRUDView
     {
         public EnterRadioGraphyReport()
+            : base()
         {
             InitializeComponent();
 

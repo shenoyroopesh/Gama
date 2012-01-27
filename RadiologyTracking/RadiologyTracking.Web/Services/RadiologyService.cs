@@ -633,7 +633,15 @@ namespace RadiologyTracking.Web.Services
         #region Foundries
         public IQueryable<Foundry> GetFoundries()
         {
-            return this.DbContext.Foundries;
+            //filter if the current user is restricted to a single foundry
+            MembershipUser mUser = Membership.GetUser();
+            var role = Roles.GetRolesForUser(mUser.UserName).First();
+            User user = mUser.GetUser();
+
+            if ((new String[] { "admin", "managing director" }).Contains(role.ToLower()))
+                return this.DbContext.Foundries;
+            else
+                return this.DbContext.Foundries.Where(p => p.FoundryName == user.Foundry);
         }
 
         public void InsertFoundry(Foundry entity)

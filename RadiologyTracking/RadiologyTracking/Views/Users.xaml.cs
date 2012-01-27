@@ -22,6 +22,7 @@ namespace RadiologyTracking.Views
         private RadiologyContext radiologyContext = new RadiologyContext();
 
         public Users()
+            : base()
         {
             InitializeComponent();
             loadUsers();

@@ -20,6 +20,7 @@ namespace RadiologyTracking.Views
     public partial class Foundries : BaseCRUDView
     {
         public Foundries()
+            : base()
         {
             InitializeComponent();
             DomainSource.LoadedData += domainDataSource_LoadedData;
@@ -42,6 +43,22 @@ namespace RadiologyTracking.Views
         public override Type MainType
         {
             get { return typeof(Foundry); }
+        }
+
+        public override String ChangeContext
+        {
+            get
+            {
+                return "Foundry";
+            }
+        }
+
+        public override String ChangeContextProperty
+        {
+            get
+            {
+                return "FoundryName";
+            }
         }
 
         //Kept here only for the template column to work fine

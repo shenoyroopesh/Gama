@@ -109,7 +109,7 @@ namespace RadiologyTracking.Web.Models
         public String Film { get; set; }
         public DateTime DateOfTest { get; set; }
 
-        public int ShiftID { get; set; }
+        public int? ShiftID { get; set; }
         public Shift Shift { get; set; }
 
         public String EvaluationAsPer { get; set; }

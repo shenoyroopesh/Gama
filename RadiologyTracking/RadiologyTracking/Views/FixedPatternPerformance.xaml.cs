@@ -26,6 +26,7 @@ namespace RadiologyTracking.Views
         RadiologyContext ctx;
         DataTable reportTable;
         public FixedPatternPerformance()
+            : base()
         {
             InitializeComponent();
         }

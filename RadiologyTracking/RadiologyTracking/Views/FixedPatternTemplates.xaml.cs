@@ -22,6 +22,7 @@ namespace RadiologyTracking.Views
     public partial class FixedPatternTemplates : BaseCRUDView
     {
         public FixedPatternTemplates()
+            : base()
         {
             InitializeComponent();
             if (App.FixedPattern == null)

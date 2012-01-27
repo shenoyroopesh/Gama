@@ -1201,6 +1201,7 @@ namespace RadiologyTracking.Web.Models
         /// Gets or sets the 'Why' value.
         /// </summary>
         [DataMember()]
+        [Required()]
         public string Why
         {
             get
@@ -5454,7 +5455,7 @@ namespace RadiologyTracking.Web.Models
         
         private EntityRef<FixedPattern> _fixedPattern;
         
-        private int _fixedPatternID;
+        private Nullable<int> _fixedPatternID;
         
         private EntityCollection<FPTemplateRow> _fpTemplateRows;
         
@@ -5469,7 +5470,7 @@ namespace RadiologyTracking.Web.Models
         partial void OnCreated();
         partial void OnCoverageIDChanging(int value);
         partial void OnCoverageIDChanged();
-        partial void OnFixedPatternIDChanging(int value);
+        partial void OnFixedPatternIDChanging(Nullable<int> value);
         partial void OnFixedPatternIDChanged();
         partial void OnIDChanging(int value);
         partial void OnIDChanged();
@@ -5570,7 +5571,7 @@ namespace RadiologyTracking.Web.Models
                     }
                     else
                     {
-                        this.FixedPatternID = default(int);
+                        this.FixedPatternID = default(Nullable<int>);
                     }
                     this._fixedPattern.Entity = value;
                     this.RaisePropertyChanged("FixedPattern");
@@ -5583,7 +5584,7 @@ namespace RadiologyTracking.Web.Models
         /// </summary>
         [DataMember()]
         [RoundtripOriginal()]
-        public int FixedPatternID
+        public Nullable<int> FixedPatternID
         {
             get
             {
@@ -6654,7 +6655,7 @@ namespace RadiologyTracking.Web.Models
         
         private EntityRef<Shift> _shift;
         
-        private int _shiftID;
+        private Nullable<int> _shiftID;
         
         private string _sourceSize;
         
@@ -6701,7 +6702,7 @@ namespace RadiologyTracking.Web.Models
         partial void OnResultChanged();
         partial void OnRTNoChanging(string value);
         partial void OnRTNoChanged();
-        partial void OnShiftIDChanging(int value);
+        partial void OnShiftIDChanging(Nullable<int> value);
         partial void OnShiftIDChanged();
         partial void OnSourceSizeChanging(string value);
         partial void OnSourceSizeChanged();
@@ -7201,7 +7202,7 @@ namespace RadiologyTracking.Web.Models
                     }
                     else
                     {
-                        this.ShiftID = default(int);
+                        this.ShiftID = default(Nullable<int>);
                     }
                     this._shift.Entity = value;
                     this.RaisePropertyChanged("Shift");
@@ -7214,7 +7215,7 @@ namespace RadiologyTracking.Web.Models
         /// </summary>
         [DataMember()]
         [RoundtripOriginal()]
-        public int ShiftID
+        public Nullable<int> ShiftID
         {
             get
             {

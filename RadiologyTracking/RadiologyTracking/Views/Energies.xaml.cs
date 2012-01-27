@@ -20,6 +20,7 @@ namespace RadiologyTracking.Views
     public partial class Energies : BaseCRUDView
     {
         public Energies()
+            : base()
         {
             InitializeComponent();
             DomainSource.LoadedData += domainDataSource_LoadedData;
@@ -42,6 +43,22 @@ namespace RadiologyTracking.Views
         public override Type MainType
         {
             get { return typeof(Energy); }
+        }
+
+        public override String ChangeContext
+        {
+            get
+            {
+                return "Energy";
+            }
+        }
+
+        public override String ChangeContextProperty
+        {
+            get
+            {
+                return "Name";
+            }
         }
 
         //Kept here only for the template column to work fine
