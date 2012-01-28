@@ -17,7 +17,7 @@
     <UserControl.Resources>
         <my1:RadiologyContext x:Key="RadiologyContext" />
         <ex:ComboBoxDataSource x:Key="CoveragesSource" DomainContext="{StaticResource RadiologyContext}" 
-                               OperationName="GetCoveragesQuery"/>
+                               OperationName="GetCoveragesQuery" />
         <ex:ComboBoxDataSource x:Key="FilmSizesSource" DomainContext="{StaticResource RadiologyContext}"
                                OperationName="GetFilmSizesQuery" />
         <ex:ComboBoxDataSource x:Key="EnergySource" DomainContext="{StaticResource RadiologyContext}" 
@@ -199,7 +199,7 @@
                                 <sdk:DataGridTemplateColumn Header="Energy">
                                     <sdk:DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
-                                            <TextBlock Text="{Binding Path=Energy.Name, Mode=OneWay}" VerticalAlignment="Center" />
+                                            <TextBlock Text="{Binding Path=EnergyText, Mode=TwoWay}" VerticalAlignment="Center" />
                                         </DataTemplate>
                                     </sdk:DataGridTemplateColumn.CellTemplate>
                                     <sdk:DataGridTemplateColumn.CellEditingTemplate>
@@ -208,7 +208,8 @@
                                               SelectedValue="{Binding Energy, Mode=TwoWay}"
                                               DisplayMemberPath="Name" 
                                               Style="{StaticResource ComboBoxStyle}"
-                                              ItemContainerStyle="{StaticResource ComboBoxItemStyle}"/>
+                                              ItemContainerStyle="{StaticResource ComboBoxItemStyle}"
+                                              SelectionChanged="EnergyChanged"/>
                                         </DataTemplate>
                                     </sdk:DataGridTemplateColumn.CellEditingTemplate>
                                 </sdk:DataGridTemplateColumn>

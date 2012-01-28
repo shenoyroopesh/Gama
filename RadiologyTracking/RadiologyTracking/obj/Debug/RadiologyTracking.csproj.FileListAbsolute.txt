@@ -353,3 +353,4 @@ D:\DotNet\Gama\RadiologyTracking\RadiologyTracking\obj\Debug\Views\Login\Registr
 D:\DotNet\Gama\RadiologyTracking\RadiologyTracking\obj\Debug\Views\Login\ChangePassword.g.i.cs
 D:\DotNet\Gama\RadiologyTracking\RadiologyTracking\obj\Debug\Views\Login\ChangePasswordWindow.g.i.cs
 D:\DotNet\Gama\RadiologyTracking\RadiologyTracking\obj\Debug\Views\ChangeReasons.g.i.cs
+D:\DotNet\Gama\RadiologyTracking\RadiologyTracking\obj\Debug\Views\ChangesMadeReport.g.i.cs

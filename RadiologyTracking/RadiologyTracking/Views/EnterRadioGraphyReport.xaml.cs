@@ -18,6 +18,7 @@ using System.Collections;
 using System.ServiceModel.DomainServices.Client;
 using BindableDataGrid.Data;
 using RadiologyTracking.Controls;
+using System.Threading;
 
 namespace RadiologyTracking.Views
 {
@@ -27,19 +28,19 @@ namespace RadiologyTracking.Views
             : base()
         {
             InitializeComponent();
+            this.ExcludePropertiesFromTracking.Add("RGReport");
+            this.ExcludePropertiesFromTracking.Add("RGReportRows");
 
             if (App.RGReport == null)
             {
                 //Means new RG Report, allow add
                 this.IsEditMode = false;
-
             }
             else
             {
                 this.RGReport = App.RGReport;
                 DataContext = this.RGReport;
                 this.IsEditMode = true;
-
                 //set the query parameter here, the binding in the xaml is not working fine
                 this.EditRGReportsSource.QueryParameters[0].Value = this.RGReport.ReportNo;
             }
@@ -49,7 +50,25 @@ namespace RadiologyTracking.Views
             SetBindings();
 
             if (IsEditMode) DomainSource.Load();
+        }
 
+        public override String ChangeContext
+        {
+            get
+            {
+                return "RGReport";
+            }
+        }
+
+        public override String ChangeContextValue
+        {
+            get
+            {
+                if (this.RGReport != null)
+                    return this.RGReport.RTNo;
+                else
+                    return ""; //ideally this should never get called
+            }
         }
 
         /// <summary>
@@ -168,7 +187,10 @@ namespace RadiologyTracking.Views
         {
             get
             {
-                return (RGReportRows == null ? 0 : RGReportRows.Sum(p => p.FilmSize.Area)).ToString() + " Sq. Inches";
+                return (RGReportRows == null ? 0 : 
+                            RGReportRows.Sum(p => 
+                                            (p.FilmSize == null ? 0 : p.FilmSize.Area)))
+                                            .ToString() + " Sq. Inches";
             }
         }
 
@@ -181,6 +203,11 @@ namespace RadiologyTracking.Views
             DataRow actualRow = new DataRow();
             headerRow["HeadRow"] = "Isotope";
             actualRow["HeadRow"] = "Sq. Inches";
+            
+            //instead of encountering an error if context is still loading, just don't do it, it will get 
+            //done on the first save operation
+            if (ctx.IsLoading)
+                return;
 
             foreach (var e in ctx.Energies)
             {
@@ -194,6 +221,8 @@ namespace RadiologyTracking.Views
 
             energyAreas.DataSource = dt;
             energyAreas.DataBind();
+
+            OnPropertyChanged("TotalArea");
         }
 
         private static void AddTextColumn(DataTable reportTable, String columnName, String caption)
@@ -251,6 +280,12 @@ namespace RadiologyTracking.Views
             FixedPatternsSource.Load();
             updateEnergyWiseArea();
             OnPropertyChanged("TotalArea");
+
+            //if edit mode, add a clone of original RGReport to original entities for change tracking
+            if (IsEditMode)
+            {
+                OriginalEntities.Add(RGReport.ID, RGReport.Clone(ExcludePropertiesFromTracking));
+            }
         }
 
         //Kept here only for the template column to work fine
@@ -329,6 +364,10 @@ namespace RadiologyTracking.Views
 
             //update the energy grid
             updateEnergyWiseArea();
+
+            //clear and repopulate the original entities collection
+            OriginalEntities.Clear();
+            OriginalEntities.Add(RGReport.ID, RGReport.Clone(ExcludePropertiesFromTracking));
         }
 
         #region combobox change handlers
@@ -381,7 +420,21 @@ namespace RadiologyTracking.Views
             ComboBox cmb = (ComboBox)sender;
             var row = ((DataGridCell)cmb.Parent).DataContext;
             if (cmb.SelectedValue == null) return;
-            ((FPTemplateRow)row).FilmSizeString = ((FilmSize)cmb.SelectedValue).Name;
+            ((RGReportRow)row).FilmSizeString = ((FilmSize)cmb.SelectedValue).Name;
+        }
+
+
+        /// <summary>
+        /// Have to update filmsize string manually
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void EnergyChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ComboBox cmb = (ComboBox)sender;
+            var row = ((DataGridCell)cmb.Parent).DataContext;
+            if (cmb.SelectedValue == null) return;
+            ((RGReportRow)row).EnergyText = ((Energy)cmb.SelectedValue).Name;
         }
 
         #endregion

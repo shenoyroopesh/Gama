@@ -36,6 +36,7 @@ namespace RadiologyTracking.Views
                 string currentRole = (WebContext.Current.User.Roles as String[])[0];
                 //for clerk no editing
                 CustomGrid.IsEditAllowed = !(currentRole.ToLower() == "clerk");
+                CustomGrid.ExcludePropertiesFromTracking = this.ExcludePropertiesFromTracking;
             }
             catch
             {
@@ -71,8 +72,34 @@ namespace RadiologyTracking.Views
         public virtual String ChangeContextProperty { get { return null; } }
 
 
-        public virtual Dictionary<int, object> ModifiedEntities { get; set; }
+        /// <summary>
+        /// Optional value for the entire page - if this is set, ChangeContextProperty will not be used to dynamically
+        /// pick the value from the changed object for reporting purpose
+        /// </summary>
+        public virtual String ChangeContextValue { get { return null; } }
 
+
+        private Dictionary<int, object> _originalEntities = new Dictionary<int,object>();
+
+        /// <summary>
+        /// Original Entities tracked at page level
+        /// </summary>
+        public Dictionary<int, object> OriginalEntities 
+        {
+            get
+            {
+                return this._originalEntities;
+            }
+            set
+            {
+                this._originalEntities = value;
+            }
+        }
+
+
+        public List<String> ExcludePropertiesFromTracking = new List<String>();
+
+        
         /// <summary>
         /// Property to find and get the Frame for this user control, mainly for navigation
         /// </summary>
@@ -150,19 +177,21 @@ namespace RadiologyTracking.Views
                     List<Change> allChanges = new List<Change>();
 
                     //capture all the changes and their reasons
-                    var modification = DomainSource.DomainContext.EntityContainer.GetChanges();                    
+                    var modification = DomainSource.DomainContext.EntityContainer.GetChanges();
 
+                    #region Change tracking for modified entries
+                    
                     foreach (var modified in modification.ModifiedEntities)
                     {
                         //var original = modified.GetOriginal();
                         object original;
-                        Grid.ChangedEntities.TryGetValue((int)modified.GetIdentity(), out original);
+                        Grid.OriginalEntities.TryGetValue((int)modified.GetIdentity(), out original);
 
                         //also try in this page level modified entries
-                        if(original == null && ModifiedEntities != null)
+                        if(original == null && OriginalEntities != null)
                         {
                             object pagelevelOriginal;                            
-                            this.ModifiedEntities.TryGetValue((int)modified.GetIdentity(), out pagelevelOriginal);
+                            this.OriginalEntities.TryGetValue((int)modified.GetIdentity(), out pagelevelOriginal);
 
                             //this is assuming that page level there will be only one entity type at max. This is a reasonable
                             //assumption for this application
@@ -173,39 +202,93 @@ namespace RadiologyTracking.Views
                         if (original != null)
                         {
                             Type type = modified.GetType();
-                            PropertyInfo changeContextProp = type.GetProperty(ChangeContextProperty);
-                            var propertyValue = changeContextProp.GetValue(modified, null);
+
+                            PropertyInfo changeContextProp = null;
+
+                            if (ChangeContextValue == null)
+                            {
+                                changeContextProp = type.GetProperty(ChangeContextProperty);
+                            }
+
+                            //check if change context value is set, else take it from the change context property name defined
+                            var propertyValue = this.ChangeContextValue ?? 
+                                                changeContextProp.GetValue(modified, null);
                             string changeContextString = String.Concat(ChangeContext, "-",
                                                                        (propertyValue ?? "").ToString());
-                            List<Change> changes = Utility.GetChanges(original, modified, changeContextString, user);
+                            List<Change> changes = Utility.GetChanges(original, modified, changeContextString, 
+                                                                        user, ExcludePropertiesFromTracking);
                             changes.ForEach(p => allChanges.Add(p));
                         }
                     }
+
+                    #endregion
+
+                    #region change tracking for deleted entries                   
 
                     foreach (var deleted in modification.RemovedEntities)
                     {
                         Type type = deleted.GetType();
                         PropertyInfo changeContextProp = type.GetProperty(ChangeContextProperty);
-                        string changeContextString = String.Concat(ChangeContext, "-", 
-                                                                       changeContextProp.GetValue(deleted, null).ToString());
+                        var propertyValue = this.ChangeContextValue ?? changeContextProp.GetValue(deleted, null);
+                        string changeContextString = String.Concat(ChangeContext, "-",
+                                                                   (propertyValue ?? "").ToString());
                         Change change = new Change()
                                         {
                                             When = DateTime.Now,
                                             Where = changeContextString,
                                             FromValue = "",
                                             ToValue= "Deleted",
-                                            ByWhom = user
+                                            ByWhom = user,
+                                            Why = " "
                                         };
 
                         allChanges.Add(change);
                     }
-                    
-                    //get reason for all the changes - do not let user submit without all reasons
-                    ChangeReasons cr = new ChangeReasons();
-                    cr.Changes = allChanges;
-                    cr.Closed += new EventHandler(cr_Closed);
-                    cr.Show();
 
+                    #endregion
+
+                    #region change tracking for added entries
+                    //for added entities, whether changes will be tracked or not is determined by the page level
+                    //hence keeping this there
+
+                    foreach (var modified in modification.AddedEntities)
+                    {
+                        Type type = modified.GetType();
+
+                        //do not track addition of changes themselves, which are entities
+                        if (type == typeof(Change))
+                            continue;
+
+                        PropertyInfo changeContextProp = type.GetProperty(ChangeContextProperty);
+                        var propertyValue = changeContextProp.GetValue(modified, null);
+                        string changeContextString = String.Concat(ChangeContext, "-",
+                                                                    (propertyValue ?? "").ToString());
+                        allChanges.Add(new Change()
+                                        {
+                                            When = DateTime.Now,
+                                            Where = changeContextString,
+                                            FromValue = "",
+                                            ToValue = "Added",
+                                            ByWhom = user,
+                                            Why = " "
+                                        });
+                    }
+
+                    #endregion
+
+                    if (allChanges.Count != 0)
+                    {
+                        //get reason for all the changes - do not let user submit without all reasons
+                        ChangeReasons cr = new ChangeReasons();
+                        cr.Changes = allChanges;
+                        cr.Closed += new EventHandler(cr_Closed);
+                        cr.Show();
+                    }
+                    else
+                    {
+                        //if no changes worth tracking but still there are changes
+                        SaveChanges();
+                    }
                     //save all the changes with the reasons
                     foreach (var change in allChanges)
                     {
@@ -217,8 +300,17 @@ namespace RadiologyTracking.Views
 
         void cr_Closed(object sender, EventArgs e)
         {
-            if((bool)(sender as ChangeReasons).DialogResult)
-                DomainSource.DomainContext.SubmitChanges(OnFormSubmitCompleted, null);
+            if ((bool)(sender as ChangeReasons).DialogResult)
+            {
+                SaveChanges();
+            }
+        }
+
+        void SaveChanges()
+        {
+            DomainSource.DomainContext.SubmitChanges(OnFormSubmitCompleted, null);
+            //make sure the grid saved changes are refreshed for new set of changes
+            Grid.ClearOriginalEntities();
         }
 
         /// <summary>

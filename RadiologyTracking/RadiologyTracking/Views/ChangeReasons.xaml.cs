@@ -11,6 +11,7 @@ using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using RadiologyTracking.Web.Models;
 using System.ComponentModel;
+using System.ServiceModel.DomainServices.Client;
 
 namespace RadiologyTracking.Views
 {
@@ -40,7 +41,20 @@ namespace RadiologyTracking.Views
 
         private void OKButton_Click(object sender, RoutedEventArgs e)
         {
-            this.DialogResult = true;
+            if (ChangesGrid.CommitEdit())
+            {
+                foreach(var change in Changes)
+                {
+                    if (String.IsNullOrEmpty(change.Why.Trim()))
+                    {
+                        //show validation error
+                        MessageBox.Show("Please fill the reasons for all the changes");
+                        return;
+                    }
+                }
+                
+                this.DialogResult = true;
+            }
         }
 
         private void CancelButton_Click(object sender, RoutedEventArgs e)

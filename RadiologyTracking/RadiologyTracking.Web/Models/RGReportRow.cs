@@ -25,6 +25,8 @@ namespace RadiologyTracking.Web.Models
         public String Density { get; set; }
 
         public int FilmSizeID { get; set; }
+
+        [Include]
         public FilmSize FilmSize { get; set; }
 
         public String Observations { get; set; }
@@ -91,6 +93,42 @@ namespace RadiologyTracking.Web.Models
                 }
             }
         }
+
+        /// <summary>
+        /// Only for setting or seeing Energy by using a string value
+        /// </summary>
+        [NotMapped]
+        public string EnergyText
+        {
+            get
+            {
+                if (this.EnergyID == 0) return " ";
+                //TODO: see if context can be injected instead of using like this
+                using (RadiologyContext ctx = new RadiologyContext())
+                {
+                    var remarks = ctx.Energies.Where(p => p.ID == this.EnergyID);
+                    if (remarks.Count() > 0)
+                        return remarks.First().Name;
+                    else
+                        return " ";
+                }
+            }
+            set
+            {
+                using (RadiologyContext ctx = new RadiologyContext())
+                {
+                    try
+                    {
+                        this.EnergyID = Energy.getEnergyFromName(value, ctx).ID;
+                    }
+                    catch
+                    {
+                        //do nothing
+                    }
+                }
+            }
+        }
+
 
         /// <summary>
         /// Only for setting or seeing Remark by using a string value

@@ -41,6 +41,23 @@ namespace RadiologyTracking.Views
             SetBindings();
         }
 
+        public override String ChangeContext
+        {
+            get
+            {
+                return "Fixed Pattern Template";
+            }
+        }
+
+        public override String ChangeContextValue
+        {
+            get
+            {
+                return this.txtFPNo.Text + " " + (this.cmbCoverage.SelectedItem as Coverage).CoverageName;
+            }
+        }
+
+
         /// <summary>
         /// Adds the required event handlers for all the page elements
         /// </summary>

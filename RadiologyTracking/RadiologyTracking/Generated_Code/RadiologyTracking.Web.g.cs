@@ -7402,6 +7402,8 @@ namespace RadiologyTracking.Web.Models
         
         private int _energyID;
         
+        private string _energyText;
+        
         private EntityRef<FilmSize> _filmSize;
         
         private int _filmSizeID;
@@ -7463,6 +7465,8 @@ namespace RadiologyTracking.Web.Models
         partial void OnDesignationChanged();
         partial void OnEnergyIDChanging(int value);
         partial void OnEnergyIDChanged();
+        partial void OnEnergyTextChanging(string value);
+        partial void OnEnergyTextChanged();
         partial void OnFilmSizeIDChanging(int value);
         partial void OnFilmSizeIDChanged();
         partial void OnFilmSizeStringChanging(string value);
@@ -7614,6 +7618,35 @@ namespace RadiologyTracking.Web.Models
                     this._energyID = value;
                     this.RaiseDataMemberChanged("EnergyID");
                     this.OnEnergyIDChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'EnergyText' value.
+        /// </summary>
+        // The following attributes were not generated:
+        // 
+        // - The attribute 'System.ComponentModel.DataAnnotations.NotMappedAttribute' is not visible in the client project 'RadiologyTracking'. Are you missing an assembly reference?
+        // [NotMappedAttribute()]
+        // 
+        [DataMember()]
+        public string EnergyText
+        {
+            get
+            {
+                return this._energyText;
+            }
+            set
+            {
+                if ((this._energyText != value))
+                {
+                    this.OnEnergyTextChanging(value);
+                    this.RaiseDataMemberChanging("EnergyText");
+                    this.ValidateProperty("EnergyText", value);
+                    this._energyText = value;
+                    this.RaiseDataMemberChanged("EnergyText");
+                    this.OnEnergyTextChanged();
                 }
             }
         }

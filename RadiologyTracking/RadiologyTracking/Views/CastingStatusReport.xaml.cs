@@ -41,8 +41,7 @@ namespace RadiologyTracking.Views
 
             int foundryId = cmbFoundry.SelectedIndex == -1 ? -1 : ((Foundry)cmbFoundry.SelectedItem).ID;
             ctx.Load(ctx.GetRTStatusQuery(foundryId, (DateTime)fromDatePicker.SelectedDate, 
-                (DateTime)toDatePicker.SelectedDate)).Completed += loadCompleted;
-            
+                (DateTime)toDatePicker.SelectedDate)).Completed += loadCompleted;            
         }
 
         private void loadCompleted(object sender, EventArgs e)

@@ -116,6 +116,11 @@
     <Compile Include="Controls\DateFormatter.cs" />
     <Compile Include="DataGridExtensions.cs" />
     <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="Models\Shift.Partial.cs" />
+    <Compile Include="Models\FilmSize.Partial.cs" />
+    <Compile Include="Models\Welder.Partial.cs" />
+    <Compile Include="Models\Technician.Partial.cs" />
+    <Compile Include="Models\Remark.Partial.cs" />
     <Compile Include="Models\Energy.Partial.cs" />
     <Compile Include="Models\LoginInfo.cs" />
     <Compile Include="Models\ChangePasswordInfo.cs" />
@@ -142,6 +147,9 @@
     </Compile>
     <Compile Include="Views\CastingStatusReport.xaml.cs">
       <DependentUpon>CastingStatusReport.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ChangesMadeReport.xaml.cs">
+      <DependentUpon>ChangesMadeReport.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\FinalRadioGraphyReport.xaml.cs">
       <DependentUpon>FinalRadioGraphyReport.xaml</DependentUpon>
@@ -255,6 +263,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\CastingStatusReport.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\ChangesMadeReport.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

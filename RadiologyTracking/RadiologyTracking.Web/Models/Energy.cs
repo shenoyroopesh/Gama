@@ -39,5 +39,11 @@ namespace RadiologyTracking.Web.Models
                                                     && p.ThicknessTo >= thickness)
                                                     .Energy;
         }
+
+
+        public static Energy getEnergyFromName(String name, RadiologyContext ctx)
+        {
+            return ctx.Energies.Where(p => p.Name == name).FirstOrDefault();
+        }
     }
 }

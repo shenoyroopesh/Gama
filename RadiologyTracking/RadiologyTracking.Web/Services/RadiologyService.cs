@@ -32,7 +32,9 @@ namespace RadiologyTracking.Web.Services
 
         public IQueryable<Change> GetChangesByDate(DateTime fromDate, DateTime toDate)
         {
-            return this.DbContext.Changes.Where(p => p.When <= fromDate && p.When >= toDate);
+            fromDate = fromDate.Date;
+            toDate = toDate.Date.AddDays(1);
+            return this.DbContext.Changes.Where(p => p.When >= fromDate && p.When <= toDate);
         }
         
         public void InsertChange(Change entity)

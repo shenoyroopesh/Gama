@@ -10,6 +10,7 @@ using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using System.Reflection;
 using System.ServiceModel.DomainServices.Client;
+using System.Collections.Generic;
 
 namespace Vagsons.Controls
 {
@@ -27,7 +28,7 @@ namespace Vagsons.Controls
         /// <param name="excludeProperties">Comma separated names of properties that should not be copied. Also if entity names are included, 
         /// then corresponding foreign key columns with name [entity]ID are also excluded</param>
         /// <returns></returns>
-        public static void CopyTo(this Object source, Object destination)
+        public static void CopyTo(this Object source, Object destination, List<String> ExcludeProperties)
         {
             Type SourceType = source.GetType();
             Type DestinationType = destination.GetType();
@@ -36,6 +37,9 @@ namespace Vagsons.Controls
 
             foreach (var destProperty in properties)
             {
+                if (ExcludeProperties != null && ExcludeProperties.Contains(destProperty.Name))
+                    continue;
+
                 if (!destProperty.CanWrite)
                     continue;
 
@@ -48,7 +52,14 @@ namespace Vagsons.Controls
                 if (sourceProperty == null || !sourceProperty.CanRead)
                     continue;
 
-                destProperty.SetValue(destination, sourceProperty.GetValue(source, null), null);
+                try
+                {
+                    destProperty.SetValue(destination, sourceProperty.GetValue(source, null), null);
+                }
+                catch (Exception e)
+                {
+                    //do nothing, add logging here if needed
+                }
             }
         }
 
@@ -58,11 +69,11 @@ namespace Vagsons.Controls
         /// <typeparam name="T"></typeparam>
         /// <param name="source"></param>
         /// <returns></returns>
-        public static object Clone(this object source)
+        public static object Clone(this object source, List<String> ExcludeProperties)
         {
             Type t = source.GetType();
             var clone = Activator.CreateInstance(t);
-            source.CopyTo(clone);
+            source.CopyTo(clone, ExcludeProperties);
             return clone;
         }
     }

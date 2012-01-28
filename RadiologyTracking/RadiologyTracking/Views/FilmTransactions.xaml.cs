@@ -60,7 +60,7 @@ namespace RadiologyTracking.Views
         {
             get
             {
-                return "Challan No.";
+                return "ChallanNo";
             }
         }
 

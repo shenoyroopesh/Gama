@@ -46,30 +46,38 @@ namespace Vagsons.Controls
             }
         }
 
-        private Dictionary<int, Object> _changedEntities;
+        /// <summary>
+        /// Properties included here will be excluded from change tracking. This is exceptionally needed for parent-child
+        /// relations where the parent cannot be set for the child-clone (otherwise it tries to attach the child to the 
+        /// parent again and throws errors)
+        /// </summary>
+        public static List<String> ExcludePropertiesFromTracking = new List<String>();
+
+
+        private Dictionary<int, Object> _originalEntities;
 
         /// <summary>
         /// tracks the changed entities in the item source for this grid along with their ids
         /// </summary>
-        public Dictionary<int, Object> ChangedEntities
+        public Dictionary<int, Object> OriginalEntities
         {
             get
             {
-                if (_changedEntities == null)
-                    _changedEntities = new Dictionary<int, object>();
+                if (_originalEntities == null)
+                    _originalEntities = new Dictionary<int, object>();
 
-                return _changedEntities;
+                return _originalEntities;
             }
         }
 
         /// <summary>
         /// Clears all the changes, use when you cancel changes, otherwise changes will remain in the table
         /// </summary>
-        public void ClearChangedEntities()
+        public void ClearOriginalEntities()
         {
-            this.ChangedEntities.Clear();
+            this.OriginalEntities.Clear();
         }
-
+        
 
         public CustomGrid()
             : base()
@@ -116,15 +124,19 @@ namespace Vagsons.Controls
             //done here since when row enters edit mode, the textblock cannot capture the mouseup event
             mouseDown = false;
             clearAllSelection();
-
             //track the original value of this item before it is edited
-            var original = this.SelectedItem.Clone();
+            TrackItem(this.SelectedItem);
+        }
+
+        void TrackItem(object item)
+        {
+            var original = item.Clone(CustomGrid.ExcludePropertiesFromTracking);
             var originalID = getID(original);
             var obj = new Object();
 
             //add only if not exists already, no point adding the same entity again and again
-            if (!ChangedEntities.TryGetValue(originalID, out obj)) 
-                ChangedEntities.Add(originalID, original);
+            if (!OriginalEntities.TryGetValue(originalID, out obj))
+                OriginalEntities.Add(originalID, original);
         }
 
         private int getID(object item)
@@ -247,6 +259,9 @@ namespace Vagsons.Controls
 
             selectedCells.Add(cell, cell.Background);
             cell.Background = new SolidColorBrush(Colors.Purple);
+
+            //since there is a good change this item will change, track the old value
+            TrackItem(cell.DataContext);
         }
 
         protected override void OnKeyDown(KeyEventArgs e)

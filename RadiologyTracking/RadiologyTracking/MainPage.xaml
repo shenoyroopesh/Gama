@@ -80,7 +80,10 @@
                         <Rectangle x:Name="Divider9" Style="{StaticResource DividerStyle}"/>
                         <HyperlinkButton x:Name="Link10" Style="{StaticResource LinkStyle}" 
                                      NavigateUri="/FixedPatterns" TargetName="ContentFrame" Content="Fixed Patterns"/>
-                    </StackPanel>
+                        <Rectangle x:Name="Divider18" Style="{StaticResource DividerStyle}"/>
+                            <HyperlinkButton x:Name="Link20" Style="{StaticResource LinkStyle}" 
+                                     NavigateUri="/ChangesMadeReport" TargetName="ContentFrame" Content="Changes"/>
+                        </StackPanel>
                         <StackPanel x:Name="Links2StackPanel" Style="{StaticResource LinksStackPanelStyle}">
                             <HyperlinkButton x:Name="Link11" Style="{StaticResource LinkStyle}" 
                                      NavigateUri="/RadiographyReports" TargetName="ContentFrame" Content="Radiography Reports"/>
