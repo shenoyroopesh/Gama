@@ -35,6 +35,17 @@ namespace RadiologyTracking.Views
             {
                 //Means new RG Report, allow add
                 this.IsEditMode = false;
+                //clerk or not
+                string currentRole = WebContext.Current.User.Roles.FirstOrDefault();
+                if (currentRole.ToLower() == "clerk")
+                {
+                    clerkMode = true;
+                    this.RGReportDataGrid.Visibility = System.Windows.Visibility.Collapsed;
+                    this.RGReportDataGridClerk.Visibility = System.Windows.Visibility.Visible;
+
+                    //make sure the rows are not frozen for the clerk-specific datagrid
+                    CustomGrid.IsEditAllowed = true;
+                }
             }
             else
             {
@@ -51,6 +62,8 @@ namespace RadiologyTracking.Views
 
             if (IsEditMode) DomainSource.Load();
         }
+
+        private bool clerkMode = false;
 
         public override String ChangeContext
         {
@@ -110,6 +123,7 @@ namespace RadiologyTracking.Views
             BindToPage(txtAcceptance, TextBox.TextProperty, "RGReport.AcceptanceAsPer");
             BindToPage(txtDrawingNo, TextBox.TextProperty, "RGReport.DrawingNo");
             BindToPage(RGReportDataGrid, CustomGrid.ItemsSourceProperty, "RGReportRows");
+            BindToPage(RGReportDataGridClerk, CustomGrid.ItemsSourceProperty, "RGReportRows");
             BindToPage(btnAdd, Button.IsEnabledProperty, "Enabled", BindingMode.OneWay);
             BindToPage(btnFetch, Button.IsEnabledProperty, "FetchEnabled", BindingMode.OneWay);
             BindToPage(busyIndicator, BusyIndicator.IsBusyProperty, "DomainSource.IsBusy", BindingMode.OneWay);
@@ -119,7 +133,7 @@ namespace RadiologyTracking.Views
         [CLSCompliant(false)]
         public override CustomGrid Grid
         {
-            get { return this.RGReportDataGrid; }
+            get { return clerkMode ? this.RGReportDataGridClerk : this.RGReportDataGrid; }
         }
 
         public override DomainDataSource DomainSource

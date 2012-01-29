@@ -167,6 +167,10 @@ namespace Vagsons.Controls
                 {
                     (cellContent.Parent as DataGridCell).IsEnabled = false;
                 }
+
+                //set a tag in the cell to make it readonly if column is readonly.
+                //this will be used to allow copying to this cell 
+                (cellContent.Parent as DataGridCell).Tag = column.IsReadOnly ? "1" : "0";
             }            
         }
 
@@ -256,6 +260,9 @@ namespace Vagsons.Controls
 
             //if already added, return
             if (selectedCells.ContainsKey(cell)) return;
+
+            //if the selected cell is of a column is bound in mode oneway, return without adding cell.
+            if (cell.Tag.ToString() == "1") return;
 
             selectedCells.Add(cell, cell.Background);
             cell.Background = new SolidColorBrush(Colors.Purple);

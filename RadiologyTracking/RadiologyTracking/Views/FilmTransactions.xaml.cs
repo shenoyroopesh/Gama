@@ -30,6 +30,7 @@ namespace RadiologyTracking.Views
 
             fromDatePicker.SelectedDate = fromDatePicker.DisplayDate = DateTime.Now.AddDays(-15);
             toDatePicker.SelectedDate = toDatePicker.DisplayDate = DateTime.Now;
+            this.ConsiderAdditions = false;
         }
 
         [CLSCompliant(false)]

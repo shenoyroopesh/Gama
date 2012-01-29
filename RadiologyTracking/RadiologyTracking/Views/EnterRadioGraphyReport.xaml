@@ -293,6 +293,81 @@
                                 </sdk:DataGridTemplateColumn>
                             </custom:CustomGrid.Columns>
                         </custom:CustomGrid>
+                        <custom:CustomGrid Name="RGReportDataGridClerk" Style="{StaticResource DataGridStyle}" 
+                                   ColumnHeaderStyle="{StaticResource DataGridHeaderGlassEffect}"
+                                   CellStyle="{StaticResource Stretch}" MaxHeight="300" 
+                                   CanUserSortColumns="True" Visibility="Collapsed">
+                            <custom:CustomGrid.Resources>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="TextAlignment" Value="Center" />
+                                </Style>
+                                <Style TargetType="TextBox" >
+                                    <Setter Property="TextAlignment" Value="Center" />
+                                </Style>
+                            </custom:CustomGrid.Resources>
+                            <custom:CustomGrid.Columns>
+                                <sdk:DataGridTextColumn Header="SlNo" IsReadOnly="True" Binding="{Binding Path=SlNo, Mode=OneWay}"></sdk:DataGridTextColumn>
+                                <sdk:DataGridTextColumn Header="Location" IsReadOnly="True" Binding="{Binding Path=Location, Mode=OneWay}"></sdk:DataGridTextColumn>
+                                <sdk:DataGridTextColumn Header="Segment" IsReadOnly="True" Binding="{Binding Path=Segment, Mode=OneWay}"></sdk:DataGridTextColumn>
+                                <sdk:DataGridTextColumn Header="Thickness" IsReadOnly="True" Binding="{Binding Path=Thickness, Mode=OneWay}"></sdk:DataGridTextColumn>
+                                <sdk:DataGridTextColumn Header="Energy" IsReadOnly="True" 
+                                                        Binding="{Binding Path=EnergyText, Mode=OneWay}"></sdk:DataGridTextColumn>
+                                <sdk:DataGridTextColumn Header="SFD" IsReadOnly="True" Binding="{Binding Path=SFD, Mode=OneWay}"></sdk:DataGridTextColumn>
+                                <sdk:DataGridTextColumn Header="Designation" IsReadOnly="True" Binding="{Binding Path=Designation, Mode=OneWay}"></sdk:DataGridTextColumn>
+                                <sdk:DataGridTextColumn Header="Sensitivity" IsReadOnly="True" Binding="{Binding Path=Sensitivity, Mode=OneWay}"></sdk:DataGridTextColumn>
+                                <sdk:DataGridTextColumn Header="Density" IsReadOnly="True" Binding="{Binding Path=Density, Mode=OneWay}"></sdk:DataGridTextColumn>
+                                <sdk:DataGridTextColumn Header="Film Size" IsReadOnly="True" Binding="{Binding Path=FilmSizeString, Mode=OneWay}"></sdk:DataGridTextColumn>
+                                <sdk:DataGridTextColumn Header="Observation" Binding="{Binding Path=Observations, Mode=TwoWay}"></sdk:DataGridTextColumn>
+                                <sdk:DataGridTemplateColumn Header="Remark">
+                                    <sdk:DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Path=RemarkText, Mode=TwoWay}" VerticalAlignment="Center" />
+                                        </DataTemplate>
+                                    </sdk:DataGridTemplateColumn.CellTemplate>
+                                    <sdk:DataGridTemplateColumn.CellEditingTemplate>
+                                        <DataTemplate>
+                                            <ComboBox ItemsSource="{Binding Source={StaticResource RemarksSource}, Path=Data}"
+                                              SelectedValue="{Binding Remark, Mode=TwoWay}"
+                                              DisplayMemberPath="Value" 
+                                              Style="{StaticResource ComboBoxStyle}"
+                                              ItemContainerStyle="{StaticResource ComboBoxItemStyle}" SelectionChanged="RemarkChanged"/>
+                                        </DataTemplate>
+                                    </sdk:DataGridTemplateColumn.CellEditingTemplate>
+                                </sdk:DataGridTemplateColumn>
+                                <sdk:DataGridTemplateColumn Header="Technician">
+                                    <sdk:DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Path=TechnicianText, Mode=TwoWay}" VerticalAlignment="Center" />
+                                        </DataTemplate>
+                                    </sdk:DataGridTemplateColumn.CellTemplate>
+                                    <sdk:DataGridTemplateColumn.CellEditingTemplate>
+                                        <DataTemplate>
+                                            <ComboBox ItemsSource="{Binding Source={StaticResource TechniciansSource}, Path=Data}"
+                                              SelectedValue="{Binding Technician, Mode=TwoWay}"
+                                              DisplayMemberPath="Name" 
+                                              Style="{StaticResource ComboBoxStyle}"
+                                              ItemContainerStyle="{StaticResource ComboBoxItemStyle}" SelectionChanged="TechnicianChanged"/>
+                                        </DataTemplate>
+                                    </sdk:DataGridTemplateColumn.CellEditingTemplate>
+                                </sdk:DataGridTemplateColumn>
+                                <sdk:DataGridTemplateColumn Header="Welder">
+                                    <sdk:DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Path=WelderText, Mode=TwoWay}" VerticalAlignment="Center" />
+                                        </DataTemplate>
+                                    </sdk:DataGridTemplateColumn.CellTemplate>
+                                    <sdk:DataGridTemplateColumn.CellEditingTemplate>
+                                        <DataTemplate>
+                                            <ComboBox ItemsSource="{Binding Source={StaticResource WeldersSource}, Path=Data}"
+                                              SelectedValue="{Binding Welder, Mode=TwoWay}"
+                                              DisplayMemberPath="Name" 
+                                              Style="{StaticResource ComboBoxStyle}"
+                                              ItemContainerStyle="{StaticResource ComboBoxItemStyle}" SelectionChanged="WelderChanged"/>
+                                        </DataTemplate>
+                                    </sdk:DataGridTemplateColumn.CellEditingTemplate>
+                                </sdk:DataGridTemplateColumn>
+                            </custom:CustomGrid.Columns>
+                        </custom:CustomGrid>
                         <Button Margin="100,0,50,0" Name="btnAdd" HorizontalAlignment="Right" Width="75" Style="{StaticResource AddButtonStyle}"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="20, 20, 0, 0">

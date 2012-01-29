@@ -16,6 +16,7 @@ using System.Collections.Generic;
 using RadiologyTracking.Web.Models;
 using RadiologyTracking.Web.Services;
 using System.Reflection;
+using System.Linq;
 
 namespace RadiologyTracking.Views
 {
@@ -32,8 +33,7 @@ namespace RadiologyTracking.Views
             //throw an error
             try
             {
-                var roles = WebContext.Current.User.Roles as String[];
-                string currentRole = (WebContext.Current.User.Roles as String[])[0];
+                string currentRole = WebContext.Current.User.Roles.FirstOrDefault();
                 //for clerk no editing
                 CustomGrid.IsEditAllowed = !(currentRole.ToLower() == "clerk");
                 CustomGrid.ExcludePropertiesFromTracking = this.ExcludePropertiesFromTracking;
@@ -98,6 +98,11 @@ namespace RadiologyTracking.Views
 
 
         public List<String> ExcludePropertiesFromTracking = new List<String>();
+
+        /// <summary>
+        /// Set this false if new additions need not be tracked
+        /// </summary>
+        public bool ConsiderAdditions = true;
 
         
         /// <summary>
@@ -251,27 +256,31 @@ namespace RadiologyTracking.Views
                     //for added entities, whether changes will be tracked or not is determined by the page level
                     //hence keeping this there
 
-                    foreach (var modified in modification.AddedEntities)
+                    if (ConsiderAdditions)
                     {
-                        Type type = modified.GetType();
 
-                        //do not track addition of changes themselves, which are entities
-                        if (type == typeof(Change))
-                            continue;
+                        foreach (var modified in modification.AddedEntities)
+                        {
+                            Type type = modified.GetType();
 
-                        PropertyInfo changeContextProp = type.GetProperty(ChangeContextProperty);
-                        var propertyValue = changeContextProp.GetValue(modified, null);
-                        string changeContextString = String.Concat(ChangeContext, "-",
-                                                                    (propertyValue ?? "").ToString());
-                        allChanges.Add(new Change()
-                                        {
-                                            When = DateTime.Now,
-                                            Where = changeContextString,
-                                            FromValue = "",
-                                            ToValue = "Added",
-                                            ByWhom = user,
-                                            Why = " "
-                                        });
+                            //do not track addition of changes themselves, which are entities
+                            if (type == typeof(Change))
+                                continue;
+
+                            PropertyInfo changeContextProp = type.GetProperty(ChangeContextProperty);
+                            var propertyValue = changeContextProp.GetValue(modified, null);
+                            string changeContextString = String.Concat(ChangeContext, "-",
+                                                                        (propertyValue ?? "").ToString());
+                            allChanges.Add(new Change()
+                                            {
+                                                When = DateTime.Now,
+                                                Where = changeContextString,
+                                                FromValue = "",
+                                                ToValue = "Added",
+                                                ByWhom = user,
+                                                Why = " "
+                                            });
+                        }
                     }
 
                     #endregion
