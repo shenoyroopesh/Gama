@@ -4,21 +4,22 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    d:DesignHeight="480" d:DesignWidth="640" 
+    d:DesignHeight="550" d:DesignWidth="640" 
     xmlns:riaControls="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.DomainServices" 
     xmlns:my="clr-namespace:RadiologyTracking.Web.Models" xmlns:my1="clr-namespace:RadiologyTracking.Web.Services" 
     xmlns:sdk="http://schemas.microsoft.com/winfx/2006/xaml/presentation/sdk"
     xmlns:custom="clr-namespace:Vagsons.Controls;assembly=CustomControls"
     xmlns:local="clr-namespace:RadiologyTracking.Controls"
     xmlns:ex="clr-namespace:ComboBoxExtensions;assembly=ComboBoxExtensions"
-    xmlns:views="clr-namespace:RadiologyTracking.Views">
+    xmlns:views="clr-namespace:RadiologyTracking.Views"
+    xmlns:dtGrid="clr-namespace:BindableDataGrid;assembly=BindableDataGrid">
 
     <UserControl.Resources>
         <my1:RadiologyContext x:Key="RadiologyContext" />
         <ex:ComboBoxDataSource x:Key="CoveragesSource" DomainContext="{StaticResource RadiologyContext}" 
                                OperationName="GetCoveragesQuery"/>
         <ex:ComboBoxDataSource x:Key="FilmSizesSource" DomainContext="{StaticResource RadiologyContext}"
-                               OperationName="GetFilmSizesQuery" />
+                               OperationName="GetFilmSizesQuery" LoadCompleted="FilmSizeArea_LoadCompleted" />
         <ex:ComboBoxDataSource x:Key="EnergySource" DomainContext="{StaticResource RadiologyContext}" 
                                OperationName="GetEnergiesQuery"/>
         <ex:ComboBoxDataSource x:Key="RemarksSource" DomainContext="{StaticResource RadiologyContext}"
@@ -68,7 +69,7 @@
                             </Style>
                         </StackPanel.Resources>
                         <!-- Note that the below controls' isEnabled is bound to negative of whether RGReportsSource has changes, meaning
-                it will be disabled when there are pending changes-->
+                             it will be disabled when there are pending changes-->
                         <TextBox Name="txtRTNo" MinWidth="50" Margin="10, 0, 10, 0" 
                          IsEnabled="{Binding ElementName=RGReportsSource, Path=HasChanges, 
                                     Converter={StaticResource NotOperatorValueConverter}}"/>
@@ -221,9 +222,10 @@
                         <TextBlock Text="Total Area of Submitted Films:" />
                         <TextBlock Name="lblTotalArea" FontWeight="Bold" />
                     </StackPanel>
+                    <dtGrid:BindableDataGrid Name="energyAreas" HeadersVisibility="None" HorizontalAlignment="Left" Margin="20,10,0,0" />
                     <StackPanel Orientation="Horizontal" Height="23" Margin="0,20,0,0" HorizontalAlignment="Center" Name="ButtonsPanel">
-                        <Button Name="btnPrint" Background="Transparent" Style="{StaticResource PrintButtonStyle}"/>
-                        <Button Name="btnCancel" Margin="20,0,0,0" Style="{StaticResource CancelButtonStyle}" />
+                        <Button Name="btnPrint" Background="Transparent" Style="{StaticResource PrintButtonStyle}" Click="btnPrint_Click" />
+                        <Button Name="btnCancel" Margin="20,0,0,0" Style="{StaticResource CancelButtonStyle}" Click="btnCancel_Click" />
                     </StackPanel>
                 </StackPanel>
             </local:BusyIndicator>

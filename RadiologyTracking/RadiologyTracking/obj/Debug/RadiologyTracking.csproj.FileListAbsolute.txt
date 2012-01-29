@@ -354,3 +354,5 @@ D:\DotNet\Gama\RadiologyTracking\RadiologyTracking\obj\Debug\Views\Login\ChangeP
 D:\DotNet\Gama\RadiologyTracking\RadiologyTracking\obj\Debug\Views\Login\ChangePasswordWindow.g.i.cs
 D:\DotNet\Gama\RadiologyTracking\RadiologyTracking\obj\Debug\Views\ChangeReasons.g.i.cs
 D:\DotNet\Gama\RadiologyTracking\RadiologyTracking\obj\Debug\Views\ChangesMadeReport.g.i.cs
+D:\DotNet\Gama\RadiologyTracking\RadiologyTracking\Bin\Debug\MenuControl.dll
+D:\DotNet\Gama\RadiologyTracking\RadiologyTracking\Bin\Debug\MenuControl.pdb

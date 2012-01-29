@@ -16,6 +16,8 @@ using System.Windows.Data;
 using RadiologyTracking.Web.Services;
 using System.Collections;
 using System.ServiceModel.DomainServices.Client;
+using BindableDataGrid.Data;
+using System.Windows.Printing;
 
 namespace RadiologyTracking.Views
 {
@@ -155,6 +157,7 @@ namespace RadiologyTracking.Views
             DataContext = FinalReport;
             //now that fixedpatternid is available
             FixedPatternsSource.Load();
+            updateEnergyWiseArea();
         }
 
         private void FixedPatternsSource_LoadedData(object sender, LoadedDataEventArgs e)
@@ -168,6 +171,74 @@ namespace RadiologyTracking.Views
                 FinalReportRows = FinalReport.FinalRTReportRows.Where(p => p.RemarkText != "ACCEPTABLE");
             else
                 FinalReportRows = FinalReport.FinalRTReportRows;
+        }
+
+        private void FilmSizeArea_LoadCompleted(object sender, System.ComponentModel.AsyncCompletedEventArgs e)
+        {
+            //just in case it din't get loaded earlier
+            updateEnergyWiseArea();
+        }
+
+        public void updateEnergyWiseArea()
+        {
+            RadiologyContext ctx = (RadiologyContext)this.DomainSource.DomainContext;
+            DataTable dt = new DataTable("EnergyTable");
+            AddTextColumn(dt, "HeadRow", "HeadRow");
+            DataRow headerRow = new DataRow();
+            DataRow actualRow = new DataRow();
+            headerRow["HeadRow"] = "Isotope";
+            actualRow["HeadRow"] = "Sq. Inches";
+
+            //instead of encountering an error if context is still loading, just don't do it, it will get 
+            //done on the first save operation
+            if (ctx.IsLoading)
+                return;
+
+            foreach (var e in ctx.Energies)
+            {
+                AddTextColumn(dt, e.Name, e.Name);
+                headerRow[e.Name] = e.Name;
+                actualRow[e.Name] = FinalReportRows.Where(p => p.EnergyID == e.ID).Sum(p => p.FilmSize.Area);
+            }
+
+            dt.Rows.Add(headerRow);
+            dt.Rows.Add(actualRow);
+
+            energyAreas.DataSource = dt;
+            energyAreas.DataBind();
+
+            OnPropertyChanged("TotalArea");
+        }
+
+        private static void AddTextColumn(DataTable reportTable, String columnName, String caption)
+        {
+            DataColumn dc = new DataColumn(columnName);
+            dc.Caption = caption;
+            dc.ReadOnly = true;
+            dc.DataType = typeof(String);
+            dc.AllowResize = true;
+            dc.AllowSort = false;
+            dc.AllowReorder = false;
+            reportTable.Columns.Add(dc);
+        }
+
+        private void btnCancel_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btnPrint_Click(object sender, RoutedEventArgs e)
+        {
+            PrintDocument pd = new PrintDocument();
+            pd.PrintPage += (s, args) =>
+                {
+                    args.PageVisual = this;                    
+                };
+
+            PrinterFallbackSettings settings = new PrinterFallbackSettings();
+            settings.ForceVector = true;
+            settings.OpacityThreshold = 0.7;
+            pd.Print("Radiography Report", settings);
         }
     }
 }

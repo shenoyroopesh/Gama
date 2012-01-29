@@ -7,7 +7,8 @@
   xmlns:dataControls="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Data.DataForm.Toolkit" 
   xmlns:login="clr-namespace:RadiologyTracking.LoginUI"
   xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-  mc:Ignorable="d" d:DesignWidth="640" d:DesignHeight="480">
+  mc:Ignorable="d" d:DesignWidth="640" d:DesignHeight="480"
+  xmlns:menu="clr-namespace:MenuControl;assembly=MenuControl">
 
     <Grid x:Name="LayoutRoot" Style="{StaticResource LayoutRootGridStyle}">
 
@@ -28,96 +29,52 @@
         <Grid Style="{StaticResource NavigationOuterGridStyle}">
             <Grid x:Name="NavigationGrid" Style="{StaticResource NavigationGridStyle}">
 
-                <Border x:Name="BrandingBorder" Style="{StaticResource BrandingBorderStyle}">
+                <StackPanel Orientation="Horizontal">
                     <StackPanel x:Name="BrandingStackPanel" Style="{StaticResource BrandingStackPanelStyle}">
 
                         <ContentControl Style="{StaticResource LogoIcon}"/>
                         <TextBlock x:Name="ApplicationNameTextBlock" Style="{StaticResource ApplicationNameStyle}" 
-                               Text="{Binding Strings.ApplicationName, Source={StaticResource ApplicationResources}}"/>
+                               Text="Radiology Tracker"/>
 
                     </StackPanel>
-                </Border>
-
-                <Border x:Name="LinksBorder" Style="{StaticResource LinksBorderStyle}" >
-                    <StackPanel>
-                    <StackPanel x:Name="LinksStackPanel" Style="{StaticResource LinksStackPanelStyle}">
-                        <HyperlinkButton x:Name="Link1" Style="{StaticResource LinkStyle}" 
-                                     NavigateUri="/Home" TargetName="ContentFrame" Content="{Binding Path=Strings.HomePageTitle, Source={StaticResource ApplicationResources}}"/>
-
-                        <Rectangle x:Name="Divider1" Style="{StaticResource DividerStyle}"/>
-
-                        <HyperlinkButton x:Name="Link2" Style="{StaticResource LinkStyle}" 
-                                     NavigateUri="/FilmSizes" TargetName="ContentFrame" Content="Film Sizes"/>
-                        <Rectangle x:Name="Divider2" Style="{StaticResource DividerStyle}"/>
-
-                        <HyperlinkButton x:Name="Link3" Style="{StaticResource LinkStyle}" 
-                                     NavigateUri="/Energies" TargetName="ContentFrame" Content="Energy"/>
-                        
-                        <Rectangle x:Name="Divider3" Style="{StaticResource DividerStyle}"/>
-                        <HyperlinkButton x:Name="Link4" Style="{StaticResource LinkStyle}" 
-                                     NavigateUri="/ThicknessToEnergyType" TargetName="ContentFrame" Content="Thickness-Energy"/>
-
-                        <Rectangle x:Name="Divider4" Style="{StaticResource DividerStyle}"/>
-                        <HyperlinkButton x:Name="Link5" Style="{StaticResource LinkStyle}" 
-                                     NavigateUri="/Company" TargetName="ContentFrame" Content="Company"/>
-                        
-                        <Rectangle x:Name="Divider5" Style="{StaticResource DividerStyle}"/>
-                        <HyperlinkButton x:Name="Link6" Style="{StaticResource LinkStyle}" 
-                                     NavigateUri="/Coverages" TargetName="ContentFrame" Content="Coverages"/>
-
-                        <Rectangle x:Name="Divider6" Style="{StaticResource DividerStyle}"/>
-                        <HyperlinkButton x:Name="Link7" Style="{StaticResource LinkStyle}" 
-                                     NavigateUri="/Foundries" TargetName="ContentFrame" Content="Foundries"/>
-
-                        <Rectangle x:Name="Divider7" Style="{StaticResource DividerStyle}"/>
-                        <HyperlinkButton x:Name="Link8" Style="{StaticResource LinkStyle}" 
-                                     NavigateUri="/Customers" TargetName="ContentFrame" Content="Customers"/>
-
-                        <Rectangle x:Name="Divider8" Style="{StaticResource DividerStyle}"/>
-                        <HyperlinkButton x:Name="Link9" Style="{StaticResource LinkStyle}" 
-                                     NavigateUri="/FilmTransactions" TargetName="ContentFrame" Content="FilmTransactions"/>
-
-                        <Rectangle x:Name="Divider9" Style="{StaticResource DividerStyle}"/>
-                        <HyperlinkButton x:Name="Link10" Style="{StaticResource LinkStyle}" 
-                                     NavigateUri="/FixedPatterns" TargetName="ContentFrame" Content="Fixed Patterns"/>
-                        <Rectangle x:Name="Divider18" Style="{StaticResource DividerStyle}"/>
-                            <HyperlinkButton x:Name="Link20" Style="{StaticResource LinkStyle}" 
-                                     NavigateUri="/ChangesMadeReport" TargetName="ContentFrame" Content="Changes"/>
-                        </StackPanel>
-                        <StackPanel x:Name="Links2StackPanel" Style="{StaticResource LinksStackPanelStyle}">
-                            <HyperlinkButton x:Name="Link11" Style="{StaticResource LinkStyle}" 
-                                     NavigateUri="/RadiographyReports" TargetName="ContentFrame" Content="Radiography Reports"/>
-                            <Rectangle x:Name="Divider10" Style="{StaticResource DividerStyle}"/>
-                            <HyperlinkButton x:Name="Link12" Style="{StaticResource LinkStyle}" 
-                                     NavigateUri="/Technicians" TargetName="ContentFrame" Content="Technicians"/>
-                            <Rectangle x:Name="Divider11" Style="{StaticResource DividerStyle}"/>
-                            <HyperlinkButton x:Name="Link13" Style="{StaticResource LinkStyle}" 
-                                     NavigateUri="/Welders" TargetName="ContentFrame" Content="Welders"/>
-                            <Rectangle x:Name="Divider12" Style="{StaticResource DividerStyle}"/>
-                            <HyperlinkButton x:Name="Link14" Style="{StaticResource LinkStyle}" 
-                                     NavigateUri="/FixedPatternPerformance" TargetName="ContentFrame" Content="FP Performance"/>
-                            <Rectangle x:Name="Divider13" Style="{StaticResource DividerStyle}"/>
-                            <HyperlinkButton x:Name="Link15" Style="{StaticResource LinkStyle}" 
-                                     NavigateUri="/FilmStockReport" TargetName="ContentFrame" Content="Film Stock Report"/>
-                            <Rectangle x:Name="Divider14" Style="{StaticResource DividerStyle}"/>
-                            <HyperlinkButton x:Name="Link16" Style="{StaticResource LinkStyle}" 
-                                     NavigateUri="/ShiftWisePerformance" TargetName="ContentFrame" Content="ShiftWise Perf"/>
-                            <Rectangle x:Name="Divider15" Style="{StaticResource DividerStyle}"/>
-                            <HyperlinkButton x:Name="Link17" Style="{StaticResource LinkStyle}" 
-                                     NavigateUri="/FilmConsumptionReport" TargetName="ContentFrame" Content="Film Consumption"/>
-                            <Rectangle x:Name="Divider16" Style="{StaticResource DividerStyle}"/>
-                            <HyperlinkButton x:Name="Link18" Style="{StaticResource LinkStyle}" 
-                                     NavigateUri="/CastingStatusReport" TargetName="ContentFrame" Content="Casting Status"/>
-                            <Rectangle x:Name="Divider17" Style="{StaticResource DividerStyle}"/>
-                            <HyperlinkButton x:Name="Link19" Style="{StaticResource LinkStyle}" 
-                                     NavigateUri="/Users" TargetName="ContentFrame" Content="Users"/>
-                        </StackPanel>
+                    <HyperlinkButton x:Name="Link1" Style="{StaticResource LinkStyle}"
+                                     NavigateUri="/Home" TargetName="ContentFrame" Content="Home" VerticalAlignment="Center" />
+                    <StackPanel Width="400" VerticalAlignment="Top">
+                        <menu:MenuBar VerticalAlignment="Center">
+                            <menu:MenuBarItem MenuText="Company Setup" >
+                                <menu:MenuItem MenuText="Company"  Click="MenuItem_Click" NavigationURI="/Company" />
+                                <menu:MenuItem MenuText="Foundry"  Click="MenuItem_Click" NavigationURI="/Foundries" />
+                                <menu:MenuItem MenuText="Users"  Click="MenuItem_Click" NavigationURI="/Users"/>
+                                <menu:MenuItem MenuText="Energy"  Click="MenuItem_Click" NavigationURI="/Energies"/>
+                                <menu:MenuItem MenuText="Thickness-Energy"  Click="MenuItem_Click" NavigationURI="/ThicknessToEnergyType"/>
+                                <menu:MenuItem MenuText="Film Sizes"  Click="MenuItem_Click" NavigationURI="/FilmSizes"/>
+                                <menu:MenuItem MenuText="Technicians"  Click="MenuItem_Click" NavigationURI="/Technicians"/>
+                            </menu:MenuBarItem>
+                            <menu:MenuBarItem MenuText="Foundry Setup" >
+                                <menu:MenuItem MenuText="Customers"  Click="MenuItem_Click" NavigationURI="/Customers"/>
+                                <menu:MenuItem MenuText="Coverages"  Click="MenuItem_Click" NavigationURI="/Coverages"/>
+                                <menu:MenuItem MenuText="Fixed Patterns"  Click="MenuItem_Click" NavigationURI="/FixedPatterns"/>
+                                <menu:MenuItem MenuText="Welders"  Click="MenuItem_Click" NavigationURI="/Welders"/>
+                            </menu:MenuBarItem>
+                            <menu:MenuBarItem MenuText="Entry" >
+                                <menu:MenuItem MenuText="Film Transactions"  Click="MenuItem_Click" NavigationURI="/FilmTransactions"/>
+                                <menu:MenuItem MenuText="Radiography Entry"  Click="MenuItem_Click" NavigationURI="/RadiographyReports"/>
+                            </menu:MenuBarItem>
+                            <menu:MenuBarItem MenuText="Reports" >
+                                <menu:MenuItem MenuText="Film Consumption"  Click="MenuItem_Click" NavigationURI="/FilmConsumptionReport"/>
+                                <menu:MenuItem MenuText="Film Stock Report"  Click="MenuItem_Click" NavigationURI="/FilmStockReport"/>
+                                <menu:MenuItem MenuText="Casting Status"  Click="MenuItem_Click" NavigationURI="/CastingStatusReport"/>
+                                <menu:MenuItem MenuText="Shiftwise Performance"  Click="MenuItem_Click" NavigationURI="/ShiftWisePerformance"/>
+                                <menu:MenuItem MenuText="FP Performance"  Click="MenuItem_Click" NavigationURI="/FixedPatternPerformance"/>
+                                <menu:MenuItem MenuText="Changes"  Click="MenuItem_Click" NavigationURI="/ChangesMadeReport"/>
+                            </menu:MenuBarItem>
+                        </menu:MenuBar>
                     </StackPanel>
-                </Border>
+                    <StackPanel HorizontalAlignment="Stretch">
+                        <login:LoginStatus VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                    </StackPanel>
+                </StackPanel>
             </Grid>
-            <Border Style="{StaticResource LoginContainerStyle}" >
-                <login:LoginStatus/>
-            </Border>
         </Grid>
     </Grid>
 </UserControl>

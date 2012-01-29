@@ -491,16 +491,18 @@ namespace RadiologyTracking.Web.Services
             //fetch required rows from database first, then form the complex object - linq to entities doesn't support
             //creating complex objects directly
             var rows = (from r in ctx.RGReportRows
-                       where r.RGReport != null &&
-                       r.RGReport.FixedPattern.FPNo == fpNo
-                       select new
-                       {
-                           RTNo = r.RGReport.RTNo,
-                           ReportDate = r.RGReport.ReportDate,
-                           Location = r.Location,
-                           Segment = r.Segment,
-                           Observations = r.Observations
-                       }).ToList();
+                        where r.RGReport != null &&
+                        r.RGReport.FixedPattern.FPNo == fpNo &&
+                            //ensure that the report has at least one defect
+                        r.RGReport.RGReportRows.Where(p => (p.Observations ?? "").Trim() != "NSD").Count() > 0
+                        select new
+                        {
+                            RTNo = r.RGReport.RTNo,
+                            ReportDate = r.RGReport.ReportDate,
+                            Location = r.Location,
+                            Segment = r.Segment,
+                            Observations = r.Observations
+                        }).ToList();
 
 
             var report = (from r in rows
@@ -860,7 +862,12 @@ namespace RadiologyTracking.Web.Services
                              where r.RGReport.RTNo == rtNo
                              group r by new { r.Location, r.Segment } into g
                              //latest row for each combination
-                             let latest = g.Where(p => p.Remark != null).OrderByDescending(p => p.RGReport.ReportDate).FirstOrDefault()
+                             let latest = g.Where(p => p.Remark != null)
+                                            .OrderByDescending(p => p.RGReport.ReportDate)
+                                            .FirstOrDefault() ??
+                                            //just to handle a case where the remark hasn't been filled yet for this location-segment
+                                          g.OrderByDescending(p => p.RGReport.ReportDate)
+                                            .FirstOrDefault()
                              select latest).ToList();
 
             foreach (var r in reportRows)

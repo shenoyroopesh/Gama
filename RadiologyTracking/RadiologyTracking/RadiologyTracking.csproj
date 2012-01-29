@@ -437,6 +437,10 @@
       <Project>{B885C7C7-1917-483D-A179-1579D1428B7C}</Project>
       <Name>CustomControls</Name>
     </ProjectReference>
+    <ProjectReference Include="..\MenuControl\MenuControl.csproj">
+      <Project>{047DE654-37E2-4918-97C7-9BD5FEFDA845}</Project>
+      <Name>MenuControl</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\Button-Add-icon.png" />

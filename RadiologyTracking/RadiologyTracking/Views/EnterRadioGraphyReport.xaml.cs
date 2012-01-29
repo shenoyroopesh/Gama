@@ -452,5 +452,11 @@ namespace RadiologyTracking.Views
         }
 
         #endregion
+
+        private void FilmSizeArea_LoadCompleted(object sender, System.ComponentModel.AsyncCompletedEventArgs e)
+        {
+            //in case it din't load earlier
+            updateEnergyWiseArea();
+        }
     }
 }

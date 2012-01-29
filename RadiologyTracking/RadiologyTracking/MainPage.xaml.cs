@@ -5,6 +5,7 @@
     using System.Windows.Navigation;
     using RadiologyTracking.LoginUI;
     using System;
+    using MenuControl;
 
     /// <summary>
     /// <see cref="UserControl"/> class providing the main UI for the application.
@@ -24,21 +25,21 @@
         /// </summary>
         private void ContentFrame_Navigated(object sender, NavigationEventArgs e)
         {
-            foreach (UIElement child in LinksStackPanel.Children)
-            {
-                HyperlinkButton hb = child as HyperlinkButton;
-                if (hb != null && hb.NavigateUri != null)
-                {
-                    if (hb.NavigateUri.ToString().Equals(e.Uri.ToString()))
-                    {
-                        VisualStateManager.GoToState(hb, "ActiveLink", true);
-                    }
-                    else
-                    {
-                        VisualStateManager.GoToState(hb, "InactiveLink", true);
-                    }
-                }
-            }
+            //foreach (UIElement child in LinksStackPanel.Children)
+            //{
+            //    HyperlinkButton hb = child as HyperlinkButton;
+            //    if (hb != null && hb.NavigateUri != null)
+            //    {
+            //        if (hb.NavigateUri.ToString().Equals(e.Uri.ToString()))
+            //        {
+            //            VisualStateManager.GoToState(hb, "ActiveLink", true);
+            //        }
+            //        else
+            //        {
+            //            VisualStateManager.GoToState(hb, "InactiveLink", true);
+            //        }
+            //    }
+            //}
         }
 
         /// <summary>
@@ -80,6 +81,12 @@
                         };
                 loginRegistrationWindow.Show();
             }
+        }
+
+
+        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            this.ContentFrame.Navigate(new Uri((sender as MenuItem).NavigationURI, UriKind.Relative));
         }
     }
 }

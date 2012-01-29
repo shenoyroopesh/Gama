@@ -19,7 +19,7 @@
         <ex:ComboBoxDataSource x:Key="CoveragesSource" DomainContext="{StaticResource RadiologyContext}" 
                                OperationName="GetCoveragesQuery" />
         <ex:ComboBoxDataSource x:Key="FilmSizesSource" DomainContext="{StaticResource RadiologyContext}"
-                               OperationName="GetFilmSizesQuery" />
+                               OperationName="GetFilmSizesQuery" LoadCompleted="FilmSizeArea_LoadCompleted" />
         <ex:ComboBoxDataSource x:Key="EnergySource" DomainContext="{StaticResource RadiologyContext}" 
                                OperationName="GetEnergiesQuery"/>
         <ex:ComboBoxDataSource x:Key="RemarksSource" DomainContext="{StaticResource RadiologyContext}"

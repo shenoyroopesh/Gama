@@ -22,12 +22,12 @@
     <!-- ******MAIN PAGE STYLES****** -->
     <!-- **************************** -->
     <!-- Primary Color Brushes -->
-    <SolidColorBrush x:Key="NavigationBackgroundColorBrush" Color="#FF484848"/>
+    <SolidColorBrush x:Key="NavigationBackgroundColorBrush" Color="#000000"/>
     <SolidColorBrush x:Key="NavigationForegroundColorBrush" Color="#FFFFFFFF"/>
     <SolidColorBrush x:Key="HighLightColorBrush" Color="#FF0097FC"/>
     <SolidColorBrush x:Key="HoverHyperlinkForegroundColorBrush" Color="#FFEBF7FF"/>
     <SolidColorBrush x:Key="HoverHyperLinkBackgroundColorBrush" Color="#FF747474"/>
-    <SolidColorBrush x:Key="BodyTextColorBrush" Color="#FF313131"/>
+    <SolidColorBrush x:Key="BodyTextColorBrush" Color="#FFFFFFFF"/>
 
     <!-- LayoutRoot Grid Style -->
     <Style x:Key="LayoutRootGridStyle" TargetType="Grid">
@@ -46,7 +46,7 @@
         </Setter>
         <Setter Property="BorderBrush" Value="#FFFFFFFF"/>
         <Setter Property="BorderThickness" Value="0,1,0,0"/>
-        <Setter Property="Margin" Value="0,62,0,0"/>
+        <Setter Property="Margin" Value="0,30,0,0"/>
         <Setter Property="VerticalAlignment" Value="Stretch"/>
         <Setter Property="HorizontalAlignment" Value="Stretch"/>
     </Style>
@@ -65,7 +65,7 @@
     <!-- Navigation Grid Style -->
     <Style x:Key="NavigationGridStyle" TargetType="Grid">
         <Setter Property="Background" Value="{StaticResource NavigationBackgroundColorBrush}"/>
-        <Setter Property="Height" Value="60"/>
+        <Setter Property="Height" Value="30"/>
         <Setter Property="Margin" Value="0"/>
         <Setter Property="VerticalAlignment" Value="Top"/>
     </Style>
@@ -353,7 +353,7 @@
     <!-- Login Status Style -->
     <Style x:Key="LoginStatusStyle" TargetType="StackPanel">
         <Setter Property="Orientation" Value="Horizontal"/>
-        <Setter Property="HorizontalAlignment" Value="Right"/>
+        <!--<Setter Property="HorizontalAlignment" Value="Right"/>-->
         <Setter Property="Margin" Value="0,0,30,0"/>
     </Style>
 

@@ -19,7 +19,7 @@
                 <sdk:DataGridTextColumn Header="From Value" Binding="{Binding Path=FromValue}" IsReadOnly="True"/>
                 <sdk:DataGridTextColumn Header="To Value" Binding="{Binding Path=ToValue}" IsReadOnly="True"/>
                 <sdk:DataGridTextColumn Header="By Whom" Binding="{Binding Path=ByWhom}" IsReadOnly="True"/>
-                <sdk:DataGridTextColumn Header="Why" Binding="{Binding Path=Why}"/>
+                <sdk:DataGridTextColumn Header="Why" Binding="{Binding Path=Why}" Width="275"/>
             </custom:CustomGrid.Columns>
         </custom:CustomGrid>
         <Button x:Name="CancelButton" Content="Cancel" Click="CancelButton_Click" Width="75" Height="23" HorizontalAlignment="Right" Margin="0,12,0,0" Grid.Row="1" />

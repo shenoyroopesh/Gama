@@ -4,6 +4,7 @@
     <AssemblyPart x:Name="BindableDataGrid" Source="BindableDataGrid.dll" />
     <AssemblyPart x:Name="ComboBoxExtensions" Source="ComboBoxExtensions.dll" />
     <AssemblyPart x:Name="CustomControls" Source="CustomControls.dll" />
+    <AssemblyPart x:Name="MenuControl" Source="MenuControl.dll" />
     <AssemblyPart x:Name="System.ComponentModel.DataAnnotations" Source="System.ComponentModel.DataAnnotations.dll" />
     <AssemblyPart x:Name="System.Data.Services.Client" Source="System.Data.Services.Client.dll" />
     <AssemblyPart x:Name="System.ServiceModel.DomainServices.Client" Source="System.ServiceModel.DomainServices.Client.dll" />

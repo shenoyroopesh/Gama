@@ -1,0 +1,12 @@
+C:\Users\Mher.Sarkissian\Desktop\silverlight\MenuControl\MenuControl\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\Mher.Sarkissian\Desktop\silverlight\MenuControl\MenuControl\Bin\Debug\MenuControl.dll
+C:\Users\Mher.Sarkissian\Desktop\silverlight\MenuControl\MenuControl\Bin\Debug\MenuControl.pdb
+C:\Users\Mher.Sarkissian\Desktop\silverlight\MenuControl\MenuControl\obj\Debug\MenuControl.g.resources
+C:\Users\Mher.Sarkissian\Desktop\silverlight\MenuControl\MenuControl\obj\Debug\MenuControl.dll
+C:\Users\Mher.Sarkissian\Desktop\silverlight\MenuControl\MenuControl\obj\Debug\MenuControl.pdb
+D:\DotNet\Gama\RadiologyTracking\MenuControl\Bin\Debug\MenuControl.dll
+D:\DotNet\Gama\RadiologyTracking\MenuControl\Bin\Debug\MenuControl.pdb
+D:\DotNet\Gama\RadiologyTracking\MenuControl\obj\Debug\ResolveAssemblyReference.cache
+D:\DotNet\Gama\RadiologyTracking\MenuControl\obj\Debug\MenuControl.g.resources
+D:\DotNet\Gama\RadiologyTracking\MenuControl\obj\Debug\MenuControl.dll
+D:\DotNet\Gama\RadiologyTracking\MenuControl\obj\Debug\MenuControl.pdb
