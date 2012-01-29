@@ -68,11 +68,15 @@
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.ServiceModel.Web" />
     <Reference Include="System.Web.ApplicationServices" />
-    <Reference Include="System.ServiceModel.DomainServices.Server" />
+    <Reference Include="System.ServiceModel.DomainServices.Server">
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Web.Extensions">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
-    <Reference Include="System.ServiceModel.DomainServices.Hosting" />
+    <Reference Include="System.ServiceModel.DomainServices.Hosting">
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Xml.Linq">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
