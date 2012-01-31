@@ -1,0 +1,234 @@
+﻿<views:BaseCRUDView x:Class="RadiographyTracking.Views.FinalRadioGraphyReport" 
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignHeight="550" d:DesignWidth="640" 
+    xmlns:riaControls="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.DomainServices" 
+    xmlns:my="clr-namespace:RadiographyTracking.Web.Models" xmlns:my1="clr-namespace:RadiographyTracking.Web.Services" 
+    xmlns:sdk="http://schemas.microsoft.com/winfx/2006/xaml/presentation/sdk"
+    xmlns:custom="clr-namespace:Vagsons.Controls;assembly=CustomControls"
+    xmlns:local="clr-namespace:RadiographyTracking.Controls"
+    xmlns:ex="clr-namespace:ComboBoxExtensions;assembly=ComboBoxExtensions"
+    xmlns:views="clr-namespace:RadiographyTracking.Views"
+    xmlns:dtGrid="clr-namespace:BindableDataGrid;assembly=BindableDataGrid">
+
+    <UserControl.Resources>
+        <my1:RadiographyContext x:Key="RadiographyContext" />
+        <ex:ComboBoxDataSource x:Key="CoveragesSource" DomainContext="{StaticResource RadiographyContext}" 
+                               OperationName="GetCoveragesQuery"/>
+        <ex:ComboBoxDataSource x:Key="FilmSizesSource" DomainContext="{StaticResource RadiographyContext}"
+                               OperationName="GetFilmSizesQuery" LoadCompleted="FilmSizeArea_LoadCompleted" />
+        <ex:ComboBoxDataSource x:Key="EnergySource" DomainContext="{StaticResource RadiographyContext}" 
+                               OperationName="GetEnergiesQuery"/>
+        <ex:ComboBoxDataSource x:Key="RemarksSource" DomainContext="{StaticResource RadiographyContext}"
+                               OperationName="GetRemarksQuery" />
+        <ex:ComboBoxDataSource x:Key="TechniciansSource" DomainContext="{StaticResource RadiographyContext}" 
+                               OperationName="GetTechniciansQuery"/>
+        <ex:ComboBoxDataSource x:Key="WeldersSource" DomainContext="{StaticResource RadiographyContext}"
+                               OperationName="GetWeldersQuery" />
+        <ex:ComboBoxDataSource x:Key="ShiftsSource" DomainContext="{StaticResource RadiographyContext}"
+                               OperationName="GetShiftsQuery" />
+    </UserControl.Resources>
+    <Grid x:Name="LayoutRoot">
+        <riaControls:DomainDataSource Name="ReportSource" AutoLoad="False" DomainContext="{StaticResource RadiographyContext}" 
+                                      QueryName="GetFinalRTReportQuery">
+            <riaControls:DomainDataSource.QueryParameters>
+                <riaControls:Parameter ParameterName="rtNo" Value="{Binding ElementName=txtRTNo, Path=Text}" />
+            </riaControls:DomainDataSource.QueryParameters>
+        </riaControls:DomainDataSource>
+        <riaControls:DomainDataSource Name="FixedPatternsSource" AutoLoad="False" DomainContext="{StaticResource RadiographyContext}"
+                                      QueryName="GetFixedPatternsQuery" LoadedData="FixedPatternsSource_LoadedData">
+            <riaControls:DomainDataSource.FilterDescriptors>
+                <riaControls:FilterDescriptor PropertyPath="ID" Operator="IsEqualTo" Value="{Binding ElementName=lblFixedPatternID, Path=Text}" />
+            </riaControls:DomainDataSource.FilterDescriptors>
+            <riaControls:DomainDataSource.QueryParameters>
+                <riaControls:Parameter ParameterName="filter" Value="" />
+            </riaControls:DomainDataSource.QueryParameters>
+        </riaControls:DomainDataSource>
+        <riaControls:DomainDataSource Name="CustomersSource" AutoLoad="True" DomainContext="{StaticResource RadiographyContext}"
+                                      QueryName="GetCustomersQuery">
+        </riaControls:DomainDataSource>
+        <riaControls:DomainDataSource Name="RGStatusesSource" AutoLoad="True" DomainContext="{StaticResource RadiographyContext}"
+                                      QueryName="GetRGStatusesQuery">
+        </riaControls:DomainDataSource>
+        <riaControls:DomainDataSource Name="RGRowTypesSource" AutoLoad="True" DomainContext="{StaticResource RadiographyContext}"
+                                      QueryName="GetRGRowTypesQuery">
+        </riaControls:DomainDataSource>
+
+        <sdk:Label Name="headerLabel" Style="{StaticResource PageHeaderStyle}" Content="RT STATUS REPORT"/>
+        <ScrollViewer Margin="0, 50,0,0 ">
+            <local:BusyIndicator x:Name="busyIndicator" IsBusy="{Binding IsBusy, ElementName=ReportSource}">
+                <StackPanel Margin="50, 0, 50,0" HorizontalAlignment="Center">
+                    <StackPanel Orientation="Horizontal" Margin="10" Visibility="Collapsed">
+                        <StackPanel.Resources>
+                            <Style TargetType="TextBlock" >
+                                <Setter Property="FontWeight" Value="Bold" />
+                                <Setter Property="VerticalAlignment" Value="Center" />
+                            </Style>
+                        </StackPanel.Resources>
+                        <!-- Note that the below controls' isEnabled is bound to negative of whether RGReportsSource has changes, meaning
+                             it will be disabled when there are pending changes-->
+                        <TextBox Name="txtRTNo" MinWidth="50" Margin="10, 0, 10, 0" 
+                         IsEnabled="{Binding ElementName=RGReportsSource, Path=HasChanges, 
+                                    Converter={StaticResource NotOperatorValueConverter}}"/>
+                    </StackPanel>
+
+                    <Grid Margin="10" Width="Auto" HorizontalAlignment="Stretch">
+                        <Grid.Resources>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="VerticalAlignment" Value="Center" />
+                            </Style>
+                        </Grid.Resources>
+                        <Grid.RowDefinitions>
+                            <RowDefinition></RowDefinition>
+                            <RowDefinition></RowDefinition>
+                            <RowDefinition></RowDefinition>
+                            <RowDefinition Height="20"></RowDefinition>
+                            <RowDefinition></RowDefinition>
+                            <RowDefinition></RowDefinition>
+                            <RowDefinition></RowDefinition>
+                            <RowDefinition></RowDefinition>
+                            <RowDefinition></RowDefinition>
+                            <RowDefinition></RowDefinition>
+                            <RowDefinition></RowDefinition>
+                            <RowDefinition></RowDefinition>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition></ColumnDefinition>
+                            <ColumnDefinition Width="20"></ColumnDefinition>
+                            <ColumnDefinition></ColumnDefinition>
+                            <ColumnDefinition Width="50"></ColumnDefinition>
+                            <ColumnDefinition></ColumnDefinition>
+                            <ColumnDefinition Width="20"></ColumnDefinition>
+                            <ColumnDefinition></ColumnDefinition>
+                            <ColumnDefinition></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="FP No"  Grid.Column="0" Grid.Row="0" />
+                        <TextBlock Name="lblFPNo" Grid.Column="2" Grid.Row="0" />
+                        <TextBlock Text="Customer" Grid.Column="0" Grid.Row="1" />
+                        <TextBlock Name="lblCustomer" Grid.Column="2" Grid.Row="1" />
+                        <TextBlock Text="Coverage"  Grid.Column="0" Grid.Row="2" />
+                        <TextBlock Name="lblCoverage" Grid.Column="2" Grid.Row="2" />
+                        <TextBlock Text="Description"   Grid.Column="4" Grid.Row="0" />
+                        <TextBlock Name="lblDescription" Grid.Column="6" Grid.Row="0" />
+                        <TextBlock Text="Lead Screen (Front/Black)" TextWrapping="Wrap"   Grid.Column="4" Grid.Row="1" />
+                        <TextBlock Name="txtLeadScreen" Grid.Column="6" Grid.Row="1"  />
+                        <TextBlock Text="Source/S.Size"  Grid.Column="4" Grid.Row="2" />
+                        <TextBlock Name="txtSourceSize" Grid.Column="6" Grid.Row="2"  />
+                        <TextBlock Name="lblRGReportID" Visibility="Collapsed"/>
+                        <TextBlock Name="lblFixedPatternID" Visibility="Collapsed"/>
+
+                        <TextBlock Text="RT No"  Grid.Column="0" Grid.Row="5" />
+                        <TextBlock Name="lblRTNo"  Grid.Column="2" Grid.Row="5" />
+                        <TextBlock Text="Report No"   Grid.Column="0" Grid.Row="6" />
+                        <TextBlock Name="txtReportNo" Grid.Column="2" Grid.Row="6" />
+                        <TextBlock Text="Heat No" TextWrapping="Wrap"   Grid.Column="0" Grid.Row="7" />
+                        <TextBlock Name="txtHeatNo" Grid.Column="2" Grid.Row="7" />
+                        <TextBlock Text="Procedure Ref" TextWrapping="Wrap"   Grid.Column="0" Grid.Row="8" />
+                        <TextBlock Name="txtProcedureRef" Grid.Column="2" Grid.Row="8"  />
+                        <TextBlock Text="Specifications" TextWrapping="Wrap"   Grid.Column="0" Grid.Row="9" />
+                        <TextBlock Name="txtSpecifications" Grid.Column="2" Grid.Row="9" />
+                        <TextBlock Text="Report Date" TextWrapping="Wrap"   Grid.Column="0" Grid.Row="10" />
+                        <TextBlock Name="ReportDatePicker" Grid.Column="2" Grid.Row="10"  />
+
+                        <TextBlock Text="Film"  Grid.Column="4" Grid.Row="5" />
+                        <TextBlock Name="txtFilm"  Grid.Column="6" Grid.Row="5" />
+                        <TextBlock Text="Date Of Test"   Grid.Column="4" Grid.Row="6" />
+                        <TextBlock Name="TestDatePicker" Grid.Column="6" Grid.Row="6"  />
+                        <StackPanel Orientation="Horizontal" Grid.Column="7" Grid.Row="6">
+                            <TextBlock Text="Shift:" />
+                            <TextBlock Name="cmbShift" Margin="10,0,0,0" />
+                        </StackPanel>
+                        <TextBlock Text="Evaluation As Per" Grid.Column="4" Grid.Row="7" />
+                        <TextBlock Name="txtEvaluation" Grid.Column="6" Grid.Row="7" />
+                        <TextBlock Text="Acceptance As Per" TextWrapping="Wrap"   Grid.Column="4" Grid.Row="8" />
+                        <TextBlock Name="txtAcceptance" Grid.Column="6" Grid.Row="8"  />
+                        <TextBlock Text="Drawing No" TextWrapping="Wrap"   Grid.Column="4" Grid.Row="9" />
+                        <TextBlock Name="txtDrawingNo" Grid.Column="6" Grid.Row="9"  />
+                        <CheckBox Name="chkOnlyRepairs" Grid.Column="4" Grid.Row="10" Grid.ColumnSpan="3" Content="Show Only Repairs/Retakes" 
+                                  Checked="chkOnlyRepairs_Checked" Unchecked="chkOnlyRepairs_Checked" />
+                        <CheckBox Name="PrintCustomerName" Grid.Column="4" Grid.Row="11" Grid.ColumnSpan="3" Content="Show Customer Name on Print" />
+                    </Grid>
+
+
+                    <StackPanel>
+                        <custom:CustomGrid Name="ReportDataGrid" Style="{StaticResource DataGridStyle}" 
+                                   ColumnHeaderStyle="{StaticResource DataGridHeaderGlassEffect}"
+                                   CellStyle="{StaticResource Stretch}" CanUserSortColumns="True" 
+                                   MinHeight="100" IsReadOnly="True">
+                            <custom:CustomGrid.Resources>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="TextAlignment" Value="Center" />
+                                </Style>
+                                <Style TargetType="TextBox" >
+                                    <Setter Property="TextAlignment" Value="Center" />
+                                </Style>
+                            </custom:CustomGrid.Resources>
+                            <custom:CustomGrid.Columns>
+                                <sdk:DataGridTextColumn Header="SlNo" Binding="{Binding Path=SlNo, Mode=TwoWay}"></sdk:DataGridTextColumn>
+                                <sdk:DataGridTextColumn Header="Location" Binding="{Binding Path=Location, Mode=TwoWay}"></sdk:DataGridTextColumn>
+                                <sdk:DataGridTextColumn Header="Segment" Binding="{Binding Path=Segment, Mode=TwoWay}"></sdk:DataGridTextColumn>
+                                <sdk:DataGridTextColumn Header="Thickness" Binding="{Binding Path=Thickness, Mode=TwoWay}"></sdk:DataGridTextColumn>
+                                <sdk:DataGridTemplateColumn Header="Energy">
+                                    <sdk:DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Path=Energy.Name, Mode=OneWay}" VerticalAlignment="Center" />
+                                        </DataTemplate>
+                                    </sdk:DataGridTemplateColumn.CellTemplate>
+                                </sdk:DataGridTemplateColumn>
+                                <sdk:DataGridTextColumn Header="SFD" Binding="{Binding Path=SFD, Mode=TwoWay}"></sdk:DataGridTextColumn>
+                                <sdk:DataGridTextColumn Header="Designation" Binding="{Binding Path=Designation, Mode=TwoWay}"></sdk:DataGridTextColumn>
+                                <sdk:DataGridTextColumn Header="Sensitivity" Binding="{Binding Path=Sensitivity, Mode=TwoWay}"></sdk:DataGridTextColumn>
+                                <sdk:DataGridTextColumn Header="Density" Binding="{Binding Path=Density, Mode=TwoWay}"></sdk:DataGridTextColumn>
+                                <sdk:DataGridTemplateColumn Header="Film Size">
+                                    <sdk:DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Path=FilmSizeString, Mode=TwoWay}" VerticalAlignment="Center" />
+                                        </DataTemplate>
+                                    </sdk:DataGridTemplateColumn.CellTemplate>
+                                </sdk:DataGridTemplateColumn>
+                                <sdk:DataGridTextColumn Header="Observation" Binding="{Binding Path=Observations, Mode=TwoWay}"></sdk:DataGridTextColumn>
+                                <sdk:DataGridTemplateColumn Header="Remark">
+                                    <sdk:DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Path=RemarkText, Mode=TwoWay}" VerticalAlignment="Center" />
+                                        </DataTemplate>
+                                    </sdk:DataGridTemplateColumn.CellTemplate>
+                                </sdk:DataGridTemplateColumn>
+                                <sdk:DataGridTemplateColumn Header="Technician">
+                                    <sdk:DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Path=TechnicianText, Mode=TwoWay}" VerticalAlignment="Center" />
+                                        </DataTemplate>
+                                    </sdk:DataGridTemplateColumn.CellTemplate>
+                                </sdk:DataGridTemplateColumn>
+                                <sdk:DataGridTemplateColumn Header="Welder">
+                                    <sdk:DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Path=WelderText, Mode=TwoWay}" VerticalAlignment="Center" />
+                                        </DataTemplate>
+                                    </sdk:DataGridTemplateColumn.CellTemplate>
+                                </sdk:DataGridTemplateColumn>
+                            </custom:CustomGrid.Columns>
+                        </custom:CustomGrid>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="20, 20, 0, 0">
+                        <TextBlock Text="Status:" />
+                        <TextBlock Name="lblStatus" FontWeight="Bold" />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="20, 0, 0, 0">
+                        <TextBlock Text="Total Area of Submitted Films:" />
+                        <TextBlock Name="lblTotalArea" FontWeight="Bold" />
+                    </StackPanel>
+                    <dtGrid:BindableDataGrid Name="energyAreas" HeadersVisibility="None" HorizontalAlignment="Left" Margin="20,10,0,0" />
+                    <StackPanel Orientation="Horizontal" Height="23" Margin="0,20,0,0" HorizontalAlignment="Center" Name="ButtonsPanel">
+                        <Button Name="btnPrint" Background="Transparent" Style="{StaticResource PrintButtonStyle}" Click="btnPrint_Click" />
+                        <Button Name="btnCancel" Margin="20,0,0,0" Style="{StaticResource CancelButtonStyle}" Click="btnCancel_Click" />
+                    </StackPanel>
+                </StackPanel>
+            </local:BusyIndicator>
+        </ScrollViewer>
+    </Grid>
+</views:BaseCRUDView>

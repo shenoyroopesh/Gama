@@ -1,0 +1,51 @@
+﻿<views:BaseCRUDView x:Class="RadiographyTracking.Views.FilmConsumptionReport"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignHeight="480" d:DesignWidth="640" 
+    xmlns:riaControls="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.DomainServices" 
+    xmlns:my="clr-namespace:RadiographyTracking.Web.Models" xmlns:my1="clr-namespace:RadiographyTracking.Web.Services" 
+    xmlns:sdk="http://schemas.microsoft.com/winfx/2006/xaml/presentation/sdk"
+    xmlns:custom="clr-namespace:Vagsons.Controls;assembly=CustomControls"
+    xmlns:local="clr-namespace:RadiographyTracking.Controls"
+    xmlns:ex="clr-namespace:ComboBoxExtensions;assembly=ComboBoxExtensions"
+    xmlns:views="clr-namespace:RadiographyTracking.Views"
+    xmlns:dtGrid="clr-namespace:BindableDataGrid;assembly=BindableDataGrid">
+    <UserControl.Resources>
+        <my1:RadiographyContext x:Key="RadiographyContext" />
+        <ex:ComboBoxDataSource x:Key="FoundryDataSource" DomainContext="{StaticResource RadiographyContext}" 
+                               OperationName="GetFoundriesQuery" />
+    </UserControl.Resources>
+    <Grid>
+        <sdk:Label Name="headerLabel" Style="{StaticResource PageHeaderStyle}" Content="FILM CONSUMPTION REPORT"/>
+        <ScrollViewer Margin="20, 50, 20, 20" >
+            <StackPanel Margin="0,10,0,0" Name="panel" HorizontalAlignment="Center">
+                <StackPanel Orientation="Horizontal" Margin="20, 0,0,0">
+                    <TextBlock Name="txtFilmStock" Text="Choose Foundry:" VerticalAlignment="Center" />
+                    <ComboBox Name="cmbFoundry" Style="{StaticResource ComboBoxStyle}" MinWidth="75" 
+                              ItemsSource="{Binding Source={StaticResource FoundryDataSource}, Path=Data}" 
+                              ItemContainerStyle="{StaticResource ComboBoxItemStyle}"
+                              SelectionChanged="SelectionChanged" DisplayMemberPath="FoundryName"/>
+                    <sdk:Label Content="From:" Margin="3" VerticalAlignment="Center" />
+                    <sdk:DatePicker Name="fromDatePicker" IsEnabled="{Binding ElementName=filmTransactionsDomainDataSource, Path=CanLoad}" 
+                                    SelectedDateChanged="SelectionChanged"/>
+                    <sdk:Label Content="To:" Margin="3" VerticalAlignment="Center" />
+                    <sdk:DatePicker Name="toDatePicker" IsEnabled="{Binding ElementName=filmTransactionsDomainDataSource, Path=CanLoad}"
+                                    SelectedDateChanged="SelectionChanged"/>
+                </StackPanel>
+                <Button Name="btnFetch" Content="Generate" Click="btnFetch_Click" HorizontalAlignment="Center" 
+                        Margin="0,10,0,0" IsEnabled="False"/>
+                <local:BusyIndicator x:Name="busyIndicator">
+                    <dtGrid:BindableDataGrid Name="reportGrid" CanUserSortColumns="False" CanUserReorderColumns="False" Margin="20"
+                                             IsReadOnly="True" CellStyle="{StaticResource AlignCenter}" 
+                                             HeadersVisibility="None"
+                                             MinWidth="400" MinHeight="250" MaxHeight="300" AutoGenerateColumns="False">
+                    </dtGrid:BindableDataGrid>
+                </local:BusyIndicator>
+                <Button Name="btnExport" Content="Export To Excel" HorizontalAlignment="Center" Click="btnExport_Click"/>
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</views:BaseCRUDView>
