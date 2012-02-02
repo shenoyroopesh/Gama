@@ -926,6 +926,12 @@ namespace RadiographyTracking.Web.Services
             return this.DbContext.RGReportRows;
         }
 
+        public IQueryable<RGReportRow> GetRGReportRowsByReportNo(string ReportNo)
+        {
+            return this.DbContext.RGReportRows.Where(p => p.RGReport.ReportNo == ReportNo);
+        }
+
+
         public IQueryable<RGReportRow> GetRGReportRowsByFPNo(string fpNo)
         {
             return this.DbContext.RGReportRows.Where(p => p.RGReport.FixedPattern.FPNo == fpNo);

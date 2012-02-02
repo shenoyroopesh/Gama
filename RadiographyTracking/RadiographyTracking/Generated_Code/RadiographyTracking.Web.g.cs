@@ -6769,6 +6769,8 @@ namespace RadiographyTracking.Web.Models
         
         private string _drawingNo;
         
+        private Dictionary<string, int> _energyAreas;
+        
         private string _evaluationAsPer;
         
         private string _film;
@@ -6807,6 +6809,8 @@ namespace RadiographyTracking.Web.Models
         
         private int _statusID;
         
+        private int _totalArea;
+        
         #region Extensibility Method Definitions
 
         /// <summary>
@@ -6822,6 +6826,8 @@ namespace RadiographyTracking.Web.Models
         partial void OnDateOfTestChanged();
         partial void OnDrawingNoChanging(string value);
         partial void OnDrawingNoChanged();
+        partial void OnEnergyAreasChanging(Dictionary<string, int> value);
+        partial void OnEnergyAreasChanged();
         partial void OnEvaluationAsPerChanging(string value);
         partial void OnEvaluationAsPerChanged();
         partial void OnFilmChanging(string value);
@@ -6852,6 +6858,8 @@ namespace RadiographyTracking.Web.Models
         partial void OnSpecificationsChanged();
         partial void OnStatusIDChanging(int value);
         partial void OnStatusIDChanged();
+        partial void OnTotalAreaChanging(int value);
+        partial void OnTotalAreaChanged();
 
         #endregion
         
@@ -6991,6 +6999,36 @@ namespace RadiographyTracking.Web.Models
                     this._drawingNo = value;
                     this.RaiseDataMemberChanged("DrawingNo");
                     this.OnDrawingNoChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'EnergyAreas' value.
+        /// </summary>
+        // The following attributes were not generated:
+        // 
+        // - The attribute 'System.ComponentModel.DataAnnotations.NotMappedAttribute' is not visible in the client project 'RadiographyTracking'. Are you missing an assembly reference?
+        // [NotMappedAttribute()]
+        // 
+        [DataMember()]
+        [Editable(false)]
+        [ReadOnly(true)]
+        public Dictionary<string, int> EnergyAreas
+        {
+            get
+            {
+                return this._energyAreas;
+            }
+            set
+            {
+                if ((this._energyAreas != value))
+                {
+                    this.OnEnergyAreasChanging(value);
+                    this.ValidateProperty("EnergyAreas", value);
+                    this._energyAreas = value;
+                    this.RaisePropertyChanged("EnergyAreas");
+                    this.OnEnergyAreasChanged();
                 }
             }
         }
@@ -7480,6 +7518,36 @@ namespace RadiographyTracking.Web.Models
                     this._statusID = value;
                     this.RaiseDataMemberChanged("StatusID");
                     this.OnStatusIDChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'TotalArea' value.
+        /// </summary>
+        // The following attributes were not generated:
+        // 
+        // - The attribute 'System.ComponentModel.DataAnnotations.NotMappedAttribute' is not visible in the client project 'RadiographyTracking'. Are you missing an assembly reference?
+        // [NotMappedAttribute()]
+        // 
+        [DataMember()]
+        [Editable(false)]
+        [ReadOnly(true)]
+        public int TotalArea
+        {
+            get
+            {
+                return this._totalArea;
+            }
+            set
+            {
+                if ((this._totalArea != value))
+                {
+                    this.OnTotalAreaChanging(value);
+                    this.ValidateProperty("TotalArea", value);
+                    this._totalArea = value;
+                    this.RaisePropertyChanged("TotalArea");
+                    this.OnTotalAreaChanged();
                 }
             }
         }
@@ -10889,6 +10957,19 @@ namespace RadiographyTracking.Web.Services
         }
         
         /// <summary>
+        /// Gets an EntityQuery instance that can be used to load <see cref="RGReportRow"/> entity instances using the 'GetRGReportRowsByReportNo' query.
+        /// </summary>
+        /// <param name="ReportNo">The value for the 'ReportNo' parameter of the query.</param>
+        /// <returns>An EntityQuery that can be loaded to retrieve <see cref="RGReportRow"/> entity instances.</returns>
+        public EntityQuery<RGReportRow> GetRGReportRowsByReportNoQuery(string ReportNo)
+        {
+            Dictionary<string, object> parameters = new Dictionary<string, object>();
+            parameters.Add("ReportNo", ReportNo);
+            this.ValidateMethod("GetRGReportRowsByReportNoQuery", parameters);
+            return base.CreateQuery<RGReportRow>("GetRGReportRowsByReportNo", parameters, false, true);
+        }
+        
+        /// <summary>
         /// Gets an EntityQuery instance that can be used to load <see cref="RGReport"/> entity instances using the 'GetRGReports' query.
         /// </summary>
         /// <param name="RGReportNo">The value for the 'RGReportNo' parameter of the query.</param>
@@ -11590,6 +11671,26 @@ namespace RadiographyTracking.Web.Services
             /// <param name="result">The IAsyncResult returned from 'BeginGetRGReportRowsByFPNo'.</param>
             /// <returns>The 'QueryResult' returned from the 'GetRGReportRowsByFPNo' operation.</returns>
             QueryResult<RGReportRow> EndGetRGReportRowsByFPNo(IAsyncResult result);
+            
+            /// <summary>
+            /// Asynchronously invokes the 'GetRGReportRowsByReportNo' operation.
+            /// </summary>
+            /// <param name="ReportNo">The value for the 'ReportNo' parameter of this action.</param>
+            /// <param name="callback">Callback to invoke on completion.</param>
+            /// <param name="asyncState">Optional state object.</param>
+            /// <returns>An IAsyncResult that can be used to monitor the request.</returns>
+            [FaultContract(typeof(DomainServiceFault), Action="http://tempuri.org/RadiographyService/GetRGReportRowsByReportNoDomainServiceFault" +
+                "", Name="DomainServiceFault", Namespace="DomainServices")]
+            [OperationContract(AsyncPattern=true, Action="http://tempuri.org/RadiographyService/GetRGReportRowsByReportNo", ReplyAction="http://tempuri.org/RadiographyService/GetRGReportRowsByReportNoResponse")]
+            [WebGet()]
+            IAsyncResult BeginGetRGReportRowsByReportNo(string ReportNo, AsyncCallback callback, object asyncState);
+            
+            /// <summary>
+            /// Completes the asynchronous operation begun by 'BeginGetRGReportRowsByReportNo'.
+            /// </summary>
+            /// <param name="result">The IAsyncResult returned from 'BeginGetRGReportRowsByReportNo'.</param>
+            /// <returns>The 'QueryResult' returned from the 'GetRGReportRowsByReportNo' operation.</returns>
+            QueryResult<RGReportRow> EndGetRGReportRowsByReportNo(IAsyncResult result);
             
             /// <summary>
             /// Asynchronously invokes the 'GetRGReports' operation.

@@ -103,3 +103,6 @@ D:\DotNet\Gama\RadiographyTracking\RadiographyTracking.Web\obj\Debug\GenerateRes
 D:\DotNet\Gama\RadiographyTracking\RadiographyTracking.Web\obj\Debug\GenerateResource.write.1.tlog
 D:\DotNet\Gama\RadiographyTracking\RadiographyTracking.Web\obj\Debug\RadiographyTracking.Web.dll
 D:\DotNet\Gama\RadiographyTracking\RadiographyTracking.Web\obj\Debug\RadiographyTracking.Web.pdb
+D:\DotNet\Gama\RadiographyTracking\RadiographyTracking.Web\bin\WordDocumentGenerator.Library.dll
+D:\DotNet\Gama\RadiographyTracking\RadiographyTracking.Web\bin\WordDocumentGenerator.Library.pdb
+D:\DotNet\Gama\RadiographyTracking\RadiographyTracking.Web\obj\Debug\RadiographyTracking.Web.g.resources

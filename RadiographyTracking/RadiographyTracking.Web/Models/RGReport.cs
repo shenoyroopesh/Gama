@@ -19,9 +19,7 @@ namespace RadiographyTracking.Web.Models
         /// </summary>
         public RGReport()
         {
-
         }
-
 
         /// <summary>
         /// This constructor creates an initial RGReport based on an existing fpTemplate. It does not check whether
@@ -91,13 +89,10 @@ namespace RadiographyTracking.Web.Models
 
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ID { get; set; }
-
         public int FixedPatternID { get; set; }
         public FixedPattern FixedPattern { get; set; }
-
         public int CoverageID { get; set; }
         public Coverage Coverage { get; set; }
-
         public String LeadScreen { get; set; }
         public String SourceSize { get; set; }
         public String RTNo { get; set; }
@@ -108,19 +103,57 @@ namespace RadiographyTracking.Web.Models
         public DateTime ReportDate { get; set; }
         public String Film { get; set; }
         public DateTime DateOfTest { get; set; }
-
         public int? ShiftID { get; set; }
         public Shift Shift { get; set; }
-
         public String EvaluationAsPer { get; set; }
         public String AcceptanceAsPer { get; set; }
         public String DrawingNo { get; set; }
-
         public int StatusID { get; set; }
         public RGStatus Status { get; set; }
 
         [Include]
         public ICollection<RGReportRow> RGReportRows { get; set; }
         public String Result { get; set; }
+
+        /// <summary>
+        /// Calculated field that gets the energy area for this particular report
+        /// </summary>
+        [NotMapped]
+        public Dictionary<String, int> EnergyAreas
+        {
+            get
+            {
+                if (RGReportRows == null)
+                    return null;
+
+                Dictionary<String, int> rows = new Dictionary<string, int>();
+
+                var summary = from r in RGReportRows
+                              group r by r.EnergyText into g
+                              select new
+                              {
+                                  Energy = g.Key,
+                                  Area = g.Select(p => p.FilmSize.Area).Sum()
+                              };
+
+                foreach (var s in summary)
+                {
+                    rows.Add(s.Energy, s.Area);
+                }
+                return rows;
+            }
+        }
+
+        [NotMapped]
+        public int TotalArea
+        {
+            get
+            {
+                if (this.RGReportRows == null)
+                    return 0;
+
+                return this.RGReportRows.Select(p => p.FilmSize.Area).Sum();
+            }
+        }
     }
 }
