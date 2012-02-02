@@ -118,41 +118,9 @@ namespace RadiographyTracking.Views
         private void btnExport_Click(object sender, RoutedEventArgs e)
         {
             //identify cells to be merged
-            String mergeCells = "";
             var row = reportTable.Rows[0];
             var columns = reportTable.Columns;
-            int mergeCounter = 0;
-
-            //merge cells have to be identified in the format row-column-mergecount
-            for (int i = 0; i < columns.Count; i++ )
-            {
-                string colName = columns[i].ColumnName;
-                if (!row.Items.ContainsKey(colName))
-                    continue;
-
-                string cellValue = row[colName].ToString();
-                //till first cell with content
-                if (mergeCells == "" && cellValue == "")
-                    continue;
-
-                //first cell with content
-                else if (mergeCells == "" && cellValue != "")
-                    mergeCells = mergeCells + "0-" + i.ToString() + "-";
-
-                //increment merge count till hit next cell with content
-                else if (mergeCells != "" && cellValue == "")
-                    mergeCounter ++;
-
-                else if (mergeCells != "" && cellValue != "")
-                {
-                    mergeCells = mergeCells + mergeCounter.ToString() + "," + "0-"+ i.ToString() + "-";
-                    //reset merge counter
-                    mergeCounter = 0;
-                }
-            }
-
-            //for last merge cell
-            mergeCells = mergeCells + mergeCounter.ToString();
+            String mergeCells = getMergeCells(row, columns);
             reportGrid.Export("Roopesh", "Gama", mergeCells, 2);
         }
     }

@@ -11,7 +11,7 @@
     xmlns:ex="clr-namespace:ComboBoxExtensions;assembly=ComboBoxExtensions">
 
     <Grid x:Name="LayoutRoot" Background="White">
-        <sdk:Label Name="headerLabel" Style="{StaticResource PageHeaderStyle}" Content="RADIOLOGY REPORTS"/>
+        <sdk:Label Name="headerLabel" Style="{StaticResource PageHeaderStyle}" Content="USERS"/>
         <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,20,0,0">
             <local:BusyIndicator x:Name="busyIndicator">
                 <custom:CustomGrid Name="UsersDataGrid" Style="{StaticResource DataGridStyle}" 

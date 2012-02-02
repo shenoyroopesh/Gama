@@ -13,7 +13,7 @@ using System.Reflection;
 
 public static class DataGridExtensions
 {
-    public const String FILE_FILTER = "CSV Files (*.csv)|*.csv|Excel (*.xlsx)|*.xlsx|All files (*.*)|*.*";
+    public const String FILE_FILTER = "CSV Files (*.csv)|*.csv|XML (*.xml)|*.xml|All files (*.*)|*.*";
 
     /// <summary>
     /// 
@@ -31,7 +31,7 @@ public static class DataGridExtensions
 
     public static void ExportDataGrid(DataGrid dGrid, String author, String companyName, String mergeCells, int boldHeaderRows)
     {
-        SaveFileDialog objSFD = new SaveFileDialog() { DefaultExt = "xlsx", Filter = FILE_FILTER, FilterIndex = 2 };
+        SaveFileDialog objSFD = new SaveFileDialog() { DefaultExt = "xml", Filter = FILE_FILTER, FilterIndex = 2 };
 
         List<List<String>> mergeCellsList = new List<List<string>>();
         if (!String.IsNullOrEmpty(mergeCells))
@@ -180,7 +180,15 @@ public static class DataGridExtensions
             case "XML":
             case "XLSX":
                 if (merge == null)
-                    return String.Format("<Cell ss:StyleID=\"" + style + "\"><Data ss:Type=\"String\">{0}</Data></Cell>", data);
+                {
+                    String type = "String";
+                    decimal number = 0;
+                    //check if data is number
+                    if (decimal.TryParse(data, out number))
+                        type = "Number";
+
+                    return String.Format("<Cell ss:StyleID=\"" + style + "\"><Data ss:Type=\"{1}\">{0}</Data></Cell>", data, type);
+                }
                 else
                     return String.Format("<Cell ss:MergeAcross=\"" + merge +
                         "\" ss:StyleID=\"" + style + "\"><Data ss:Type=\"String\" >{0}</Data></Cell>", data);

@@ -82,6 +82,7 @@ namespace RadiographyTracking.Views
             BindToPage(txtAcceptance, TextBlock.TextProperty, "FinalReport.AcceptanceAsPer");
             BindToPage(txtDrawingNo, TextBlock.TextProperty, "FinalReport.DrawingNo");
             BindToPage(ReportDataGrid, CustomGrid.ItemsSourceProperty, "FinalReportRows");
+            BindToPage(lblTotalArea, TextBlock.TextProperty, "FinalReport.TotalArea");
         }
 
 

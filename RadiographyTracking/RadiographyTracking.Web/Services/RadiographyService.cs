@@ -105,8 +105,7 @@ namespace RadiographyTracking.Web.Services
         }
 
         #endregion
-
-
+        
         #region Customers
         public IQueryable<Customer> GetCustomers()
         {
@@ -202,7 +201,6 @@ namespace RadiographyTracking.Web.Services
         {
             return this.DbContext.Directions;
         }
-
 
         #region Energies
 
@@ -856,23 +854,26 @@ namespace RadiographyTracking.Web.Services
             //get the latest rows for all locations for this rt no
 
             var reportRows = (from r in this.DbContext.RGReportRows
-                             where r.RGReport.RTNo == rtNo
-                             group r by new { r.Location, r.Segment } into g
-                             //latest row for each combination
-                             let latest = g.Where(p => p.Remark != null)
-                                            .OrderByDescending(p => p.RGReport.ReportDate)
-                                            .FirstOrDefault() ??
-                                            //just to handle a case where the remark hasn't been filled yet for this location-segment
-                                          g.OrderByDescending(p => p.RGReport.ReportDate)
-                                            .FirstOrDefault()
-                             select latest).ToList();
+                              where r.RGReport.RTNo == rtNo
+                              group r by new { r.Location, r.Segment } into g
+                              //latest row for each combination
+                              let latest = g.Where(p => p.Remark != null)
+                                             .OrderByDescending(p => p.RGReport.ReportDate)
+                                             .FirstOrDefault() ??
+                                  //just to handle a case where the remark hasn't been filled yet for this location-segment
+                                           g.OrderByDescending(p => p.RGReport.ReportDate)
+                                             .FirstOrDefault()
+                              select latest).Include(p => p.FilmSize).ToList();
 
+            int slno = 1;
             foreach (var r in reportRows)
             {
                 FinalRTReportRow row = new FinalRTReportRow();
-                r.CopyTo(row, string.Empty); 
+                r.CopyTo(row, string.Empty);
                 //set parent id
                 row.FinalRTReportID = finalReport.ID;
+                //sl no should be independent
+                row.SlNo = slno++;
                 finalRows.Add(row);
             }
 
@@ -994,7 +995,6 @@ namespace RadiographyTracking.Web.Services
 
         #endregion
 
-
         #region Shifts
         public IQueryable<Shift> GetShifts()
         {
@@ -1051,6 +1051,9 @@ namespace RadiographyTracking.Web.Services
         /// <returns></returns>
         public IEnumerable<ShiftWisePerformanceRow> GetShiftWisePerformanceReport(DateTime fromDate, DateTime toDate, int technicianId = -1)
         {
+            fromDate = fromDate.Date;
+            toDate = toDate.Date.AddDays(1);
+
             var retake = this.DbContext.Remarks.Single(p => p.Value == "RETAKE");
 
             //fetch from database, grouping can cause include to fail silently

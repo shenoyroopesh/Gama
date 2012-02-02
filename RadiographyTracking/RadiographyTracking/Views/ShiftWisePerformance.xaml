@@ -11,6 +11,7 @@
     xmlns:custom="clr-namespace:Vagsons.Controls;assembly=CustomControls"
     xmlns:local="clr-namespace:RadiographyTracking.Controls"
     xmlns:ex="clr-namespace:ComboBoxExtensions;assembly=ComboBoxExtensions"
+    xmlns:helpers="clr-namespace:RadiographyTracking"
     xmlns:views="clr-namespace:RadiographyTracking.Views"
     xmlns:dtGrid="clr-namespace:BindableDataGrid;assembly=BindableDataGrid">
     <UserControl.Resources>
@@ -22,7 +23,10 @@
         <sdk:Label Name="headerLabel" Style="{StaticResource PageHeaderStyle}" Content="SHIFTWISE PERFORMANCE"/>
         <ScrollViewer Margin="20, 50, 20, 20" >
             <StackPanel Margin="0,10,0,0" Name="panel" HorizontalAlignment="Center">
-                <StackPanel Orientation="Horizontal" Margin="20,0,0,0">
+                <StackPanel.Resources>
+                    <helpers:NotOperatorValueConverter x:Name="NotConverter" />
+                </StackPanel.Resources>
+                <StackPanel Orientation="Horizontal" Margin="20,0,0,0" HorizontalAlignment="Center">
                     <sdk:Label Content="From:" Margin="3" VerticalAlignment="Center" />
                     <sdk:DatePicker Name="fromDatePicker" IsEnabled="{Binding ElementName=filmTransactionsDomainDataSource, Path=CanLoad}" 
                                     SelectedDateChanged="SelectionChanged"/>
@@ -30,12 +34,14 @@
                     <sdk:DatePicker Name="toDatePicker" IsEnabled="{Binding ElementName=filmTransactionsDomainDataSource, Path=CanLoad}"
                                     SelectedDateChanged="SelectionChanged"/>
                 </StackPanel>
-                <StackPanel Orientation="Horizontal" Margin="20, 10,0,0">
-                    <TextBlock Text="Technicians" VerticalAlignment="Center" Margin="10,0,0,0"/>
+                <StackPanel Orientation="Horizontal" Margin="20, 10,0,0" HorizontalAlignment="Center">
+                    <CheckBox Content="All Technicians" Name="cmbAllTechnicians" VerticalAlignment="Center" IsChecked="True" />
+                    <TextBlock Text="Select Technician" VerticalAlignment="Center" Margin="10,0,0,0"/>
                     <ComboBox Name="cmbTechnicians" Style="{StaticResource ComboBoxStyle}" MinWidth="75" 
                               ItemsSource="{Binding Source={StaticResource TechniciansDataSource}, Path=Data}" 
                               ItemContainerStyle="{StaticResource ComboBoxItemStyle}" Margin="10,0,0,0"
-                              SelectionChanged="SelectionChanged" DisplayMemberPath="Name"/>
+                              SelectionChanged="SelectionChanged" DisplayMemberPath="Name"
+                              IsEnabled="{Binding ElementName=cmbAllTechnicians, Path=IsChecked, Converter={StaticResource NotConverter}}"/>
                     <Button Name="btnFetch" Content="Generate" Click="btnFetch_Click" Margin="10,0,0,0" />
                 </StackPanel>
                 <local:BusyIndicator x:Name="busyIndicator">

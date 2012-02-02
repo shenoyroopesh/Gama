@@ -3673,6 +3673,8 @@ namespace RadiographyTracking.Web.Models
         
         private int _statusID;
         
+        private string _totalArea;
+        
         #region Extensibility Method Definitions
 
         /// <summary>
@@ -3718,6 +3720,8 @@ namespace RadiographyTracking.Web.Models
         partial void OnSpecificationsChanged();
         partial void OnStatusIDChanging(int value);
         partial void OnStatusIDChanged();
+        partial void OnTotalAreaChanging(string value);
+        partial void OnTotalAreaChanged();
 
         #endregion
         
@@ -4391,6 +4395,36 @@ namespace RadiographyTracking.Web.Models
                     this._statusID = value;
                     this.RaiseDataMemberChanged("StatusID");
                     this.OnStatusIDChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'TotalArea' value.
+        /// </summary>
+        // The following attributes were not generated:
+        // 
+        // - The attribute 'System.ComponentModel.DataAnnotations.NotMappedAttribute' is not visible in the client project 'RadiographyTracking'. Are you missing an assembly reference?
+        // [NotMappedAttribute()]
+        // 
+        [DataMember()]
+        [Editable(false)]
+        [ReadOnly(true)]
+        public string TotalArea
+        {
+            get
+            {
+                return this._totalArea;
+            }
+            set
+            {
+                if ((this._totalArea != value))
+                {
+                    this.OnTotalAreaChanging(value);
+                    this.ValidateProperty("TotalArea", value);
+                    this._totalArea = value;
+                    this.RaisePropertyChanged("TotalArea");
+                    this.OnTotalAreaChanged();
                 }
             }
         }

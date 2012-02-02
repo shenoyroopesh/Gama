@@ -17,6 +17,7 @@ using RadiographyTracking.Web.Models;
 using RadiographyTracking.Web.Services;
 using System.Reflection;
 using System.Linq;
+using BindableDataGrid.Data;
 
 namespace RadiographyTracking.Views
 {
@@ -385,6 +386,51 @@ namespace RadiographyTracking.Views
             {
                 PropertyChanged(this, new PropertyChangedEventArgs(name));
             }
+        }
+
+
+        /// <summary>
+        /// This is needed to calculate the merge cells parameter to the excel export method
+        /// </summary>
+        /// <param name="row"></param>
+        /// <param name="columns"></param>
+        /// <returns></returns>
+        protected String getMergeCells(DataRow row, DataColumnCollection columns)
+        {
+            int mergeCounter = 0;
+            String mergeCells = "";
+
+            //merge cells have to be identified in the format row-column-mergecount
+            for (int i = 0; i < columns.Count; i++)
+            {
+                string colName = columns[i].ColumnName;
+                if (!row.Items.ContainsKey(colName))
+                    continue;
+
+                string cellValue = row[colName].ToString();
+                //till first cell with content
+                if (mergeCells == "" && cellValue == "")
+                    continue;
+
+                //first cell with content
+                else if (mergeCells == "" && cellValue != "")
+                    mergeCells = mergeCells + "0-" + i.ToString() + "-";
+
+                //increment merge count till hit next cell with content
+                else if (mergeCells != "" && cellValue == "")
+                    mergeCounter++;
+
+                else if (mergeCells != "" && cellValue != "")
+                {
+                    mergeCells = mergeCells + mergeCounter.ToString() + "," + "0-" + i.ToString() + "-";
+                    //reset merge counter
+                    mergeCounter = 0;
+                }
+            }
+
+            //for last merge cell
+            mergeCells = mergeCells + mergeCounter.ToString();
+            return mergeCells;
         }
     }
 }

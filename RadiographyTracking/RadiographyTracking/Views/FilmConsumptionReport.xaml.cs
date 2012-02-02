@@ -162,6 +162,9 @@ namespace RadiographyTracking.Views
 
         private void btnExport_Click(object sender, RoutedEventArgs e)
         {
+            var row = reportTable.Rows[0];
+            var columns = reportTable.Columns;
+            String mergeCells = getMergeCells(row, columns);
             reportGrid.Export("Roopesh", "Gama", "", 0);
         }
 

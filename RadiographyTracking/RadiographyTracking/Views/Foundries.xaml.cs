@@ -27,6 +27,8 @@ namespace RadiographyTracking.Views
             btnAdd.Click += AddOperation;
             btnCancel.Click += CancelOperation;
             btnSave.Click += SaveOperation;
+
+            this.ExcludePropertiesFromTracking.Add("Customers");
         }
 
         [CLSCompliant(false)]
