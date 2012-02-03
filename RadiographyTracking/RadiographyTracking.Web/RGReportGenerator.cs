@@ -11,6 +11,12 @@ namespace RadiographyTracking.Web
     using WordDocumentGenerator.Library;
     using RadiographyTracking.Web.Models;
     using System;
+    using System.Drawing;
+    using System.IO;
+    using DocumentFormat.OpenXml.Packaging;
+    using System.Linq;
+    using DocumentFormat.OpenXml.Drawing;
+    using DocumentFormat.OpenXml;
 
     /// <summary>
     /// Sample refreshable document generator for Test_Template - 2.docx(has table) template
@@ -18,7 +24,7 @@ namespace RadiographyTracking.Web
     [CLSCompliant(false)]
     public class RGReportGenerator : DocumentGenerator
     {
-        #region contentcontroltags        
+        #region contentcontroltags
         protected const string CustomerName = "CustomerName";
         protected const string Description = "Description";
         protected const string Specification = "Specification";
@@ -35,6 +41,7 @@ namespace RadiographyTracking.Web
         protected const string DateOfTest = "DateOfTest";
         protected const string Evaluation = "Evaluation";
         protected const string Acceptance = "Acceptance";
+        protected const string Logo = "Logo";
 
         protected const string RGReportRow = "RGReportRow";
         protected const string SlNo = "SlNo";
@@ -97,6 +104,7 @@ namespace RadiographyTracking.Web
             placeHolderTagToTypeCollection.Add(DateOfTest, PlaceHolderType.NonRecursive);
             placeHolderTagToTypeCollection.Add(Evaluation, PlaceHolderType.NonRecursive);
             placeHolderTagToTypeCollection.Add(Acceptance, PlaceHolderType.NonRecursive);
+            placeHolderTagToTypeCollection.Add(Logo, PlaceHolderType.NonRecursive);
 
             // Handle Rowlevel place holders
             placeHolderTagToTypeCollection.Add(RGReportRow, PlaceHolderType.Recursive);
@@ -130,19 +138,19 @@ namespace RadiographyTracking.Web
         /// </summary>
         /// <param name="placeholderTag">The placeholder tag.</param>
         /// <param name="openXmlElementDataContext">The open XML element data context.</param>
-        protected override void NonRecursivePlaceholderFound(string placeholderTag, OpenXmlElementDataContext openXmlElementDataContext)
+        protected override void NonRecursivePlaceholderFound(string placeholderTag, OpenXmlElementDataContext openXmlElementDataContext, WordprocessingDocument document)
         {
             if (openXmlElementDataContext == null || openXmlElementDataContext.Element == null || openXmlElementDataContext.DataContext == null)
             {
                 return;
-            }                      
+            }
 
             string tagPlaceHolderValue = string.Empty;
             string tagGuidPart = string.Empty;
             GetTagValue(openXmlElementDataContext.Element as SdtElement, out tagPlaceHolderValue, out tagGuidPart);
 
             var row = openXmlElementDataContext.DataContext as RGReport;
-            
+
             string tagValue = string.Empty;
             string content = string.Empty;
 
@@ -193,7 +201,12 @@ namespace RadiographyTracking.Web
                         content = row.TotalArea.ToString();
                         break;
                     case Result:
-                        content = row.Result;
+                        content = row.Status.Status;
+                        break;
+                    case Logo:
+                        //get the company logo
+                        var logo = row.getCompanyLogo();
+                        SetLogo(openXmlElementDataContext.Element as SdtElement, logo, document);
                         break;
                 }
             }
@@ -209,7 +222,7 @@ namespace RadiographyTracking.Web
                             content = reportRow.SlNo.ToString();
                             break;
                         case Location:
-                            content = reportRow.Location;
+                            content = reportRow.LocationAndSegment;
                             break;
                         case Thickness:
                             content = reportRow.Thickness.ToString();
@@ -237,10 +250,10 @@ namespace RadiographyTracking.Web
                             break;
                     }
                 }
-                else if(openXmlElementDataContext.DataContext is KeyValuePair<String, int>)
+                else if (openXmlElementDataContext.DataContext is KeyValuePair<String, int>)
                 {
                     var keyvalue = (KeyValuePair<String, int>)openXmlElementDataContext.DataContext;
-                    switch(tagPlaceHolderValue)
+                    switch (tagPlaceHolderValue)
                     {
                         case Isotope:
                             content = keyvalue.Key;
@@ -252,16 +265,43 @@ namespace RadiographyTracking.Web
                 }
             }
 
-            // Set the content for the content control
-            this.SetContentOfContentControl(openXmlElementDataContext.Element as SdtElement, content);
+            if (tagPlaceHolderValue != Logo)
+            {
+                // Set the content for the content control
+                this.SetContentOfContentControl(openXmlElementDataContext.Element as SdtElement, content);
+            }
         }
+
+        void SetLogo(SdtElement element, byte[] image, WordprocessingDocument document)
+        {
+            var blip = element.Descendants<Blip>().FirstOrDefault();
+
+            string imgId = "LogoPicture";
+
+            var existingImage = document.MainDocumentPart.GetPartById(blip.Embed);
+
+            var imagePart = document.MainDocumentPart.HeaderParts
+                                .Where(p=>p.ImageParts.Count() > 0)
+                                .First()
+                                .AddImagePart(ImagePartType.Png, imgId);
+                
+            using(MemoryStream imageStream = new MemoryStream(image))
+            {
+                imagePart.FeedData(imageStream);
+            }
+            if (blip != null)
+            {
+                blip.Embed = imgId;
+            }
+        }
+
 
         /// <summary>
         /// Recursive placeholder found.
         /// </summary>
         /// <param name="placeholderTag">The placeholder tag.</param>
         /// <param name="openXmlElementDataContext">The open XML element data context.</param>
-        protected override void RecursivePlaceholderFound(string placeholderTag, OpenXmlElementDataContext openXmlElementDataContext)
+        protected override void RecursivePlaceholderFound(string placeholderTag, OpenXmlElementDataContext openXmlElementDataContext, WordprocessingDocument document)
         {
             if (openXmlElementDataContext == null || openXmlElementDataContext.Element == null || openXmlElementDataContext.DataContext == null)
             {
@@ -277,8 +317,7 @@ namespace RadiographyTracking.Web
                 case RGReportRow:
                     foreach (RGReportRow row in ((openXmlElementDataContext.DataContext) as RGReport).RGReportRows)
                     {
-                        SdtElement clonedElement = this.CloneElementAndSetContentInPlaceholders(new OpenXmlElementDataContext() 
-                                                   { Element = openXmlElementDataContext.Element, DataContext = row });
+                        SdtElement clonedElement = this.CloneElementAndSetContentInPlaceholders(new OpenXmlElementDataContext() { Element = openXmlElementDataContext.Element, DataContext = row }, document);
                     }
                     openXmlElementDataContext.Element.Remove();
                     break;
@@ -286,7 +325,7 @@ namespace RadiographyTracking.Web
                 case AreaCollection:
                     foreach (var pair in ((openXmlElementDataContext.DataContext) as RGReport).EnergyAreas)
                     {
-                        SdtElement clonedElement = this.CloneElementAndSetContentInPlaceholders(new OpenXmlElementDataContext() { Element = openXmlElementDataContext.Element, DataContext = pair });
+                        SdtElement clonedElement = this.CloneElementAndSetContentInPlaceholders(new OpenXmlElementDataContext() { Element = openXmlElementDataContext.Element, DataContext = pair }, document);
                     }
                     openXmlElementDataContext.Element.Remove();
                     break;
@@ -295,12 +334,12 @@ namespace RadiographyTracking.Web
 
         #endregion
 
-        protected override void IgnorePlaceholderFound(string placeholderTag, OpenXmlElementDataContext openXmlElementDataContext)
+        protected override void IgnorePlaceholderFound(string placeholderTag, OpenXmlElementDataContext openXmlElementDataContext, WordprocessingDocument document)
         {
             throw new System.NotImplementedException();
         }
 
-        protected override void ContainerPlaceholderFound(string placeholderTag, OpenXmlElementDataContext openXmlElementDataContext)
+        protected override void ContainerPlaceholderFound(string placeholderTag, OpenXmlElementDataContext openXmlElementDataContext, WordprocessingDocument document)
         {
             throw new System.NotImplementedException();
         }

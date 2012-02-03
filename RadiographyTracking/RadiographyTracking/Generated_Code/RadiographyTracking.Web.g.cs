@@ -6803,8 +6803,6 @@ namespace RadiographyTracking.Web.Models
         
         private string _drawingNo;
         
-        private Dictionary<string, int> _energyAreas;
-        
         private string _evaluationAsPer;
         
         private string _film;
@@ -6843,8 +6841,6 @@ namespace RadiographyTracking.Web.Models
         
         private int _statusID;
         
-        private int _totalArea;
-        
         #region Extensibility Method Definitions
 
         /// <summary>
@@ -6860,8 +6856,6 @@ namespace RadiographyTracking.Web.Models
         partial void OnDateOfTestChanged();
         partial void OnDrawingNoChanging(string value);
         partial void OnDrawingNoChanged();
-        partial void OnEnergyAreasChanging(Dictionary<string, int> value);
-        partial void OnEnergyAreasChanged();
         partial void OnEvaluationAsPerChanging(string value);
         partial void OnEvaluationAsPerChanged();
         partial void OnFilmChanging(string value);
@@ -6892,8 +6886,6 @@ namespace RadiographyTracking.Web.Models
         partial void OnSpecificationsChanged();
         partial void OnStatusIDChanging(int value);
         partial void OnStatusIDChanged();
-        partial void OnTotalAreaChanging(int value);
-        partial void OnTotalAreaChanged();
 
         #endregion
         
@@ -7033,36 +7025,6 @@ namespace RadiographyTracking.Web.Models
                     this._drawingNo = value;
                     this.RaiseDataMemberChanged("DrawingNo");
                     this.OnDrawingNoChanged();
-                }
-            }
-        }
-        
-        /// <summary>
-        /// Gets or sets the 'EnergyAreas' value.
-        /// </summary>
-        // The following attributes were not generated:
-        // 
-        // - The attribute 'System.ComponentModel.DataAnnotations.NotMappedAttribute' is not visible in the client project 'RadiographyTracking'. Are you missing an assembly reference?
-        // [NotMappedAttribute()]
-        // 
-        [DataMember()]
-        [Editable(false)]
-        [ReadOnly(true)]
-        public Dictionary<string, int> EnergyAreas
-        {
-            get
-            {
-                return this._energyAreas;
-            }
-            set
-            {
-                if ((this._energyAreas != value))
-                {
-                    this.OnEnergyAreasChanging(value);
-                    this.ValidateProperty("EnergyAreas", value);
-                    this._energyAreas = value;
-                    this.RaisePropertyChanged("EnergyAreas");
-                    this.OnEnergyAreasChanged();
                 }
             }
         }
@@ -7552,36 +7514,6 @@ namespace RadiographyTracking.Web.Models
                     this._statusID = value;
                     this.RaiseDataMemberChanged("StatusID");
                     this.OnStatusIDChanged();
-                }
-            }
-        }
-        
-        /// <summary>
-        /// Gets or sets the 'TotalArea' value.
-        /// </summary>
-        // The following attributes were not generated:
-        // 
-        // - The attribute 'System.ComponentModel.DataAnnotations.NotMappedAttribute' is not visible in the client project 'RadiographyTracking'. Are you missing an assembly reference?
-        // [NotMappedAttribute()]
-        // 
-        [DataMember()]
-        [Editable(false)]
-        [ReadOnly(true)]
-        public int TotalArea
-        {
-            get
-            {
-                return this._totalArea;
-            }
-            set
-            {
-                if ((this._totalArea != value))
-                {
-                    this.OnTotalAreaChanging(value);
-                    this.ValidateProperty("TotalArea", value);
-                    this._totalArea = value;
-                    this.RaisePropertyChanged("TotalArea");
-                    this.OnTotalAreaChanged();
                 }
             }
         }

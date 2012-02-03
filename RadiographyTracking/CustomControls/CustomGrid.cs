@@ -315,7 +315,7 @@ namespace Vagsons.Controls
             else if (!(new List<Key>(){Key.Enter, Key.Escape, Key.F2, Key.Escape, Key.Right, Key.Left, Key.Up, 
                                        Key.Down, Key.Ctrl, Key.Shift, Key.Alt, Key.Unknown, Key.Tab,
                                         Key.Back, Key.Insert, Key.Home, Key.End, Key.PageDown, Key.PageUp,
-                                        Key.Delete}).Contains(e.Key))
+                                        Key.Delete, Key.CapsLock}).Contains(e.Key))
             {
                 //any other key, start editing
                 bool isShifty = ((Keyboard.Modifiers & ModifierKeys.Shift) == ModifierKeys.Shift);

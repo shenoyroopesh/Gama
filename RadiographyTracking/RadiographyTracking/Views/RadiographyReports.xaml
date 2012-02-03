@@ -66,6 +66,14 @@
                                 </DataTemplate>
                             </sdk:DataGridTemplateColumn.CellTemplate>
                         </sdk:DataGridTemplateColumn>
+                        <sdk:DataGridTemplateColumn Header="Print" Width="Auto">
+                            <sdk:DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Button Name="grdPrintButton" Tag="{Binding}" Style="{StaticResource PrintButtonStyle}"
+                                            Click="PrintOperation"/>
+                                </DataTemplate>
+                            </sdk:DataGridTemplateColumn.CellTemplate>
+                        </sdk:DataGridTemplateColumn>
                     </sdk:DataGrid.Columns>
                 </custom:CustomGrid>
             </local:BusyIndicator>

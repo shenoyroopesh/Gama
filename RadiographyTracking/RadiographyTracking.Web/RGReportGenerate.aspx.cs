@@ -8,6 +8,8 @@ using RadiographyTracking.Web.Models;
 using WordDocumentGenerator.Library;
 using System.IO;
 using System.Data.Entity;
+using DocumentFormat.OpenXml.Packaging;
+using DocumentFormat.OpenXml;
 
 namespace RadiographyTracking.Web
 {
@@ -20,7 +22,26 @@ namespace RadiographyTracking.Web
 
             RGReportGenerator sampleDocumentGenerator = new RGReportGenerator(generationInfo);
             byte[] result = result = sampleDocumentGenerator.GenerateDocument();
-            WriteOutputToFile("RadiographyReportTemplate_Out.docx", "RadiographyReportTemplate.docx", result);
+            var filePath = WriteOutputToFile("RadiographyReportTemplate_Out" + DateTime.Now.ToString("SSMIHH") + ".docx", "RadiographyReportTemplate.docx", result);
+
+            using (var wordDocument = WordprocessingDocument.Open(filePath, true))
+            {
+                wordDocument.ChangeDocumentType(WordprocessingDocumentType.Document);
+                var mainDocumentPart = wordDocument.MainDocumentPart;
+                var document = mainDocumentPart.Document;
+                // Clean up: The user will appreciate a clean document!
+                var helper = new OpenXmlHelper(DocumentGenerationInfo.NamespaceUri);
+                helper.RemoveContentControlsAndKeepContents(document);
+                document.Save();
+            }
+
+            //download the file to the user 
+
+            string filename = "ReportNo" + Request.Params["ReportNo"] + ".docx";
+            Response.ContentType = "application/ms-word";
+            Response.AddHeader("content-disposition", "attachment; filename="+filename);
+            Response.TransmitFile(filePath);
+            Response.End();
         }
 
         /// <summary>
@@ -37,6 +58,7 @@ namespace RadiographyTracking.Web
             using (RadiographyContext ctx = new RadiographyContext())
             {
                 return ctx.RGReports.Include(p => p.FixedPattern.Customer)
+                        .Include(p => p.Status)
                         .Include(p => p.RGReportRows.Select(r => r.FilmSize))
                         .Where(p => p.ReportNo == reportNo)
                         .FirstOrDefault();
@@ -69,13 +91,16 @@ namespace RadiographyTracking.Web
         /// <param name="fileName">Name of the file.</param>
         /// <param name="templateName">Name of the template.</param>
         /// <param name="fileContents">The file contents.</param>
-        private void WriteOutputToFile(string fileName, string templateName, byte[] fileContents)
+        private string WriteOutputToFile(string fileName, string templateName, byte[] fileContents)
         {
             ConsoleColor consoleColor = Console.ForegroundColor;
             if (fileContents != null)
             {
-                File.WriteAllBytes(Server.MapPath("~/ReportTemplates/" + fileName), fileContents);
+                String path = Server.MapPath("~/ReportTemplates/" + fileName);
+                File.WriteAllBytes(path, fileContents);
+                return path;
             }
+            return "";
         }
     }
 }

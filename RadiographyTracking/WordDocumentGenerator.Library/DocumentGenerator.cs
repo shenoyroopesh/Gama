@@ -66,7 +66,7 @@ namespace WordDocumentGenerator.Library
         /// <summary>
         /// Instance of Document generation info
         /// </summary>
-        private DocumentGenerationInfo generationInfo;
+        protected DocumentGenerationInfo generationInfo;
 
         /// <summary>
         /// Instance of CustomXml Part Helper
@@ -106,28 +106,28 @@ namespace WordDocumentGenerator.Library
         /// </summary>
         /// <param name="placeholderTag">The placeholder tag.</param>
         /// <param name="openXmlElementDataContext">The open XML element data context.</param>
-        protected abstract void IgnorePlaceholderFound(string placeholderTag, OpenXmlElementDataContext openXmlElementDataContext);
+        protected abstract void IgnorePlaceholderFound(string placeholderTag, OpenXmlElementDataContext openXmlElementDataContext, WordprocessingDocument document);
 
         /// <summary>
         /// Non recursive placeholder found.
         /// </summary>
         /// <param name="placeholderTag">The placeholder tag.</param>
         /// <param name="openXmlElementDataContext">The open XML element data context.</param>
-        protected abstract void NonRecursivePlaceholderFound(string placeholderTag, OpenXmlElementDataContext openXmlElementDataContext);
+        protected abstract void NonRecursivePlaceholderFound(string placeholderTag, OpenXmlElementDataContext openXmlElementDataContext, WordprocessingDocument document);
 
         /// <summary>
         /// Recursive placeholder found.
         /// </summary>
         /// <param name="placeholderTag">The placeholder tag.</param>
         /// <param name="openXmlElementDataContext">The open XML element data context.</param>
-        protected abstract void RecursivePlaceholderFound(string placeholderTag, OpenXmlElementDataContext openXmlElementDataContext);
+        protected abstract void RecursivePlaceholderFound(string placeholderTag, OpenXmlElementDataContext openXmlElementDataContext, WordprocessingDocument document);
 
         /// <summary>
         /// Container placeholder found.
         /// </summary>
         /// <param name="placeholderTag">The placeholder tag.</param>
         /// <param name="openXmlElementDataContext">The open XML element data context.</param>
-        protected abstract void ContainerPlaceholderFound(string placeholderTag, OpenXmlElementDataContext openXmlElementDataContext);
+        protected abstract void ContainerPlaceholderFound(string placeholderTag, OpenXmlElementDataContext openXmlElementDataContext, WordprocessingDocument document);
 
         /// <summary>
         /// Refreshes the charts.
@@ -297,7 +297,7 @@ namespace WordDocumentGenerator.Library
         /// Sets the content in placeholders.
         /// </summary>
         /// <param name="openXmlElementDataContext">The open XML element data context.</param>
-        protected void SetContentInPlaceholders(OpenXmlElementDataContext openXmlElementDataContext)
+        protected void SetContentInPlaceholders(OpenXmlElementDataContext openXmlElementDataContext, WordprocessingDocument document)
         {
             if (IsContentControl(openXmlElementDataContext))
             {
@@ -308,16 +308,16 @@ namespace WordDocumentGenerator.Library
 
                 if (this.generationInfo.PlaceHolderTagToTypeCollection.ContainsKey(templateTagPart))
                 {
-                    this.OnPlaceHolderFound(openXmlElementDataContext);
+                    this.OnPlaceHolderFound(openXmlElementDataContext, document);
                 }
                 else
                 {
-                    this.PopulateOtherOpenXmlElements(openXmlElementDataContext);
+                    this.PopulateOtherOpenXmlElements(openXmlElementDataContext, document);
                 }
             }
             else
             {
-                this.PopulateOtherOpenXmlElements(openXmlElementDataContext);
+                this.PopulateOtherOpenXmlElements(openXmlElementDataContext, document);
             }
         }
 
@@ -326,7 +326,7 @@ namespace WordDocumentGenerator.Library
         /// </summary>
         /// <param name="openXmlElementDataContext">The open XML element data context.</param>
         /// <returns></returns>
-        protected SdtElement CloneElementAndSetContentInPlaceholders(OpenXmlElementDataContext openXmlElementDataContext)
+        protected SdtElement CloneElementAndSetContentInPlaceholders(OpenXmlElementDataContext openXmlElementDataContext, WordprocessingDocument document)
         {
             if (openXmlElementDataContext == null)
             {
@@ -352,7 +352,7 @@ namespace WordDocumentGenerator.Library
 
             foreach (var v in clonedSdtElement.Elements())
             {
-                this.SetContentInPlaceholders(new OpenXmlElementDataContext() { Element = v, DataContext = openXmlElementDataContext.DataContext });
+                this.SetContentInPlaceholders(new OpenXmlElementDataContext() { Element = v, DataContext = openXmlElementDataContext.DataContext }, document);
             }
 
             return clonedSdtElement;
@@ -469,19 +469,19 @@ namespace WordDocumentGenerator.Library
                         SaveDataToDataBoundControlsDataStore(mainDocumentPart);
                     }
 
-                    foreach (HeaderPart part in mainDocumentPart.HeaderParts)
+                    foreach (HeaderPart part in mainDocumentPart.HeaderParts.ToList())
                     {
-                        this.SetContentInPlaceholders(new OpenXmlElementDataContext() { Element = part.Header, DataContext = this.generationInfo.DataContext });
+                        this.SetContentInPlaceholders(new OpenXmlElementDataContext() { Element = part.Header, DataContext = this.generationInfo.DataContext }, wordDocument);
                         part.Header.Save();
                     }
 
                     foreach (FooterPart part in mainDocumentPart.FooterParts)
                     {
-                        this.SetContentInPlaceholders(new OpenXmlElementDataContext() { Element = part.Footer, DataContext = this.generationInfo.DataContext });
+                        this.SetContentInPlaceholders(new OpenXmlElementDataContext() { Element = part.Footer, DataContext = this.generationInfo.DataContext }, wordDocument);
                         part.Footer.Save();
                     }
 
-                    this.SetContentInPlaceholders(new OpenXmlElementDataContext() { Element = document, DataContext = this.generationInfo.DataContext });
+                    this.SetContentInPlaceholders(new OpenXmlElementDataContext() { Element = document, DataContext = this.generationInfo.DataContext }, wordDocument);
 
                     this.openXmlHelper.EnsureUniqueContentControlIdsForMainDocumentPart(mainDocumentPart);
 
@@ -502,7 +502,7 @@ namespace WordDocumentGenerator.Library
         /// Populates the other open XML elements.
         /// </summary>
         /// <param name="openXmlElementDataContext">The open XML element data context.</param>
-        private void PopulateOtherOpenXmlElements(OpenXmlElementDataContext openXmlElementDataContext)
+        private void PopulateOtherOpenXmlElements(OpenXmlElementDataContext openXmlElementDataContext, WordprocessingDocument document)
         {
             if (openXmlElementDataContext.Element is OpenXmlCompositeElement && openXmlElementDataContext.Element.HasChildren)
             {
@@ -512,7 +512,7 @@ namespace WordDocumentGenerator.Library
                 {
                     if (element is OpenXmlCompositeElement)
                     {
-                        this.SetContentInPlaceholders(new OpenXmlElementDataContext() { Element = element, DataContext = openXmlElementDataContext.DataContext });
+                        this.SetContentInPlaceholders(new OpenXmlElementDataContext() { Element = element, DataContext = openXmlElementDataContext.DataContext }, document);
                     }
                 }
             }
@@ -539,7 +539,7 @@ namespace WordDocumentGenerator.Library
         /// Called when [place holder found].
         /// </summary>
         /// <param name="openXmlElementDataContext">The open XML element data context.</param>
-        private void OnPlaceHolderFound(OpenXmlElementDataContext openXmlElementDataContext)
+        private void OnPlaceHolderFound(OpenXmlElementDataContext openXmlElementDataContext, WordprocessingDocument document)
         {
             string templateTagPart = string.Empty;
             string tagGuidPart = string.Empty;
@@ -553,16 +553,16 @@ namespace WordDocumentGenerator.Library
                     case PlaceHolderType.None:
                         break;
                     case PlaceHolderType.NonRecursive:
-                        this.NonRecursivePlaceholderFound(templateTagPart, openXmlElementDataContext);
+                        this.NonRecursivePlaceholderFound(templateTagPart, openXmlElementDataContext, document);
                         break;
                     case PlaceHolderType.Recursive:
-                        this.RecursivePlaceholderFound(templateTagPart, openXmlElementDataContext);
+                        this.RecursivePlaceholderFound(templateTagPart, openXmlElementDataContext, document);
                         break;
                     case PlaceHolderType.Ignore:
-                        this.IgnorePlaceholderFound(templateTagPart, openXmlElementDataContext);
+                        this.IgnorePlaceholderFound(templateTagPart, openXmlElementDataContext, document);
                         break;
                     case PlaceHolderType.Container:
-                        this.ContainerPlaceholderFound(templateTagPart, openXmlElementDataContext);
+                        this.ContainerPlaceholderFound(templateTagPart, openXmlElementDataContext, document);
                         break;
                 }
             }

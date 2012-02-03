@@ -234,5 +234,23 @@ namespace RadiographyTracking.Web.Models
                 }
             }
         }
+
+        [NotMapped]
+        [Exclude]
+        public string LocationAndSegment
+        {
+            get
+            {
+                //very rarely this should happen, but check none-the-less
+                if (string.IsNullOrEmpty(this.Location) || string.IsNullOrEmpty(this.Segment))
+                {
+                    return "";
+                }
+                //if location is LN and segment is 1-2, return LN1-LN2
+                var segments = this.Segment.Split('-');
+                var joined = segments.Select(p => this.Location + p);
+                return String.Join("-", joined);
+            }
+        }
     }
 }

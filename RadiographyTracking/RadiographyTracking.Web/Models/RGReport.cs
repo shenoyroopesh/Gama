@@ -5,6 +5,9 @@ using System.Web;
 using System.ServiceModel.DomainServices.Server;
 using System.ComponentModel.DataAnnotations;
 using RadiographyTracking.Web.Utility;
+using System.Drawing;
+using System.IO;
+using System.Data.Entity;
 
 namespace RadiographyTracking.Web.Models
 {
@@ -119,6 +122,7 @@ namespace RadiographyTracking.Web.Models
         /// Calculated field that gets the energy area for this particular report
         /// </summary>
         [NotMapped]
+        [Exclude]
         public Dictionary<String, int> EnergyAreas
         {
             get
@@ -133,7 +137,7 @@ namespace RadiographyTracking.Web.Models
                               select new
                               {
                                   Energy = g.Key,
-                                  Area = g.Select(p => p.FilmSize.Area).Sum()
+                                  Area = g.Select(p => p.FilmSize == null ? 0 : p.FilmSize.Area).Sum()
                               };
 
                 foreach (var s in summary)
@@ -145,6 +149,7 @@ namespace RadiographyTracking.Web.Models
         }
 
         [NotMapped]
+        [Exclude]
         public int TotalArea
         {
             get
@@ -152,8 +157,21 @@ namespace RadiographyTracking.Web.Models
                 if (this.RGReportRows == null)
                     return 0;
 
-                return this.RGReportRows.Select(p => p.FilmSize.Area).Sum();
+                return this.RGReportRows.Select(p => p.FilmSize == null ? 0 : p.FilmSize.Area).Sum();
             }
+        }
+
+        public byte[] getCompanyLogo()
+        {
+            using (RadiographyContext ctx = new RadiographyContext())
+            {
+                Company company = ctx.Companies.Include(p => p.Logo).First();
+                if (company.Logo != null)
+                {
+                    return company.Logo.FileData;
+                }
+            }
+            return null;
         }
     }
 }

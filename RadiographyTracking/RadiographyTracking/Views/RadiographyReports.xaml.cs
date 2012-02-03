@@ -15,6 +15,7 @@ using System.ServiceModel.DomainServices.Client;
 using System.ComponentModel.DataAnnotations;
 using Vagsons.Controls;
 using System.Windows.Navigation;
+using System.Windows.Browser;
 
 namespace RadiographyTracking.Views
 {
@@ -65,6 +66,15 @@ namespace RadiographyTracking.Views
         {
             App.RGReport = null;
             Navigate("/EnterRadioGraphyReport");
+        }
+
+
+        public void PrintOperation(object sender, RoutedEventArgs e)
+        {
+            DataGridRow row = DataGridRow.GetRowContainingElement(sender as FrameworkElement);
+            RGReport report = (RGReport)row.DataContext;
+            Uri reportURI = new Uri(string.Format("/RGReportGenerate.aspx?ReportNo={0}", report.ReportNo), UriKind.Relative);
+            HtmlPage.Window.Navigate(reportURI, "_blank");
         }
     }
 }
