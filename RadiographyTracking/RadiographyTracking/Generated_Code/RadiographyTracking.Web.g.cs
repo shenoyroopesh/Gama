@@ -3657,6 +3657,8 @@ namespace RadiographyTracking.Web.Models
         
         private string _reportNo;
         
+        private IEnumerable<string> _reportTemplatesList;
+        
         private string _result;
         
         private string _rtNo;
@@ -3708,6 +3710,8 @@ namespace RadiographyTracking.Web.Models
         partial void OnReportDateChanged();
         partial void OnReportNoChanging(string value);
         partial void OnReportNoChanged();
+        partial void OnReportTemplatesListChanging(IEnumerable<string> value);
+        partial void OnReportTemplatesListChanged();
         partial void OnResultChanging(string value);
         partial void OnResultChanged();
         partial void OnRTNoChanging(string value);
@@ -4161,6 +4165,36 @@ namespace RadiographyTracking.Web.Models
                     this._reportNo = value;
                     this.RaiseDataMemberChanged("ReportNo");
                     this.OnReportNoChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'ReportTemplatesList' value.
+        /// </summary>
+        // The following attributes were not generated:
+        // 
+        // - The attribute 'System.ComponentModel.DataAnnotations.NotMappedAttribute' is not visible in the client project 'RadiographyTracking'. Are you missing an assembly reference?
+        // [NotMappedAttribute()]
+        // 
+        [DataMember()]
+        [Editable(false)]
+        [ReadOnly(true)]
+        public IEnumerable<string> ReportTemplatesList
+        {
+            get
+            {
+                return this._reportTemplatesList;
+            }
+            set
+            {
+                if ((this._reportTemplatesList != value))
+                {
+                    this.OnReportTemplatesListChanging(value);
+                    this.ValidateProperty("ReportTemplatesList", value);
+                    this._reportTemplatesList = value;
+                    this.RaisePropertyChanged("ReportTemplatesList");
+                    this.OnReportTemplatesListChanged();
                 }
             }
         }

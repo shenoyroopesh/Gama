@@ -6,6 +6,7 @@ using System.ServiceModel.DomainServices.Server;
 using System.ComponentModel.DataAnnotations;
 using RadiographyTracking.Web.Utility;
 using System.Data.Entity;
+using System.IO;
 
 namespace RadiographyTracking.Web.Models
 {
@@ -80,6 +81,29 @@ namespace RadiographyTracking.Web.Models
         }
 
         /// <summary>
+        /// Will give the list of report templates
+        /// </summary>
+        [NotMapped]
+        public List<String> ReportTemplatesList
+        {
+            get
+            {
+                string absolutepath = HttpContext.Current.Server.MapPath("~/ReportTemplates/");
+
+                if (Directory.Exists(absolutepath))
+                {
+                    DirectoryInfo di = new DirectoryInfo(absolutepath);
+                    return di.GetFiles().Select(p => p.Name).ToList();
+                }
+                else
+                {
+                    return null;
+                }
+            }
+        }
+
+
+        /// <summary>
         /// Calculated field that gets the energy area for this particular report
         /// </summary>
         [NotMapped]
@@ -121,5 +145,22 @@ namespace RadiographyTracking.Web.Models
             }
             return null;
         }
+
+        public byte[] getCustomerLogo()
+        {
+            using (RadiographyContext ctx = new RadiographyContext())
+            {
+                Customer customer = ctx.FixedPatterns.Where(p => p.ID == this.FixedPatternID)
+                                        .Include(p => p.Customer.Logo)
+                                        .First()
+                                        .Customer;
+                if (customer.Logo != null)
+                {
+                    return customer.Logo.FileData;
+                }
+            }
+            return null;
+        }
+
     }
 }

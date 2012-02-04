@@ -149,10 +149,9 @@
                         <TextBlock Name="txtDrawingNo" Grid.Column="6" Grid.Row="9"  />
                         <CheckBox Name="chkOnlyRepairs" Grid.Column="4" Grid.Row="10" Grid.ColumnSpan="3" Content="Show Only Repairs/Retakes" 
                                   Checked="chkOnlyRepairs_Checked" Unchecked="chkOnlyRepairs_Checked" />
-                        <CheckBox Name="PrintCustomerName" Grid.Column="4" Grid.Row="11" Grid.ColumnSpan="3" Content="Show Customer Name on Print" />
+                        <TextBlock Name="lblReportTemplate" Text="Report Template" Grid.Row="11" Grid.Column="4" />
+                        <ComboBox Name="cmbSelectTemplate" Grid.Column="6" Grid.Row="11" />
                     </Grid>
-
-
                     <StackPanel>
                         <custom:CustomGrid Name="ReportDataGrid" Style="{StaticResource DataGridStyle}" 
                                    ColumnHeaderStyle="{StaticResource DataGridHeaderGlassEffect}"

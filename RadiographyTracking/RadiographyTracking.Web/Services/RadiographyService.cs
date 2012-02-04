@@ -841,7 +841,7 @@ namespace RadiographyTracking.Web.Services
         {
             //get the latest report in the sequence
             //can't use Last() here, have to use first() since this gets converted into a store query
-            var rgReport = DbContext.RGReports.Where(p => p.RTNo == rtNo)
+            var rgReport = DbContext.RGReports.Where(p => p.RTNo == rtNo).Include(p => p.FixedPattern.Customer).Include(p=>p.Status)
                                 .OrderByDescending(p => p.ID).FirstOrDefault();
 
             FinalRTReport finalReport = new FinalRTReport();
@@ -863,7 +863,7 @@ namespace RadiographyTracking.Web.Services
                                   //just to handle a case where the remark hasn't been filled yet for this location-segment
                                            g.OrderByDescending(p => p.RGReport.ReportDate)
                                              .FirstOrDefault()
-                              select latest).Include(p => p.FilmSize).ToList();
+                              select latest).Include(p => p.FilmSize).Include(p => p.Energy).ToList();
 
             int slno = 1;
             foreach (var r in reportRows)

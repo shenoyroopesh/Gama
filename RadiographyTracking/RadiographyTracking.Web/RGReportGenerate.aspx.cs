@@ -10,6 +10,7 @@ using System.IO;
 using System.Data.Entity;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml;
+using System.Threading;
 
 namespace RadiographyTracking.Web
 {
@@ -22,7 +23,7 @@ namespace RadiographyTracking.Web
 
             RGReportGenerator sampleDocumentGenerator = new RGReportGenerator(generationInfo);
             byte[] result = result = sampleDocumentGenerator.GenerateDocument();
-            var filePath = WriteOutputToFile("RadiographyReportTemplate_Out" + DateTime.Now.ToString("SSMIHH") + ".docx", "RadiographyReportTemplate.docx", result);
+            var filePath = WriteOutputToFile("RadiographyReportTemplate_Out" + DateTime.Now.ToString("SSMIHH") + ".docx", result);
 
             using (var wordDocument = WordprocessingDocument.Open(filePath, true))
             {
@@ -41,6 +42,10 @@ namespace RadiographyTracking.Web
             Response.ContentType = "application/ms-word";
             Response.AddHeader("content-disposition", "attachment; filename="+filename);
             Response.TransmitFile(filePath);
+            Response.Flush();
+
+            //clean up the file
+            File.Delete(filePath);
             Response.End();
         }
 
@@ -91,7 +96,7 @@ namespace RadiographyTracking.Web
         /// <param name="fileName">Name of the file.</param>
         /// <param name="templateName">Name of the template.</param>
         /// <param name="fileContents">The file contents.</param>
-        private string WriteOutputToFile(string fileName, string templateName, byte[] fileContents)
+        private string WriteOutputToFile(string fileName, byte[] fileContents)
         {
             ConsoleColor consoleColor = Console.ForegroundColor;
             if (fileContents != null)

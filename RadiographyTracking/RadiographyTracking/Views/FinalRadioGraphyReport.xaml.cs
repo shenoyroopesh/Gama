@@ -18,6 +18,7 @@ using System.Collections;
 using System.ServiceModel.DomainServices.Client;
 using BindableDataGrid.Data;
 using System.Windows.Printing;
+using System.Windows.Browser;
 
 namespace RadiographyTracking.Views
 {
@@ -83,6 +84,7 @@ namespace RadiographyTracking.Views
             BindToPage(txtDrawingNo, TextBlock.TextProperty, "FinalReport.DrawingNo");
             BindToPage(ReportDataGrid, CustomGrid.ItemsSourceProperty, "FinalReportRows");
             BindToPage(lblTotalArea, TextBlock.TextProperty, "FinalReport.TotalArea");
+            BindToPage(cmbSelectTemplate, ComboBox.ItemsSourceProperty, "FinalReport.ReportTemplatesList");
         }
 
 
@@ -230,16 +232,17 @@ namespace RadiographyTracking.Views
 
         private void btnPrint_Click(object sender, RoutedEventArgs e)
         {
-            PrintDocument pd = new PrintDocument();
-            pd.PrintPage += (s, args) =>
-                {
-                    args.PageVisual = this;                    
-                };
+            if (cmbSelectTemplate.SelectedIndex == -1)
+            {
+                MessageBox.Show("Please select a report template");
+                return;
+            }
 
-            PrinterFallbackSettings settings = new PrinterFallbackSettings();
-            settings.ForceVector = true;
-            settings.OpacityThreshold = 0.7;
-            pd.Print("Radiography Report", settings);
+            Uri reportURI = new Uri(string.Format("/FinalRGReportGenerate.aspx?RTNo={0}&Template={1}", 
+                                                    this.FinalReport.RTNo, cmbSelectTemplate.SelectedValue.ToString()), 
+                                    UriKind.Relative);
+
+            HtmlPage.Window.Navigate(reportURI, "_blank");
         }
     }
 }

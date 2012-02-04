@@ -106,3 +106,5 @@ D:\DotNet\Gama\RadiographyTracking\RadiographyTracking.Web\obj\Debug\Radiography
 D:\DotNet\Gama\RadiographyTracking\RadiographyTracking.Web\bin\WordDocumentGenerator.Library.dll
 D:\DotNet\Gama\RadiographyTracking\RadiographyTracking.Web\bin\WordDocumentGenerator.Library.pdb
 D:\DotNet\Gama\RadiographyTracking\RadiographyTracking.Web\obj\Debug\RadiographyTracking.Web.g.resources
+D:\DotNet\Gama\RadiographyTracking\RadiographyTracking.Web\bin\DocumentFormat.OpenXml.dll
+D:\DotNet\Gama\RadiographyTracking\RadiographyTracking.Web\bin\DocumentFormat.OpenXml.xml

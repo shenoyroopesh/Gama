@@ -235,6 +235,10 @@ namespace RadiographyTracking.Web.Models
             }
         }
 
+        /// <summary>
+        /// Gets a combination of location and segment - for eg, if location is LN and segment is 1-2, then 
+        /// this returns LN1-LN2
+        /// </summary>
         [NotMapped]
         [Exclude]
         public string LocationAndSegment
