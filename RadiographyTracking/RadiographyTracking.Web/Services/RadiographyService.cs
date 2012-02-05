@@ -890,6 +890,10 @@ namespace RadiographyTracking.Web.Services
 
         public void DeleteRGReport(RGReport entity)
         {
+            //ideally this should be handled by the client even before sending for a delete. 
+            if (!entity.CanDelete)
+                throw new ArgumentException("Cannot delete this entity");
+
             DbEntityEntry<RGReport> entityEntry = this.DbContext.Entry(entity);
             if ((entityEntry.State != EntityState.Deleted))
             {

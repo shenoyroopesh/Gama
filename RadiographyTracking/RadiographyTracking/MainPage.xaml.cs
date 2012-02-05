@@ -6,19 +6,29 @@
     using RadiographyTracking.LoginUI;
     using System;
     using MenuControl;
+    using System.Linq;
 
     /// <summary>
     /// <see cref="UserControl"/> class providing the main UI for the application.
     /// </summary>
     public partial class MainPage : UserControl
     {
+        //roles (lower letters)
+
+        private const string Admin = "admin";
+        private const string Clerk = "clerk";
+        private const string Supervisor = "supervisor";
+        private const string ManagingDirector = "managingdirector";
+        private const string Corrector = "corrector";
+
+
         /// <summary>
         /// Creates a new <see cref="MainPage"/> instance.
         /// </summary>
         public MainPage()
-        {
+        {            
             InitializeComponent();
-            loginStatus.MainPage = this;
+            loginStatus.MainPage = this;            
         }
 
         /// <summary>
@@ -61,6 +71,7 @@
                         {
                             if(WebContext.Current.User.IsAuthenticated)
                             {
+                                SetMenu();
                                 GoHome();
                             }
                         };
@@ -71,6 +82,55 @@
         public void GoHome()
         {
             ContentFrame.Navigate(new Uri("/Home", UriKind.Relative));
+        }
+
+        private void SetMenu()
+        {
+            string currentRole;
+
+            try
+            {
+                currentRole = WebContext.Current.User.Roles.FirstOrDefault();
+            } 
+            catch
+            {
+                return;
+            }
+
+            switch(currentRole.ToLower())
+            {
+                case Admin:
+                    adminMenuBar.Visibility = Visibility.Visible;
+                    clerkMenuBar.Visibility = Visibility.Collapsed;
+                    ManagingDirectorMenuBar.Visibility = Visibility.Collapsed;
+                    supervisorMenuBar.Visibility = Visibility.Collapsed;
+                    break;
+                case ManagingDirector:
+                    adminMenuBar.Visibility = Visibility.Collapsed;
+                    clerkMenuBar.Visibility = Visibility.Collapsed;
+                    ManagingDirectorMenuBar.Visibility = Visibility.Visible;
+                    supervisorMenuBar.Visibility = Visibility.Collapsed;
+                    break;
+                case Supervisor:
+                    adminMenuBar.Visibility = Visibility.Collapsed;
+                    clerkMenuBar.Visibility = Visibility.Collapsed;
+                    ManagingDirectorMenuBar.Visibility = Visibility.Collapsed;
+                    supervisorMenuBar.Visibility = Visibility.Visible;
+                    break;
+                case Corrector:
+                case Clerk:
+                    adminMenuBar.Visibility = Visibility.Collapsed;
+                    clerkMenuBar.Visibility = Visibility.Visible;
+                    ManagingDirectorMenuBar.Visibility = Visibility.Collapsed;
+                    supervisorMenuBar.Visibility = Visibility.Collapsed;
+                    break;
+                default:
+                    adminMenuBar.Visibility = Visibility.Collapsed;
+                    clerkMenuBar.Visibility = Visibility.Collapsed;
+                    ManagingDirectorMenuBar.Visibility = Visibility.Collapsed;
+                    supervisorMenuBar.Visibility = Visibility.Collapsed;
+                    break;
+            }
         }
 
 

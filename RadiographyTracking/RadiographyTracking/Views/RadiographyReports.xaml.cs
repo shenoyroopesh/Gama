@@ -48,12 +48,6 @@ namespace RadiographyTracking.Views
             get { return typeof(RGReport); }
         }
 
-        //Kept here only for the template column to work fine
-        public override void DeleteOperation(object sender, RoutedEventArgs e)
-        {
-            base.DeleteOperation(sender, e);
-        }
-
 
         public void EditOperation(object sender, RoutedEventArgs e)
         {
@@ -68,12 +62,33 @@ namespace RadiographyTracking.Views
             Navigate("/EnterRadioGraphyReport");
         }
 
+        //Kept here only for the template column to work fine
+        public override void DeleteOperation(object sender, RoutedEventArgs e)
+        {
+            DataGridRow row = DataGridRow.GetRowContainingElement(sender as FrameworkElement);
+            RGReport report = (RGReport)row.DataContext;
+            if (!report.CanDelete)
+            {
+                MessageBox.Show("Can Delete only latest report for any RT");
+                return;
+            }
+
+            base.DeleteOperation(sender, e);
+        }
+
 
         public void PrintOperation(object sender, RoutedEventArgs e)
         {
             DataGridRow row = DataGridRow.GetRowContainingElement(sender as FrameworkElement);
             RGReport report = (RGReport)row.DataContext;
-            Uri reportURI = new Uri(string.Format("/RGReportGenerate.aspx?ReportNo={0}", report.ReportNo), UriKind.Relative);
+
+            //Get the root path for the XAP
+            string src = Application.Current.Host.Source.ToString();
+
+            //Get the application root, where 'ClientBin' is the known dir where the XAP is
+            string appRoot = src.Substring(0, src.IndexOf("ClientBin"));
+
+            Uri reportURI = new Uri(string.Format(appRoot + "RGReportGenerate.aspx?ReportNo={0}", report.ReportNo), UriKind.Absolute);
             HtmlPage.Window.Navigate(reportURI, "_blank");
         }
     }

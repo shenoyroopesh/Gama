@@ -18,7 +18,6 @@ namespace MenuControl
     [ContentPropertyAttribute("items")]
     public class MenuBar : Control
     {
-        
         //graphic items
         public StackPanel baseRectMB;
 
@@ -44,7 +43,7 @@ namespace MenuControl
 
         }
 
-        void MenuBar_Loaded(object sender, RoutedEventArgs e)
+        public void MenuBar_Loaded(object sender, EventArgs e)
         {
             this.ApplyTemplate();
 

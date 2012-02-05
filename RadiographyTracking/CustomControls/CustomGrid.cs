@@ -163,7 +163,7 @@ namespace Vagsons.Controls
                 FrameworkElement cellContent = column.GetCellContent(e.Row);
                 addCellEventHandlers(cellContent);
                 
-                if (!CustomGrid.isEditAllowed && itemID != 0) // Only for new items with id zero, allow editing if editing is disallowed
+                if (!CustomGrid.isEditAllowed && itemID != 0 && cellContent.GetType() == typeof(TextBlock)) // Only for new items with id zero, allow editing if editing is disallowed
                 {
                     (cellContent.Parent as DataGridCell).IsEnabled = false;
                 }

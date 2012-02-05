@@ -6829,6 +6829,8 @@ namespace RadiographyTracking.Web.Models
         
         private string _acceptanceAsPer;
         
+        private bool _canDelete;
+        
         private EntityRef<Coverage> _coverage;
         
         private int _coverageID;
@@ -6884,6 +6886,8 @@ namespace RadiographyTracking.Web.Models
         partial void OnCreated();
         partial void OnAcceptanceAsPerChanging(string value);
         partial void OnAcceptanceAsPerChanged();
+        partial void OnCanDeleteChanging(bool value);
+        partial void OnCanDeleteChanged();
         partial void OnCoverageIDChanging(int value);
         partial void OnCoverageIDChanged();
         partial void OnDateOfTestChanging(DateTime value);
@@ -6952,6 +6956,36 @@ namespace RadiographyTracking.Web.Models
                     this._acceptanceAsPer = value;
                     this.RaiseDataMemberChanged("AcceptanceAsPer");
                     this.OnAcceptanceAsPerChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'CanDelete' value.
+        /// </summary>
+        // The following attributes were not generated:
+        // 
+        // - The attribute 'System.ComponentModel.DataAnnotations.NotMappedAttribute' is not visible in the client project 'RadiographyTracking'. Are you missing an assembly reference?
+        // [NotMappedAttribute()]
+        // 
+        [DataMember()]
+        [Editable(false)]
+        [ReadOnly(true)]
+        public bool CanDelete
+        {
+            get
+            {
+                return this._canDelete;
+            }
+            set
+            {
+                if ((this._canDelete != value))
+                {
+                    this.OnCanDeleteChanging(value);
+                    this.ValidateProperty("CanDelete", value);
+                    this._canDelete = value;
+                    this.RaisePropertyChanged("CanDelete");
+                    this.OnCanDeleteChanged();
                 }
             }
         }

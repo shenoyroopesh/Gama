@@ -14,7 +14,6 @@
         public Home()
         {
             InitializeComponent();
-
             this.Title = ApplicationStrings.HomePageTitle;
         }
 

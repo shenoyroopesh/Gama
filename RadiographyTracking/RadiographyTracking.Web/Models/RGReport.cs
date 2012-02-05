@@ -161,6 +161,25 @@ namespace RadiographyTracking.Web.Models
             }
         }
 
+        [NotMapped]
+        public bool CanDelete
+        {
+            get
+            {
+                using (RadiographyContext ctx = new RadiographyContext())
+                {
+                    //check if there is an report for this RTNo newer that this report, if so can't delete
+                    var newerReportCount = ctx.RGReports.Where(
+                                                p => p.RTNo == this.RTNo &&
+                                                p.ReportNo != this.ReportNo &&
+                                                p.ReportDate > this.ReportDate).Count();
+
+                    return newerReportCount == 0;
+                }
+            }
+        }
+
+
         public byte[] getCompanyLogo()
         {
             using (RadiographyContext ctx = new RadiographyContext())

@@ -238,9 +238,15 @@ namespace RadiographyTracking.Views
                 return;
             }
 
-            Uri reportURI = new Uri(string.Format("/FinalRGReportGenerate.aspx?RTNo={0}&Template={1}", 
-                                                    this.FinalReport.RTNo, cmbSelectTemplate.SelectedValue.ToString()), 
-                                    UriKind.Relative);
+            //Get the root path for the XAP
+            string src = Application.Current.Host.Source.ToString();
+
+            //Get the application root, where 'ClientBin' is the known dir where the XAP is
+            string appRoot = src.Substring(0, src.IndexOf("ClientBin")); 
+
+            Uri reportURI = new Uri(string.Format(appRoot + "FinalRGReportGenerate.aspx?RTNo={0}&Template={1}", 
+                                                    this.FinalReport.RTNo, cmbSelectTemplate.SelectedValue.ToString()),
+                                    UriKind.Absolute);
 
             HtmlPage.Window.Navigate(reportURI, "_blank");
         }
