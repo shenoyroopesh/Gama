@@ -164,6 +164,15 @@ namespace RadiographyTracking.Web
                     case ReportNo:
                         content = row.ReportNo;
                         break;
+                    case Coverage:
+                        content = row.Coverage.CoverageName;
+                        break;
+                    case ProcedureRef:
+                        content = row.ProcedureRef;
+                        break;
+                    case Source:
+                        content = row.SourceSize;
+                        break;
                     case Description:
                         content = row.FixedPattern.Description;
                         break;

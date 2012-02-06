@@ -32,6 +32,23 @@ namespace RadiographyTracking.Views
             toDatePicker.SelectedDate = toDatePicker.DisplayDate = DateTime.Now;
         }
 
+        public override string ChangeContext
+        {
+            get
+            {
+                return "Report No ";
+            }
+        }
+
+        public override string ChangeContextProperty
+        {
+            get
+            {
+                return "ReportNo";
+            }
+        }
+
+
         [CLSCompliant(false)]
         public override CustomGrid Grid
         {
@@ -74,6 +91,8 @@ namespace RadiographyTracking.Views
             }
 
             base.DeleteOperation(sender, e);
+            //save this, since there is no separate save button
+            this.SaveOperation(sender, e);
         }
 
 

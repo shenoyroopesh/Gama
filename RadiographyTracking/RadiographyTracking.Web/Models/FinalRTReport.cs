@@ -22,9 +22,9 @@ namespace RadiographyTracking.Web.Models
         public int FixedPatternID { get; set; }
 
         public FixedPattern FixedPattern { get; set; }
-        [NotMapped]
+
         public int CoverageID { get; set; }
-        [NotMapped]
+
         public Coverage Coverage { get; set; }
         [NotMapped]
         public String LeadScreen { get; set; }

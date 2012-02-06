@@ -65,6 +65,7 @@ namespace RadiographyTracking.Web
                 return ctx.RGReports.Include(p => p.FixedPattern.Customer)
                         .Include(p => p.Status)
                         .Include(p => p.RGReportRows.Select(r => r.FilmSize))
+                        .Include(p => p.Coverage)
                         .Where(p => p.ReportNo == reportNo)
                         .FirstOrDefault();
             }

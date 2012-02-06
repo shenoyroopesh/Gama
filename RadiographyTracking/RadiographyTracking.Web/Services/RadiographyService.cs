@@ -841,7 +841,10 @@ namespace RadiographyTracking.Web.Services
         {
             //get the latest report in the sequence
             //can't use Last() here, have to use first() since this gets converted into a store query
-            var rgReport = DbContext.RGReports.Where(p => p.RTNo == rtNo).Include(p => p.FixedPattern.Customer).Include(p=>p.Status)
+            var rgReport = DbContext.RGReports.Where(p => p.RTNo == rtNo)
+                                .Include(p => p.FixedPattern.Customer)
+                                .Include(p => p.Status)
+                                .Include(p => p.Coverage)
                                 .OrderByDescending(p => p.ID).FirstOrDefault();
 
             FinalRTReport finalReport = new FinalRTReport();

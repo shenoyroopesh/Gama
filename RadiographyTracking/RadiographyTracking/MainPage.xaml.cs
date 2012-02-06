@@ -17,8 +17,8 @@
 
         private const string Admin = "admin";
         private const string Clerk = "clerk";
-        private const string Supervisor = "supervisor";
-        private const string ManagingDirector = "managingdirector";
+        private const string Supervisor = "foundry supervisor";
+        private const string ManagingDirector = "managing director";
         private const string Corrector = "corrector";
 
 

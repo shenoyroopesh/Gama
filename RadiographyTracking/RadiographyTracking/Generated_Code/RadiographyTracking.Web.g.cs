@@ -3629,6 +3629,8 @@ namespace RadiographyTracking.Web.Models
         
         private string _acceptanceAsPer;
         
+        private EntityRef<Coverage> _coverage;
+        
         private int _coverageID;
         
         private string _dateOfTest;
@@ -3768,14 +3770,44 @@ namespace RadiographyTracking.Web.Models
         }
         
         /// <summary>
+        /// Gets or sets the associated <see cref="Coverage"/> entity.
+        /// </summary>
+        [Association("Coverage_FinalRTReport", "CoverageID", "ID", IsForeignKey=true)]
+        public Coverage Coverage
+        {
+            get
+            {
+                if ((this._coverage == null))
+                {
+                    this._coverage = new EntityRef<Coverage>(this, "Coverage", this.FilterCoverage);
+                }
+                return this._coverage.Entity;
+            }
+            set
+            {
+                Coverage previous = this.Coverage;
+                if ((previous != value))
+                {
+                    this.ValidateProperty("Coverage", value);
+                    if ((value != null))
+                    {
+                        this.CoverageID = value.ID;
+                    }
+                    else
+                    {
+                        this.CoverageID = default(int);
+                    }
+                    this._coverage.Entity = value;
+                    this.RaisePropertyChanged("Coverage");
+                }
+            }
+        }
+        
+        /// <summary>
         /// Gets or sets the 'CoverageID' value.
         /// </summary>
-        // The following attributes were not generated:
-        // 
-        // - The attribute 'System.ComponentModel.DataAnnotations.NotMappedAttribute' is not visible in the client project 'RadiographyTracking'. Are you missing an assembly reference?
-        // [NotMappedAttribute()]
-        // 
         [DataMember()]
+        [RoundtripOriginal()]
         public int CoverageID
         {
             get
@@ -4461,6 +4493,11 @@ namespace RadiographyTracking.Web.Models
                     this.OnTotalAreaChanged();
                 }
             }
+        }
+        
+        private bool FilterCoverage(Coverage entity)
+        {
+            return (entity.ID == this.CoverageID);
         }
         
         private bool FilterFinalRTReportRows(FinalRTReportRow entity)

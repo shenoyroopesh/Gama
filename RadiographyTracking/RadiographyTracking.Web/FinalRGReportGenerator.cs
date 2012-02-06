@@ -183,6 +183,15 @@ namespace RadiographyTracking.Web
                     case Description:
                         content = row.FixedPattern.Description;
                         break;
+                    case Coverage:
+                        content = row.Coverage.CoverageName;
+                        break;
+                    case ProcedureRef:
+                        content = row.ProcedureRef;
+                        break;
+                    case Source:
+                        content = row.SourceSize;
+                        break;
                     case Specification:
                         content = row.Specifications;
                         break;

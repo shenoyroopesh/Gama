@@ -36,6 +36,7 @@
                     <sdk:Label Content="To:" Margin="3" VerticalAlignment="Center" />
                     <sdk:DatePicker Name="toDatePicker" IsEnabled="{Binding ElementName=filmTransactionsDomainDataSource, Path=CanLoad}"/>
                 </StackPanel>
+                <!-- DONT CHANGE THE NAME of this datagrid, there is a hardcoded dependency in the CustomGrid component -->
                 <custom:CustomGrid ItemsSource="{Binding ElementName=filmTransactionsDomainDataSource, Path=Data, Mode=TwoWay}" 
                                     Name="filmTransactionsDataGrid" Style="{StaticResource DataGridStyle}" 
                                    ColumnHeaderStyle="{StaticResource DataGridHeaderGlassEffect}"

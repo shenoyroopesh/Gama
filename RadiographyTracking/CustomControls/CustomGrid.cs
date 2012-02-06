@@ -163,8 +163,15 @@ namespace Vagsons.Controls
                 FrameworkElement cellContent = column.GetCellContent(e.Row);
                 addCellEventHandlers(cellContent);
                 
-                if (!CustomGrid.isEditAllowed && itemID != 0 && cellContent.GetType() == typeof(TextBlock)) // Only for new items with id zero, allow editing if editing is disallowed
+                //only for combobox or textblocks disable
+                if (!CustomGrid.isEditAllowed && itemID != 0 
+                    && (cellContent.GetType() == typeof(TextBlock) || cellContent.GetType() == typeof(ComboBox))) // Only for new items with id zero, allow editing if editing is disallowed
                 {
+                    if (this.Name == "filmTransactionsDataGrid")
+                    {
+                        //for others this behavior is not needed
+                        e.Row.IsEnabled = false;
+                    }
                     (cellContent.Parent as DataGridCell).IsEnabled = false;
                 }
 
