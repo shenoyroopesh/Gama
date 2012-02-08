@@ -810,15 +810,21 @@ namespace RadiographyTracking.Web.Services
                                 where rowFId == (foundryId == -1 ? rowFId : foundryId)
                                 && r.ReportDate >= fromDate && r.ReportDate < toDate
                                 group r by new { r.FixedPattern, r.RTNo } into g
+                                let allrows = g.SelectMany(p => p.RGReportRows)
+                                                .Where(p => !String.IsNullOrEmpty(p.Remark.Value)) //don't count the rows with blank remarks
+                                let allLatestRows = allrows.Where(p => allrows
+                                                                        .Where(r => r.Location == p.Location &&
+                                                                                r.Segment == p.Segment &&
+                                                                                r.RGReport.ReportDate > p.RGReport.ReportDate).Count() == 0)
                                 select new
                                 {
                                     ID = Guid.NewGuid(),
                                     FPNo = g.Key.FixedPattern.FPNo,
                                     RTNo = g.Key.RTNo,
                                     Date = g.OrderByDescending(p => p.ReportDate).FirstOrDefault().ReportDate,
-                                    Repairs = g.OrderByDescending(p => p.ReportDate).FirstOrDefault().RGReportRows.Where(p => p.Remark != null).Where(p => p.Remark.Value == "REPAIR").Count(),
-                                    Retakes = g.OrderByDescending(p => p.ReportDate).FirstOrDefault().RGReportRows.Where(p => p.Remark != null).Where(p => p.Remark.Value == "RETAKE").Count(),
-                                    Reshoots = g.OrderByDescending(p => p.ReportDate).FirstOrDefault().RGReportRows.Where(p => p.Remark != null).Where(p => p.Remark.Value == "RESHOOT").Count(),
+                                    Repairs = allLatestRows.Where(p => p.Remark.Value == "REPAIR").Count(),
+                                    Retakes = allLatestRows.Where(p => p.Remark.Value == "RETAKE").Count(),
+                                    Reshoots = allLatestRows.Where(p => p.Remark.Value == "RESHOOT").Count(),
                                     Status = g.OrderByDescending(p => p.ReportDate).FirstOrDefault().Status.Status
                                 }).ToList();
 
