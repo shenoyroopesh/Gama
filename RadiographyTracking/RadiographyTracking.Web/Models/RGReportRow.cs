@@ -43,6 +43,9 @@ namespace RadiographyTracking.Web.Models
         public int RGReportID { get; set; }
         public RGReport RGReport { get; set; }
 
+        //note not doing composition here - instead just saving FPRowSLNo here which can be nullable
+        public int? FPSLNo { get; set; }
+
         /// <summary>
         /// This will determine the cause for this row in the first place - necessary to track this separately from remark
         /// 

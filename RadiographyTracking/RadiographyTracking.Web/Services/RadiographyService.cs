@@ -484,8 +484,8 @@ namespace RadiographyTracking.Web.Services
                         {
                             RTNo = r.RGReport.RTNo,
                             ReportDate = r.RGReport.ReportDate,
-                            Location = r.Location,
-                            Segment = r.Segment,
+                            Location = r.Location.Trim(), //to avoid binding exceptions if stray strings are present
+                            Segment = r.Segment.Trim(), //to avoid binding exceptions if stray strings are present
                             Observations = r.Observations
                         }).ToList();
 
@@ -878,7 +878,7 @@ namespace RadiographyTracking.Web.Services
                               select latest).Include(p => p.FilmSize).Include(p => p.Energy).ToList();
 
             int slno = 1;
-            foreach (var r in reportRows)
+            foreach (var r in reportRows.OrderBy(p => p.FPSLNo ?? 10000 + p.ID)) //for rows added, not present in FP Templates
             {
                 FinalRTReportRow row = new FinalRTReportRow();
                 r.CopyTo(row, string.Empty);

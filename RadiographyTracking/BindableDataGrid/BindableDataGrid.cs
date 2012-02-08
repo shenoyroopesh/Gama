@@ -17,7 +17,7 @@ namespace BindableDataGrid
     public class BindableDataGrid : DataGrid
     {
         #region "Properties"
-        
+
         /// <summary>
         /// DataSource of the DataGrid
         /// </summary>
@@ -31,7 +31,8 @@ namespace BindableDataGrid
         /// <summary>
         /// Gets or sets the data item corresponding to the selected row
         /// </summary>
-        public new DataRow SelectedItem {
+        public new DataRow SelectedItem
+        {
             get
             {
                 return this.GetDataRowFromObject(base.SelectedItem);
@@ -145,6 +146,8 @@ namespace BindableDataGrid
             this.Columns.Clear();
             foreach (DataColumn dc in dcol)
             {
+                StringBuilder CellTemp;
+                DataGridTemplateColumn templateColumn;
                 DataGridColumn dgc = null;
                 switch (dc.DataType.Name)
                 {
@@ -154,9 +157,9 @@ namespace BindableDataGrid
                         dgc = checkBoxColumn;
                         break;
                     case "Image":
-                        DataGridTemplateColumn templateColumn = new DataGridTemplateColumn();
+                        templateColumn = new DataGridTemplateColumn();
                         // Build template in memory
-                        StringBuilder CellTemp = new StringBuilder();
+                        CellTemp = new StringBuilder();
                         CellTemp.Append("<DataTemplate ");
                         CellTemp.Append("xmlns='http://schemas.microsoft.com/winfx/");
                         CellTemp.Append("2006/xaml/presentation' ");
@@ -276,7 +279,7 @@ namespace BindableDataGrid
                     e.Column.CanUserReorder = dc.AllowReorder;
                     break;
                 }
-            }            
+            }
         }
 
         #endregion

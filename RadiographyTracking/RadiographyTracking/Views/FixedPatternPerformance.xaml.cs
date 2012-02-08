@@ -77,14 +77,13 @@ namespace RadiographyTracking.Views
                     foreach (var seg in loc.Segments)
                     {
                         string header = String.Concat(loc.Location, "-", seg.Segment);
-                        string colname = header.Replace("-", "");
+                        string colname = "col" + header.Replace("-", "");
                         if (cols.FirstOrDefault(p => p.Caption == header) == null)
                         {
                             AddTextColumn(reportTable, colname, header);
                             locationRow[colname] = loc.Location == prevLocn? "" : loc.Location; //do not get location get repeated
                             prevLocn = loc.Location;
-
-                            segmentRow[colname] = seg.Segment;                            
+                            segmentRow[colname] = seg.Segment;                   
                         }
                         //no need to show NSD
                         row[colname] = seg.Observations.ToUpper().Replace("NSD", "");

@@ -1,7 +1,7 @@
 D:\DotNet\Gama\RadiographyTracking\WordDocumentGenerator.Library\bin\Debug\WordDocumentGenerator.Library.dll
 D:\DotNet\Gama\RadiographyTracking\WordDocumentGenerator.Library\bin\Debug\WordDocumentGenerator.Library.pdb
+D:\DotNet\Gama\RadiographyTracking\WordDocumentGenerator.Library\bin\Debug\DocumentFormat.OpenXml.dll
+D:\DotNet\Gama\RadiographyTracking\WordDocumentGenerator.Library\bin\Debug\DocumentFormat.OpenXml.xml
 D:\DotNet\Gama\RadiographyTracking\WordDocumentGenerator.Library\obj\Debug\ResolveAssemblyReference.cache
 D:\DotNet\Gama\RadiographyTracking\WordDocumentGenerator.Library\obj\Debug\WordDocumentGenerator.Library.dll
 D:\DotNet\Gama\RadiographyTracking\WordDocumentGenerator.Library\obj\Debug\WordDocumentGenerator.Library.pdb
-D:\DotNet\Gama\RadiographyTracking\WordDocumentGenerator.Library\bin\Debug\DocumentFormat.OpenXml.dll
-D:\DotNet\Gama\RadiographyTracking\WordDocumentGenerator.Library\bin\Debug\DocumentFormat.OpenXml.xml

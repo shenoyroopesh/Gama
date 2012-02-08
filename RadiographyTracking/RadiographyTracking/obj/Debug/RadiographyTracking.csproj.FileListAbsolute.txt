@@ -438,6 +438,8 @@ D:\DotNet\Gama\RadiographyTracking\RadiographyTracking\obj\Debug\Views\Login\Reg
 D:\DotNet\Gama\RadiographyTracking\RadiographyTracking\obj\Debug\Views\ThicknessToEnergyType.g.i.cs
 D:\DotNet\Gama\RadiographyTracking\RadiographyTracking\obj\Debug\Views\Users.g.i.cs
 D:\DotNet\Gama\RadiographyTracking\RadiographyTracking\obj\Debug\RadiographyTracking.g.resources
+D:\DotNet\Gama\RadiographyTracking\RadiographyTracking\obj\Debug\RadiographyTracking.Web.Resources.RegistrationDataResources.resources
+D:\DotNet\Gama\RadiographyTracking\RadiographyTracking\obj\Debug\RadiographyTracking.Web.Resources.ValidationErrorResources.resources
 D:\DotNet\Gama\RadiographyTracking\RadiographyTracking\obj\Debug\RadiographyTracking.Assets.Resources.ApplicationStrings.resources
 D:\DotNet\Gama\RadiographyTracking\RadiographyTracking\obj\Debug\RadiographyTracking.Assets.Resources.ErrorResources.resources
 D:\DotNet\Gama\RadiographyTracking\RadiographyTracking\obj\Debug\RadiographyTracking.Assets.Resources.SecurityQuestions.resources
@@ -755,8 +757,6 @@ D:\DotNet\Gama\RadiographyTracking\RadiographyTracking\Bin\Debug\ko\System.Xml.L
 D:\DotNet\Gama\RadiographyTracking\RadiographyTracking\Bin\Debug\ru\System.Xml.Linq.resources.dll
 D:\DotNet\Gama\RadiographyTracking\RadiographyTracking\Bin\Debug\zh-Hans\System.Xml.Linq.resources.dll
 D:\DotNet\Gama\RadiographyTracking\RadiographyTracking\Bin\Debug\zh-Hant\System.Xml.Linq.resources.dll
-D:\DotNet\Gama\RadiographyTracking\RadiographyTracking\obj\Debug\RadiographyTracking.Web.Resources.RegistrationDataResources.resources
-D:\DotNet\Gama\RadiographyTracking\RadiographyTracking\obj\Debug\RadiographyTracking.Web.Resources.ValidationErrorResources.resources
 D:\DotNet\Gama\RadiographyTracking\RadiographyTracking\obj\Debug\RadiographyTracking.dll
 D:\DotNet\Gama\RadiographyTracking\RadiographyTracking\obj\Debug\RadiographyTracking.pdb
 D:\DotNet\Gama\RadiographyTracking\RadiographyTracking\obj\Debug\XapCacheFile.xml

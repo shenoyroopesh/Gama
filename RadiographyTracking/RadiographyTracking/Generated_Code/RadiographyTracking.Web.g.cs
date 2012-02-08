@@ -7691,6 +7691,8 @@ namespace RadiographyTracking.Web.Models
         
         private string _filmSizeString;
         
+        private Nullable<int> _fpslNo;
+        
         private int _id;
         
         private string _location;
@@ -7752,6 +7754,8 @@ namespace RadiographyTracking.Web.Models
         partial void OnFilmSizeIDChanged();
         partial void OnFilmSizeStringChanging(string value);
         partial void OnFilmSizeStringChanged();
+        partial void OnFPSLNoChanging(Nullable<int> value);
+        partial void OnFPSLNoChanged();
         partial void OnIDChanging(int value);
         partial void OnIDChanged();
         partial void OnLocationChanging(string value);
@@ -8016,6 +8020,30 @@ namespace RadiographyTracking.Web.Models
                     this._filmSizeString = value;
                     this.RaiseDataMemberChanged("FilmSizeString");
                     this.OnFilmSizeStringChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'FPSLNo' value.
+        /// </summary>
+        [DataMember()]
+        public Nullable<int> FPSLNo
+        {
+            get
+            {
+                return this._fpslNo;
+            }
+            set
+            {
+                if ((this._fpslNo != value))
+                {
+                    this.OnFPSLNoChanging(value);
+                    this.RaiseDataMemberChanging("FPSLNo");
+                    this.ValidateProperty("FPSLNo", value);
+                    this._fpslNo = value;
+                    this.RaiseDataMemberChanged("FPSLNo");
+                    this.OnFPSLNoChanged();
                 }
             }
         }

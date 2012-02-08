@@ -45,15 +45,19 @@ namespace RadiographyTracking.Web.Models
 
             this.RGReportRows = new List<RGReportRow>();
 
-            foreach (var row in fpTemplate.FPTemplateRows)
+            foreach (var row in fpTemplate.FPTemplateRows.OrderBy(p => p.SlNo))
             {
-                RGReportRow rgReportRow = new RGReportRow() 
+                RGReportRow rgReportRow = new RGReportRow()
                                             {
-                                                RowType = freshRowType, 
+                                                RowType = freshRowType,
                                                 Energy = Energy.getEnergyForThickness(row.Thickness, ctx),
                                                 Observations = " " //for grid to work fine
                                             };
                 row.CopyTo(rgReportRow, "ID,FilmSizeString");
+
+                //for future reports, so that ordering can be done on this basis
+                rgReportRow.FPSLNo = row.SlNo;
+
                 this.RGReportRows.Add(rgReportRow);
             }
         }
@@ -80,13 +84,13 @@ namespace RadiographyTracking.Web.Models
             //all those that are not yet acceptable
             var neededRows = latestRows
                              .Where(p => p.Remark.Value != "ACCEPTABLE")
-                             .OrderBy(p => p.Segment).OrderBy(p => p.Location);
-            
+                             .OrderBy(p => p.FPSLNo);
+
             latestParent.CopyTo(this, "ID,ReportDate,RGReportRows");
             this.ReportDate = DateTime.Now;
             this.ReportNo = ReportNo;
             this.RGReportRows = new List<RGReportRow>();
-            
+
             //only those rows to be copied from entire history which do not have acceptable against that particular location and segment
             int SlNo = 1;
 
@@ -95,12 +99,13 @@ namespace RadiographyTracking.Web.Models
                 if (row.Remark.Value == "ACCEPTABLE") continue;
 
                 //row type for this row depends on the corresponding parent rows remarks
-                RGReportRow reportRow = new RGReportRow() { 
-                                                             RowType = RGReportRowType.getRowType(row.Remark.Value, ctx),
-                                                             Observations = " "
-                                                          };
+                RGReportRow reportRow = new RGReportRow()
+                {
+                    RowType = RGReportRowType.getRowType(row.Remark.Value, ctx),
+                    Observations = " "
+                };
                 row.CopyTo(reportRow,
-                    "ID,RGReport,Observations,Remark,RemarkText,ObservationsText,"+
+                    "ID,RGReport,Observations,Remark,RemarkText,ObservationsText," +
                     "Technician,TechnicianText,Welder,WelderText,RowType,ReportNo");
                 reportRow.SlNo = SlNo++;
                 this.RGReportRows.Add(reportRow);
