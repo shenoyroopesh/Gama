@@ -1802,6 +1802,19 @@
         </Setter>
     </Style>
 
+    <Style x:Key="Add5RowsButtonStyle" TargetType="Button" BasedOn="{StaticResource BaseButtonStyle}">
+        <Setter Property="ContentTemplate">
+            <Setter.Value>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Height="Auto">
+                        <Image Source="/RadiographyTracking;component/Images/Button-Add-icon.png" Stretch="UniformToFill" />
+                        <TextBlock Text="Add 5 Rows" FontSize="12" Margin="10,0,0,0"/>
+                    </StackPanel>
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
     <!--Cancel Button Style-->
     <Style x:Key="CancelButtonStyle" TargetType="Button" BasedOn="{StaticResource BaseButtonStyle}">
         <Setter Property="ContentTemplate">

@@ -30,6 +30,7 @@ namespace RadiographyTracking.Views
             InitializeComponent();
             this.ExcludePropertiesFromTracking.Add("RGReport");
             this.ExcludePropertiesFromTracking.Add("RGReportRows");
+            this.ExcludePropertiesFromTracking.Add("CanDelete");
 
             this.OnCancelNavigation = "/RadiographyReports";
 
@@ -67,6 +68,9 @@ namespace RadiographyTracking.Views
 
         private bool clerkMode = false;
 
+        /// <summary>
+        /// ChangeContext
+        /// </summary>
         public override String ChangeContext
         {
             get
@@ -80,7 +84,7 @@ namespace RadiographyTracking.Views
             get
             {
                 if (this.RGReport != null)
-                    return this.RGReport.RTNo;
+                    return String.Concat(this.RGReport.RTNo, " Row");
                 else
                     return ""; //ideally this should never get called
             }
@@ -313,7 +317,12 @@ namespace RadiographyTracking.Views
             DataGridRow row = DataGridRow.GetRowContainingElement(sender as FrameworkElement);
             //commit any unsaved changes to avoid an exception
             if (Grid.CommitEdit())
+            {
                 RGReportRows.Remove((RGReportRow)row.DataContext);
+                //also delete from the datacontext
+                ((RadiographyContext)this.DomainSource.DomainContext).RGReportRows
+                                    .Remove(row.DataContext as RGReportRow);
+            }
         }
 
         private void FetchOperation(object sender, RoutedEventArgs e)

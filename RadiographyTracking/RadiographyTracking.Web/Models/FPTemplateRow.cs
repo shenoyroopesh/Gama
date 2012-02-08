@@ -40,12 +40,12 @@ namespace RadiographyTracking.Web.Models
             }
             set
             {
-                int height, width;
+                int length, width;
                 try
                 {
                     String[] dimensions = value.Split('X');
-                    height = Convert.ToInt32(dimensions[0]);
-                    width = Convert.ToInt32(dimensions[1]);
+                    width = Convert.ToInt32(dimensions[0]);
+                    length = Convert.ToInt32(dimensions[1]);
                 }
                 catch
                 {
@@ -54,7 +54,7 @@ namespace RadiographyTracking.Web.Models
 
                 using (RadiographyContext ctx = new RadiographyContext())
                 {
-                    var filmsizes = ctx.FilmSizes.Where(p => p.Length == height && p.Width == width);
+                    var filmsizes = ctx.FilmSizes.Where(p => p.Length == length && p.Width == width);
                     if (filmsizes.Count() > 0)
                     {
                         this.FilmSizeID = filmsizes.First().ID;

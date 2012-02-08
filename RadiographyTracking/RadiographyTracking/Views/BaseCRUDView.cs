@@ -243,7 +243,11 @@ namespace RadiographyTracking.Views
                     foreach (var deleted in modification.RemovedEntities)
                     {
                         Type type = deleted.GetType();
-                        PropertyInfo changeContextProp = type.GetProperty(ChangeContextProperty);
+                        PropertyInfo changeContextProp = null;
+                        
+                        if(ChangeContextProperty != null)
+                            changeContextProp= type.GetProperty(ChangeContextProperty);
+                        
                         var propertyValue = this.ChangeContextValue ?? changeContextProp.GetValue(deleted, null);
                         string changeContextString = String.Concat(ChangeContext, "-",
                                                                    (propertyValue ?? "").ToString());

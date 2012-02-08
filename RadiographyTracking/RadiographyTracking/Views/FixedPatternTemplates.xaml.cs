@@ -28,6 +28,7 @@ namespace RadiographyTracking.Views
             this.ExcludePropertiesFromTracking.Add("FixedPatternTemplate");
             this.ExcludePropertiesFromTracking.Add("FixedPatternTemplateID");
             this.ExcludePropertiesFromTracking.Add("FPTemplateRows");
+            this.ExcludePropertiesFromTracking.Add("FilmSize");
 
             if (App.FixedPattern == null)
             {
@@ -71,6 +72,9 @@ namespace RadiographyTracking.Views
             btnAdd.Click += AddOperation;
             btnCancel.Click += CancelOperation;
             btnSave.Click += SaveOperation;
+
+            //for adding 5 rows at a time
+            btnAdd5Rows.Click += Add5RowsOperation;
         }
 
         /// <summary>
@@ -213,6 +217,8 @@ namespace RadiographyTracking.Views
             {                
                 var rowToBeRemoved = (FPTemplateRow)row.DataContext;
                 FPTemplateRows.Remove(rowToBeRemoved);
+                //also delete from the context
+                (DomainSource.DomainContext as RadiographyContext).FPTemplateRows.Remove(row.DataContext as FPTemplateRow);
             }
         }
 
@@ -239,6 +245,16 @@ namespace RadiographyTracking.Views
             }
 
             base.SaveOperation(sender, e);
+        }
+
+
+        public void Add5RowsOperation(object sender, RoutedEventArgs e)
+        {
+            //just add 5 rows
+            for (int i = 0; i < 5; i++)
+            {
+                AddOperation(sender, e);
+            }
         }
 
 
