@@ -63,16 +63,34 @@ namespace RadiographyTracking.Web.Models
         /// </summary>
         /// <param name="rgReport">RG Report on which to base this report</param>
         /// <param name="ctx">Database Context with reference which to create the object</param>
-        public RGReport(RGReport parentRGReport, String ReportNo, RadiographyContext ctx)
+        public RGReport(List<RGReport> parentRGReports, String ReportNo, RadiographyContext ctx)
         {
-            parentRGReport.CopyTo(this, "ID,ReportDate,RGReportRows");
+            var latestParent = parentRGReports.OrderByDescending(p => p.ReportDate).First();
+
+            //all rows with some remark
+            var rows = from r in parentRGReports.SelectMany(p => p.RGReportRows)
+                       where r.Remark != null
+                       select r;
+
+            //latest row for each location and segment combination
+            var latestRows = rows.Where(p => rows.Where(r => r.Location == p.Location &&
+                                                          r.Segment == p.Segment &&
+                                                          r.RGReport.ReportDate > p.RGReport.ReportDate).Count() == 0);
+
+            //all those that are not yet acceptable
+            var neededRows = latestRows
+                             .Where(p => p.Remark.Value != "ACCEPTABLE")
+                             .OrderBy(p => p.Segment).OrderBy(p => p.Location);
+            
+            latestParent.CopyTo(this, "ID,ReportDate,RGReportRows");
             this.ReportDate = DateTime.Now;
             this.ReportNo = ReportNo;
             this.RGReportRows = new List<RGReportRow>();
             
-            //only those rows to be copied which are do not have ACCEPTABLE as remark in the previous report
+            //only those rows to be copied from entire history which do not have acceptable against that particular location and segment
             int SlNo = 1;
-            foreach (var row in parentRGReport.RGReportRows)
+
+            foreach (var row in neededRows)
             {
                 if (row.Remark.Value == "ACCEPTABLE") continue;
 

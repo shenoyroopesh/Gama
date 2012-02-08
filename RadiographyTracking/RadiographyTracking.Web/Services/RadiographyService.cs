@@ -765,11 +765,14 @@ namespace RadiographyTracking.Web.Services
             
             //get the latest report in the sequence
             //can't use Last() here, have to use first() since this gets converted into a store query
-            var rgReport = DbContext.RGReports.Include(r => r.RGReportRows.Select(p => p.Remark)).Include(p => p.Status)
+
+            var allReports = DbContext.RGReports.Include(r => r.RGReportRows.Select(p => p.Remark)).Include(p => p.Status)
                                                             .Where(p => p.FixedPatternID == fpID &&
                                                               p.CoverageID == coverageID &&
                                                               p.RTNo == rtNo)
-                                                            .OrderByDescending(p => p.ID).FirstOrDefault();
+                                                            .OrderByDescending(p => p.ID).ToList();
+            //first report
+            var rgReport = allReports.FirstOrDefault();
 
             String nextReportNumber = fpTemplate.FixedPattern.Customer.Foundry.getNextReportNumber(DbContext);
 
@@ -791,7 +794,7 @@ namespace RadiographyTracking.Web.Services
                     return rgReport;
 
                 //else create a new child report
-                rgReport = new RGReport(rgReport, nextReportNumber, DbContext);
+                rgReport = new RGReport(allReports, nextReportNumber, DbContext);
                 this.DbContext.RGReports.Add(rgReport);
                 this.DbContext.SaveChanges();
                 return rgReport;
@@ -811,7 +814,7 @@ namespace RadiographyTracking.Web.Services
                                 && r.ReportDate >= fromDate && r.ReportDate < toDate
                                 group r by new { r.FixedPattern, r.RTNo } into g
                                 let allrows = g.SelectMany(p => p.RGReportRows)
-                                                .Where(p => !String.IsNullOrEmpty(p.Remark.Value)) //don't count the rows with blank remarks
+                                                .Where(p => p.Remark != null) //don't count the rows with blank remarks
                                 let allLatestRows = allrows.Where(p => allrows
                                                                         .Where(r => r.Location == p.Location &&
                                                                                 r.Segment == p.Segment &&
