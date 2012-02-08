@@ -54,7 +54,15 @@ namespace Vagsons.Controls
 
                 try
                 {
-                    destProperty.SetValue(destination, sourceProperty.GetValue(source, null), null);
+                    var value = sourceProperty.GetValue(source, null);
+
+                    //if the property value itself is another entity, avoid copying it. It will cause the cloned object to get added to the 
+                    //entity graph unnecessarily (and will be considered as a new entity
+
+                    if (value as Entity != null)
+                        continue;
+
+                    destProperty.SetValue(destination, value, null);
                 }
                 catch (Exception e)
                 {

@@ -11,6 +11,8 @@ using System.Windows.Shapes;
 using System.Collections.Generic;
 using System.Collections;
 using System.IO;
+using System.ServiceModel.DomainServices.Client;
+using System.Linq;
 
 namespace Vagsons.Controls
 {
@@ -130,7 +132,7 @@ namespace Vagsons.Controls
 
         void TrackItem(object item)
         {
-            var original = item.Clone(CustomGrid.ExcludePropertiesFromTracking);
+            var original = item.Clone(CustomGrid.ExcludePropertiesFromTracking);          
             var originalID = getID(original);
             var obj = new Object();
 
@@ -322,16 +324,16 @@ namespace Vagsons.Controls
             else if (!(new List<Key>(){Key.Enter, Key.Escape, Key.F2, Key.Escape, Key.Right, Key.Left, Key.Up, 
                                        Key.Down, Key.Ctrl, Key.Shift, Key.Alt, Key.Unknown, Key.Tab,
                                         Key.Back, Key.Insert, Key.Home, Key.End, Key.PageDown, Key.PageUp,
-                                        Key.Delete, Key.CapsLock}).Contains(e.Key))
+                                        Key.Delete, Key.CapsLock}).Contains(e.Key) && e.OriginalSource.GetType() != typeof(TextBox))
             {
                 //any other key, start editing
                 bool isShifty = ((Keyboard.Modifiers & ModifierKeys.Shift) == ModifierKeys.Shift);
                 string letter = e.Key.ToString();
-                letter = letter.ToLower().Replace("numpad", ""); //remove 'numpad' if it appears
+                letter = letter.Replace("numpad", "").Replace("NUMPAD", "") ; //remove 'numpad' if it appears
                 //if D+ number (d9 for eg) appears, replace it
-                if (letter.Length > 1) letter = letter.ToLower().Replace("d", "");
+                if (letter.Length > 1) letter = letter.Replace("d", "").Replace("D", "");
 
-                letter = (isShifty ? letter.ToUpper() : letter.ToLower());
+                letter = (isShifty ? letter.ToUpper() : letter);
                 this.Tag = letter;
 
                 //beginedit will fire the focus event

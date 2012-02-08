@@ -140,7 +140,7 @@ namespace RadiographyTracking.Views
                 so.MarkErrorAsHandled();
             }
             else
-            {
+            {                
                 MessageBox.Show("Saved Successfully", "Success", MessageBoxButton.OK);
             }
         }
@@ -170,6 +170,9 @@ namespace RadiographyTracking.Views
         }
 
 
+        List<Change> allChanges = new List<Change>();
+
+
         /// <summary>
         /// This handles the save operation for this page
         /// </summary>
@@ -183,8 +186,6 @@ namespace RadiographyTracking.Views
                 //commit any unsaved changes to avoid an exception
                 if (Grid.CommitEdit())
                 {
-                    List<Change> allChanges = new List<Change>();
-
                     //capture all the changes and their reasons
                     var modification = DomainSource.DomainContext.EntityContainer.GetChanges();
 
@@ -311,11 +312,6 @@ namespace RadiographyTracking.Views
                         //if no changes worth tracking but still there are changes
                         SaveChanges();
                     }
-                    //save all the changes with the reasons
-                    foreach (var change in allChanges)
-                    {
-                        (DomainSource.DomainContext as RadiographyContext).Changes.Add(change);
-                    }
                 }
             }
         }
@@ -324,8 +320,17 @@ namespace RadiographyTracking.Views
         {
             if ((bool)(sender as ChangeReasons).DialogResult)
             {
+                //save all the changes with the reasons
+                foreach (var change in allChanges)
+                {
+                    (DomainSource.DomainContext as RadiographyContext).Changes.Add(change);
+                }
+
                 SaveChanges();
             }
+
+            allChanges.Clear();
+            
         }
 
         void SaveChanges()
