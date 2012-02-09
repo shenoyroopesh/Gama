@@ -330,6 +330,7 @@ namespace Vagsons.Controls
                 bool isShifty = ((Keyboard.Modifiers & ModifierKeys.Shift) == ModifierKeys.Shift);
                 string letter = e.Key.ToString();
                 letter = letter.Replace("numpad", "").Replace("NUMPAD", "") ; //remove 'numpad' if it appears
+                letter = letter.Replace("space", " ").Replace("SPACE", " ");
                 //if D+ number (d9 for eg) appears, replace it
                 if (letter.Length > 1) letter = letter.Replace("d", "").Replace("D", "");
 

@@ -57,7 +57,7 @@ namespace RadiographyTracking.Views
         {
             get
             {
-                return "Name";
+                return "CoverageName";
             }
         }
 

@@ -109,7 +109,8 @@ namespace RadiographyTracking.Web.Services
         #region Customers
         public IQueryable<Customer> GetCustomers()
         {
-            return this.DbContext.Customers;
+            var foundryID = getFoundryIDForCurrentUser();
+            return this.DbContext.Customers.Where(p => p.FoundryID == (foundryID ?? p.FoundryID));
         }
 
         /// <summary>
@@ -119,10 +120,12 @@ namespace RadiographyTracking.Web.Services
         /// <returns></returns>
         public IQueryable<Customer> GetCustomersFiltered(String filter)
         {
-            return this.DbContext.Customers.Where(p => p.CustomerName.Contains(filter) ||
+            var foundryID = getFoundryIDForCurrentUser();
+            return this.DbContext.Customers.Where(p => (p.CustomerName.Contains(filter) ||
                                                      p.Address.Contains(filter) ||
                                                      p.Email.Contains(filter) ||
-                                                     p.Foundry.FoundryName.Contains(filter));
+                                                     p.Foundry.FoundryName.Contains(filter)) &&
+                                                     p.FoundryID == (foundryID ?? p.FoundryID));
         }
 
         public void InsertCustomer(Customer entity)
@@ -292,9 +295,13 @@ namespace RadiographyTracking.Web.Services
             //to ensure that time component of the date does not make some dates get excluded
             fromDate = fromDate.Date;
             toDate = toDate.Date.AddDays(1);
+            var foundryID = getFoundryIDForCurrentUser();
+
             return this.DbContext.FilmTransactions.Where(p =>
                                                             p.Date >= fromDate &&
-                                                                p.Date <= toDate).OrderBy(p => p.Date);
+                                                                p.Date <= toDate &&
+                                                                p.Foundry.ID == (foundryID ?? p.Foundry.ID))
+                                                         .OrderBy(p => p.Date);
         }
 
         public void InsertFilmTransaction(FilmTransaction entity)
@@ -426,9 +433,11 @@ namespace RadiographyTracking.Web.Services
         
         public IQueryable<FixedPattern> GetFixedPatterns(String filter = "")
         {
+            var foundryID = getFoundryIDForCurrentUser();
             return this.DbContext.FixedPatterns.Where(p =>
-                                                        p.FPNo.Contains(filter) ||
-                                                        p.Description.Contains(filter));
+                                                        (p.FPNo.Contains(filter) ||
+                                                        p.Description.Contains(filter)) &&
+                                                        p.Customer.Foundry.ID == (foundryID ?? p.Customer.Foundry.ID));
         }
 
         public void InsertFixedPattern(FixedPattern entity)
@@ -472,23 +481,24 @@ namespace RadiographyTracking.Web.Services
         public IEnumerable<FixedPatternPerformanceRow> GetFixedPatternPerformanceReport(string fpNo)
         {
             var ctx = this.DbContext;
+            var foundryID = getFoundryIDForCurrentUser();
 
             //fetch required rows from database first, then form the complex object - linq to entities doesn't support
             //creating complex objects directly
             var rows = (from r in ctx.RGReportRows
                         where r.RGReport != null &&
                         r.RGReport.FixedPattern.FPNo == fpNo &&
-                            //ensure that the report has at least one defect
+                        r.RGReport.FixedPattern.ID == (foundryID ?? r.RGReport.FixedPattern.ID) &&
+                        //ensure that the report has at least one defect
                         r.RGReport.RGReportRows.Where(p => (p.Observations ?? "").Trim() != "NSD").Count() > 0
                         select new
                         {
                             RTNo = r.RGReport.RTNo,
                             ReportDate = r.RGReport.ReportDate,
-                            Location = r.Location.Trim(), //to avoid binding exceptions if stray strings are present
-                            Segment = r.Segment.Trim(), //to avoid binding exceptions if stray strings are present
+                            Location = r.Location.Trim(), 
+                            Segment = r.Segment.Trim(), 
                             Observations = r.Observations
                         }).ToList();
-
 
             var report = (from r in rows
                          orderby r.RTNo, r.ReportDate
@@ -539,7 +549,9 @@ namespace RadiographyTracking.Web.Services
         #region FixedPattern Templates
         public IQueryable<FixedPatternTemplate> GetFixedPatternTemplates()
         {
-            return this.DbContext.FixedPatternTemplates;
+            var foundryID = getFoundryIDForCurrentUser();
+            return this.DbContext.FixedPatternTemplates
+                       .Where(p => p.FixedPattern.Customer.FoundryID == (foundryID ?? p.FixedPattern.Customer.FoundryID));
         }
 
         /// <summary>
@@ -620,6 +632,24 @@ namespace RadiographyTracking.Web.Services
         #endregion
 
         #region Foundries
+
+        /// <summary>
+        /// This gets the foundry for the current user, and is used by other methods to restrict the data to that
+        /// particular foundries data
+        /// </summary>
+        /// <returns></returns>
+        public int? getFoundryIDForCurrentUser()
+        {
+            MembershipUser mUser = Membership.GetUser();
+            var role = Roles.GetRolesForUser(mUser.UserName).First();
+            User user = mUser.GetUser();
+
+            if ((new String[] { "admin", "managing director" }).Contains(role.ToLower()))
+                return null;
+            else
+                return this.DbContext.Foundries.Where(p => p.FoundryName == user.Foundry).First().ID;
+        }
+
         public IQueryable<Foundry> GetFoundries()
         {
             //filter if the current user is restricted to a single foundry
@@ -729,8 +759,11 @@ namespace RadiographyTracking.Web.Services
 
         public IQueryable<RGReport> GetRGReports(String RGReportNo)
         {
+            var foundryID = getFoundryIDForCurrentUser();
             return this.DbContext.RGReports.Include(p => p.RGReportRows.Select(r => r.Remark))
-                                            .Where(p => p.ReportNo == RGReportNo);
+                                            .Where(p => p.ReportNo == RGReportNo &&
+                                                    p.FixedPattern.Customer.Foundry.ID == 
+                                                        (foundryID ?? p.FixedPattern.Customer.Foundry.ID));
         }
 
         public IQueryable<RGReport> GetRGReportsByDate(DateTime fromDate, DateTime toDate)
@@ -738,22 +771,32 @@ namespace RadiographyTracking.Web.Services
             //to ensure that time component of the date does not make some dates get excluded
             fromDate = fromDate.Date;
             toDate = toDate.Date.AddDays(1);
+            var foundryID = getFoundryIDForCurrentUser();
+
             return this.DbContext.RGReports.Where(p =>
                                                     p.ReportDate >= fromDate &&
-                                                    p.ReportDate <= toDate);
+                                                    p.ReportDate <= toDate &&
+                                                    p.FixedPattern.Customer.Foundry.ID ==
+                                                        (foundryID ?? p.FixedPattern.Customer.Foundry.ID));
         }
 
 
         public IQueryable<RGReport> GetRGReportsByFPNo(String fpNo)
         {
+            var foundryID = getFoundryIDForCurrentUser();
             return this.DbContext.RGReports.Include(p => p.FixedPattern)
-                                            .Where(p => p.FixedPattern.FPNo == fpNo);
+                                            .Where(p => p.FixedPattern.FPNo == fpNo &&
+                                                    p.FixedPattern.Customer.Foundry.ID ==
+                                                        (foundryID ?? p.FixedPattern.Customer.Foundry.ID));
         }
 
         public RGReport GetNewRGReport(String strFPNo, String strCoverage, String rtNo)
         {
-            //check if there is an existing report with this combination
-            FixedPattern fp = DbContext.FixedPatterns.FirstOrDefault(p => p.FPNo == strFPNo);
+            var foundryID = getFoundryIDForCurrentUser();
+            //check if there is an existing report with this combination for this users foundry
+            FixedPattern fp = DbContext.FixedPatterns
+                                        .FirstOrDefault(p => p.FPNo == strFPNo &&
+                                                        p.Customer.Foundry.ID == (foundryID ?? p.Customer.Foundry.ID));
             Coverage coverage = DbContext.Coverages.FirstOrDefault(p => p.CoverageName == strCoverage);
 
             if (fp == null) return null;
@@ -845,7 +888,6 @@ namespace RadiographyTracking.Web.Services
                    };
         }
 
-
         public FinalRTReport GetFinalRTReport(string rtNo)
         {
             //get the latest report in the sequence
@@ -898,7 +940,6 @@ namespace RadiographyTracking.Web.Services
         {
             this.DbContext.RGReports.AttachAsModified(currentRGReport, this.ChangeSet.GetOriginal(currentRGReport), this.DbContext);
         }
-
 
         public void DeleteRGReport(RGReport entity)
         {
@@ -1141,7 +1182,7 @@ namespace RadiographyTracking.Web.Services
             if (Int32.TryParse(filter, out filterInt))
             {
                 return this.DbContext.ThicknessRangesForEnergy
-                        .Where(p => p.Energy.Name.Contains(filter) || (p.ThicknessFrom < filterInt && p.ThicknessTo > filterInt));
+                        .Where(p => p.Energy.Name.Contains(filter) || (p.ThicknessFrom <= filterInt && p.ThicknessTo >= filterInt));
             }
 
             return this.DbContext.ThicknessRangesForEnergy.Where(p => p.Energy.Name.Contains(filter));

@@ -11217,6 +11217,28 @@ namespace RadiographyTracking.Web.Services
         }
         
         /// <summary>
+        /// Asynchronously invokes the 'getFoundryIDForCurrentUser' method of the DomainService.
+        /// </summary>
+        /// <param name="callback">Callback to invoke when the operation completes.</param>
+        /// <param name="userState">Value to pass to the callback.  It can be <c>null</c>.</param>
+        /// <returns>An operation instance that can be used to manage the asynchronous request.</returns>
+        public InvokeOperation<Nullable<int>> getFoundryIDForCurrentUser(Action<InvokeOperation<Nullable<int>>> callback, object userState)
+        {
+            this.ValidateMethod("getFoundryIDForCurrentUser", null);
+            return ((InvokeOperation<Nullable<int>>)(this.InvokeOperation("getFoundryIDForCurrentUser", typeof(Nullable<int>), null, true, callback, userState)));
+        }
+        
+        /// <summary>
+        /// Asynchronously invokes the 'getFoundryIDForCurrentUser' method of the DomainService.
+        /// </summary>
+        /// <returns>An operation instance that can be used to manage the asynchronous request.</returns>
+        public InvokeOperation<Nullable<int>> getFoundryIDForCurrentUser()
+        {
+            this.ValidateMethod("getFoundryIDForCurrentUser", null);
+            return ((InvokeOperation<Nullable<int>>)(this.InvokeOperation("getFoundryIDForCurrentUser", typeof(Nullable<int>), null, true, null, null)));
+        }
+        
+        /// <summary>
         /// Asynchronously invokes the 'GetRoles' method of the DomainService.
         /// </summary>
         /// <param name="callback">Callback to invoke when the operation completes.</param>
@@ -11676,6 +11698,24 @@ namespace RadiographyTracking.Web.Services
             /// <param name="result">The IAsyncResult returned from 'BeginGetFoundries'.</param>
             /// <returns>The 'QueryResult' returned from the 'GetFoundries' operation.</returns>
             QueryResult<Foundry> EndGetFoundries(IAsyncResult result);
+            
+            /// <summary>
+            /// Asynchronously invokes the 'getFoundryIDForCurrentUser' operation.
+            /// </summary>
+            /// <param name="callback">Callback to invoke on completion.</param>
+            /// <param name="asyncState">Optional state object.</param>
+            /// <returns>An IAsyncResult that can be used to monitor the request.</returns>
+            [FaultContract(typeof(DomainServiceFault), Action="http://tempuri.org/RadiographyService/getFoundryIDForCurrentUserDomainServiceFaul" +
+                "t", Name="DomainServiceFault", Namespace="DomainServices")]
+            [OperationContract(AsyncPattern=true, Action="http://tempuri.org/RadiographyService/getFoundryIDForCurrentUser", ReplyAction="http://tempuri.org/RadiographyService/getFoundryIDForCurrentUserResponse")]
+            IAsyncResult BegingetFoundryIDForCurrentUser(AsyncCallback callback, object asyncState);
+            
+            /// <summary>
+            /// Completes the asynchronous operation begun by 'BegingetFoundryIDForCurrentUser'.
+            /// </summary>
+            /// <param name="result">The IAsyncResult returned from 'BegingetFoundryIDForCurrentUser'.</param>
+            /// <returns>The 'Nullable`1' returned from the 'getFoundryIDForCurrentUser' operation.</returns>
+            Nullable<int> EndgetFoundryIDForCurrentUser(IAsyncResult result);
             
             /// <summary>
             /// Asynchronously invokes the 'GetFPTemplateRows' operation.

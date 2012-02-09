@@ -16,7 +16,7 @@
         <my1:RadiographyContext x:Key="RadiographyContext" />
     </UserControl.Resources>    
     <Grid x:Name="LayoutRoot" Background="White">
-        <sdk:Label Name="headerLabel" Style="{StaticResource PageHeaderStyle}" Content="RADIOLOGY REPORTS"/>
+        <sdk:Label Name="headerLabel" Style="{StaticResource PageHeaderStyle}" Content="RADIOGRAPHY REPORTS"/>
         <riaControls:DomainDataSource AutoLoad="True" Name="RGDomainDataSource" QueryName="GetRGReportsByDateQuery"
                                       DomainContext="{StaticResource RadiographyContext}">
             <riaControls:DomainDataSource.QueryParameters>
