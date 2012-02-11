@@ -67,7 +67,7 @@
                     <custom:CustomGrid Name="FPTemplatesDataGrid" Style="{StaticResource DataGridStyle}" 
                                    ColumnHeaderStyle="{StaticResource DataGridHeaderGlassEffect}"
                                    CellStyle="{StaticResource Stretch}" MaxHeight="500" 
-                                   CanUserSortColumns="False">
+                                   CanUserSortColumns="True">
                         <custom:CustomGrid.Resources>
                             <Style TargetType="TextBlock">
                                 <Setter Property="TextAlignment" Value="Center" />

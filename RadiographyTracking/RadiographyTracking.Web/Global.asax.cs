@@ -6,6 +6,7 @@ using System.Web.Security;
 using System.Web.SessionState;
 using System.Data.Entity;
 using RadiographyTracking.Web.Models;
+using System.Threading;
 
 namespace RadiographyTracking.Web
 {
@@ -19,6 +20,9 @@ namespace RadiographyTracking.Web
             //TODO: this is done to force database create if it is not already created. Check how to avoid this
             RadiographyContext context = new RadiographyContext();
             var test = context.Customers.Count();
+
+            //initialize culture
+            Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-IN");
         }
 
         protected void Session_Start(object sender, EventArgs e)

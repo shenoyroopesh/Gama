@@ -25,9 +25,72 @@ namespace RadiographyTracking.Web.Services
     {
         #region Changes
 
-        public IQueryable<Change> GetChanges()
+        public IQueryable<Change> GetChanges(string foundryName = null, DateTime? fromDate = null, DateTime? toDate = null)
         {
-            return this.DbContext.Changes;
+            if (fromDate != null) fromDate = ((DateTime)fromDate).Date;
+            if (toDate != null) toDate = ((DateTime)toDate).Date.AddDays(1);
+
+            var changes = this.DbContext.Changes.AsQueryable();
+
+
+            if (fromDate != null)
+            {
+                changes = changes.Where(p => p.When >= fromDate);
+            }
+
+            if (toDate != null)
+            {
+                changes = changes.Where(p => p.When <= toDate);
+            }
+
+            if (foundryName != null)
+            {
+                //fetch from database before further filtering
+                changes = changes.ToList().Where(p => AllFoundryUsers
+                                                        .Where(r => r.DisplayName == p.ByWhom &&
+                                                                    r.Foundry == foundryName)
+                                                        .Count() > 0).AsQueryable();
+            }
+
+            return changes;
+        }
+
+
+        private List<MembershipUser> _allMemberShipUsers;
+
+        public List<MembershipUser> AllMembershipUsers
+        {
+            get
+            {
+                if (_allMemberShipUsers == null)
+                {
+                    _allMemberShipUsers = Membership.GetAllUsers().Cast<MembershipUser>().ToList();
+                }
+                return _allMemberShipUsers;
+            }
+        }
+
+        private List<User> _allFoundryUsers;
+
+        public List<User> AllFoundryUsers
+        {
+            get
+            {
+                if (_allFoundryUsers == null)
+                {
+                    _allFoundryUsers = AllMembershipUsers
+                                        .Where(p=> !(new List<String>(){"admin", "managing director"})
+                                                     .Contains(Roles.GetRolesForUser(p.UserName).First().ToLower()))
+                                        .Select(p => p.GetUser()).ToList();
+                }
+                return _allFoundryUsers;
+            }
+        }
+
+        private int? GetFoundryIdForDisplayName(string displayName)
+        {
+            MembershipUser user = AllMembershipUsers.Where(p => p.GetUser().DisplayName == displayName).First();
+            return getFoundryIDForUser(user);
         }
 
         public IQueryable<Change> GetChangesByDate(DateTime fromDate, DateTime toDate)
@@ -494,6 +557,7 @@ namespace RadiographyTracking.Web.Services
                         select new
                         {
                             RTNo = r.RGReport.RTNo,
+                            ReportNo = r.RGReport.ReportNo,
                             ReportDate = r.RGReport.ReportDate,
                             Location = r.Location.Trim(), 
                             Segment = r.Segment.Trim(), 
@@ -502,11 +566,12 @@ namespace RadiographyTracking.Web.Services
 
             var report = (from r in rows
                          orderby r.RTNo, r.ReportDate
-                         group r by new { r.RTNo, r.ReportDate } into g
+                          group r by new { r.RTNo, r.ReportNo, r.ReportDate } into g
                          select new FixedPatternPerformanceRow
                          {
                              ID = Guid.NewGuid(),
                              RTNo = g.Key.RTNo,
+                             ReportNo = g.Key.ReportNo,
                              Date = g.Key.ReportDate,
                              Locations = (from rep in g
                                          group rep by new { rep.Location } into repg
@@ -638,16 +703,22 @@ namespace RadiographyTracking.Web.Services
         /// particular foundries data
         /// </summary>
         /// <returns></returns>
-        public int? getFoundryIDForCurrentUser()
+        private int? getFoundryIDForCurrentUser()
         {
             MembershipUser mUser = Membership.GetUser();
+            return getFoundryIDForUser(mUser);
+        }
+
+        private int? getFoundryIDForUser(MembershipUser mUser)
+        {
             var role = Roles.GetRolesForUser(mUser.UserName).First();
             User user = mUser.GetUser();
 
             if ((new String[] { "admin", "managing director" }).Contains(role.ToLower()))
                 return null;
             else
-                return this.DbContext.Foundries.Where(p => p.FoundryName == user.Foundry).First().ID;
+                //load all foundries at one shot
+                return this.DbContext.Foundries.ToList().Where(p => p.FoundryName == user.Foundry).First().ID;
         }
 
         public IQueryable<Foundry> GetFoundries()
@@ -1298,8 +1369,7 @@ namespace RadiographyTracking.Web.Services
             }
         }
         #endregion
-
-
+        
         #region FileUpload
 
         public IQueryable<UploadedFile> GetUploadedFiles()

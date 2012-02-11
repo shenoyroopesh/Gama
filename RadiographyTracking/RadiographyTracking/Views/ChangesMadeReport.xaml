@@ -11,28 +11,41 @@
     xmlns:custom="clr-namespace:Vagsons.Controls;assembly=CustomControls"
     xmlns:local="clr-namespace:RadiographyTracking.Controls"
     xmlns:ex="clr-namespace:ComboBoxExtensions;assembly=ComboBoxExtensions"
-    xmlns:views="clr-namespace:RadiographyTracking.Views">
+    xmlns:views="clr-namespace:RadiographyTracking.Views"
+    xmlns:helpers="clr-namespace:RadiographyTracking">
     
     <UserControl.Resources>
         <my1:RadiographyContext x:Key="RadiographyContext" />
+        <ex:ComboBoxDataSource x:Key="FoundryDataSource" DomainContext="{StaticResource RadiographyContext}" 
+                               OperationName="GetFoundriesQuery" />
     </UserControl.Resources>
 
     <Grid x:Name="LayoutRoot" Background="White">
         <sdk:Label Name="headerLabel" Style="{StaticResource PageHeaderStyle}" Content="CHANGES MADE REPORT"/>
-        <riaControls:DomainDataSource AutoLoad="True" DomainContext="{StaticResource RadiographyContext}"
-                                      Name="changesDomainDataSource" QueryName="GetChangesByDate">
-            <riaControls:DomainDataSource.QueryParameters>
-                <riaControls:Parameter ParameterName="fromDate" Value="{Binding ElementName=fromDatePicker, Path=SelectedDate}"/>
-                <riaControls:Parameter ParameterName="toDate" Value="{Binding ElementName=toDatePicker, Path=SelectedDate}" />
-            </riaControls:DomainDataSource.QueryParameters>
+        <riaControls:DomainDataSource AutoLoad="False" DomainContext="{StaticResource RadiographyContext}"
+                                      Name="changesDomainDataSource" QueryName="GetChanges">
         </riaControls:DomainDataSource>
         <local:BusyIndicator x:Name="busyIndicator" IsBusy="{Binding IsBusy, ElementName=changesDomainDataSource}">
             <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
-                <StackPanel Height="30" HorizontalAlignment="Left" Orientation="Horizontal" VerticalAlignment="Top" Margin="20">
+                <StackPanel Height="30" HorizontalAlignment="Left" Orientation="Horizontal" VerticalAlignment="Top">
+                    <StackPanel.Resources>
+                        <helpers:NotOperatorValueConverter x:Name="NotConverter" />
+                    </StackPanel.Resources>
+                    <TextBlock Text="All Foundries" VerticalAlignment="Center"/>
+                    <CheckBox Name="chkAllFoundries" VerticalAlignment="Center" IsChecked="True"/>
+                    <TextBlock Text="Select Foundry" VerticalAlignment="Center"/>
+                    <ComboBox Name="cmbFoundry" Margin="10,0,0,0" Style="{StaticResource ComboBoxStyle}" 
+                              MinWidth="100" IsEnabled="{Binding ElementName=chkAllFoundries, Path=IsChecked, 
+                              Converter={StaticResource NotConverter}}"
+                              ItemsSource="{Binding Source={StaticResource FoundryDataSource}, Path=Data}" 
+                              ItemContainerStyle="{StaticResource ComboBoxItemStyle}"  DisplayMemberPath="FoundryName"/>
                     <sdk:Label Content="From:" Margin="3" VerticalAlignment="Center" />
                     <sdk:DatePicker Name="fromDatePicker" IsEnabled="{Binding ElementName=changesDomainDataSource, Path=CanLoad}" />
                     <sdk:Label Content="To:" Margin="3" VerticalAlignment="Center" />
-                    <sdk:DatePicker Name="toDatePicker" IsEnabled="{Binding ElementName=changesDomainDataSource, Path=CanLoad}"/>
+                    <sdk:DatePicker Name="toDatePicker" IsEnabled="{Binding ElementName=changesDomainDataSource, Path=CanLoad}"/>                    
+                </StackPanel>
+                <StackPanel>
+                    <Button Name="FetchButton" Content="Fetch" Click="FetchButton_Click" HorizontalAlignment="Center" Margin="10"/>
                 </StackPanel>
                 <custom:CustomGrid ItemsSource="{Binding ElementName=changesDomainDataSource, Path=Data, Mode=TwoWay}" 
                                     Name="changesDataGrid" Style="{StaticResource DataGridStyle}" 
@@ -52,6 +65,10 @@
                         <sdk:DataGridTextColumn Header="Why" Binding="{Binding Path=Why, Mode=OneWay}" />
                     </sdk:DataGrid.Columns>
                 </custom:CustomGrid>
+                <StackPanel>
+                    <Button Name="btnPrint" Style="{StaticResource PrintButtonStyle}" HorizontalAlignment="Center" 
+                            Click="btnPrint_Click"/>
+                </StackPanel>
             </StackPanel>
         </local:BusyIndicator>
     </Grid>

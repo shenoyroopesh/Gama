@@ -16,6 +16,9 @@ namespace RadiographyTracking.Web.Models
         public String RTNo { get; set; }
 
         [NotMapped]
+        public String ReportNo { get; set; }
+
+        [NotMapped]
         public DateTime Date { get; set; }
 
         [Include]

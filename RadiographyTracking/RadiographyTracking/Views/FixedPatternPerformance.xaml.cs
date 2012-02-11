@@ -57,6 +57,7 @@ namespace RadiographyTracking.Views
 
             AddTextColumn(reportTable, "FPNo", "FP No");
             AddTextColumn(reportTable, "RTNo", "RT No");
+            AddTextColumn(reportTable, "ReportNo", "Report No");
             AddTextColumn(reportTable, "Date", "Date");
 
             string prevRTNo = "";
@@ -65,8 +66,10 @@ namespace RadiographyTracking.Views
                 DataRow row = new DataRow();
                 row["FPNo"] = txtFPNo.Text; //won't change throughout the report
                 row["RTNo"] = prevRTNo == rt.RTNo ? "" : rt.RTNo; //prevent same RT No from repeating
+                row["ReportNo"] = rt.ReportNo;
                 prevRTNo = rt.RTNo;
                 segmentRow["FPNo"] = "FPNo";
+                segmentRow["ReportNo"] = "ReportNo";
                 segmentRow["RTNo"] = "RTNo";
                 row["Date"] = rt.Date.ToString("dd/MM/yyyy");
                 segmentRow["Date"] = "Date";

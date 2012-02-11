@@ -5547,6 +5547,8 @@ namespace RadiographyTracking.Web.Models
         
         private EntityCollection<LocationClass> _locations;
         
+        private string _reportNo;
+        
         private string _rtNo;
         
         #region Extensibility Method Definitions
@@ -5560,6 +5562,8 @@ namespace RadiographyTracking.Web.Models
         partial void OnDateChanged();
         partial void OnIDChanging(Guid value);
         partial void OnIDChanged();
+        partial void OnReportNoChanging(string value);
+        partial void OnReportNoChanged();
         partial void OnRTNoChanging(string value);
         partial void OnRTNoChanged();
 
@@ -5642,6 +5646,35 @@ namespace RadiographyTracking.Web.Models
                     this._locations = new EntityCollection<LocationClass>(this, "Locations", this.FilterLocations);
                 }
                 return this._locations;
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'ReportNo' value.
+        /// </summary>
+        // The following attributes were not generated:
+        // 
+        // - The attribute 'System.ComponentModel.DataAnnotations.NotMappedAttribute' is not visible in the client project 'RadiographyTracking'. Are you missing an assembly reference?
+        // [NotMappedAttribute()]
+        // 
+        [DataMember()]
+        public string ReportNo
+        {
+            get
+            {
+                return this._reportNo;
+            }
+            set
+            {
+                if ((this._reportNo != value))
+                {
+                    this.OnReportNoChanging(value);
+                    this.RaiseDataMemberChanging("ReportNo");
+                    this.ValidateProperty("ReportNo", value);
+                    this._reportNo = value;
+                    this.RaiseDataMemberChanged("ReportNo");
+                    this.OnReportNoChanged();
+                }
             }
         }
         
@@ -10757,11 +10790,18 @@ namespace RadiographyTracking.Web.Services
         /// <summary>
         /// Gets an EntityQuery instance that can be used to load <see cref="Change"/> entity instances using the 'GetChanges' query.
         /// </summary>
+        /// <param name="foundryName">The value for the 'foundryName' parameter of the query.</param>
+        /// <param name="fromDate">The value for the 'fromDate' parameter of the query.</param>
+        /// <param name="toDate">The value for the 'toDate' parameter of the query.</param>
         /// <returns>An EntityQuery that can be loaded to retrieve <see cref="Change"/> entity instances.</returns>
-        public EntityQuery<Change> GetChangesQuery()
+        public EntityQuery<Change> GetChangesQuery(string foundryName, Nullable<DateTime> fromDate, Nullable<DateTime> toDate)
         {
-            this.ValidateMethod("GetChangesQuery", null);
-            return base.CreateQuery<Change>("GetChanges", null, false, true);
+            Dictionary<string, object> parameters = new Dictionary<string, object>();
+            parameters.Add("foundryName", foundryName);
+            parameters.Add("fromDate", fromDate);
+            parameters.Add("toDate", toDate);
+            this.ValidateMethod("GetChangesQuery", parameters);
+            return base.CreateQuery<Change>("GetChanges", parameters, false, true);
         }
         
         /// <summary>
@@ -11217,28 +11257,6 @@ namespace RadiographyTracking.Web.Services
         }
         
         /// <summary>
-        /// Asynchronously invokes the 'getFoundryIDForCurrentUser' method of the DomainService.
-        /// </summary>
-        /// <param name="callback">Callback to invoke when the operation completes.</param>
-        /// <param name="userState">Value to pass to the callback.  It can be <c>null</c>.</param>
-        /// <returns>An operation instance that can be used to manage the asynchronous request.</returns>
-        public InvokeOperation<Nullable<int>> getFoundryIDForCurrentUser(Action<InvokeOperation<Nullable<int>>> callback, object userState)
-        {
-            this.ValidateMethod("getFoundryIDForCurrentUser", null);
-            return ((InvokeOperation<Nullable<int>>)(this.InvokeOperation("getFoundryIDForCurrentUser", typeof(Nullable<int>), null, true, callback, userState)));
-        }
-        
-        /// <summary>
-        /// Asynchronously invokes the 'getFoundryIDForCurrentUser' method of the DomainService.
-        /// </summary>
-        /// <returns>An operation instance that can be used to manage the asynchronous request.</returns>
-        public InvokeOperation<Nullable<int>> getFoundryIDForCurrentUser()
-        {
-            this.ValidateMethod("getFoundryIDForCurrentUser", null);
-            return ((InvokeOperation<Nullable<int>>)(this.InvokeOperation("getFoundryIDForCurrentUser", typeof(Nullable<int>), null, true, null, null)));
-        }
-        
-        /// <summary>
         /// Asynchronously invokes the 'GetRoles' method of the DomainService.
         /// </summary>
         /// <param name="callback">Callback to invoke when the operation completes.</param>
@@ -11323,13 +11341,16 @@ namespace RadiographyTracking.Web.Services
             /// <summary>
             /// Asynchronously invokes the 'GetChanges' operation.
             /// </summary>
+            /// <param name="foundryName">The value for the 'foundryName' parameter of this action.</param>
+            /// <param name="fromDate">The value for the 'fromDate' parameter of this action.</param>
+            /// <param name="toDate">The value for the 'toDate' parameter of this action.</param>
             /// <param name="callback">Callback to invoke on completion.</param>
             /// <param name="asyncState">Optional state object.</param>
             /// <returns>An IAsyncResult that can be used to monitor the request.</returns>
             [FaultContract(typeof(DomainServiceFault), Action="http://tempuri.org/RadiographyService/GetChangesDomainServiceFault", Name="DomainServiceFault", Namespace="DomainServices")]
             [OperationContract(AsyncPattern=true, Action="http://tempuri.org/RadiographyService/GetChanges", ReplyAction="http://tempuri.org/RadiographyService/GetChangesResponse")]
             [WebGet()]
-            IAsyncResult BeginGetChanges(AsyncCallback callback, object asyncState);
+            IAsyncResult BeginGetChanges(string foundryName, Nullable<DateTime> fromDate, Nullable<DateTime> toDate, AsyncCallback callback, object asyncState);
             
             /// <summary>
             /// Completes the asynchronous operation begun by 'BeginGetChanges'.
@@ -11698,24 +11719,6 @@ namespace RadiographyTracking.Web.Services
             /// <param name="result">The IAsyncResult returned from 'BeginGetFoundries'.</param>
             /// <returns>The 'QueryResult' returned from the 'GetFoundries' operation.</returns>
             QueryResult<Foundry> EndGetFoundries(IAsyncResult result);
-            
-            /// <summary>
-            /// Asynchronously invokes the 'getFoundryIDForCurrentUser' operation.
-            /// </summary>
-            /// <param name="callback">Callback to invoke on completion.</param>
-            /// <param name="asyncState">Optional state object.</param>
-            /// <returns>An IAsyncResult that can be used to monitor the request.</returns>
-            [FaultContract(typeof(DomainServiceFault), Action="http://tempuri.org/RadiographyService/getFoundryIDForCurrentUserDomainServiceFaul" +
-                "t", Name="DomainServiceFault", Namespace="DomainServices")]
-            [OperationContract(AsyncPattern=true, Action="http://tempuri.org/RadiographyService/getFoundryIDForCurrentUser", ReplyAction="http://tempuri.org/RadiographyService/getFoundryIDForCurrentUserResponse")]
-            IAsyncResult BegingetFoundryIDForCurrentUser(AsyncCallback callback, object asyncState);
-            
-            /// <summary>
-            /// Completes the asynchronous operation begun by 'BegingetFoundryIDForCurrentUser'.
-            /// </summary>
-            /// <param name="result">The IAsyncResult returned from 'BegingetFoundryIDForCurrentUser'.</param>
-            /// <returns>The 'Nullable`1' returned from the 'getFoundryIDForCurrentUser' operation.</returns>
-            Nullable<int> EndgetFoundryIDForCurrentUser(IAsyncResult result);
             
             /// <summary>
             /// Asynchronously invokes the 'GetFPTemplateRows' operation.
