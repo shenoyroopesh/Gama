@@ -30,14 +30,14 @@ namespace RadiographyTracking.Web
         protected const string ToDate = "ToDate";
 
         protected const string ChangeReportRow = "ChangeReportRow";
+        protected const string When = "When";
         protected const string What = "What";
-        protected const string Where = "Where";
+        protected const string Where = "Where";        
         protected const string FromValue = "FromValue";
         protected const string ToValue = "ToValue";
         protected const string ByWhom = "ByWhom";
-        protected const string Why = "Why";
+        protected const string Why = "Why";        
         #endregion
-
 
         private String foundryName;
         private String fromDate;
@@ -79,6 +79,7 @@ namespace RadiographyTracking.Web
             //within each row, these are non-recursive
             placeHolderTagToTypeCollection.Add(What, PlaceHolderType.NonRecursive);
             placeHolderTagToTypeCollection.Add(Where, PlaceHolderType.NonRecursive);
+            placeHolderTagToTypeCollection.Add(When, PlaceHolderType.NonRecursive);
             placeHolderTagToTypeCollection.Add(FromValue, PlaceHolderType.NonRecursive);
             placeHolderTagToTypeCollection.Add(ToValue, PlaceHolderType.NonRecursive);
             placeHolderTagToTypeCollection.Add(ByWhom, PlaceHolderType.NonRecursive);
@@ -130,6 +131,9 @@ namespace RadiographyTracking.Web
                         break;
                     case Where:
                         content = reportRow.Where;
+                        break;
+                    case When:
+                        content = reportRow.When.ToString("dd-MM-yyyy");
                         break;
                     case FromValue:
                         content = reportRow.FromValue;
