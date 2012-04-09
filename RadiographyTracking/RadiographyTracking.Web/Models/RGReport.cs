@@ -45,9 +45,17 @@ namespace RadiographyTracking.Web.Models
 
             this.RGReportRows = new List<RGReportRow>();
 
+            //some default values as suggested by Shankaran (10-Apr-2012)
+            this.Film = "AGFA D7";
+            this.LeadScreen = "0.1mm";
+
+            //since this is the first report for this FP and RT No
+            this.First = true;
+            this.RowsDeleted = false;
+
             foreach (var row in fpTemplate.FPTemplateRows.OrderBy(p => p.SlNo))
             {
-                RGReportRow rgReportRow = new RGReportRow()
+                var rgReportRow = new RGReportRow
                                             {
                                                 RowType = freshRowType,
                                                 Energy = Energy.getEnergyForThickness(row.Thickness, ctx),
@@ -65,10 +73,12 @@ namespace RadiographyTracking.Web.Models
         /// <summary>
         /// This constructor creates an follow up RG report based on an existing RG Report for the same RT No. 
         /// </summary>
-        /// <param name="rgReport">RG Report on which to base this report</param>
+        /// <param name="reportNo"> </param>
         /// <param name="ctx">Database Context with reference which to create the object</param>
-        public RGReport(List<RGReport> parentRGReports, String ReportNo, RadiographyContext ctx)
+        /// <param name="parentRGReports"> </param>
+        public RGReport(List<RGReport> parentRGReports, String reportNo, RadiographyContext ctx)
         {
+            if (reportNo == null) throw new ArgumentNullException("reportNo");
             var latestParent = parentRGReports.OrderByDescending(p => p.ReportDate).First();
 
             //all rows with some remark
@@ -77,9 +87,9 @@ namespace RadiographyTracking.Web.Models
                        select r;
 
             //latest row for each location and segment combination
-            var latestRows = rows.Where(p => rows.Where(r => r.Location == p.Location &&
-                                                          r.Segment == p.Segment &&
-                                                          r.RGReport.ReportDate > p.RGReport.ReportDate).Count() == 0);
+            var latestRows = rows.Where(p => rows != null && !rows.Any(r => r.Location == p.Location &&
+                                                                            r.Segment == p.Segment &&
+                                                                            r.RGReport.ReportDate > p.RGReport.ReportDate));
 
             //all those that are not yet acceptable
             var neededRows = latestRows
@@ -88,18 +98,22 @@ namespace RadiographyTracking.Web.Models
 
             latestParent.CopyTo(this, "ID,ReportDate,RGReportRows");
             this.ReportDate = DateTime.Now;
-            this.ReportNo = ReportNo;
+            this.ReportNo = reportNo;
             this.RGReportRows = new List<RGReportRow>();
+            this.RowsDeleted = false;
+
+            //since this is at least the second report
+            this.First = false;
 
             //only those rows to be copied from entire history which do not have acceptable against that particular location and segment
-            int SlNo = 1;
+            var slNo = 1;
 
             foreach (var row in neededRows)
             {
                 if (row.Remark.Value == "ACCEPTABLE") continue;
 
                 //row type for this row depends on the corresponding parent rows remarks
-                RGReportRow reportRow = new RGReportRow()
+                var reportRow = new RGReportRow()
                 {
                     RowType = RGReportRowType.getRowType(row.Remark.Value, ctx),
                     Observations = " "
@@ -107,7 +121,7 @@ namespace RadiographyTracking.Web.Models
                 row.CopyTo(reportRow,
                     "ID,RGReport,Observations,Remark,RemarkText,ObservationsText," +
                     "Technician,TechnicianText,Welder,WelderText,RowType,ReportNo");
-                reportRow.SlNo = SlNo++;
+                reportRow.SlNo = slNo++;
                 this.RGReportRows.Add(reportRow);
             }
         }
@@ -116,6 +130,14 @@ namespace RadiographyTracking.Web.Models
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ID { get; set; }
         public int FixedPatternID { get; set; }
+
+        //This is used for determining whether this is the first report or one of the later ones. This is important because deleting a row in the first
+        //report is handled differently compared to deleting a row in the later reports
+        public bool First { get; set; }
+
+        //has a flag whether rows in this particular report have been deleted. Just to ensure that if this is not the first report and this has rows deleted
+        //then this can never be the final casting
+        public bool RowsDeleted { get; set; }
         public FixedPattern FixedPattern { get; set; }
         public int CoverageID { get; set; }
         public Coverage Coverage { get; set; }
@@ -146,14 +168,12 @@ namespace RadiographyTracking.Web.Models
         /// </summary>
         [NotMapped]
         [Exclude]
-        public Dictionary<String, int> EnergyAreas
+        public Dictionary<String, float> EnergyAreas
         {
             get
             {
                 if (RGReportRows == null)
                     return null;
-
-                Dictionary<String, int> rows = new Dictionary<string, int>();
 
                 var summary = from r in RGReportRows
                               group r by r.EnergyText into g
@@ -163,24 +183,17 @@ namespace RadiographyTracking.Web.Models
                                   Area = g.Select(p => p.FilmSize == null ? 0 : p.FilmSize.Area).Sum()
                               };
 
-                foreach (var s in summary)
-                {
-                    rows.Add(s.Energy, s.Area);
-                }
-                return rows;
+                return summary.ToDictionary(s => s.Energy, s => s.Area);
             }
         }
 
         [NotMapped]
         [Exclude]
-        public int TotalArea
+        public float TotalArea
         {
             get
             {
-                if (this.RGReportRows == null)
-                    return 0;
-
-                return this.RGReportRows.Select(p => p.FilmSize == null ? 0 : p.FilmSize.Area).Sum();
+                return this.RGReportRows == null ? 0 : this.RGReportRows.Select(p => p.FilmSize == null ? 0 : p.FilmSize.Area).Sum();
             }
         }
 
@@ -189,13 +202,12 @@ namespace RadiographyTracking.Web.Models
         {
             get
             {
-                using (RadiographyContext ctx = new RadiographyContext())
+                using (var ctx = new RadiographyContext())
                 {
                     //check if there is an report for this RTNo newer that this report, if so can't delete
-                    var newerReportCount = ctx.RGReports.Where(
-                                                p => p.RTNo == this.RTNo &&
-                                                p.ReportNo != this.ReportNo &&
-                                                p.ReportDate > this.ReportDate).Count();
+                    var newerReportCount = ctx.RGReports.Count(p => p.RTNo == this.RTNo &&
+                                                                    p.ReportNo != this.ReportNo &&
+                                                                    p.ReportDate > this.ReportDate);
 
                     return newerReportCount == 0;
                 }
@@ -205,9 +217,9 @@ namespace RadiographyTracking.Web.Models
 
         public byte[] getCompanyLogo()
         {
-            using (RadiographyContext ctx = new RadiographyContext())
+            using (var ctx = new RadiographyContext())
             {
-                Company company = ctx.Companies.Include(p => p.Logo).First();
+                var company = ctx.Companies.Include(p => p.Logo).First();
                 if (company.Logo != null)
                 {
                     return company.Logo.FileData;

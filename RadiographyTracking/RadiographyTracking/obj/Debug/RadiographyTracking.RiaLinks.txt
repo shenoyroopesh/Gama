@@ -1,4 +1,4 @@
-D:\DotNet\Gama\RadiographyTracking\BindableDataGrid\BindableDataGrid.csproj,634627075567775876,
-D:\DotNet\Gama\RadiographyTracking\ComboBoxExtensions\ComboBoxExtensions.csproj,634595980622650441,
-D:\DotNet\Gama\RadiographyTracking\CustomControls\CustomControls.csproj,634636303112513409,
-D:\DotNet\Gama\RadiographyTracking\MenuControl\MenuControl.csproj,634634750965391923,
+D:\ClientWork\Gama\Sources\RadiographyTracking\BindableDataGrid\BindableDataGrid.csproj,634687555212613000,
+D:\ClientWork\Gama\Sources\RadiographyTracking\ComboBoxExtensions\ComboBoxExtensions.csproj,634687555213463001,
+D:\ClientWork\Gama\Sources\RadiographyTracking\CustomControls\CustomControls.csproj,634687555216763006,
+D:\ClientWork\Gama\Sources\RadiographyTracking\MenuControl\MenuControl.csproj,634687555217063006,

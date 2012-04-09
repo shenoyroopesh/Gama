@@ -1,13 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
+using System.Globalization;
 using RadiographyTracking.Web.Models;
 using WordDocumentGenerator.Library;
 using System.IO;
-using System.Data.Entity;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml;
 using System.Threading;
@@ -19,34 +15,36 @@ namespace RadiographyTracking.Web
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            var reportTemplateName = "ChangesReportTemplate.docx";
+            const string reportTemplateName = "ChangesReportTemplate.docx";
             var foundryName = Request.Params["FOUNDRY_NAME"];
             var fromDate = Request.Params["FROM_DATE"];
             var toDate = Request.Params["TO_DATE"];
 
+            //date is expected in dd/MM/yyyy format from the url
+
             if (!String.IsNullOrEmpty(fromDate))
             {
-                fromDate = DateTime.Parse(fromDate).ToString("dd-MM-yyyy");
+                fromDate = DateTime.Parse(fromDate, CustomCulture).ToString("dd-MM-yyyy");
             }
 
             if(!String.IsNullOrEmpty(toDate))
             {
-                toDate = DateTime.Parse(toDate).ToString("dd-MM-yyyy");
+                toDate = DateTime.Parse(toDate, CustomCulture).ToString("dd-MM-yyyy");
             }
 
             if (string.IsNullOrEmpty(reportTemplateName))
                 return;
 
-            DocumentGenerationInfo generationInfo = GetDocumentGenerationInfo("ChangesReportGenerator", "1.0", GetDataContext(),
+            var generationInfo = GetDocumentGenerationInfo("ChangesReportGenerator", "1.0", GetDataContext(),
                                         reportTemplateName, false);
 
-            ChangesReportGenerator sampleDocumentGenerator 
+            var sampleDocumentGenerator 
                 = new ChangesReportGenerator(generationInfo, 
                                                 String.IsNullOrEmpty(foundryName) ? "All" : foundryName, 
                                                 fromDate, 
                                                 toDate);
 
-            byte[] result = result = sampleDocumentGenerator.GenerateDocument();
+            byte[] result = sampleDocumentGenerator.GenerateDocument();
             var filePath = WriteOutputToFile("ChangesReportTemplate" + DateTime.Now.ToString("SSMIHH") + ".docx", result);
 
             using (var wordDocument = WordprocessingDocument.Open(filePath, true))
@@ -73,6 +71,22 @@ namespace RadiographyTracking.Web
             Response.End();
         }
 
+        private CultureInfo _customCulture;
+
+        //date will be present in dd/MM/yyyy in the request parameters - this culture will be used to parse it
+        private CultureInfo CustomCulture
+        {
+            get
+            {
+                if (_customCulture == null)
+                {
+                    _customCulture = (CultureInfo) Thread.CurrentThread.CurrentCulture.Clone();
+                    _customCulture.DateTimeFormat.ShortDatePattern = "dd/MM/yyyy";
+                }
+                return _customCulture;
+            }
+        }
+
         /// <summary>
         /// Gets the data context for the report to be generated
         /// </summary>
@@ -83,10 +97,11 @@ namespace RadiographyTracking.Web
             var fromDateString = Request.Params["FROM_DATE"];
             var toDateString = Request.Params["TO_DATE"];
 
-            var fromDate = fromDateString == null ? null : (DateTime?)DateTime.Parse(fromDateString);
-            var toDate = toDateString == null ? null : (DateTime?)DateTime.Parse(toDateString);
+            //date will be present in dd/MM/yyyy
+            var fromDate = fromDateString == null ? null : (DateTime?)DateTime.Parse(fromDateString, CustomCulture);
+            var toDate = toDateString == null ? null : (DateTime?)DateTime.Parse(toDateString, CustomCulture);
 
-            RadiographyService service = new RadiographyService();
+            var service = new RadiographyService();
             if (foundryName == "") foundryName = null;
             return service.GetChanges(foundryName, fromDate, toDate);
         }
@@ -102,11 +117,15 @@ namespace RadiographyTracking.Web
         /// <returns></returns>
         private DocumentGenerationInfo GetDocumentGenerationInfo(string docType, string docVersion, object dataContext, string fileName, bool useDataBoundControls)
         {
-            DocumentGenerationInfo generationInfo = new DocumentGenerationInfo();
-            generationInfo.Metadata = new DocumentMetadata() { DocumentType = docType, DocumentVersion = docVersion };
-            generationInfo.DataContext = dataContext;
-            generationInfo.TemplateData = File.ReadAllBytes(Server.MapPath("~/ReportTemplates/" + fileName));
-            generationInfo.IsDataBoundControls = useDataBoundControls;
+            var generationInfo = new DocumentGenerationInfo
+                                     {
+                                         Metadata =
+                                             new DocumentMetadata {DocumentType = docType, DocumentVersion = docVersion},
+                                         DataContext = dataContext,
+                                         TemplateData =
+                                             File.ReadAllBytes(Server.MapPath("~/ReportTemplates/" + fileName)),
+                                         IsDataBoundControls = useDataBoundControls
+                                     };
             return generationInfo;
         }
 
@@ -115,14 +134,12 @@ namespace RadiographyTracking.Web
         /// Writes the output to file.
         /// </summary>
         /// <param name="fileName">Name of the file.</param>
-        /// <param name="templateName">Name of the template.</param>
         /// <param name="fileContents">The file contents.</param>
         private string WriteOutputToFile(string fileName, byte[] fileContents)
         {
-            ConsoleColor consoleColor = Console.ForegroundColor;
             if (fileContents != null)
             {
-                String path = Server.MapPath("~/ReportTemplates/" + fileName);
+                var path = Server.MapPath("~/ReportTemplates/" + fileName);
                 File.WriteAllBytes(path, fileContents);
                 return path;
             }

@@ -403,7 +403,7 @@ namespace RadiographyTracking.Web.Services
         /// <summary>
         /// This function returns the data for the stock balance report
         /// </summary>
-        /// <param name="foundry"></param>
+        /// <param name="foundryId"> </param>
         /// <param name="fromDate"></param>
         /// <param name="toDate"></param>
         /// <returns></returns>
@@ -415,18 +415,18 @@ namespace RadiographyTracking.Web.Services
                 .Select(p => new
                 {
                     Date = p.Date,
-                    SentToHO = p.Direction.ID == sentToHO.ID ? p.Area : 0,
-                    Consumed = 0,
-                    ReceivedFromHO = p.Direction.ID == sentToHO.ID ? 0 : p.Area
+                    SentToHO = (float) (p.Direction.ID == sentToHO.ID ? p.Area : 0),
+                    Consumed = (float) 0,
+                    ReceivedFromHO = (float) (p.Direction.ID == sentToHO.ID ? 0 : p.Area)
                 });
 
             var consumptions = this.DbContext.RGReportRows.Where(p => p.RGReport.FixedPattern.Customer.FoundryID.Equals(foundryId))
                                                             .Select(p => new
                                                             {
                                                                 Date = p.RGReport.ReportDate,
-                                                                SentToHO = 0,
+                                                                SentToHO = (float) 0,
                                                                 Consumed = p.FilmSize.Area,
-                                                                ReceivedFromHO = 0
+                                                                ReceivedFromHO = (float) 0
                                                             });
 
             var all = transactions.Union(consumptions).ToList();
@@ -466,12 +466,16 @@ namespace RadiographyTracking.Web.Services
 
         public IEnumerable<FilmConsumptionReportRow> GetFilmConsumptionReport(int foundryId, DateTime fromDate, DateTime toDate)
         {
+            //to ensure that time component of the date does not make some dates get excluded
+            fromDate = fromDate.Date;
+            toDate = toDate.Date.AddDays(1);
 
             var intermediate = (from r in this.DbContext.RGReportRows
                                 orderby r.RGReport.ReportDate, r.RGReport.ReportNo
                                 let rowFID = r.RGReport.FixedPattern.Customer.FoundryID
                                 where rowFID == (foundryId == -1 ? rowFID : foundryId)
                                 && r.RowType.Value != "RETAKE"               //retakes are not considered in the film consumption report
+                                && r.RGReport.ReportDate >= fromDate && r.RGReport.ReportDate <= toDate
                                 group r by new { r.RGReport, r.RGReport.FixedPattern, r.Energy, r.RowType } into g
                                 select new { Key = g.Key, Area = g.Sum(p => p.FilmSize.Area) }).ToList();
 

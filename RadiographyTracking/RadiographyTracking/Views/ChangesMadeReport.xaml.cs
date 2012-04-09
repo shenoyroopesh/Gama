@@ -78,8 +78,8 @@ namespace RadiographyTracking.Views
 
             Uri reportURI = new Uri(string.Format(appRoot + "ChangesReportGenerate.aspx?FOUNDRY_NAME={0}&FROM_DATE={1}&TO_DATE={2}",
                                                     (foundryName == null? "" : foundryName.ToString()),
-                                                    (fromDate == null ? "" : ((DateTime)fromDate).ToString("MM/dd/yyyy")),
-                                                    (toDate == null ? "" : ((DateTime)toDate).ToString("MM/dd/yyyy"))), UriKind.Absolute);
+                                                    (fromDate == null ? "" : ((DateTime)fromDate).ToString("dd/MM/yyyy")),
+                                                    (toDate == null ? "" : ((DateTime)toDate).ToString("dd/MM/yyyy"))), UriKind.Absolute);
 
             HtmlPage.Window.Navigate(reportURI, "_blank");
         }

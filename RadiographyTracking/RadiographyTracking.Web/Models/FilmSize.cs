@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.ComponentModel.DataAnnotations;
 
 namespace RadiographyTracking.Web.Models
@@ -10,8 +7,8 @@ namespace RadiographyTracking.Web.Models
     {
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ID { get; set; }
-        public int Width { get; set; }
-        public int Length { get; set; }
+        public float Width { get; set; }
+        public float Length { get; set; }
 
         /// <summary>
         /// Returns the name in the format Height X Width
@@ -25,16 +22,18 @@ namespace RadiographyTracking.Web.Models
             }
         }
 
-        public int Area
+        public float Area
         {
             get
             {
                 return Width * Length;
             }
 
+// ReSharper disable ValueParameterNotUsed
             private set
+// ReSharper restore ValueParameterNotUsed
             {
-
+                
             }
         }
     }

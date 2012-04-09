@@ -1,24 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Windows.Shapes;
-using System.Windows.Navigation;
 using RadiographyTracking.Web.Models;
 using Vagsons.Controls;
 using System.Windows.Data;
 using RadiographyTracking.Web.Services;
-using System.Collections;
 using System.ServiceModel.DomainServices.Client;
 using BindableDataGrid.Data;
 using RadiographyTracking.Controls;
-using System.Threading;
 
 namespace RadiographyTracking.Views
 {
@@ -31,6 +21,7 @@ namespace RadiographyTracking.Views
             this.ExcludePropertiesFromTracking.Add("RGReport");
             this.ExcludePropertiesFromTracking.Add("RGReportRows");
             this.ExcludePropertiesFromTracking.Add("CanDelete");
+            this.ExcludePropertiesFromTracking.Add("RowsDeleted");
 
             this.OnCancelNavigation = "/RadiographyReports";
 
@@ -207,23 +198,23 @@ namespace RadiographyTracking.Views
         {
             get
             {
-                return (RGReportRows == null ? 0 : 
-                            RGReportRows.Sum(p => 
+                return (RGReportRows == null ? 0 :
+                            RGReportRows.Sum(p =>
                                             (p.FilmSize == null ? 0 : p.FilmSize.Area)))
                                             .ToString() + " Sq. Inches";
             }
         }
 
-        public void updateEnergyWiseArea()
+        public void UpdateEnergyWiseArea()
         {
-            RadiographyContext ctx = (RadiographyContext)this.DomainSource.DomainContext;
-            DataTable dt = new DataTable("EnergyTable");
+            var ctx = (RadiographyContext)this.DomainSource.DomainContext;
+            var dt = new DataTable("EnergyTable");
             AddTextColumn(dt, "HeadRow", "HeadRow");
-            DataRow headerRow = new DataRow();
-            DataRow actualRow = new DataRow();
+            var headerRow = new DataRow();
+            var actualRow = new DataRow();
             headerRow["HeadRow"] = "Isotope";
             actualRow["HeadRow"] = "Sq. Inches";
-            
+
             //instead of encountering an error if context is still loading, just don't do it, it will get 
             //done on the first save operation
             if (ctx.IsLoading)
@@ -236,7 +227,7 @@ namespace RadiographyTracking.Views
                 actualRow[e.Name] = RGReportRows.Where(p => p.EnergyID == e.ID).Sum(p => p.FilmSize.Area);
             }
 
-            dt.Rows.Add(headerRow); 
+            dt.Rows.Add(headerRow);
             dt.Rows.Add(actualRow);
 
             energyAreas.DataSource = dt;
@@ -247,13 +238,15 @@ namespace RadiographyTracking.Views
 
         private static void AddTextColumn(DataTable reportTable, String columnName, String caption)
         {
-            DataColumn dc = new DataColumn(columnName);
-            dc.Caption = caption;
-            dc.ReadOnly = true;
-            dc.DataType = typeof(String);
-            dc.AllowResize = true;
-            dc.AllowSort = false;
-            dc.AllowReorder = false;
+            var dc = new DataColumn(columnName)
+                         {
+                             Caption = caption,
+                             ReadOnly = true,
+                             DataType = typeof(String),
+                             AllowResize = true,
+                             AllowSort = false,
+                             AllowReorder = false
+                         };
             reportTable.Columns.Add(dc);
         }
 
@@ -261,7 +254,7 @@ namespace RadiographyTracking.Views
         public override void AddOperation(object sender, RoutedEventArgs e)
         {
             //also give a few default empty string values so that UI copy operation is possible
-            RGReportRow RGReportRow = new RGReportRow()
+            var rgReportRow = new RGReportRow
                                             {
                                                 RGReport = this.RGReport,
                                                 //auto increment sl no for each additional row
@@ -280,7 +273,7 @@ namespace RadiographyTracking.Views
                                                                 .FirstOrDefault(p => p.Value == "FRESH")
                                             };
 
-            RGReportRows.Add(RGReportRow);
+            RGReportRows.Add(rgReportRow);
             OnPropertyChanged("RGReportRows");
         }
 
@@ -298,7 +291,7 @@ namespace RadiographyTracking.Views
             RGReportRows = RGReport.RGReportRows;
             //now that fixedpatternid is available
             FixedPatternsSource.Load();
-            updateEnergyWiseArea();
+            UpdateEnergyWiseArea();
             OnPropertyChanged("TotalArea");
 
             //if edit mode, add a clone of original RGReport to original entities for change tracking
@@ -322,13 +315,16 @@ namespace RadiographyTracking.Views
                 //also delete from the datacontext
                 ((RadiographyContext)this.DomainSource.DomainContext).RGReportRows
                                     .Remove(row.DataContext as RGReportRow);
+
+                //mark at least one row deleted
+                RGReport.RowsDeleted = true;
             }
         }
 
         private void FetchOperation(object sender, RoutedEventArgs e)
         {
             //ensure that the mandatory fields are filled
-            if(String.IsNullOrEmpty(this.txtFPNo.Text) ||
+            if (String.IsNullOrEmpty(this.txtFPNo.Text) ||
                 String.IsNullOrEmpty(this.txtRTNo.Text) ||
                 this.cmbCoverage.SelectedIndex == -1)
             {
@@ -351,7 +347,7 @@ namespace RadiographyTracking.Views
                 var duplicateRow = RGReportRows.FirstOrDefault(p => p.SlNo == row.SlNo && p != row);
                 if (duplicateRow != null)
                 {
-                    MessageBox.Show("Sl no " + row.SlNo + " has been repeated twice, Correct this before saving");
+                    MessageBox.Show(string.Format("Sl no {0} has been repeated twice, Correct this before saving", row.SlNo));
                     return;
                 }
 
@@ -359,7 +355,7 @@ namespace RadiographyTracking.Views
                 var conflictingRow = RGReportRows.FirstOrDefault(p => p.SlNo != row.SlNo && p.Location == row.Location && p.Segment == row.Segment);
                 if (conflictingRow != null)
                 {
-                    MessageBox.Show("Rows with Sl No " + row.SlNo + " and " + conflictingRow.SlNo + " have the same location and segments. Correct this before saving");
+                    MessageBox.Show(string.Format("Rows with Sl No {0} and {1} have the same location and segments. Correct this before saving", row.SlNo, conflictingRow.SlNo));
                     return;
                 }
             }
@@ -367,12 +363,14 @@ namespace RadiographyTracking.Views
             /** FOR SIMPLICITY OF DESIGN, SERVER DEPENDS ON THE CLIENT TO SET THE STATUS. THIS IS IMPORTANT! WITHOUT THIS THE LOGIC WILL FAIL **/
 
             MessageBoxResult result;
-            if (RGReportRows.Where(p => p.RemarkText.Trim() == String.Empty).Count() > 0)
+            if (RGReportRows.Any(p => p.RemarkText.Trim() == String.Empty))
             {
                 result = MessageBox.Show("Save Incomplete Report. Fetching this RT No will fetch Same Report again",
                     "Confirm Save", MessageBoxButton.OKCancel);
             }
-            else if (RGReportRows.Where(p => p.RemarkText.ToUpper() != "ACCEPTABLE").Count() > 0)
+                //for the first report, deleted rows do not affect status of the casting but for later reports if even a single row
+                // is deleted, then the report can never be the final report (hence the casting will remain in pending state)
+            else if (RGReportRows.Any(p => p.RemarkText.ToUpper() != "ACCEPTABLE") || ((!RGReport.First) && RGReport.RowsDeleted))
             {
                 result = MessageBox.Show("Mark Casting as Pending. At least one report is needed after this for this RT No",
                     "Confirm Save", MessageBoxButton.OKCancel);
@@ -396,7 +394,7 @@ namespace RadiographyTracking.Views
             base.SaveOperation(sender, e);
 
             //update the energy grid
-            updateEnergyWiseArea();
+            UpdateEnergyWiseArea();
 
             //clear and repopulate the original entities collection
             OriginalEntities.Clear();
@@ -472,10 +470,10 @@ namespace RadiographyTracking.Views
 
         #endregion
 
-        private void FilmSizeArea_LoadCompleted(object sender, System.ComponentModel.AsyncCompletedEventArgs e)
+        void FilmSizeAreaLoadCompleted(object sender, System.ComponentModel.AsyncCompletedEventArgs e)
         {
             //in case it din't load earlier
-            updateEnergyWiseArea();
+            UpdateEnergyWiseArea();
         }
     }
 }

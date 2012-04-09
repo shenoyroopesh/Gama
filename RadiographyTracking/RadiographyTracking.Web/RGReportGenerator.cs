@@ -259,9 +259,9 @@ namespace RadiographyTracking.Web
                             break;
                     }
                 }
-                else if (openXmlElementDataContext.DataContext is KeyValuePair<String, int>)
+                else if (openXmlElementDataContext.DataContext is KeyValuePair<String, float>)
                 {
-                    var keyvalue = (KeyValuePair<String, int>)openXmlElementDataContext.DataContext;
+                    var keyvalue = (KeyValuePair<String, float>)openXmlElementDataContext.DataContext;
                     switch (tagPlaceHolderValue)
                     {
                         case Isotope:

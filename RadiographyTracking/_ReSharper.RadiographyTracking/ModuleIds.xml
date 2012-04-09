@@ -1,0 +1,9 @@
+<Modules>
+  <Module PersistentId="047DE654-37E2-4918-97C7-9BD5FEFDA845" ModuleId="MenuControl" />
+  <Module PersistentId="53277F89-C6C2-4C57-939E-4ECB23EAE4BD" ModuleId="BindableDataGrid" />
+  <Module PersistentId="BE633745-04FC-4865-8B0F-337B74356E75" ModuleId="RadiographyTracking.Web" />
+  <Module PersistentId="C041C8C6-AC4E-4F74-A827-7F3D790E1ACE" ModuleId="WordDocumentGenerator.Library" />
+  <Module PersistentId="4D601F4D-7221-452D-9981-A9A092C14922" ModuleId="RadiographyTracking" />
+  <Module PersistentId="B885C7C7-1917-483D-A179-1579D1428B7C" ModuleId="CustomControls" />
+  <Module PersistentId="4B47504F-AC43-4A3E-9990-FA1183CD1F1F" ModuleId="ComboBoxExtensions" />
+</Modules>

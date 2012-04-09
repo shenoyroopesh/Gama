@@ -132,6 +132,10 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="Migrations\201203311409394_FilmSizeIntToFloat.cs" />
+    <Compile Include="Migrations\201203311409394_FilmSizeIntToFloat.Designer.cs">
+      <DependentUpon>201203311409394_FilmSizeIntToFloat.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Settings.cs" />
     <Compile Include="Models\Change.cs" />
     <Compile Include="Models\Company.cs" />

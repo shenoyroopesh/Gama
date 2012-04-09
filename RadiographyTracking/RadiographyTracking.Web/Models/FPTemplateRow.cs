@@ -29,33 +29,30 @@ namespace RadiographyTracking.Web.Models
             {
                 if(this.FilmSizeID == 0) return  " ";
                 //TODO: see if context can be injected instead of using like this
-                using (RadiographyContext ctx = new RadiographyContext())
+                using (var ctx = new RadiographyContext())
                 {
                     var filmSizes = ctx.FilmSizes.Where(p => p.ID == this.FilmSizeID);
-                    if (filmSizes.Count() > 0)
-                        return filmSizes.First().Name;
-                    else
-                        return " ";
+                    return filmSizes.Any() ? filmSizes.First().Name : " ";
                 }
             }
             set
             {
-                int length, width;
+                float length, width;
                 try
                 {
                     String[] dimensions = value.Split('X');
-                    width = Convert.ToInt32(dimensions[0]);
-                    length = Convert.ToInt32(dimensions[1]);
+                    width = float.Parse(dimensions[0]);
+                    length = float.Parse(dimensions[1]);
                 }
                 catch
                 {
                     return;
                 }
 
-                using (RadiographyContext ctx = new RadiographyContext())
+                using (var ctx = new RadiographyContext())
                 {
                     var filmsizes = ctx.FilmSizes.Where(p => p.Length == length && p.Width == width);
-                    if (filmsizes.Count() > 0)
+                    if (filmsizes.Any())
                     {
                         this.FilmSizeID = filmsizes.First().ID;
                     }

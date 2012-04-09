@@ -31,6 +31,6 @@ namespace RadiographyTracking.Web.Models
 
         public Direction Direction { get; set; }
 
-        public int Area { get; set; }
+        public float Area { get; set; }
     }
 }

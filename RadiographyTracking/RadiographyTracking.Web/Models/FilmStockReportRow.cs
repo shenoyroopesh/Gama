@@ -16,18 +16,18 @@ namespace RadiographyTracking.Web.Models
         public DateTime Date { get; set; }
 
         [NotMapped]
-        public int OpeningStock { get; set; }
+        public float OpeningStock { get; set; }
 
         [NotMapped]
-        public int SentToHO { get; set; }
+        public float SentToHO { get; set; }
 
         [NotMapped]
-        public int Consumed { get; set; }
+        public float Consumed { get; set; }
 
         [NotMapped]
-        public int ReceivedFromHO { get; set; }
+        public float ReceivedFromHO { get; set; }
 
         [NotMapped]
-        public int ClosingStock { get; set; }
+        public float ClosingStock { get; set; }
     }
 }

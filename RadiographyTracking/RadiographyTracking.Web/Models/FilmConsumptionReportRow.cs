@@ -23,6 +23,6 @@ namespace RadiographyTracking.Web.Models
         [NotMapped]
         public String RowType { get; set; }
         [NotMapped]
-        public int Area { get; set; }
+        public float Area { get; set; }
     }
 }

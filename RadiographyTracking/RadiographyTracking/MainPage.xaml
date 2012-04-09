@@ -88,6 +88,9 @@
                             </menu:MenuBarItem>
                         </menu:MenuBar>
                         <menu:MenuBar Name="clerkMenuBar" VerticalAlignment="Center" Visibility="Collapsed">
+						    <menu:MenuBarItem MenuText="Foundry Setup" >
+                                <menu:MenuItem MenuText="Fixed Patterns"  Click="MenuItem_Click" NavigationURI="/FixedPatterns"/>
+                            </menu:MenuBarItem>
                             <menu:MenuBarItem  MenuText="Entry" >
                                 <menu:MenuItem MenuText="Film Transactions"  Click="MenuItem_Click" NavigationURI="/FilmTransactions"/>
                                 <menu:MenuItem MenuText="Radiography Entry"  Click="MenuItem_Click" NavigationURI="/RadiographyReports"/>

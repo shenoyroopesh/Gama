@@ -22,7 +22,7 @@
     /// <summary>
     /// Domain Service responsible for registering users.
     /// </summary>
-    [EnableClientAccess, RequiresAuthentication, RequiresRole("admin")]
+    [EnableClientAccess, RequiresAuthentication]
     public class UserRegistrationService : DomainService
     {
         /// <summary>
@@ -34,6 +34,7 @@
         /// This method gets all the registration data for the users
         /// </summary>
         /// <returns></returns>
+        [RequiresRole("admin")]
         public IEnumerable<RegistrationData> GetUsers()
         {
             var users = Membership.GetAllUsers();

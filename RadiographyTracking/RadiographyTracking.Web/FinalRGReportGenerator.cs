@@ -230,11 +230,11 @@ namespace RadiographyTracking.Web
                         break;
                     case Logo:
                         //get the company logo
-                        var logo = row.getCompanyLogo();
+                        var logo = row.GetCompanyLogo();
                         SetLogo(openXmlElementDataContext.Element as SdtElement, logo, document);
                         break;
                     case CustomerLogo:
-                        var customerLogo = row.getCustomerLogo();
+                        var customerLogo = row.GetCustomerLogo();
                         SetLogo(openXmlElementDataContext.Element as SdtElement, customerLogo, document);
                         break;
                 }
@@ -279,9 +279,9 @@ namespace RadiographyTracking.Web
                             break;
                     }
                 }
-                else if (openXmlElementDataContext.DataContext is KeyValuePair<String, int>)
+                else if (openXmlElementDataContext.DataContext is KeyValuePair<String, float>)
                 {
-                    var keyvalue = (KeyValuePair<String, int>)openXmlElementDataContext.DataContext;
+                    var keyvalue = (KeyValuePair<String, float>)openXmlElementDataContext.DataContext;
                     switch (tagPlaceHolderValue)
                     {
                         case Isotope:

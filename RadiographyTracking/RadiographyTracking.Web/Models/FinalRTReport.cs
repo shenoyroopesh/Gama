@@ -108,14 +108,12 @@ namespace RadiographyTracking.Web.Models
         /// </summary>
         [NotMapped]
         [Exclude]
-        public Dictionary<String, int> EnergyAreas
+        public Dictionary<String, float> EnergyAreas
         {
             get
             {
                 if (FinalRTReportRows == null)
                     return null;
-
-                Dictionary<String, int> rows = new Dictionary<string, int>();
 
                 var summary = from r in FinalRTReportRows
                               group r by r.Energy.Name into g
@@ -123,21 +121,17 @@ namespace RadiographyTracking.Web.Models
                               {
                                   Energy = g.Key,
                                   Area = g.Select(p => p.FilmSize == null ? 0 : p.FilmSize.Area).Sum()
-                              };
+                              };    
 
-                foreach (var s in summary)
-                {
-                    rows.Add(s.Energy, s.Area);
-                }
-                return rows;
+                return summary.ToDictionary(s => s.Energy, s => s.Area);
             }
         }
 
-        public byte[] getCompanyLogo()
+        public byte[] GetCompanyLogo()
         {
-            using (RadiographyContext ctx = new RadiographyContext())
+            using (var ctx = new RadiographyContext())
             {
-                Company company = ctx.Companies.Include(p => p.Logo).First();
+                var company = ctx.Companies.Include(p => p.Logo).First();
                 if (company.Logo != null)
                 {
                     return company.Logo.FileData;
@@ -146,11 +140,11 @@ namespace RadiographyTracking.Web.Models
             return null;
         }
 
-        public byte[] getCustomerLogo()
+        public byte[] GetCustomerLogo()
         {
-            using (RadiographyContext ctx = new RadiographyContext())
+            using (var ctx = new RadiographyContext())
             {
-                Customer customer = ctx.FixedPatterns.Where(p => p.ID == this.FixedPatternID)
+                var customer = ctx.FixedPatterns.Where(p => p.ID == this.FixedPatternID)
                                         .Include(p => p.Customer.Logo)
                                         .First()
                                         .Customer;

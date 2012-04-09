@@ -63,10 +63,10 @@ namespace RadiographyTracking.Web.Models
             {
                 if (this.FilmSizeID == 0) return " ";
                 //TODO: see if context can be injected instead of using like this
-                using (RadiographyContext ctx = new RadiographyContext())
+                using (var ctx = new RadiographyContext())
                 {
                     var filmSizes = ctx.FilmSizes.Where(p => p.ID == this.FilmSizeID);
-                    if (filmSizes.Count() > 0)
+                    if (filmSizes.Any())
                         return filmSizes.First().Name;
                     else
                         return " ";
@@ -74,22 +74,22 @@ namespace RadiographyTracking.Web.Models
             }
             set
             {
-                int length, width;
+                float length, width;
                 try
                 {
-                    String[] dimensions = value.Split('X');
-                    length = Convert.ToInt32(dimensions[0]);
-                    width = Convert.ToInt32(dimensions[1]);
+                    var dimensions = value.Split('X');
+                    length = float.Parse(dimensions[0]);
+                    width = float.Parse(dimensions[1]);
                 }
                 catch
                 {
                     return;
                 }
 
-                using (RadiographyContext ctx = new RadiographyContext())
+                using (var ctx = new RadiographyContext())
                 {
                     var filmsizes = ctx.FilmSizes.Where(p => p.Length == length && p.Width == width);
-                    if (filmsizes.Count() > 0)
+                    if (filmsizes.Any())
                     {
                         this.FilmSizeID = filmsizes.First().ID;
                     }
@@ -107,18 +107,15 @@ namespace RadiographyTracking.Web.Models
             {
                 if (this.EnergyID == 0) return " ";
                 //TODO: see if context can be injected instead of using like this
-                using (RadiographyContext ctx = new RadiographyContext())
+                using (var ctx = new RadiographyContext())
                 {
                     var remarks = ctx.Energies.Where(p => p.ID == this.EnergyID);
-                    if (remarks.Count() > 0)
-                        return remarks.First().Name;
-                    else
-                        return " ";
+                    return remarks.Any() ? remarks.First().Name : " ";
                 }
             }
             set
             {
-                using (RadiographyContext ctx = new RadiographyContext())
+                using (var ctx = new RadiographyContext())
                 {
                     try
                     {
@@ -143,18 +140,15 @@ namespace RadiographyTracking.Web.Models
             {
                 if (this.RemarkID == 0 || this.RemarkID == null) return " ";
                 //TODO: see if context can be injected instead of using like this
-                using (RadiographyContext ctx = new RadiographyContext())
+                using (var ctx = new RadiographyContext())
                 {
                     var remarks = ctx.Remarks.Where(p => p.ID == this.RemarkID);
-                    if (remarks.Count() > 0)
-                        return remarks.First().Value;
-                    else
-                        return " ";
+                    return remarks.Any() ? remarks.First().Value : " ";
                 }
             }
             set
             {                
-                using (RadiographyContext ctx = new RadiographyContext())
+                using (var ctx = new RadiographyContext())
                 {
                     try
                     {
@@ -178,18 +172,15 @@ namespace RadiographyTracking.Web.Models
             {
                 if (this.WelderID == 0 || this.WelderID == null) return " ";
                 //TODO: see if context can be injected instead of using like this
-                using (RadiographyContext ctx = new RadiographyContext())
+                using (var ctx = new RadiographyContext())
                 {
                     var welders = ctx.Welders.Where(p => p.ID == this.WelderID);
-                    if (welders.Count() > 0)
-                        return welders.First().Name;
-                    else
-                        return " ";
+                    return welders.Any() ? welders.First().Name : " ";
                 }
             }
             set
             {
-                using (RadiographyContext ctx = new RadiographyContext())
+                using (var ctx = new RadiographyContext())
                 {
                     try
                     {
@@ -213,18 +204,15 @@ namespace RadiographyTracking.Web.Models
             {
                 if (this.TechnicianID == 0 || this.TechnicianID == null) return " ";
                 //TODO: see if context can be injected instead of using like this
-                using (RadiographyContext ctx = new RadiographyContext())
+                using (var ctx = new RadiographyContext())
                 {
                     var technicians = ctx.Technicians.Where(p => p.ID == this.TechnicianID);
-                    if (technicians.Count() > 0)
-                        return technicians.First().Name;
-                    else
-                        return " ";
+                    return technicians.Any() ? technicians.First().Name : " ";
                 }
             }
             set
             {
-                using (RadiographyContext ctx = new RadiographyContext())
+                using (var ctx = new RadiographyContext())
                 {
                     try
                     {

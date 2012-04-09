@@ -1,0 +1,11 @@
+<Configuration>
+  <SnapshotDialog>
+    <InitialDirectory>D:\ClientWork\Gama\RadiographyTracking</InitialDirectory>
+  </SnapshotDialog>
+  <CoverageFilters>
+    <IncludeFilters>
+      <Filter ModuleMask="*" ClassMask="*" FunctionMask="*" />
+    </IncludeFilters>
+    <ExcludeFilters />
+  </CoverageFilters>
+</Configuration>
