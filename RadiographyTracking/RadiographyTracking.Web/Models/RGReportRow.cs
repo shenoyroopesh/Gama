@@ -14,6 +14,17 @@ namespace RadiographyTracking.Web.Models
         public int SlNo { get; set; }
         public String Location { get; set; }
         public String Segment { get; set; }
+
+        /// <summary>
+        /// This captures exactly what is entered in the UI
+        /// Can only be numbers and dashes - like 88-90 for eg. 
+        /// UI - level validation for this
+        /// </summary>
+        public string ThicknessString { get; set; }
+
+        /// <summary>
+        /// This is derived from what is entered in the UI
+        /// </summary>
         public int Thickness { get; set; }
 
         public int EnergyID { get; set; }
@@ -28,6 +39,9 @@ namespace RadiographyTracking.Web.Models
 
         [Include]
         public FilmSize FilmSize { get; set; }
+
+        //added by Roopesh: 26-May-2012 - need to allow multiple films in a row
+        public int FilmCount { get; set; }
 
         public String Observations { get; set; }
 
