@@ -54,12 +54,10 @@ namespace RadiographyTracking.Web
         protected const string FilmSize = "FilmSize";
         protected const string Observation = "Observation";
         protected const string Remarks = "Remarks";
-
         protected const string Result = "Result";
         protected const string TotalArea = "TotalArea";
         protected const string Isotope = "Isotope";
         protected const string Area = "Area";
-
         protected const string IsotopeCollection = "IsotopeCollection";
         protected const string AreaCollection = "AreaCollection";
 
@@ -121,8 +119,8 @@ namespace RadiographyTracking.Web
             placeHolderTagToTypeCollection.Add(Observation, PlaceHolderType.NonRecursive);
             placeHolderTagToTypeCollection.Add(Remarks, PlaceHolderType.NonRecursive);
             placeHolderTagToTypeCollection.Add(Result, PlaceHolderType.NonRecursive);
-            placeHolderTagToTypeCollection.Add(TotalArea, PlaceHolderType.NonRecursive);
 
+            placeHolderTagToTypeCollection.Add(TotalArea, PlaceHolderType.NonRecursive);
             placeHolderTagToTypeCollection.Add(Isotope, PlaceHolderType.NonRecursive);
             placeHolderTagToTypeCollection.Add(Area, PlaceHolderType.NonRecursive);
 
@@ -234,7 +232,7 @@ namespace RadiographyTracking.Web
                             content = reportRow.LocationAndSegment;
                             break;
                         case Thickness:
-                            content = reportRow.Thickness.ToString();
+                            content = reportRow.ThicknessRange;
                             break;
                         case SFD:
                             content = reportRow.SFD.ToString();
@@ -249,7 +247,9 @@ namespace RadiographyTracking.Web
                             content = reportRow.Density;
                             break;
                         case FilmSize:
-                            content = reportRow.FilmSizeString;
+                            content = reportRow.FilmSizeString 
+                                //to show as 8X9X2 if there are two films of sizes 8X9
+                                + ((reportRow.FilmCount > 1) ? ("X" + reportRow.FilmCount.ToString()) : String.Empty);
                             break;
                         case Observation:
                             content = reportRow.Observations;

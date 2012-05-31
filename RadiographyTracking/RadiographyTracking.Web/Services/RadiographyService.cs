@@ -425,7 +425,7 @@ namespace RadiographyTracking.Web.Services
                                                             {
                                                                 Date = p.RGReport.ReportDate,
                                                                 SentToHO = (float) 0,
-                                                                Consumed = p.FilmSize.Area,
+                                                                Consumed = p.FilmSize.Area * p.FilmCount,
                                                                 ReceivedFromHO = (float) 0
                                                             });
 
@@ -477,7 +477,7 @@ namespace RadiographyTracking.Web.Services
                                 && r.RowType.Value != "RETAKE"               //retakes are not considered in the film consumption report
                                 && r.RGReport.ReportDate >= fromDate && r.RGReport.ReportDate <= toDate
                                 group r by new { r.RGReport, r.RGReport.FixedPattern, r.Energy, r.RowType } into g
-                                select new { Key = g.Key, Area = g.Sum(p => p.FilmSize.Area) }).ToList();
+                                select new { Key = g.Key, Area = g.Sum(p => p.FilmSize.Area * p.FilmCount) }).ToList();
 
 
             return from g in intermediate

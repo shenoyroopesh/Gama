@@ -20,7 +20,7 @@ namespace RadiographyTracking.Web.Models
         /// Can only be numbers and dashes - like 88-90 for eg. 
         /// UI - level validation for this
         /// </summary>
-        public string ThicknessString { get; set; }
+        public string ThicknessRange { get; set; }
 
         /// <summary>
         /// This is derived from what is entered in the UI

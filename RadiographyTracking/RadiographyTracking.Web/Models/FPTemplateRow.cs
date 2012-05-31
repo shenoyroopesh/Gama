@@ -22,6 +22,9 @@ namespace RadiographyTracking.Web.Models
         public int FilmSizeID { get; set; }
         public FilmSize FilmSize { get; set; }
 
+        //added to support a range, only the average will be used for picking the right energy values
+        public string ThicknessRange { get; set; }
+
         [NotMapped]
         public String FilmSizeString
         {

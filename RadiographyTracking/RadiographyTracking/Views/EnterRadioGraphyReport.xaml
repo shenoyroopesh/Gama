@@ -195,7 +195,7 @@
                                 <sdk:DataGridTextColumn Header="SlNo" Binding="{Binding Path=SlNo, Mode=TwoWay}"></sdk:DataGridTextColumn>
                                 <sdk:DataGridTextColumn Header="Location" Binding="{Binding Path=Location, Mode=TwoWay}"></sdk:DataGridTextColumn>
                                 <sdk:DataGridTextColumn Header="Segment" Binding="{Binding Path=Segment, Mode=TwoWay}"></sdk:DataGridTextColumn>
-                                <sdk:DataGridTextColumn Header="Thickness" Binding="{Binding Path=Thickness, Mode=TwoWay}"></sdk:DataGridTextColumn>
+                                <sdk:DataGridTextColumn Header="Thickness" Binding="{Binding Path=ThicknessRangeUI, Mode=TwoWay}"></sdk:DataGridTextColumn>
                                 <sdk:DataGridTemplateColumn Header="Energy">
                                     <sdk:DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
@@ -233,6 +233,7 @@
                                         </DataTemplate>
                                     </sdk:DataGridTemplateColumn.CellEditingTemplate>
                                 </sdk:DataGridTemplateColumn>
+                                <sdk:DataGridTextColumn Header="Film Count" Binding="{Binding Path=FilmCount, Mode=TwoWay}"></sdk:DataGridTextColumn>
                                 <sdk:DataGridTextColumn Header="Observation" Binding="{Binding Path=Observations, Mode=TwoWay}"></sdk:DataGridTextColumn>
                                 <sdk:DataGridTemplateColumn Header="Remark">
                                     <sdk:DataGridTemplateColumn.CellTemplate>
@@ -309,7 +310,7 @@
                                 <sdk:DataGridTextColumn Header="SlNo" IsReadOnly="True" Binding="{Binding Path=SlNo, Mode=OneWay}"></sdk:DataGridTextColumn>
                                 <sdk:DataGridTextColumn Header="Location" IsReadOnly="True" Binding="{Binding Path=Location, Mode=OneWay}"></sdk:DataGridTextColumn>
                                 <sdk:DataGridTextColumn Header="Segment" IsReadOnly="True" Binding="{Binding Path=Segment, Mode=OneWay}"></sdk:DataGridTextColumn>
-                                <sdk:DataGridTextColumn Header="Thickness" IsReadOnly="True" Binding="{Binding Path=Thickness, Mode=OneWay}"></sdk:DataGridTextColumn>
+                                <sdk:DataGridTextColumn Header="Thickness" IsReadOnly="True" Binding="{Binding Path=ThicknessRangeUI, Mode=OneWay}"></sdk:DataGridTextColumn>
                                 <sdk:DataGridTextColumn Header="Energy" IsReadOnly="True" 
                                                         Binding="{Binding Path=EnergyText, Mode=OneWay}"></sdk:DataGridTextColumn>
                                 <sdk:DataGridTextColumn Header="SFD" IsReadOnly="True" Binding="{Binding Path=SFD, Mode=OneWay}"></sdk:DataGridTextColumn>
@@ -317,6 +318,7 @@
                                 <sdk:DataGridTextColumn Header="Sensitivity" IsReadOnly="True" Binding="{Binding Path=Sensitivity, Mode=OneWay}"></sdk:DataGridTextColumn>
                                 <sdk:DataGridTextColumn Header="Density" IsReadOnly="True" Binding="{Binding Path=Density, Mode=OneWay}"></sdk:DataGridTextColumn>
                                 <sdk:DataGridTextColumn Header="Film Size" IsReadOnly="True" Binding="{Binding Path=FilmSizeString, Mode=OneWay}"></sdk:DataGridTextColumn>
+                                <sdk:DataGridTextColumn Header="Film Count" IsReadOnly="True" Binding="{Binding Path=FilmCount, Mode=TwoWay}"></sdk:DataGridTextColumn>
                                 <sdk:DataGridTextColumn Header="Observation" Binding="{Binding Path=Observations, Mode=TwoWay}"></sdk:DataGridTextColumn>
                                 <sdk:DataGridTemplateColumn Header="Remark">
                                     <sdk:DataGridTemplateColumn.CellTemplate>

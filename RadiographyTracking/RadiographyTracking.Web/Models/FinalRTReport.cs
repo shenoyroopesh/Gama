@@ -120,7 +120,7 @@ namespace RadiographyTracking.Web.Models
                               select new
                               {
                                   Energy = g.Key,
-                                  Area = g.Select(p => p.FilmSize == null ? 0 : p.FilmSize.Area).Sum()
+                                  Area = g.Select(p => p.FilmSize == null ? 0 : p.FilmSize.Area * p.FilmCount).Sum()
                               };    
 
                 return summary.ToDictionary(s => s.Energy, s => s.Area);

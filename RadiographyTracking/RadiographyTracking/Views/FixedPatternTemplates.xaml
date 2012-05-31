@@ -80,7 +80,7 @@
                             <sdk:DataGridTextColumn Header="SlNo" Binding="{Binding Path=SlNo, Mode=OneWay}"></sdk:DataGridTextColumn>
                             <sdk:DataGridTextColumn Header="Location" Binding="{Binding Path=Location, Mode=OneWay}"></sdk:DataGridTextColumn>
                             <sdk:DataGridTextColumn Header="Segment" Binding="{Binding Path=Segment, Mode=OneWay}"></sdk:DataGridTextColumn>
-                            <sdk:DataGridTextColumn Header="Thickness" Binding="{Binding Path=Thickness, Mode=OneWay}"></sdk:DataGridTextColumn>
+                            <sdk:DataGridTextColumn Header="Thickness" Binding="{Binding Path=ThicknessRangeUI, Mode=OneWay}"></sdk:DataGridTextColumn>
                             <!--<sdk:DataGridTextColumn Header="Energy"></sdk:DataGridTextColumn>-->
                             <sdk:DataGridTextColumn Header="SFD" Binding="{Binding Path=SFD, Mode=TwoWay}"></sdk:DataGridTextColumn>
                             <sdk:DataGridTextColumn Header="Designation" Binding="{Binding Path=Designation, Mode=TwoWay}"></sdk:DataGridTextColumn>

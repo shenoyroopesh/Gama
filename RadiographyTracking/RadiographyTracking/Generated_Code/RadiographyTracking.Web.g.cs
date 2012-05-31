@@ -4545,6 +4545,8 @@ namespace RadiographyTracking.Web.Models
         
         private int _energyID;
         
+        private int _filmCount;
+        
         private EntityRef<FilmSize> _filmSize;
         
         private int _filmSizeID;
@@ -4579,6 +4581,8 @@ namespace RadiographyTracking.Web.Models
         
         private int _thickness;
         
+        private string _thicknessRange;
+        
         private Nullable<int> _welderID;
         
         private string _welderText;
@@ -4596,6 +4600,8 @@ namespace RadiographyTracking.Web.Models
         partial void OnDesignationChanged();
         partial void OnEnergyIDChanging(int value);
         partial void OnEnergyIDChanged();
+        partial void OnFilmCountChanging(int value);
+        partial void OnFilmCountChanged();
         partial void OnFilmSizeIDChanging(int value);
         partial void OnFilmSizeIDChanged();
         partial void OnFilmSizeStringChanging(string value);
@@ -4628,6 +4634,8 @@ namespace RadiographyTracking.Web.Models
         partial void OnTechnicianTextChanged();
         partial void OnThicknessChanging(int value);
         partial void OnThicknessChanged();
+        partial void OnThicknessRangeChanging(string value);
+        partial void OnThicknessRangeChanged();
         partial void OnWelderIDChanging(Nullable<int> value);
         partial void OnWelderIDChanged();
         partial void OnWelderTextChanging(string value);
@@ -4757,6 +4765,35 @@ namespace RadiographyTracking.Web.Models
                     this._energyID = value;
                     this.RaiseDataMemberChanged("EnergyID");
                     this.OnEnergyIDChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'FilmCount' value.
+        /// </summary>
+        // The following attributes were not generated:
+        // 
+        // - The attribute 'System.ComponentModel.DataAnnotations.NotMappedAttribute' is not visible in the client project 'RadiographyTracking'. Are you missing an assembly reference?
+        // [NotMappedAttribute()]
+        // 
+        [DataMember()]
+        public int FilmCount
+        {
+            get
+            {
+                return this._filmCount;
+            }
+            set
+            {
+                if ((this._filmCount != value))
+                {
+                    this.OnFilmCountChanging(value);
+                    this.RaiseDataMemberChanging("FilmCount");
+                    this.ValidateProperty("FilmCount", value);
+                    this._filmCount = value;
+                    this.RaiseDataMemberChanged("FilmCount");
+                    this.OnFilmCountChanged();
                 }
             }
         }
@@ -5254,6 +5291,35 @@ namespace RadiographyTracking.Web.Models
                     this._thickness = value;
                     this.RaiseDataMemberChanged("Thickness");
                     this.OnThicknessChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'ThicknessRange' value.
+        /// </summary>
+        // The following attributes were not generated:
+        // 
+        // - The attribute 'System.ComponentModel.DataAnnotations.NotMappedAttribute' is not visible in the client project 'RadiographyTracking'. Are you missing an assembly reference?
+        // [NotMappedAttribute()]
+        // 
+        [DataMember()]
+        public string ThicknessRange
+        {
+            get
+            {
+                return this._thicknessRange;
+            }
+            set
+            {
+                if ((this._thicknessRange != value))
+                {
+                    this.OnThicknessRangeChanging(value);
+                    this.RaiseDataMemberChanging("ThicknessRange");
+                    this.ValidateProperty("ThicknessRange", value);
+                    this._thicknessRange = value;
+                    this.RaiseDataMemberChanged("ThicknessRange");
+                    this.OnThicknessRangeChanged();
                 }
             }
         }
@@ -6192,6 +6258,8 @@ namespace RadiographyTracking.Web.Models
         
         private int _thickness;
         
+        private string _thicknessRange;
+        
         #region Extensibility Method Definitions
 
         /// <summary>
@@ -6223,6 +6291,8 @@ namespace RadiographyTracking.Web.Models
         partial void OnSlNoChanged();
         partial void OnThicknessChanging(int value);
         partial void OnThicknessChanged();
+        partial void OnThicknessRangeChanging(string value);
+        partial void OnThicknessRangeChanged();
 
         #endregion
         
@@ -6611,6 +6681,30 @@ namespace RadiographyTracking.Web.Models
                     this._thickness = value;
                     this.RaiseDataMemberChanged("Thickness");
                     this.OnThicknessChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'ThicknessRange' value.
+        /// </summary>
+        [DataMember()]
+        public string ThicknessRange
+        {
+            get
+            {
+                return this._thicknessRange;
+            }
+            set
+            {
+                if ((this._thicknessRange != value))
+                {
+                    this.OnThicknessRangeChanging(value);
+                    this.RaiseDataMemberChanging("ThicknessRange");
+                    this.ValidateProperty("ThicknessRange", value);
+                    this._thicknessRange = value;
+                    this.RaiseDataMemberChanged("ThicknessRange");
+                    this.OnThicknessRangeChanged();
                 }
             }
         }
@@ -7774,6 +7868,8 @@ namespace RadiographyTracking.Web.Models
         
         private string _energyText;
         
+        private int _filmCount;
+        
         private EntityRef<FilmSize> _filmSize;
         
         private int _filmSizeID;
@@ -7818,6 +7914,8 @@ namespace RadiographyTracking.Web.Models
         
         private int _thickness;
         
+        private string _thicknessRange;
+        
         private EntityRef<Welder> _welder;
         
         private Nullable<int> _welderID;
@@ -7839,6 +7937,8 @@ namespace RadiographyTracking.Web.Models
         partial void OnEnergyIDChanged();
         partial void OnEnergyTextChanging(string value);
         partial void OnEnergyTextChanged();
+        partial void OnFilmCountChanging(int value);
+        partial void OnFilmCountChanged();
         partial void OnFilmSizeIDChanging(int value);
         partial void OnFilmSizeIDChanged();
         partial void OnFilmSizeStringChanging(string value);
@@ -7873,6 +7973,8 @@ namespace RadiographyTracking.Web.Models
         partial void OnTechnicianTextChanged();
         partial void OnThicknessChanging(int value);
         partial void OnThicknessChanged();
+        partial void OnThicknessRangeChanging(string value);
+        partial void OnThicknessRangeChanged();
         partial void OnWelderIDChanging(Nullable<int> value);
         partial void OnWelderIDChanged();
         partial void OnWelderTextChanging(string value);
@@ -8021,6 +8123,30 @@ namespace RadiographyTracking.Web.Models
                     this._energyText = value;
                     this.RaiseDataMemberChanged("EnergyText");
                     this.OnEnergyTextChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'FilmCount' value.
+        /// </summary>
+        [DataMember()]
+        public int FilmCount
+        {
+            get
+            {
+                return this._filmCount;
+            }
+            set
+            {
+                if ((this._filmCount != value))
+                {
+                    this.OnFilmCountChanging(value);
+                    this.RaiseDataMemberChanging("FilmCount");
+                    this.ValidateProperty("FilmCount", value);
+                    this._filmCount = value;
+                    this.RaiseDataMemberChanged("FilmCount");
+                    this.OnFilmCountChanged();
                 }
             }
         }
@@ -8636,6 +8762,30 @@ namespace RadiographyTracking.Web.Models
                     this._thickness = value;
                     this.RaiseDataMemberChanged("Thickness");
                     this.OnThicknessChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'ThicknessRange' value.
+        /// </summary>
+        [DataMember()]
+        public string ThicknessRange
+        {
+            get
+            {
+                return this._thicknessRange;
+            }
+            set
+            {
+                if ((this._thicknessRange != value))
+                {
+                    this.OnThicknessRangeChanging(value);
+                    this.RaiseDataMemberChanging("ThicknessRange");
+                    this.ValidateProperty("ThicknessRange", value);
+                    this._thicknessRange = value;
+                    this.RaiseDataMemberChanged("ThicknessRange");
+                    this.OnThicknessRangeChanged();
                 }
             }
         }

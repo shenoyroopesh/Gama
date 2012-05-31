@@ -29,6 +29,8 @@ namespace RadiographyTracking.Views
             this.ExcludePropertiesFromTracking.Add("FixedPatternTemplateID");
             this.ExcludePropertiesFromTracking.Add("FPTemplateRows");
             this.ExcludePropertiesFromTracking.Add("FilmSize");
+            this.ExcludePropertiesFromTracking.Add("ThicknessRangeUI");
+            this.ExcludePropertiesFromTracking.Add("Thickness");
 
             if (App.FixedPattern == null)
             {

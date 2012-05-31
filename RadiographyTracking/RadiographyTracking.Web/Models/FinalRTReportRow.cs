@@ -21,6 +21,9 @@ namespace RadiographyTracking.Web.Models
         [NotMapped]
         public int Thickness { get; set; }
 
+        [NotMapped]
+        public string ThicknessRange { get; set; }
+
         public int EnergyID { get; set; }
         public Energy Energy { get; set; }
         [NotMapped]
@@ -34,7 +37,10 @@ namespace RadiographyTracking.Web.Models
         
         public int FilmSizeID { get; set; }
         public FilmSize FilmSize { get; set; }
-        
+
+        [NotMapped]
+        public int FilmCount { get; set; }
+
         [NotMapped]
         public String Observations { get; set; }
         

@@ -22,6 +22,8 @@ namespace RadiographyTracking.Views
             this.ExcludePropertiesFromTracking.Add("RGReportRows");
             this.ExcludePropertiesFromTracking.Add("CanDelete");
             this.ExcludePropertiesFromTracking.Add("RowsDeleted");
+            this.ExcludePropertiesFromTracking.Add("ThicknessRangeUI");
+            this.ExcludePropertiesFromTracking.Add("Thickness");
 
             this.OnCancelNavigation = "/RadiographyReports";
 
@@ -224,7 +226,7 @@ namespace RadiographyTracking.Views
             {
                 AddTextColumn(dt, e.Name, e.Name);
                 headerRow[e.Name] = e.Name;
-                actualRow[e.Name] = RGReportRows.Where(p => p.EnergyID == e.ID).Sum(p => p.FilmSize.Area);
+                actualRow[e.Name] = RGReportRows.Where(p => p.EnergyID == e.ID).Sum(p => p.FilmSize.Area * p.FilmCount);
             }
 
             dt.Rows.Add(headerRow);
@@ -268,6 +270,7 @@ namespace RadiographyTracking.Views
                                                 RemarkText = " ",
                                                 TechnicianText = " ",
                                                 WelderText = " ",
+                                                FilmCount = 1, //default value for film counts
                                                 RowType = ((RadiographyContext)DomainSource.DomainContext)
                                                                 .RGReportRowTypes
                                                                 .FirstOrDefault(p => p.Value == "FRESH")

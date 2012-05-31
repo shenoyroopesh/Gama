@@ -119,6 +119,8 @@
     </Compile>
     <Compile Include="DataGridExtensions.cs" />
     <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="Models\FPTemplateRow.partial.cs" />
+    <Compile Include="Models\RGReportRow.partial.cs" />
     <Compile Include="Models\Shift.Partial.cs" />
     <Compile Include="Models\FilmSize.Partial.cs" />
     <Compile Include="Models\Welder.Partial.cs" />

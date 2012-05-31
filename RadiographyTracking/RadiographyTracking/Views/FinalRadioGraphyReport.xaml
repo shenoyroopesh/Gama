@@ -169,7 +169,7 @@
                                 <sdk:DataGridTextColumn Header="SlNo" Binding="{Binding Path=SlNo, Mode=TwoWay}"></sdk:DataGridTextColumn>
                                 <sdk:DataGridTextColumn Header="Location" Binding="{Binding Path=Location, Mode=TwoWay}"></sdk:DataGridTextColumn>
                                 <sdk:DataGridTextColumn Header="Segment" Binding="{Binding Path=Segment, Mode=TwoWay}"></sdk:DataGridTextColumn>
-                                <sdk:DataGridTextColumn Header="Thickness" Binding="{Binding Path=Thickness, Mode=TwoWay}"></sdk:DataGridTextColumn>
+                                <sdk:DataGridTextColumn Header="Thickness" Binding="{Binding Path=ThicknessRange, Mode=TwoWay}"></sdk:DataGridTextColumn>
                                 <sdk:DataGridTemplateColumn Header="Energy">
                                     <sdk:DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>

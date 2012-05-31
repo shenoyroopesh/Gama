@@ -191,7 +191,7 @@ namespace RadiographyTracking.Views
             {
                 AddTextColumn(dt, e.Name, e.Name);
                 headerRow[e.Name] = e.Name;
-                actualRow[e.Name] = FinalReportRows.Where(p => p.EnergyID == e.ID).Sum(p => p.FilmSize.Area);
+                actualRow[e.Name] = FinalReportRows.Where(p => p.EnergyID == e.ID).Sum(p => p.FilmSize.Area * p.FilmCount);
             }
 
             dt.Rows.Add(headerRow);
