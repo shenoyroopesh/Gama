@@ -184,7 +184,7 @@
                                 <sdk:DataGridTemplateColumn Header="Film Size">
                                     <sdk:DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
-                                            <TextBlock Text="{Binding Path=FilmSizeString, Mode=TwoWay}" VerticalAlignment="Center" />
+                                            <TextBlock Text="{Binding Path=FilmSizeWithCount, Mode=TwoWay}" VerticalAlignment="Center" />
                                         </DataTemplate>
                                     </sdk:DataGridTemplateColumn.CellTemplate>
                                 </sdk:DataGridTemplateColumn>

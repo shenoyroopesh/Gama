@@ -247,9 +247,7 @@ namespace RadiographyTracking.Web
                             content = reportRow.Density;
                             break;
                         case FilmSize:
-                            content = reportRow.FilmSizeString 
-                                //to show as 8X9X2 if there are two films of sizes 8X9
-                                + ((reportRow.FilmCount > 1) ? ("X" + reportRow.FilmCount.ToString()) : String.Empty);
+                            content = reportRow.FilmSizeWithCount;
                             break;
                         case Observation:
                             content = reportRow.Observations;

@@ -4553,6 +4553,8 @@ namespace RadiographyTracking.Web.Models
         
         private string _filmSizeString;
         
+        private string _filmSizeWithCount;
+        
         private int _finalRTReportID;
         
         private int _id;
@@ -4606,6 +4608,8 @@ namespace RadiographyTracking.Web.Models
         partial void OnFilmSizeIDChanged();
         partial void OnFilmSizeStringChanging(string value);
         partial void OnFilmSizeStringChanged();
+        partial void OnFilmSizeWithCountChanging(string value);
+        partial void OnFilmSizeWithCountChanged();
         partial void OnFinalRTReportIDChanging(int value);
         partial void OnFinalRTReportIDChanged();
         partial void OnIDChanging(int value);
@@ -4882,6 +4886,35 @@ namespace RadiographyTracking.Web.Models
                     this._filmSizeString = value;
                     this.RaiseDataMemberChanged("FilmSizeString");
                     this.OnFilmSizeStringChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'FilmSizeWithCount' value.
+        /// </summary>
+        // The following attributes were not generated:
+        // 
+        // - The attribute 'System.ComponentModel.DataAnnotations.NotMappedAttribute' is not visible in the client project 'RadiographyTracking'. Are you missing an assembly reference?
+        // [NotMappedAttribute()]
+        // 
+        [DataMember()]
+        public string FilmSizeWithCount
+        {
+            get
+            {
+                return this._filmSizeWithCount;
+            }
+            set
+            {
+                if ((this._filmSizeWithCount != value))
+                {
+                    this.OnFilmSizeWithCountChanging(value);
+                    this.RaiseDataMemberChanging("FilmSizeWithCount");
+                    this.ValidateProperty("FilmSizeWithCount", value);
+                    this._filmSizeWithCount = value;
+                    this.RaiseDataMemberChanged("FilmSizeWithCount");
+                    this.OnFilmSizeWithCountChanged();
                 }
             }
         }
@@ -7876,6 +7909,8 @@ namespace RadiographyTracking.Web.Models
         
         private string _filmSizeString;
         
+        private string _filmSizeWithCount;
+        
         private Nullable<int> _fpslNo;
         
         private int _id;
@@ -7943,6 +7978,8 @@ namespace RadiographyTracking.Web.Models
         partial void OnFilmSizeIDChanged();
         partial void OnFilmSizeStringChanging(string value);
         partial void OnFilmSizeStringChanged();
+        partial void OnFilmSizeWithCountChanging(string value);
+        partial void OnFilmSizeWithCountChanged();
         partial void OnFPSLNoChanging(Nullable<int> value);
         partial void OnFPSLNoChanged();
         partial void OnIDChanging(int value);
@@ -8235,6 +8272,36 @@ namespace RadiographyTracking.Web.Models
                     this._filmSizeString = value;
                     this.RaiseDataMemberChanged("FilmSizeString");
                     this.OnFilmSizeStringChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'FilmSizeWithCount' value.
+        /// </summary>
+        // The following attributes were not generated:
+        // 
+        // - The attribute 'System.ComponentModel.DataAnnotations.NotMappedAttribute' is not visible in the client project 'RadiographyTracking'. Are you missing an assembly reference?
+        // [NotMappedAttribute()]
+        // 
+        [DataMember()]
+        [Editable(false)]
+        [ReadOnly(true)]
+        public string FilmSizeWithCount
+        {
+            get
+            {
+                return this._filmSizeWithCount;
+            }
+            set
+            {
+                if ((this._filmSizeWithCount != value))
+                {
+                    this.OnFilmSizeWithCountChanging(value);
+                    this.ValidateProperty("FilmSizeWithCount", value);
+                    this._filmSizeWithCount = value;
+                    this.RaisePropertyChanged("FilmSizeWithCount");
+                    this.OnFilmSizeWithCountChanged();
                 }
             }
         }

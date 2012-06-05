@@ -76,7 +76,7 @@ namespace RadiographyTracking.Web.Models
                 if (this.FinalRTReportRows == null)
                     return "0";
 
-                return this.FinalRTReportRows.Select(p => p.FilmSize.Area).Sum().ToString();
+                return this.FinalRTReportRows.Select(p => p.FilmSize.Area * p.FilmCount).Sum().ToString();
             }
         }
 

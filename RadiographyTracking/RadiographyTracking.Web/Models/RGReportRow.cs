@@ -71,6 +71,17 @@ namespace RadiographyTracking.Web.Models
         public int RowTypeID { get; set; }
 
         [NotMapped]
+        public string FilmSizeWithCount
+        {
+            get
+            {
+                return this.FilmSizeString
+                    //to show as 8X9X2 if there are two films of sizes 8X9
+                      + ((this.FilmCount > 1) ? ("X" + this.FilmCount.ToString()) : String.Empty);
+            }
+        }
+
+        [NotMapped]
         public String FilmSizeString
         {
             get

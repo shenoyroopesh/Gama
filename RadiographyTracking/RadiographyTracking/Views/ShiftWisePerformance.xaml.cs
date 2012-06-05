@@ -84,8 +84,8 @@ namespace RadiographyTracking.Views
             //filmsize columns
             foreach (var row in ctx.FilmSizes.OrderBy(p => p.Area))
             {
-                var totalcol = "Film" + row.Name + "Total";
-                var rtcol = "Film" + row.Name + "RT";
+                var totalcol = "Film" + row.Name.Replace(".", "dot") + "Total";
+                var rtcol = "Film" + row.Name.Replace(".", "dot") + "RT";
                 AddTextColumn(reportTable, totalcol, totalcol);
                 AddTextColumn(reportTable, rtcol, rtcol);
                 headerRow[totalcol] = row.Name;
@@ -118,14 +118,14 @@ namespace RadiographyTracking.Views
 
                 foreach(var energy in r.FilmAreaRows)
                 {
-                    row["Film" + energy.FilmSize + "Total"] = energy.Total;
-                    row["Film" + energy.FilmSize + "RT"] = energy.RT;
+                    row["Film" + energy.FilmSize.Replace(".", "dot") + "Total"] = energy.Total;
+                    row["Film" + energy.FilmSize.Replace(".", "dot") + "RT"] = energy.RT;
                 }
 
                 row["TotalFilms"] = r.TotalFilmsTaken;
                 row["TotalRetakes"] = r.TotalRetakes;
-                row["RTPercent"] = r.RTPercent;
-                row["RTPercentByArea"] = r.RTPercentByArea;
+                row["RTPercent"] = r.RTPercent.ToString("F2");
+                row["RTPercentByArea"] = r.RTPercentByArea.ToString("F2");
                 rows.Add(row);
             }
 

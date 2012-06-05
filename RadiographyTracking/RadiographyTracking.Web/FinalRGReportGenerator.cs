@@ -269,7 +269,7 @@ namespace RadiographyTracking.Web
                             content = reportRow.Density;
                             break;
                         case FilmSize:
-                            content = reportRow.FilmSizeString;
+                            content = reportRow.FilmSizeWithCount;
                             break;
                         case Observation:
                             content = reportRow.Observations;

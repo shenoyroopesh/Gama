@@ -59,7 +59,8 @@ namespace RadiographyTracking.Web.Models
                                             {
                                                 RowType = freshRowType,
                                                 Energy = Energy.getEnergyForThickness(row.Thickness, ctx),
-                                                Observations = " " //for grid to work fine
+                                                Observations = " ", //for grid to work fine
+                                                FilmCount = 1 // default for the new film count
                                             };
                 row.CopyTo(rgReportRow, "ID,FilmSizeString");
 
@@ -193,7 +194,7 @@ namespace RadiographyTracking.Web.Models
         {
             get
             {
-                return this.RGReportRows == null ? 0 : this.RGReportRows.Select(p => p.FilmSize == null ? 0 : p.FilmSize.Area).Sum();
+                return this.RGReportRows == null ? 0 : this.RGReportRows.Select(p => p.FilmSize == null ? 0 : p.FilmSize.Area * p.FilmCount).Sum();
             }
         }
 

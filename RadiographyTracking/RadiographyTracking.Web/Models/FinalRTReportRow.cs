@@ -77,6 +77,13 @@ namespace RadiographyTracking.Web.Models
             set;
         }
 
+        [NotMapped]
+        public string FilmSizeWithCount
+        {
+            get;
+            set;
+        }
+
         /// <summary>
         /// Only for setting or seeing Remark by using a string value
         /// </summary>

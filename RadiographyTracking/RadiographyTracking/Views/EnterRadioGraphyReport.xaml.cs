@@ -202,7 +202,7 @@ namespace RadiographyTracking.Views
             {
                 return (RGReportRows == null ? 0 :
                             RGReportRows.Sum(p =>
-                                            (p.FilmSize == null ? 0 : p.FilmSize.Area)))
+                                            (p.FilmSize == null ? 0 : p.FilmSize.Area * p.FilmCount)))
                                             .ToString() + " Sq. Inches";
             }
         }

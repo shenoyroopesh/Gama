@@ -1210,31 +1210,31 @@ namespace RadiographyTracking.Web.Services
 
             //process and structure
             var report = (from g in intermediate2
-                         let total = g.Count()
-                         let retakeCollection = g.Where(p => p.Remark != null).Where(p => p.Remark.ID == retake.ID)
-                         let retakes = retakeCollection.Count()
-                         let totalArea = g.Sum(p => p.FilmSize.Area)
-                         let retakeArea = retakeCollection.Sum(p => p.FilmSize.Area)
-                         select new ShiftWisePerformanceRow
-                         {
-                             ID = Guid.NewGuid(),
-                             Technicians = String.Join(",", g.Select(p => p.Technician.Name).Distinct().ToList()),
-                             Date = g.Key.Date.ToString("dd-MM-yyyy"),
-                             Shift = g.Key.Shift.Value,
-                             FilmAreaRows = (from f in g
-                                            group f by f.FilmSize into fg
-                                            select new FilmAreaRow
-                                            {
-                                                ID = Guid.NewGuid(),
-                                                FilmSize = fg.Key.Name,
-                                                Total = fg.Count(),
-                                                RT = fg.Where(p => p.Remark != null).Where(p => p.Remark.ID == retake.ID).Count()
-                                            }).ToList(),
-                             TotalFilmsTaken = total,
-                             TotalRetakes = retakes,
-                             RTPercent = (retakes * 10000 / total) /100.0,
-                             RTPercentByArea = (retakeArea * 10000 / totalArea) / 100.0
-                         }).ToList();
+                          let total = g.Sum(p => p.FilmCount)
+                          let retakeCollection = g.Where(p => p.Remark != null).Where(p => p.Remark.ID == retake.ID)
+                          let retakes = retakeCollection.Sum(p => p.FilmCount)
+                          let totalArea = g.Sum(p => p.FilmSize.Area * p.FilmCount)
+                          let retakeArea = retakeCollection.Sum(p => p.FilmSize.Area * p.FilmCount)
+                          select new ShiftWisePerformanceRow
+                          {
+                              ID = Guid.NewGuid(),
+                              Technicians = String.Join(",", g.Select(p => p.Technician.Name).Distinct().ToList()),
+                              Date = g.Key.Date.ToString("dd-MM-yyyy"),
+                              Shift = g.Key.Shift.Value,
+                              FilmAreaRows = (from f in g
+                                              group f by f.FilmSize into fg
+                                              select new FilmAreaRow
+                                              {
+                                                  ID = Guid.NewGuid(),
+                                                  FilmSize = fg.Key.Name,
+                                                  Total = fg.Sum(p => p.FilmCount),
+                                                  RT = fg.Where(p => p.Remark != null).Where(p => p.Remark.ID == retake.ID).Sum(p => p.FilmCount)
+                                              }).ToList(),
+                              TotalFilmsTaken = total,
+                              TotalRetakes = retakes,
+                              RTPercent = (retakes * 10000 / total) / 100.0,
+                              RTPercentByArea = (retakeArea * 10000 / totalArea) / 100.0
+                          }).ToList();
 
             //fill parent guids in child rows
             foreach (var row in report)
