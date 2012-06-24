@@ -11238,11 +11238,13 @@ namespace RadiographyTracking.Web.Services
         /// Gets an EntityQuery instance that can be used to load <see cref="FinalRTReport"/> entity instances using the 'GetFinalRTReport' query.
         /// </summary>
         /// <param name="rtNo">The value for the 'rtNo' parameter of the query.</param>
+        /// <param name="filter">The value for the 'filter' parameter of the query.</param>
         /// <returns>An EntityQuery that can be loaded to retrieve <see cref="FinalRTReport"/> entity instances.</returns>
-        public EntityQuery<FinalRTReport> GetFinalRTReportQuery(string rtNo)
+        public EntityQuery<FinalRTReport> GetFinalRTReportQuery(string rtNo, string filter)
         {
             Dictionary<string, object> parameters = new Dictionary<string, object>();
             parameters.Add("rtNo", rtNo);
+            parameters.Add("filter", filter);
             this.ValidateMethod("GetFinalRTReportQuery", parameters);
             return base.CreateQuery<FinalRTReport>("GetFinalRTReport", parameters, false, false);
         }
@@ -11882,13 +11884,14 @@ namespace RadiographyTracking.Web.Services
             /// Asynchronously invokes the 'GetFinalRTReport' operation.
             /// </summary>
             /// <param name="rtNo">The value for the 'rtNo' parameter of this action.</param>
+            /// <param name="filter">The value for the 'filter' parameter of this action.</param>
             /// <param name="callback">Callback to invoke on completion.</param>
             /// <param name="asyncState">Optional state object.</param>
             /// <returns>An IAsyncResult that can be used to monitor the request.</returns>
             [FaultContract(typeof(DomainServiceFault), Action="http://tempuri.org/RadiographyService/GetFinalRTReportDomainServiceFault", Name="DomainServiceFault", Namespace="DomainServices")]
             [OperationContract(AsyncPattern=true, Action="http://tempuri.org/RadiographyService/GetFinalRTReport", ReplyAction="http://tempuri.org/RadiographyService/GetFinalRTReportResponse")]
             [WebGet()]
-            IAsyncResult BeginGetFinalRTReport(string rtNo, AsyncCallback callback, object asyncState);
+            IAsyncResult BeginGetFinalRTReport(string rtNo, string filter, AsyncCallback callback, object asyncState);
             
             /// <summary>
             /// Completes the asynchronous operation begun by 'BeginGetFinalRTReport'.

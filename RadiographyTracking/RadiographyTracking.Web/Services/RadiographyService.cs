@@ -963,7 +963,7 @@ namespace RadiographyTracking.Web.Services
                    };
         }
 
-        public FinalRTReport GetFinalRTReport(string rtNo)
+        public FinalRTReport GetFinalRTReport(string rtNo, string filter = "False")
         {
             //get the latest report in the sequence
             //can't use Last() here, have to use first() since this gets converted into a store query
@@ -994,8 +994,9 @@ namespace RadiographyTracking.Web.Services
                                              .FirstOrDefault()
                               select latest).Include(p => p.FilmSize).Include(p => p.Energy).ToList();
 
+
             int slno = 1;
-            foreach (var r in reportRows.OrderBy(p => p.FPSLNo ?? 10000 + p.ID)) //for rows added, not present in FP Templates
+            foreach (var r in reportRows.Where(p=> (filter=="False" || p.RemarkText != "ACCEPTABLE")).OrderBy(p => p.FPSLNo ?? 10000 + p.ID)) //for rows added, not present in FP Templates
             {
                 FinalRTReportRow row = new FinalRTReportRow();
                 r.CopyTo(row, string.Empty);

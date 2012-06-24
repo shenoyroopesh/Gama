@@ -62,12 +62,13 @@ namespace RadiographyTracking.Web
         private FinalRTReport GetDataContext()
         {
             string rtNo = Request.Params["RTNo"];
+            string Filter = Request.Params["Filter"];
 
             if (String.IsNullOrEmpty(rtNo))
                 return null;
 
             RadiographyService service = new RadiographyService();
-            return service.GetFinalRTReport(rtNo);
+            return service.GetFinalRTReport(rtNo, Filter);
         }
 
         /// <summary>

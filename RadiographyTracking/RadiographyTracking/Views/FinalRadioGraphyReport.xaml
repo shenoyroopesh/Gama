@@ -36,6 +36,7 @@
                                       QueryName="GetFinalRTReportQuery">
             <riaControls:DomainDataSource.QueryParameters>
                 <riaControls:Parameter ParameterName="rtNo" Value="{Binding ElementName=txtRTNo, Path=Text}" />
+                <riaControls:Parameter ParameterName="filter" Value="False" />
             </riaControls:DomainDataSource.QueryParameters>
         </riaControls:DomainDataSource>
         <riaControls:DomainDataSource Name="FixedPatternsSource" AutoLoad="False" DomainContext="{StaticResource RadiographyContext}"

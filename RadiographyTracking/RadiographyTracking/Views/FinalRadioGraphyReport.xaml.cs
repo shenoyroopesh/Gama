@@ -234,8 +234,8 @@ namespace RadiographyTracking.Views
             //Get the application root, where 'ClientBin' is the known dir where the XAP is
             string appRoot = src.Substring(0, src.IndexOf("ClientBin")); 
 
-            Uri reportURI = new Uri(string.Format(appRoot + "FinalRGReportGenerate.aspx?RTNo={0}&Template={1}", 
-                                                    this.FinalReport.RTNo, cmbSelectTemplate.SelectedValue.ToString()),
+            Uri reportURI = new Uri(string.Format(appRoot + "FinalRGReportGenerate.aspx?RTNo={0}&Template={1}&Filter={2}",
+                                                    this.FinalReport.RTNo, cmbSelectTemplate.SelectedValue.ToString(), ((bool)chkOnlyRepairs.IsChecked ? "True" : "False")),
                                     UriKind.Absolute);
 
             HtmlPage.Window.Navigate(reportURI, "_blank");
