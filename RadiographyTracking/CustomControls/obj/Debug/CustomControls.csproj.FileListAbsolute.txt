@@ -943,6 +943,6 @@ D:\ClientWork\Gama\Sources\RadiographyTracking\CustomControls\Bin\Debug\ko\Syste
 D:\ClientWork\Gama\Sources\RadiographyTracking\CustomControls\Bin\Debug\ru\System.Windows.Data.resources.dll
 D:\ClientWork\Gama\Sources\RadiographyTracking\CustomControls\Bin\Debug\zh-Hans\System.Windows.Data.resources.dll
 D:\ClientWork\Gama\Sources\RadiographyTracking\CustomControls\Bin\Debug\zh-Hant\System.Windows.Data.resources.dll
-D:\ClientWork\Gama\Sources\RadiographyTracking\CustomControls\obj\Debug\ResolveAssemblyReference.cache
 D:\ClientWork\Gama\Sources\RadiographyTracking\CustomControls\obj\Debug\CustomControls.dll
 D:\ClientWork\Gama\Sources\RadiographyTracking\CustomControls\obj\Debug\CustomControls.pdb
+D:\ClientWork\Gama\Sources\RadiographyTracking\CustomControls\obj\Debug\CustomControls.csprojResolveAssemblyReference.cache

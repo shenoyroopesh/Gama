@@ -24,7 +24,6 @@ D:\ClientWork\Gama\RadiographyTracking\MenuControl\obj\Debug\MenuControl.dll
 D:\ClientWork\Gama\RadiographyTracking\MenuControl\obj\Debug\MenuControl.pdb
 D:\ClientWork\Gama\Sources\RadiographyTracking\MenuControl\Bin\Debug\MenuControl.dll
 D:\ClientWork\Gama\Sources\RadiographyTracking\MenuControl\Bin\Debug\MenuControl.pdb
-D:\ClientWork\Gama\Sources\RadiographyTracking\MenuControl\obj\Debug\ResolveAssemblyReference.cache
 D:\ClientWork\Gama\Sources\RadiographyTracking\MenuControl\obj\Debug\MenuControl.g.resources
 D:\ClientWork\Gama\Sources\RadiographyTracking\MenuControl\obj\Debug\MenuControl.dll
 D:\ClientWork\Gama\Sources\RadiographyTracking\MenuControl\obj\Debug\MenuControl.pdb

@@ -135,7 +135,6 @@ D:\ClientWork\Gama\RadiographyTracking\BindableDataGrid\obj\Debug\BindableDataGr
 D:\ClientWork\Gama\RadiographyTracking\BindableDataGrid\obj\Debug\BindableDataGrid.pdb
 D:\ClientWork\Gama\Sources\RadiographyTracking\BindableDataGrid\Bin\Debug\BindableDataGrid.dll
 D:\ClientWork\Gama\Sources\RadiographyTracking\BindableDataGrid\Bin\Debug\BindableDataGrid.pdb
-D:\ClientWork\Gama\Sources\RadiographyTracking\BindableDataGrid\Bin\Debug\System.Windows.Controls.Data.dll
 D:\ClientWork\Gama\Sources\RadiographyTracking\BindableDataGrid\Bin\Debug\System.Windows.Data.dll
 D:\ClientWork\Gama\Sources\RadiographyTracking\BindableDataGrid\Bin\Debug\System.Windows.Controls.Data.Input.dll
 D:\ClientWork\Gama\Sources\RadiographyTracking\BindableDataGrid\Bin\Debug\System.ComponentModel.DataAnnotations.dll
@@ -175,6 +174,6 @@ D:\ClientWork\Gama\Sources\RadiographyTracking\BindableDataGrid\Bin\Debug\ja\Sys
 D:\ClientWork\Gama\Sources\RadiographyTracking\BindableDataGrid\Bin\Debug\ko\System.ComponentModel.DataAnnotations.resources.dll
 D:\ClientWork\Gama\Sources\RadiographyTracking\BindableDataGrid\Bin\Debug\zh-Hans\System.ComponentModel.DataAnnotations.resources.dll
 D:\ClientWork\Gama\Sources\RadiographyTracking\BindableDataGrid\Bin\Debug\zh-Hant\System.ComponentModel.DataAnnotations.resources.dll
-D:\ClientWork\Gama\Sources\RadiographyTracking\BindableDataGrid\obj\Debug\ResolveAssemblyReference.cache
 D:\ClientWork\Gama\Sources\RadiographyTracking\BindableDataGrid\obj\Debug\BindableDataGrid.dll
 D:\ClientWork\Gama\Sources\RadiographyTracking\BindableDataGrid\obj\Debug\BindableDataGrid.pdb
+D:\ClientWork\Gama\Sources\RadiographyTracking\BindableDataGrid\obj\Debug\BindableDataGrid.csprojResolveAssemblyReference.cache

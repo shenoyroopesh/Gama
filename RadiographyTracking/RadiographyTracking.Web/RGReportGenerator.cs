@@ -25,6 +25,7 @@ namespace RadiographyTracking.Web
     public class RGReportGenerator : DocumentGenerator
     {
         #region contentcontroltags
+        protected const string FPNo = "FPNo";
         protected const string CustomerName = "CustomerName";
         protected const string Description = "Description";
         protected const string Specification = "Specification";
@@ -60,7 +61,7 @@ namespace RadiographyTracking.Web
         protected const string Area = "Area";
         protected const string IsotopeCollection = "IsotopeCollection";
         protected const string AreaCollection = "AreaCollection";
-
+        
         #endregion
 
         #region Constructor
@@ -86,6 +87,7 @@ namespace RadiographyTracking.Web
         {
             Dictionary<string, PlaceHolderType> placeHolderTagToTypeCollection = new Dictionary<string, PlaceHolderType>();
             // Handle non recursive placeholders
+            placeHolderTagToTypeCollection.Add(FPNo, PlaceHolderType.NonRecursive);
             placeHolderTagToTypeCollection.Add(CustomerName, PlaceHolderType.NonRecursive);
             placeHolderTagToTypeCollection.Add(Description, PlaceHolderType.NonRecursive);
             placeHolderTagToTypeCollection.Add(Specification, PlaceHolderType.NonRecursive);
@@ -156,6 +158,9 @@ namespace RadiographyTracking.Web
             {
                 switch (tagPlaceHolderValue)
                 {
+                    case FPNo:
+                        content = row.FixedPattern.FPNo;
+                        break;
                     case CustomerName:
                         content = row.FixedPattern.Customer.CustomerName;
                         break;

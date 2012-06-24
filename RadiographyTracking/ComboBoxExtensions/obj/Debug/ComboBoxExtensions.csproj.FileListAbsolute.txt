@@ -285,6 +285,6 @@ D:\ClientWork\Gama\Sources\RadiographyTracking\ComboBoxExtensions\Bin\Debug\ko\S
 D:\ClientWork\Gama\Sources\RadiographyTracking\ComboBoxExtensions\Bin\Debug\ru\System.ServiceModel.DomainServices.Client.resources.dll
 D:\ClientWork\Gama\Sources\RadiographyTracking\ComboBoxExtensions\Bin\Debug\zh-Hans\System.ServiceModel.DomainServices.Client.resources.dll
 D:\ClientWork\Gama\Sources\RadiographyTracking\ComboBoxExtensions\Bin\Debug\zh-Hant\System.ServiceModel.DomainServices.Client.resources.dll
-D:\ClientWork\Gama\Sources\RadiographyTracking\ComboBoxExtensions\obj\Debug\ResolveAssemblyReference.cache
 D:\ClientWork\Gama\Sources\RadiographyTracking\ComboBoxExtensions\obj\Debug\ComboBoxExtensions.dll
 D:\ClientWork\Gama\Sources\RadiographyTracking\ComboBoxExtensions\obj\Debug\ComboBoxExtensions.pdb
+D:\ClientWork\Gama\Sources\RadiographyTracking\ComboBoxExtensions\obj\Debug\ComboBoxExtensions.csprojResolveAssemblyReference.cache
