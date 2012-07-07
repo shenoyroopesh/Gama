@@ -24,6 +24,7 @@ namespace RadiographyTracking.Views
             this.ExcludePropertiesFromTracking.Add("RowsDeleted");
             this.ExcludePropertiesFromTracking.Add("ThicknessRangeUI");
             this.ExcludePropertiesFromTracking.Add("Thickness");
+            this.ExcludePropertiesFromTracking.Add("FilmSizeWithCount");
 
             this.OnCancelNavigation = "/RadiographyReports";
 
@@ -114,6 +115,7 @@ namespace RadiographyTracking.Views
             BindToPage(txtHeatNo, TextBox.TextProperty, "RGReport.HeatNo");
             BindToPage(txtProcedureRef, TextBox.TextProperty, "RGReport.ProcedureRef");
             BindToPage(txtSpecifications, TextBox.TextProperty, "RGReport.Specifications");
+            BindToPage(txtEndCustomerName, TextBox.TextProperty, "RGReport.EndCustomerName");
             BindToPage(txtFilm, TextBox.TextProperty, "RGReport.Film");
             BindToPage(ReportDatePicker, DatePicker.SelectedDateProperty, "RGReport.ReportDate");
             BindToPage(TestDatePicker, DatePicker.SelectedDateProperty, "RGReport.DateOfTest");
@@ -226,7 +228,10 @@ namespace RadiographyTracking.Views
             {
                 AddTextColumn(dt, e.Name, e.Name);
                 headerRow[e.Name] = e.Name;
-                actualRow[e.Name] = RGReportRows.Where(p => p.EnergyID == e.ID).Sum(p => p.FilmSize.Area * p.FilmCount);
+                actualRow[e.Name] = RGReportRows
+                                    .Where(p => p.EnergyID == e.ID &&
+                                                p.RemarkText != "RETAKE") //30-Jun-12 - Roopesh added this to ensure that retake areas are not included
+                                    .Sum(p => p.FilmSize.Area * p.FilmCount);
             }
 
             dt.Rows.Add(headerRow);

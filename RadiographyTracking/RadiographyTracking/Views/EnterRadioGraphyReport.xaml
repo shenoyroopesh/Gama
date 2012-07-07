@@ -115,6 +115,7 @@
                             <RowDefinition></RowDefinition>
                             <RowDefinition></RowDefinition>
                             <RowDefinition></RowDefinition>
+                            <RowDefinition></RowDefinition>
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition></ColumnDefinition>
@@ -153,7 +154,9 @@
                         <TextBox Name="txtSpecifications" Grid.Column="2" Grid.Row="9" />
                         <TextBlock Text="Report Date" TextWrapping="Wrap"   Grid.Column="0" Grid.Row="10" />
                         <sdk:DatePicker Name="ReportDatePicker" Grid.Column="2" Grid.Row="10"  />
-
+                        <TextBlock Text="End Customer Name" TextWrapping="Wrap"  Grid.Column="0" Grid.Row="11"/>
+                        <TextBox Name="txtEndCustomerName" Grid.Column="2" Grid.Row="11" />
+                        
                         <TextBlock Text="Film"  Grid.Column="4" Grid.Row="5" />
                         <TextBox Name="txtFilm"  Grid.Column="6" Grid.Row="5" Text="" />
                         <TextBlock Text="Date Of Test"   Grid.Column="4" Grid.Row="6" />
@@ -373,7 +376,7 @@
                         <Button Margin="100,0,50,0" Name="btnAdd" HorizontalAlignment="Right" Width="75" Style="{StaticResource AddButtonStyle}"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="20, 20, 0, 0">
-                        <TextBlock Text="Total Area of films Submitted:" />
+                        <TextBlock Text="Total Area of Acceptable films Submitted:" />
                         <TextBlock Name="txtTotalArea" />
                     </StackPanel>
                     <dtGrid:BindableDataGrid Name="energyAreas" HeadersVisibility="None" HorizontalAlignment="Left" Margin="20,10,0,0" />

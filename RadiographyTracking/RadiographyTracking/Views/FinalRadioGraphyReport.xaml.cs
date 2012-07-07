@@ -191,7 +191,10 @@ namespace RadiographyTracking.Views
             {
                 AddTextColumn(dt, e.Name, e.Name);
                 headerRow[e.Name] = e.Name;
-                actualRow[e.Name] = FinalReportRows.Where(p => p.EnergyID == e.ID).Sum(p => p.FilmSize.Area * p.FilmCount);
+                actualRow[e.Name] = FinalReportRows
+                                            .Where(p => p.EnergyID == e.ID &&
+                                                   p.RemarkText != "RETAKE") //30-Jun-12 - Roopesh added this to ensure that retake areas are not included
+                                            .Sum(p => p.FilmSize.Area * p.FilmCount);
             }
 
             dt.Rows.Add(headerRow);

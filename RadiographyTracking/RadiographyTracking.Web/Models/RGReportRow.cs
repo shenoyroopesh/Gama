@@ -60,6 +60,9 @@ namespace RadiographyTracking.Web.Models
         //note not doing composition here - instead just saving FPRowSLNo here which can be nullable
         public int? FPSLNo { get; set; }
 
+        //This will be shown only in the address stickers, not in any of the casting report printouts. 
+        public string Technique { get; set; }
+
         /// <summary>
         /// This will determine the cause for this row in the first place - necessary to track this separately from remark
         /// 

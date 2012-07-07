@@ -7036,6 +7036,8 @@ namespace RadiographyTracking.Web.Models
         
         private string _drawingNo;
         
+        private string _endCustomerName;
+        
         private string _evaluationAsPer;
         
         private string _film;
@@ -7057,6 +7059,12 @@ namespace RadiographyTracking.Web.Models
         private DateTime _reportDate;
         
         private string _reportNo;
+        
+        private string _reportType;
+        
+        private string _reportTypeAndNo;
+        
+        private int _reshootNo;
         
         private string _result;
         
@@ -7095,6 +7103,8 @@ namespace RadiographyTracking.Web.Models
         partial void OnDateOfTestChanged();
         partial void OnDrawingNoChanging(string value);
         partial void OnDrawingNoChanged();
+        partial void OnEndCustomerNameChanging(string value);
+        partial void OnEndCustomerNameChanged();
         partial void OnEvaluationAsPerChanging(string value);
         partial void OnEvaluationAsPerChanged();
         partial void OnFilmChanging(string value);
@@ -7115,6 +7125,12 @@ namespace RadiographyTracking.Web.Models
         partial void OnReportDateChanged();
         partial void OnReportNoChanging(string value);
         partial void OnReportNoChanged();
+        partial void OnReportTypeChanging(string value);
+        partial void OnReportTypeChanged();
+        partial void OnReportTypeAndNoChanging(string value);
+        partial void OnReportTypeAndNoChanged();
+        partial void OnReshootNoChanging(int value);
+        partial void OnReshootNoChanged();
         partial void OnResultChanging(string value);
         partial void OnResultChanged();
         partial void OnRowsDeletedChanging(bool value);
@@ -7298,6 +7314,30 @@ namespace RadiographyTracking.Web.Models
                     this._drawingNo = value;
                     this.RaiseDataMemberChanged("DrawingNo");
                     this.OnDrawingNoChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'EndCustomerName' value.
+        /// </summary>
+        [DataMember()]
+        public string EndCustomerName
+        {
+            get
+            {
+                return this._endCustomerName;
+            }
+            set
+            {
+                if ((this._endCustomerName != value))
+                {
+                    this.OnEndCustomerNameChanging(value);
+                    this.RaiseDataMemberChanging("EndCustomerName");
+                    this.ValidateProperty("EndCustomerName", value);
+                    this._endCustomerName = value;
+                    this.RaiseDataMemberChanged("EndCustomerName");
+                    this.OnEndCustomerNameChanged();
                 }
             }
         }
@@ -7581,6 +7621,78 @@ namespace RadiographyTracking.Web.Models
                     this._reportNo = value;
                     this.RaiseDataMemberChanged("ReportNo");
                     this.OnReportNoChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'ReportType' value.
+        /// </summary>
+        [DataMember()]
+        public string ReportType
+        {
+            get
+            {
+                return this._reportType;
+            }
+            set
+            {
+                if ((this._reportType != value))
+                {
+                    this.OnReportTypeChanging(value);
+                    this.RaiseDataMemberChanging("ReportType");
+                    this.ValidateProperty("ReportType", value);
+                    this._reportType = value;
+                    this.RaiseDataMemberChanged("ReportType");
+                    this.OnReportTypeChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'ReportTypeAndNo' value.
+        /// </summary>
+        [DataMember()]
+        public string ReportTypeAndNo
+        {
+            get
+            {
+                return this._reportTypeAndNo;
+            }
+            set
+            {
+                if ((this._reportTypeAndNo != value))
+                {
+                    this.OnReportTypeAndNoChanging(value);
+                    this.RaiseDataMemberChanging("ReportTypeAndNo");
+                    this.ValidateProperty("ReportTypeAndNo", value);
+                    this._reportTypeAndNo = value;
+                    this.RaiseDataMemberChanged("ReportTypeAndNo");
+                    this.OnReportTypeAndNoChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'ReshootNo' value.
+        /// </summary>
+        [DataMember()]
+        public int ReshootNo
+        {
+            get
+            {
+                return this._reshootNo;
+            }
+            set
+            {
+                if ((this._reshootNo != value))
+                {
+                    this.OnReshootNoChanging(value);
+                    this.RaiseDataMemberChanging("ReshootNo");
+                    this.ValidateProperty("ReshootNo", value);
+                    this._reshootNo = value;
+                    this.RaiseDataMemberChanged("ReshootNo");
+                    this.OnReshootNoChanged();
                 }
             }
         }
@@ -7947,6 +8059,8 @@ namespace RadiographyTracking.Web.Models
         
         private string _technicianText;
         
+        private string _technique;
+        
         private int _thickness;
         
         private string _thicknessRange;
@@ -8008,6 +8122,8 @@ namespace RadiographyTracking.Web.Models
         partial void OnTechnicianIDChanged();
         partial void OnTechnicianTextChanging(string value);
         partial void OnTechnicianTextChanged();
+        partial void OnTechniqueChanging(string value);
+        partial void OnTechniqueChanged();
         partial void OnThicknessChanging(int value);
         partial void OnThicknessChanged();
         partial void OnThicknessRangeChanging(string value);
@@ -8805,6 +8921,30 @@ namespace RadiographyTracking.Web.Models
                     this._technicianText = value;
                     this.RaiseDataMemberChanged("TechnicianText");
                     this.OnTechnicianTextChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'Technique' value.
+        /// </summary>
+        [DataMember()]
+        public string Technique
+        {
+            get
+            {
+                return this._technique;
+            }
+            set
+            {
+                if ((this._technique != value))
+                {
+                    this.OnTechniqueChanging(value);
+                    this.RaiseDataMemberChanging("Technique");
+                    this.ValidateProperty("Technique", value);
+                    this._technique = value;
+                    this.RaiseDataMemberChanged("Technique");
+                    this.OnTechniqueChanged();
                 }
             }
         }

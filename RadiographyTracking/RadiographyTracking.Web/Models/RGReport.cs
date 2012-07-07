@@ -47,7 +47,9 @@ namespace RadiographyTracking.Web.Models
 
             //some default values as suggested by Shankaran (10-Apr-2012)
             this.Film = "AGFA D7";
-            this.LeadScreen = "0.1mm";
+            this.LeadScreen = "0.125mm/0.25mm"; //Default for Leadscreen changed as per requirements shared on 30-Jun-12.
+            this.ReportTypeAndNo = this.ReportType = "Fresh";
+            this.ReshootNo = 0; //explicitly setting this, even though this is the default value
 
             //since this is the first report for this FP and RT No
             this.First = true;
@@ -106,6 +108,15 @@ namespace RadiographyTracking.Web.Models
             //since this is at least the second report
             this.First = false;
 
+            //categorize this report as reshoot or not, and assign reshoot number
+            this.ReportType = (neededRows.Any(p => p.RemarkText == "RESHOOT" || p.RemarkText == "REPAIR")) ? "Reshoot" : "Retake";
+
+            if (this.ReportType == "Reshoot")
+            {
+                this.ReshootNo = parentRGReports.Max(p => p.ReshootNo) + 1;
+                this.ReportTypeAndNo = this.ReportType + "-" + this.ReshootNo.ToString();
+            }
+
             //only those rows to be copied from entire history which do not have acceptable against that particular location and segment
             var slNo = 1;
 
@@ -131,6 +142,12 @@ namespace RadiographyTracking.Web.Models
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ID { get; set; }
         public int FixedPatternID { get; set; }
+
+        /// <summary>
+        /// Customer's customer's name 
+        /// </summary>
+        public string EndCustomerName { get; set; }
+
 
         //This is used for determining whether this is the first report or one of the later ones. This is important because deleting a row in the first
         //report is handled differently compared to deleting a row in the later reports
@@ -160,6 +177,21 @@ namespace RadiographyTracking.Web.Models
         public int StatusID { get; set; }
         public RGStatus Status { get; set; }
 
+        /// <summary>
+        /// Whether this is a Fresh report or a Reshoot report - can be null as well, if it is only a retake report
+        /// </summary>
+        public string ReportType { get; set; }
+
+        /// <summary>
+        /// This applies only to those reports that are repeated because of REPAIRS and RESHOOTs - not because of other reasons. 
+        /// </summary>
+        public int ReshootNo { get; set; }
+
+        /// <summary>
+        /// Combination of ReportType and Reshoot number, computed and persisted when the report is created
+        /// </summary>
+        public string ReportTypeAndNo { get; set; }
+
         [Include]
         public ICollection<RGReportRow> RGReportRows { get; set; }
         public String Result { get; set; }
@@ -177,11 +209,12 @@ namespace RadiographyTracking.Web.Models
                     return null;
 
                 var summary = from r in RGReportRows
+                              where r.RemarkText != "RETAKE" //Roopesh: 30-Jun-2012
                               group r by r.EnergyText into g
                               select new
                               {
                                   Energy = g.Key,
-                                  Area = g.Select(p => p.FilmSize == null ? 0 : p.FilmSize.Area).Sum()
+                                  Area = g.Sum(p => p.FilmSize == null ? 0 : p.FilmSize.Area)
                               };
 
                 return summary.ToDictionary(s => s.Energy, s => s.Area);
@@ -194,7 +227,10 @@ namespace RadiographyTracking.Web.Models
         {
             get
             {
-                return this.RGReportRows == null ? 0 : this.RGReportRows.Select(p => p.FilmSize == null ? 0 : p.FilmSize.Area * p.FilmCount).Sum();
+                return this.RGReportRows == null ? 0 :
+                    this.RGReportRows
+                    .Where(p => p.RemarkText != "RETAKE")
+                    .Sum(p => p.FilmSize == null ? 0 : p.FilmSize.Area * p.FilmCount);
             }
         }
 
@@ -214,7 +250,6 @@ namespace RadiographyTracking.Web.Models
                 }
             }
         }
-
 
         public byte[] getCompanyLogo()
         {

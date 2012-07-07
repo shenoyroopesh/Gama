@@ -27,9 +27,13 @@
         </Border>
 
         <Grid Style="{StaticResource NavigationOuterGridStyle}">
-            <Grid x:Name="NavigationGrid" Style="{StaticResource NavigationGridStyle}">
+            <Grid x:Name="NavigationGrid" Style="{StaticResource NavigationGridStyle}" Canvas.ZIndex="100">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="77*"/>
+                    <ColumnDefinition Width="3*"/>
+                </Grid.ColumnDefinitions>
 
-                <StackPanel Orientation="Horizontal">
+                <StackPanel Orientation="Horizontal" Grid.ColumnSpan="2">
                     <StackPanel x:Name="BrandingStackPanel" Style="{StaticResource BrandingStackPanelStyle}">
 
                         <ContentControl Style="{StaticResource LogoIcon}"/>

@@ -1441,6 +1441,7 @@ D:\ClientWork\Gama\Sources\RadiographyTracking\RadiographyTracking\obj\Debug\Rad
 D:\ClientWork\Gama\Sources\RadiographyTracking\RadiographyTracking\obj\Debug\RadiographyTracking.pdb
 D:\ClientWork\Gama\Sources\RadiographyTracking\RadiographyTracking\obj\Debug\XapCacheFile.xml
 D:\ClientWork\Gama\Sources\RadiographyTracking\RadiographyTracking\obj\Debug\RadiographyTracking.csprojResolveAssemblyReference.cache
+D:\ClientWork\Gama\Sources\RadiographyTracking\RadiographyTracking\obj\Debug\RadiographyTracking.csproj.GenerateResource.Cache
 D:\ClientWork\Gama\Sources\RadiographyTracking\RadiographyTracking\obj\Debug\App.g.cs
 D:\ClientWork\Gama\Sources\RadiographyTracking\RadiographyTracking\obj\Debug\Controls\FileUpload.g.cs
 D:\ClientWork\Gama\Sources\RadiographyTracking\RadiographyTracking\obj\Debug\Views\ChangeReasons.g.cs
@@ -1476,4 +1477,3 @@ D:\ClientWork\Gama\Sources\RadiographyTracking\RadiographyTracking\obj\Debug\Vie
 D:\ClientWork\Gama\Sources\RadiographyTracking\RadiographyTracking\obj\Debug\Views\Login\RegistrationForm.g.cs
 D:\ClientWork\Gama\Sources\RadiographyTracking\RadiographyTracking\obj\Debug\Views\ThicknessToEnergyType.g.cs
 D:\ClientWork\Gama\Sources\RadiographyTracking\RadiographyTracking\obj\Debug\Views\Users.g.cs
-D:\ClientWork\Gama\Sources\RadiographyTracking\RadiographyTracking\obj\Debug\RadiographyTracking.csproj.GenerateResource.Cache
