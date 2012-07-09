@@ -47,6 +47,8 @@ namespace RadiographyTracking.Web
         protected const string Acceptance = "Acceptance";
         protected const string Logo = "Logo";
         protected const string CustomerLogo = "CustomerLogo";
+        protected const string ReportTypeNo = "ReportTypeNo";
+
         protected const string RGReportRow = "RGReportRow";
         protected const string SlNo = "SlNo";
         protected const string Location = "Location";
@@ -115,6 +117,7 @@ namespace RadiographyTracking.Web
             placeHolderTagToTypeCollection.Add(CustomerAddress, PlaceHolderType.NonRecursive);
             placeHolderTagToTypeCollection.Add(CustomerEmail, PlaceHolderType.NonRecursive);
             placeHolderTagToTypeCollection.Add(CustomerPhone, PlaceHolderType.NonRecursive);
+            placeHolderTagToTypeCollection.Add(ReportTypeNo, PlaceHolderType.NonRecursive);
 
             // Handle Rowlevel place holders
             placeHolderTagToTypeCollection.Add(RGReportRow, PlaceHolderType.Recursive);
@@ -242,6 +245,9 @@ namespace RadiographyTracking.Web
                     case CustomerLogo:
                         var customerLogo = row.GetCustomerLogo();
                         SetLogo(openXmlElementDataContext.Element as SdtElement, customerLogo, document);
+                        break;
+                    case ReportTypeNo:
+                        content = row.ReportTypeNo;
                         break;
                 }
             }

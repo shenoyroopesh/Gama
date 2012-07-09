@@ -69,6 +69,9 @@ namespace RadiographyTracking.Web.Models
         public String Result { get; set; }
 
         [NotMapped]
+        public string ReportTypeNo { get; set; }
+
+        [NotMapped]
         public String TotalArea
         {
             get
@@ -76,7 +79,9 @@ namespace RadiographyTracking.Web.Models
                 if (this.FinalRTReportRows == null)
                     return "0";
 
-                return this.FinalRTReportRows.Select(p => p.FilmSize.Area * p.FilmCount).Sum().ToString();
+                return this.FinalRTReportRows
+                    .Where(p=> p.RemarkText != "RETAKE")
+                    .Sum(p => p.FilmSize.Area * p.FilmCount).ToString();
             }
         }
 
@@ -155,6 +160,7 @@ namespace RadiographyTracking.Web.Models
             }
             return null;
         }
+
 
     }
 }

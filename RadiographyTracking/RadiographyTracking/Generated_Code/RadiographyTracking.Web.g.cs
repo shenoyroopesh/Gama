@@ -3661,6 +3661,8 @@ namespace RadiographyTracking.Web.Models
         
         private IEnumerable<string> _reportTemplatesList;
         
+        private string _reportTypeNo;
+        
         private string _result;
         
         private string _rtNo;
@@ -3714,6 +3716,8 @@ namespace RadiographyTracking.Web.Models
         partial void OnReportNoChanged();
         partial void OnReportTemplatesListChanging(IEnumerable<string> value);
         partial void OnReportTemplatesListChanged();
+        partial void OnReportTypeNoChanging(string value);
+        partial void OnReportTypeNoChanged();
         partial void OnResultChanging(string value);
         partial void OnResultChanged();
         partial void OnRTNoChanging(string value);
@@ -4227,6 +4231,35 @@ namespace RadiographyTracking.Web.Models
                     this._reportTemplatesList = value;
                     this.RaisePropertyChanged("ReportTemplatesList");
                     this.OnReportTemplatesListChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'ReportTypeNo' value.
+        /// </summary>
+        // The following attributes were not generated:
+        // 
+        // - The attribute 'System.ComponentModel.DataAnnotations.NotMappedAttribute' is not visible in the client project 'RadiographyTracking'. Are you missing an assembly reference?
+        // [NotMappedAttribute()]
+        // 
+        [DataMember()]
+        public string ReportTypeNo
+        {
+            get
+            {
+                return this._reportTypeNo;
+            }
+            set
+            {
+                if ((this._reportTypeNo != value))
+                {
+                    this.OnReportTypeNoChanging(value);
+                    this.RaiseDataMemberChanging("ReportTypeNo");
+                    this.ValidateProperty("ReportTypeNo", value);
+                    this._reportTypeNo = value;
+                    this.RaiseDataMemberChanged("ReportTypeNo");
+                    this.OnReportTypeNoChanged();
                 }
             }
         }
@@ -9345,6 +9378,8 @@ namespace RadiographyTracking.Web.Models
         
         private string _repairs;
         
+        private string _reportTypeNo;
+        
         private string _reshoots;
         
         private string _retakes;
@@ -9368,6 +9403,8 @@ namespace RadiographyTracking.Web.Models
         partial void OnIDChanged();
         partial void OnRepairsChanging(string value);
         partial void OnRepairsChanged();
+        partial void OnReportTypeNoChanging(string value);
+        partial void OnReportTypeNoChanged();
         partial void OnReshootsChanging(string value);
         partial void OnReshootsChanged();
         partial void OnRetakesChanging(string value);
@@ -9497,6 +9534,35 @@ namespace RadiographyTracking.Web.Models
                     this._repairs = value;
                     this.RaiseDataMemberChanged("Repairs");
                     this.OnRepairsChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'ReportTypeNo' value.
+        /// </summary>
+        // The following attributes were not generated:
+        // 
+        // - The attribute 'System.ComponentModel.DataAnnotations.NotMappedAttribute' is not visible in the client project 'RadiographyTracking'. Are you missing an assembly reference?
+        // [NotMappedAttribute()]
+        // 
+        [DataMember()]
+        public string ReportTypeNo
+        {
+            get
+            {
+                return this._reportTypeNo;
+            }
+            set
+            {
+                if ((this._reportTypeNo != value))
+                {
+                    this.OnReportTypeNoChanging(value);
+                    this.RaiseDataMemberChanging("ReportTypeNo");
+                    this.ValidateProperty("ReportTypeNo", value);
+                    this._reportTypeNo = value;
+                    this.RaiseDataMemberChanged("ReportTypeNo");
+                    this.OnReportTypeNoChanged();
                 }
             }
         }

@@ -1,0 +1,5 @@
+D:\ClientWork\Gama\Sources\RadiographyTracking\RadiographyTracking.Web\obj\Release\RadiographyTracking.Web.csprojResolveAssemblyReference.cache
+D:\ClientWork\Gama\Sources\RadiographyTracking\RadiographyTracking.Web\obj\Release\RadiographyTracking.Web.g.resources
+D:\ClientWork\Gama\Sources\RadiographyTracking\RadiographyTracking.Web\obj\Release\RadiographyTracking.Web.Resources.ValidationErrorResources.resources
+D:\ClientWork\Gama\Sources\RadiographyTracking\RadiographyTracking.Web\obj\Release\RadiographyTracking.Web.Resources.RegistrationDataResources.resources
+D:\ClientWork\Gama\Sources\RadiographyTracking\RadiographyTracking.Web\obj\Release\RadiographyTracking.Web.csproj.GenerateResource.Cache

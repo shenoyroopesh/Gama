@@ -219,7 +219,7 @@
                         <TextBlock Name="lblStatus" FontWeight="Bold" />
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="20, 0, 0, 0">
-                        <TextBlock Text="Total Area of Acceptable Submitted Films:" />
+                        <TextBlock Text="Total Area of Acceptable Films Submitted:" />
                         <TextBlock Name="lblTotalArea" FontWeight="Bold" />
                     </StackPanel>
                     <dtGrid:BindableDataGrid Name="energyAreas" HeadersVisibility="None" HorizontalAlignment="Left" Margin="20,10,0,0" />

@@ -28,3 +28,8 @@ C:\Users\Mher.Sarkissian\Desktop\SkinnableNestedMenuControl\MenuControl\obj\Rele
 C:\Users\Mher.Sarkissian\Desktop\SkinnableNestedMenuControl\MenuControl\obj\Release\MenuControl.g.resources
 C:\Users\Mher.Sarkissian\Desktop\SkinnableNestedMenuControl\MenuControl\obj\Release\MenuControl.dll
 C:\Users\Mher.Sarkissian\Desktop\SkinnableNestedMenuControl\MenuControl\obj\Release\MenuControl.pdb
+D:\ClientWork\Gama\Sources\RadiographyTracking\MenuControl\Bin\Release\MenuControl.dll
+D:\ClientWork\Gama\Sources\RadiographyTracking\MenuControl\Bin\Release\MenuControl.pdb
+D:\ClientWork\Gama\Sources\RadiographyTracking\MenuControl\obj\Release\MenuControl.g.resources
+D:\ClientWork\Gama\Sources\RadiographyTracking\MenuControl\obj\Release\MenuControl.dll
+D:\ClientWork\Gama\Sources\RadiographyTracking\MenuControl\obj\Release\MenuControl.pdb

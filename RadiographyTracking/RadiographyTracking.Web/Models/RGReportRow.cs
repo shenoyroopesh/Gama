@@ -9,6 +9,11 @@ namespace RadiographyTracking.Web.Models
 {
     public class RGReportRow
     {
+        public RGReportRow()
+        {
+            this.Technique = "SWSI";
+        }
+
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ID { get; set; }
         public int SlNo { get; set; }

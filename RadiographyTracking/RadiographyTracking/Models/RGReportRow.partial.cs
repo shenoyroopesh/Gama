@@ -35,5 +35,28 @@ namespace RadiographyTracking.Web.Models
                 }
             }
         }
+
+        static string[] _techniques = new string[] { "SWSI", "DWSI", "SI" };
+
+        public string[] TechniqueSource
+        {
+            get 
+            {
+                return _techniques;
+            }
+        }
+
+        public string TechniqueText
+        {
+            get 
+            {
+                return String.IsNullOrEmpty(this.Technique) ? " " : this.Technique;
+            }
+
+            set
+            {
+                this.Technique = value;
+            }
+        }
     }
 }

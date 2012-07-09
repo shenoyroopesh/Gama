@@ -237,6 +237,21 @@
                                     </sdk:DataGridTemplateColumn.CellEditingTemplate>
                                 </sdk:DataGridTemplateColumn>
                                 <sdk:DataGridTextColumn Header="Film Count" Binding="{Binding Path=FilmCount, Mode=TwoWay}"></sdk:DataGridTextColumn>
+                                <sdk:DataGridTemplateColumn Header="Technique">
+                                    <sdk:DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Path=TechniqueText, Mode=TwoWay}" VerticalAlignment="Center" />
+                                        </DataTemplate>
+                                    </sdk:DataGridTemplateColumn.CellTemplate>
+                                    <sdk:DataGridTemplateColumn.CellEditingTemplate>
+                                        <DataTemplate>
+                                            <ComboBox ItemsSource="{Binding TechniqueSource}"
+                                              SelectedValue="{Binding Technique, Mode=TwoWay}"
+                                              Style="{StaticResource ComboBoxStyle}"
+                                              ItemContainerStyle="{StaticResource ComboBoxItemStyle}" SelectionChanged="TechniqueChanged"/>
+                                        </DataTemplate>
+                                    </sdk:DataGridTemplateColumn.CellEditingTemplate>
+                                </sdk:DataGridTemplateColumn>
                                 <sdk:DataGridTextColumn Header="Observation" Binding="{Binding Path=Observations, Mode=TwoWay}"></sdk:DataGridTextColumn>
                                 <sdk:DataGridTemplateColumn Header="Remark">
                                     <sdk:DataGridTemplateColumn.CellTemplate>
@@ -322,6 +337,21 @@
                                 <sdk:DataGridTextColumn Header="Density" IsReadOnly="True" Binding="{Binding Path=Density, Mode=OneWay}"></sdk:DataGridTextColumn>
                                 <sdk:DataGridTextColumn Header="Film Size" IsReadOnly="True" Binding="{Binding Path=FilmSizeString, Mode=OneWay}"></sdk:DataGridTextColumn>
                                 <sdk:DataGridTextColumn Header="Film Count" IsReadOnly="True" Binding="{Binding Path=FilmCount, Mode=TwoWay}"></sdk:DataGridTextColumn>
+                                <sdk:DataGridTemplateColumn Header="Technique">
+                                    <sdk:DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Path=TechniqueText, Mode=TwoWay}" VerticalAlignment="Center" />
+                                        </DataTemplate>
+                                    </sdk:DataGridTemplateColumn.CellTemplate>
+                                    <sdk:DataGridTemplateColumn.CellEditingTemplate>
+                                        <DataTemplate>
+                                            <ComboBox ItemsSource="{Binding Source=TechniqueSource}"
+                                              SelectedValue="{Binding Technique, Mode=TwoWay}"
+                                              Style="{StaticResource ComboBoxStyle}"
+                                              ItemContainerStyle="{StaticResource ComboBoxItemStyle}" SelectionChanged="TechniqueChanged"/>
+                                        </DataTemplate>
+                                    </sdk:DataGridTemplateColumn.CellEditingTemplate>
+                                </sdk:DataGridTemplateColumn>
                                 <sdk:DataGridTextColumn Header="Observation" Binding="{Binding Path=Observations, Mode=TwoWay}"></sdk:DataGridTextColumn>
                                 <sdk:DataGridTemplateColumn Header="Remark">
                                     <sdk:DataGridTemplateColumn.CellTemplate>

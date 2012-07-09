@@ -688,7 +688,9 @@ namespace WordDocumentGenerator.Library
             TableCell cell = new TableCell();
             Paragraph para = new Paragraph();
             para.RemoveAllChildren();
-            para.ParagraphProperties = (ParagraphProperties)sdtContentCell.Descendants<ParagraphProperties>().First().Clone();
+
+            if (sdtContentCell.Descendants<ParagraphProperties>().Count() > 0)
+                para.ParagraphProperties = (ParagraphProperties)sdtContentCell.Descendants<ParagraphProperties>().First().Clone();
 
             foreach (Run run in runs)
             {

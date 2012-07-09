@@ -108,14 +108,10 @@ namespace RadiographyTracking.Web.Models
             //since this is at least the second report
             this.First = false;
 
-            //categorize this report as reshoot or not, and assign reshoot number
-            this.ReportType = (neededRows.Any(p => p.RemarkText == "RESHOOT" || p.RemarkText == "REPAIR")) ? "Reshoot" : "Retake";
-
-            if (this.ReportType == "Reshoot")
-            {
-                this.ReshootNo = parentRGReports.Max(p => p.ReshootNo) + 1;
-                this.ReportTypeAndNo = this.ReportType + "-" + this.ReshootNo.ToString();
-            }
+            //categorize this report as reshoot, and assign reshoot number
+            this.ReportType = "Reshoot";
+            this.ReshootNo = parentRGReports.Max(p => p.ReshootNo) + 1;
+            this.ReportTypeAndNo = this.ReportType + "-" + this.ReshootNo.ToString();
 
             //only those rows to be copied from entire history which do not have acceptable against that particular location and segment
             var slNo = 1;
@@ -223,14 +219,15 @@ namespace RadiographyTracking.Web.Models
 
         [NotMapped]
         [Exclude]
-        public float TotalArea
+        public string TotalArea
         {
             get
             {
-                return this.RGReportRows == null ? 0 :
+                return this.RGReportRows == null ? "0" :
                     this.RGReportRows
                     .Where(p => p.RemarkText != "RETAKE")
-                    .Sum(p => p.FilmSize == null ? 0 : p.FilmSize.Area * p.FilmCount);
+                    .Sum(p => p.FilmSize == null ? 0 : p.FilmSize.Area * p.FilmCount)
+                    .ToString();
             }
         }
 

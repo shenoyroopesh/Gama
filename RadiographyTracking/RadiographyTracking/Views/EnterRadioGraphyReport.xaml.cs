@@ -9,6 +9,7 @@ using RadiographyTracking.Web.Services;
 using System.ServiceModel.DomainServices.Client;
 using BindableDataGrid.Data;
 using RadiographyTracking.Controls;
+using System.Collections.Generic;
 
 namespace RadiographyTracking.Views
 {
@@ -203,9 +204,10 @@ namespace RadiographyTracking.Views
             get
             {
                 return (RGReportRows == null ? 0 :
-                            RGReportRows.Sum(p =>
-                                            (p.FilmSize == null ? 0 : p.FilmSize.Area * p.FilmCount)))
-                                            .ToString() + " Sq. Inches";
+                            RGReportRows
+                            .Where(p=>p.RemarkText != "RETAKE")
+                            .Sum(p => (p.FilmSize == null ? 0 : p.FilmSize.Area * p.FilmCount)))
+                            .ToString() + " Sq. Inches";
             }
         }
 
@@ -447,6 +449,13 @@ namespace RadiographyTracking.Views
             ComboBox cmb = (ComboBox)sender;
             var row = ((DataGridCell)cmb.Parent).DataContext;
             ((RGReportRow)row).RemarkText = ((Remark)cmb.SelectedValue).Value;
+        }
+
+        private void TechniqueChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ComboBox cmb = (ComboBox)sender;
+            var row = ((DataGridCell)cmb.Parent).DataContext;
+            ((RGReportRow)row).Technique = cmb.SelectedValue.ToString();
         }
 
         /// <summary>
