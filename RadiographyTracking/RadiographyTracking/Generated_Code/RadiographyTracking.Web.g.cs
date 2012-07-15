@@ -964,6 +964,33 @@ namespace RadiographyTracking.Web.Models
     
     
     /// <summary>
+    /// The 'AddressStickerRow' class.
+    /// </summary>
+    [DataContract(Namespace="http://schemas.datacontract.org/2004/07/RadiographyTracking.Web.Models")]
+    public sealed partial class AddressStickerRow : ComplexObject
+    {
+        
+        #region Extensibility Method Definitions
+
+        /// <summary>
+        /// This method is invoked from the constructor once initialization is complete and
+        /// can be used for further object setup.
+        /// </summary>
+        partial void OnCreated();
+
+        #endregion
+        
+        
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AddressStickerRow"/> class.
+        /// </summary>
+        public AddressStickerRow()
+        {
+            this.OnCreated();
+        }
+    }
+    
+    /// <summary>
     /// The 'Change' entity class.
     /// </summary>
     [DataContract(Namespace="http://schemas.datacontract.org/2004/07/RadiographyTracking.Web.Models")]
@@ -11738,6 +11765,38 @@ namespace RadiographyTracking.Web.Services
         }
         
         /// <summary>
+        /// Asynchronously invokes the 'GetAddressStickers' method of the DomainService.
+        /// </summary>
+        /// <param name="reportNo">The value for the 'reportNo' parameter of this action.</param>
+        /// <param name="cellNo">The value for the 'cellNo' parameter of this action.</param>
+        /// <param name="callback">Callback to invoke when the operation completes.</param>
+        /// <param name="userState">Value to pass to the callback.  It can be <c>null</c>.</param>
+        /// <returns>An operation instance that can be used to manage the asynchronous request.</returns>
+        public InvokeOperation<List<AddressStickerRow>> GetAddressStickers(string reportNo, int cellNo, Action<InvokeOperation<List<AddressStickerRow>>> callback, object userState)
+        {
+            Dictionary<string, object> parameters = new Dictionary<string, object>();
+            parameters.Add("reportNo", reportNo);
+            parameters.Add("cellNo", cellNo);
+            this.ValidateMethod("GetAddressStickers", parameters);
+            return ((InvokeOperation<List<AddressStickerRow>>)(this.InvokeOperation("GetAddressStickers", typeof(List<AddressStickerRow>), parameters, true, callback, userState)));
+        }
+        
+        /// <summary>
+        /// Asynchronously invokes the 'GetAddressStickers' method of the DomainService.
+        /// </summary>
+        /// <param name="reportNo">The value for the 'reportNo' parameter of this action.</param>
+        /// <param name="cellNo">The value for the 'cellNo' parameter of this action.</param>
+        /// <returns>An operation instance that can be used to manage the asynchronous request.</returns>
+        public InvokeOperation<List<AddressStickerRow>> GetAddressStickers(string reportNo, int cellNo)
+        {
+            Dictionary<string, object> parameters = new Dictionary<string, object>();
+            parameters.Add("reportNo", reportNo);
+            parameters.Add("cellNo", cellNo);
+            this.ValidateMethod("GetAddressStickers", parameters);
+            return ((InvokeOperation<List<AddressStickerRow>>)(this.InvokeOperation("GetAddressStickers", typeof(List<AddressStickerRow>), parameters, true, null, null)));
+        }
+        
+        /// <summary>
         /// Asynchronously invokes the 'GetRoles' method of the DomainService.
         /// </summary>
         /// <param name="callback">Callback to invoke when the operation completes.</param>
@@ -11818,6 +11877,25 @@ namespace RadiographyTracking.Web.Services
         [ServiceContract()]
         public interface IRadiographyServiceContract
         {
+            
+            /// <summary>
+            /// Asynchronously invokes the 'GetAddressStickers' operation.
+            /// </summary>
+            /// <param name="reportNo">The value for the 'reportNo' parameter of this action.</param>
+            /// <param name="cellNo">The value for the 'cellNo' parameter of this action.</param>
+            /// <param name="callback">Callback to invoke on completion.</param>
+            /// <param name="asyncState">Optional state object.</param>
+            /// <returns>An IAsyncResult that can be used to monitor the request.</returns>
+            [FaultContract(typeof(DomainServiceFault), Action="http://tempuri.org/RadiographyService/GetAddressStickersDomainServiceFault", Name="DomainServiceFault", Namespace="DomainServices")]
+            [OperationContract(AsyncPattern=true, Action="http://tempuri.org/RadiographyService/GetAddressStickers", ReplyAction="http://tempuri.org/RadiographyService/GetAddressStickersResponse")]
+            IAsyncResult BeginGetAddressStickers(string reportNo, int cellNo, AsyncCallback callback, object asyncState);
+            
+            /// <summary>
+            /// Completes the asynchronous operation begun by 'BeginGetAddressStickers'.
+            /// </summary>
+            /// <param name="result">The IAsyncResult returned from 'BeginGetAddressStickers'.</param>
+            /// <returns>The 'List`1' returned from the 'GetAddressStickers' operation.</returns>
+            List<AddressStickerRow> EndGetAddressStickers(IAsyncResult result);
             
             /// <summary>
             /// Asynchronously invokes the 'GetChanges' operation.

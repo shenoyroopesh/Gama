@@ -291,24 +291,31 @@ namespace RadiographyTracking.Web
 
         void SetLogo(SdtElement element, byte[] image, WordprocessingDocument document)
         {
-            var blip = element.Descendants<Blip>().FirstOrDefault();
-
-            string imgId = "LogoPicture";
-
-            var existingImage = document.MainDocumentPart.GetPartById(blip.Embed);
-
-            var imagePart = document.MainDocumentPart.HeaderParts
-                                .Where(p=>p.ImageParts.Count() > 0)
-                                .First()
-                                .AddImagePart(ImagePartType.Png, imgId);
-                
-            using(MemoryStream imageStream = new MemoryStream(image))
+            try
             {
-                imagePart.FeedData(imageStream);
+                var blip = element.Descendants<Blip>().FirstOrDefault();
+
+                string imgId = "LogoPicture";
+
+                var existingImage = document.MainDocumentPart.GetPartById(blip.Embed);
+
+                var imagePart = document.MainDocumentPart.HeaderParts
+                                    .Where(p => p.ImageParts.Count() > 0)
+                                    .First()
+                                    .AddImagePart(ImagePartType.Png, imgId);
+
+                using (MemoryStream imageStream = new MemoryStream(image))
+                {
+                    imagePart.FeedData(imageStream);
+                }
+                if (blip != null)
+                {
+                    blip.Embed = imgId;
+                }
             }
-            if (blip != null)
+            catch (Exception e)
             {
-                blip.Embed = imgId;
+                //do nothing - just image will not be replaced
             }
         }
 

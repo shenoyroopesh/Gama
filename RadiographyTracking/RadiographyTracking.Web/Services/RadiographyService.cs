@@ -1414,5 +1414,30 @@ namespace RadiographyTracking.Web.Services
         }
 
         #endregion
+
+        public List<AddressStickerRow> GetAddressStickers(string reportNo, int cellNo)
+        {
+            var rows = new List<RGReportRow>();
+            for (int i = 1; i < cellNo; i++) rows.Add(null);
+
+            var reportRows = this.DbContext
+                            .RGReportRows.Include(p => p.RGReport.FixedPattern.Customer).Include(p => p.Energy)
+                            .Where(p => p.RGReport.ReportNo == reportNo);
+
+            rows.AddRange(reportRows);
+
+            var addressStickerRows = new List<AddressStickerRow>();
+
+            for (int i = 0; i < rows.Count / 2; i++)
+            {
+                addressStickerRows.Add(new AddressStickerRow
+                {
+                    AddressLabelCol1 = rows[i * 2],
+                    AddressLabelCol2 = rows[i * 2 + 1]
+                });
+            }
+
+            return addressStickerRows;
+        }
     }
 }

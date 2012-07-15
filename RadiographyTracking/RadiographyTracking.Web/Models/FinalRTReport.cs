@@ -121,12 +121,13 @@ namespace RadiographyTracking.Web.Models
                     return null;
 
                 var summary = from r in FinalRTReportRows
+                              where r.RemarkText != "RETAKE" //Roopesh: 30-Jun-2012
                               group r by r.Energy.Name into g
                               select new
                               {
                                   Energy = g.Key,
-                                  Area = g.Select(p => p.FilmSize == null ? 0 : p.FilmSize.Area * p.FilmCount).Sum()
-                              };    
+                                  Area = g.Sum(p => p.FilmSize == null ? 0 : p.FilmSize.Area * p.FilmCount)
+                              };
 
                 return summary.ToDictionary(s => s.Energy, s => s.Area);
             }

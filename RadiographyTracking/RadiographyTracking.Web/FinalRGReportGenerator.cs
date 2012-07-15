@@ -316,24 +316,31 @@ namespace RadiographyTracking.Web
 
         void SetLogo(SdtElement element, byte[] image, WordprocessingDocument document)
         {
-            // Assuming that the first image is the logo placeholder. This is a reasonable assumption.
-            var blip = element.Descendants<Blip>().FirstOrDefault();
+            try
+            {
+                // Assuming that the first image is the logo placeholder. This is a reasonable assumption.
+                var blip = element.Descendants<Blip>().FirstOrDefault();
 
-            string imgId = "LogoPicture";
-            
-            //assuming only one headerpart will have images
-            var imagePart = document.MainDocumentPart.HeaderParts
-                                .Where(p=>p.ImageParts.Count() > 0)
-                                .First()
-                                .AddImagePart(ImagePartType.Png, imgId);
-                
-            using(MemoryStream imageStream = new MemoryStream(image))
-            {
-                imagePart.FeedData(imageStream);
+                string imgId = "LogoPicture";
+
+                //assuming only one headerpart will have images
+                var imagePart = document.MainDocumentPart.HeaderParts
+                                    .Where(p => p.ImageParts.Count() > 0)
+                                    .First()
+                                    .AddImagePart(ImagePartType.Png, imgId);
+
+                using (MemoryStream imageStream = new MemoryStream(image))
+                {
+                    imagePart.FeedData(imageStream);
+                }
+                if (blip != null)
+                {
+                    blip.Embed = imgId;
+                }
             }
-            if (blip != null)
+            catch (Exception e)
             {
-                blip.Embed = imgId;
+                //do nothing - just image will not be replaced
             }
         }
 

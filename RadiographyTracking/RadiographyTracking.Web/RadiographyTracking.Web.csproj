@@ -105,6 +105,7 @@
   <ItemGroup>
     <Content Include="ClientBin\RadiographyTracking.xap" />
     <Content Include="ChangesReportGenerate.aspx" />
+    <Content Include="AddressStickerReportGenerate.aspx" />
     <Content Include="FinalRGReportGenerate.aspx" />
     <Content Include="Global.asax" />
     <Content Include="RadiographyTrackingTestPage.aspx" />
@@ -130,6 +131,14 @@
     <Compile Include="ChangesReportGenerate.aspx.designer.cs">
       <DependentUpon>ChangesReportGenerate.aspx</DependentUpon>
     </Compile>
+    <Compile Include="AddressStickerReportGenerate.aspx.cs">
+      <DependentUpon>AddressStickerReportGenerate.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AddressStickerReportGenerate.aspx.designer.cs">
+      <DependentUpon>AddressStickerReportGenerate.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="AddressStickerGenerator.cs" />
     <Compile Include="FinalRGReportGenerate.aspx.cs">
       <DependentUpon>FinalRGReportGenerate.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -147,6 +156,7 @@
       <DependentUpon>201203311409394_FilmSizeIntToFloat.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Settings.cs" />
+    <Compile Include="Models\AddressStickerRow.cs" />
     <Compile Include="Models\Change.cs" />
     <Compile Include="Models\Company.cs" />
     <Compile Include="Models\FinalRTReportRow.cs" />
@@ -250,6 +260,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\PublishProfiles\Profile1.pubxml" />
+    <None Include="ReportTemplates\AddressLabels.docx" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

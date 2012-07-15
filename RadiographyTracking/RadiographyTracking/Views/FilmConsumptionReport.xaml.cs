@@ -130,9 +130,9 @@ namespace RadiographyTracking.Views
                 var freshCol = row.Name + "FRESH";
                 var repairCol = row.Name + "REPAIR";
                 var reshootCol = row.Name + "RESHOOT";
-                totalRow[freshCol] = rows.Select(p => (p[freshCol] as int?) ?? 0 ).Sum();
-                totalRow[repairCol] = rows.Select(p => (p[repairCol] as int?) ?? 0).Sum();
-                totalRow[reshootCol] = rows.Select(p => (p[reshootCol] as int?) ?? 0).Sum();
+                totalRow[freshCol] = rows.Select(p => (p[freshCol] as float?) ?? 0 ).Sum();
+                totalRow[repairCol] = rows.Select(p => (p[repairCol] as float?) ?? 0).Sum();
+                totalRow[reshootCol] = rows.Select(p => (p[reshootCol] as float?) ?? 0).Sum();
             }
 
             rows.Add(totalRow);
