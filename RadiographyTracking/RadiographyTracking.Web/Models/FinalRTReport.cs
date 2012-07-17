@@ -98,7 +98,9 @@ namespace RadiographyTracking.Web.Models
                 if (Directory.Exists(absolutepath))
                 {
                     DirectoryInfo di = new DirectoryInfo(absolutepath);
-                    return di.GetFiles().Select(p => p.Name).ToList();
+                    return di.GetFiles()
+                        .Where(p => !(p.Name.ToLower().Contains("address") || p.Name.ToLower().Contains("change")))
+                        .Select(p => p.Name).ToList();
                 }
                 else
                 {

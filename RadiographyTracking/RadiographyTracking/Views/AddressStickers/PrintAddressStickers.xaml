@@ -1,0 +1,39 @@
+﻿<controls:ChildWindow
+  x:Class="RadiographyTracking.AddressStickers.PrintAddressStickers"
+  x:Name="childWindow" 
+  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+  xmlns:controls="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls"
+  xmlns:local="clr-namespace:RadiographyTracking.LoginUI"
+  MinWidth="400" 
+  xmlns:my="clr-namespace:RadiographyTracking.Web.Models" xmlns:my1="clr-namespace:RadiographyTracking.Web.Services"     
+  Title="Print Address Stickers"
+  xmlns:ex="clr-namespace:ComboBoxExtensions;assembly=ComboBoxExtensions"    
+  Style="{StaticResource LogRegWindowStyle}">
+    <Grid x:Name="LayoutRoot" >
+        <Grid.Resources>
+            <my1:RadiographyContext x:Key="RadiographyContext" />
+        </Grid.Resources>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="30"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="150"></ColumnDefinition>
+            <ColumnDefinition Width="200"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <TextBlock Grid.Column="0" Grid.Row="0" Text="Print Address Stickers" />
+        <CheckBox Name="chkPrintAddressStickers" Grid.Column="1" Grid.Row="0" IsChecked="False"/>
+        <TextBlock Grid.Column="0" Grid.Row="1" Text="StickerTemplate" />
+        <ComboBox Name="cmbAddressStickerTemplates" Grid.Column="1" Grid.Row="1" 
+                  Style="{StaticResource ComboBoxStyle}"
+                  ItemContainerStyle="{StaticResource ComboBoxItemStyle}"
+                  IsEnabled="{Binding Source=chkPrintAddressStickers, Path=IsChecked}"/>
+        <TextBlock Grid.Column="0" Grid.Row="2" Text="Start From Cell" />
+        <TextBox Name="txtCellNo" Grid.Column="1" Grid.Row="2" Text="1" IsEnabled="{Binding Source=chkPrintAddressStickers, Path=IsChecked}"/>
+        <Button Name="btnOk" Click="btnOk_Click" Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="2" Width="50" Content="OK" />
+    </Grid>
+</controls:ChildWindow>

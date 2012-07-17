@@ -282,7 +282,7 @@
         <WebProjectProperties>
           <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>8819</DevelopmentServerPort>
+          <DevelopmentServerPort>51993</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>http://localhost/RadiographyTracking.Web</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>

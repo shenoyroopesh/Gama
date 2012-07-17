@@ -11797,6 +11797,28 @@ namespace RadiographyTracking.Web.Services
         }
         
         /// <summary>
+        /// Asynchronously invokes the 'GetAddressStickerTemplates' method of the DomainService.
+        /// </summary>
+        /// <param name="callback">Callback to invoke when the operation completes.</param>
+        /// <param name="userState">Value to pass to the callback.  It can be <c>null</c>.</param>
+        /// <returns>An operation instance that can be used to manage the asynchronous request.</returns>
+        public InvokeOperation<IEnumerable<string>> GetAddressStickerTemplates(Action<InvokeOperation<IEnumerable<string>>> callback, object userState)
+        {
+            this.ValidateMethod("GetAddressStickerTemplates", null);
+            return ((InvokeOperation<IEnumerable<string>>)(this.InvokeOperation("GetAddressStickerTemplates", typeof(IEnumerable<string>), null, true, callback, userState)));
+        }
+        
+        /// <summary>
+        /// Asynchronously invokes the 'GetAddressStickerTemplates' method of the DomainService.
+        /// </summary>
+        /// <returns>An operation instance that can be used to manage the asynchronous request.</returns>
+        public InvokeOperation<IEnumerable<string>> GetAddressStickerTemplates()
+        {
+            this.ValidateMethod("GetAddressStickerTemplates", null);
+            return ((InvokeOperation<IEnumerable<string>>)(this.InvokeOperation("GetAddressStickerTemplates", typeof(IEnumerable<string>), null, true, null, null)));
+        }
+        
+        /// <summary>
         /// Asynchronously invokes the 'GetRoles' method of the DomainService.
         /// </summary>
         /// <param name="callback">Callback to invoke when the operation completes.</param>
@@ -11896,6 +11918,24 @@ namespace RadiographyTracking.Web.Services
             /// <param name="result">The IAsyncResult returned from 'BeginGetAddressStickers'.</param>
             /// <returns>The 'List`1' returned from the 'GetAddressStickers' operation.</returns>
             List<AddressStickerRow> EndGetAddressStickers(IAsyncResult result);
+            
+            /// <summary>
+            /// Asynchronously invokes the 'GetAddressStickerTemplates' operation.
+            /// </summary>
+            /// <param name="callback">Callback to invoke on completion.</param>
+            /// <param name="asyncState">Optional state object.</param>
+            /// <returns>An IAsyncResult that can be used to monitor the request.</returns>
+            [FaultContract(typeof(DomainServiceFault), Action="http://tempuri.org/RadiographyService/GetAddressStickerTemplatesDomainServiceFaul" +
+                "t", Name="DomainServiceFault", Namespace="DomainServices")]
+            [OperationContract(AsyncPattern=true, Action="http://tempuri.org/RadiographyService/GetAddressStickerTemplates", ReplyAction="http://tempuri.org/RadiographyService/GetAddressStickerTemplatesResponse")]
+            IAsyncResult BeginGetAddressStickerTemplates(AsyncCallback callback, object asyncState);
+            
+            /// <summary>
+            /// Completes the asynchronous operation begun by 'BeginGetAddressStickerTemplates'.
+            /// </summary>
+            /// <param name="result">The IAsyncResult returned from 'BeginGetAddressStickerTemplates'.</param>
+            /// <returns>The 'IEnumerable`1' returned from the 'GetAddressStickerTemplates' operation.</returns>
+            IEnumerable<string> EndGetAddressStickerTemplates(IAsyncResult result);
             
             /// <summary>
             /// Asynchronously invokes the 'GetChanges' operation.

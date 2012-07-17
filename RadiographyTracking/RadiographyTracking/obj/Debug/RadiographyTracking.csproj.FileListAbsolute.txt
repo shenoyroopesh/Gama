@@ -1477,3 +1477,4 @@ D:\ClientWork\Gama\Sources\RadiographyTracking\RadiographyTracking\obj\Debug\Vie
 D:\ClientWork\Gama\Sources\RadiographyTracking\RadiographyTracking\obj\Debug\Views\Login\RegistrationForm.g.i.cs
 D:\ClientWork\Gama\Sources\RadiographyTracking\RadiographyTracking\obj\Debug\Views\ThicknessToEnergyType.g.i.cs
 D:\ClientWork\Gama\Sources\RadiographyTracking\RadiographyTracking\obj\Debug\Views\Users.g.i.cs
+D:\ClientWork\Gama\Sources\RadiographyTracking\RadiographyTracking\obj\Debug\Views\AddressStickers\PrintAddressStickers.g.i.cs

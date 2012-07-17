@@ -210,7 +210,7 @@ namespace RadiographyTracking.Web
                             content = reportRow.AddressLabelCol1.Technique;
                             break;
                         case DateOfTest1:
-                            content = reportRow.AddressLabelCol1.RGReport.DateOfTest.ToString();
+                            content = reportRow.AddressLabelCol1.RGReport.DateOfTest.ToString("dd-MM-yyyy");
                             break;
                         case Specification1:
                             content = reportRow.AddressLabelCol1.RGReport.Specifications;
@@ -284,7 +284,7 @@ namespace RadiographyTracking.Web
                             content = reportRow.AddressLabelCol2.Technique;
                             break;
                         case DateOfTest2:
-                            content = reportRow.AddressLabelCol2.RGReport.DateOfTest.ToString();
+                            content = reportRow.AddressLabelCol2.RGReport.DateOfTest.ToString("dd-MM-yyyy");
                             break;
                         case Specification2:
                             content = reportRow.AddressLabelCol2.RGReport.Specifications;

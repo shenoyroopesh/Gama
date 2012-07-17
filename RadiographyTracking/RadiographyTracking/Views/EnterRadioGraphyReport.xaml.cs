@@ -10,6 +10,7 @@ using System.ServiceModel.DomainServices.Client;
 using BindableDataGrid.Data;
 using RadiographyTracking.Controls;
 using System.Collections.Generic;
+using RadiographyTracking.AddressStickers;
 
 namespace RadiographyTracking.Views
 {
@@ -491,6 +492,24 @@ namespace RadiographyTracking.Views
         {
             //in case it din't load earlier
             UpdateEnergyWiseArea();
+        }
+
+
+        public override void OnFormSubmitCompleted(SubmitOperation so)
+        {
+            if (so.HasError)
+            {
+                MessageBox.Show(string.Format("Submit Failed: {0}", so.Error.Message), "Error", MessageBoxButton.OK);
+                so.MarkErrorAsHandled();
+            }
+            else
+            {
+                MessageBox.Show("Saved Successfully", "Success", MessageBoxButton.OK);
+                var addressStickersWindow = new PrintAddressStickers {
+                    ReportNo = this.RGReport.ReportNo
+                };
+                addressStickersWindow.Show();
+            }
         }
     }
 }

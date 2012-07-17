@@ -18,6 +18,8 @@ namespace RadiographyTracking.Web.Services
     using System.Collections;
     using System.Data.Objects;
     using RadiographyTracking.Web.Utility;
+    using System.IO;
+    using System.Web;
 
     [EnableClientAccess()]
     [RequiresAuthentication()]
@@ -79,7 +81,7 @@ namespace RadiographyTracking.Web.Services
                 if (_allFoundryUsers == null)
                 {
                     _allFoundryUsers = AllMembershipUsers
-                                        .Where(p=> !(new List<String>(){"admin", "managing director"})
+                                        .Where(p => !(new List<String>() { "admin", "managing director" })
                                                      .Contains(Roles.GetRolesForUser(p.UserName).First().ToLower()))
                                         .Select(p => p.GetUser()).ToList();
                 }
@@ -99,7 +101,7 @@ namespace RadiographyTracking.Web.Services
             toDate = toDate.Date.AddDays(1);
             return this.DbContext.Changes.Where(p => p.When >= fromDate && p.When <= toDate);
         }
-        
+
         public void InsertChange(Change entity)
         {
             DbEntityEntry<Change> entityEntry = this.DbContext.Entry(entity);
@@ -161,14 +163,14 @@ namespace RadiographyTracking.Web.Services
         {
             return this.DbContext.Companies;
         }
-        
+
         public void UpdateCompany(Company currentCompany)
         {
             this.DbContext.Companies.AttachAsModified(currentCompany, this.ChangeSet.GetOriginal(currentCompany), this.DbContext);
         }
 
         #endregion
-        
+
         #region Customers
         public IQueryable<Customer> GetCustomers()
         {
@@ -415,18 +417,18 @@ namespace RadiographyTracking.Web.Services
                 .Select(p => new
                 {
                     Date = p.Date,
-                    SentToHO = (float) (p.Direction.ID == sentToHO.ID ? p.Area : 0),
-                    Consumed = (float) 0,
-                    ReceivedFromHO = (float) (p.Direction.ID == sentToHO.ID ? 0 : p.Area)
+                    SentToHO = (float)(p.Direction.ID == sentToHO.ID ? p.Area : 0),
+                    Consumed = (float)0,
+                    ReceivedFromHO = (float)(p.Direction.ID == sentToHO.ID ? 0 : p.Area)
                 });
 
             var consumptions = this.DbContext.RGReportRows.Where(p => p.RGReport.FixedPattern.Customer.FoundryID.Equals(foundryId))
                                                             .Select(p => new
                                                             {
                                                                 Date = p.RGReport.ReportDate,
-                                                                SentToHO = (float) 0,
+                                                                SentToHO = (float)0,
                                                                 Consumed = p.FilmSize.Area * p.FilmCount,
-                                                                ReceivedFromHO = (float) 0
+                                                                ReceivedFromHO = (float)0
                                                             });
 
             var all = transactions.Union(consumptions).ToList();
@@ -497,7 +499,7 @@ namespace RadiographyTracking.Web.Services
         #endregion
 
         #region Fixed Patterns
-        
+
         public IQueryable<FixedPattern> GetFixedPatterns(String filter = "")
         {
             var foundryID = getFoundryIDForCurrentUser();
@@ -556,47 +558,47 @@ namespace RadiographyTracking.Web.Services
                         where r.RGReport != null &&
                         r.RGReport.FixedPattern.FPNo == fpNo &&
                         r.RGReport.FixedPattern.ID == (foundryID ?? r.RGReport.FixedPattern.ID) &&
-                        //ensure that the report has at least one defect
+                            //ensure that the report has at least one defect
                         r.RGReport.RGReportRows.Where(p => (p.Observations ?? "").Trim() != "NSD").Count() > 0
                         select new
                         {
                             RTNo = r.RGReport.RTNo,
                             ReportNo = r.RGReport.ReportNo,
                             ReportDate = r.RGReport.ReportDate,
-                            Location = r.Location.Trim(), 
-                            Segment = r.Segment.Trim(), 
+                            Location = r.Location.Trim(),
+                            Segment = r.Segment.Trim(),
                             Observations = r.Observations
                         }).ToList();
 
             var report = (from r in rows
-                         orderby r.RTNo, r.ReportDate
+                          orderby r.RTNo, r.ReportDate
                           group r by new { r.RTNo, r.ReportNo, r.ReportDate } into g
-                         select new FixedPatternPerformanceRow
-                         {
-                             ID = Guid.NewGuid(),
-                             RTNo = g.Key.RTNo,
-                             ReportNo = g.Key.ReportNo,
-                             Date = g.Key.ReportDate,
-                             Locations = (from rep in g
-                                         group rep by new { rep.Location } into repg
-                                         select new LocationClass
-                                         {
-                                             ID = Guid.NewGuid(),
-                                             Location = repg.Key.Location,
-                                             Segments = (from row in repg.Select(p => new { p.Segment, p.Observations }).ToArray()
-                                                        group row by new { row.Segment, row.Observations } into segg
-                                                        select new SegmentClass
-                                                        {
-                                                            ID = Guid.NewGuid(),
-                                                            Segment = segg.Key.Segment,
-                                                            Observations = segg.Key.Observations
-                                                        }).ToList()
-                                         }).ToList()
-                         }).ToList();
+                          select new FixedPatternPerformanceRow
+                          {
+                              ID = Guid.NewGuid(),
+                              RTNo = g.Key.RTNo,
+                              ReportNo = g.Key.ReportNo,
+                              Date = g.Key.ReportDate,
+                              Locations = (from rep in g
+                                           group rep by new { rep.Location } into repg
+                                           select new LocationClass
+                                           {
+                                               ID = Guid.NewGuid(),
+                                               Location = repg.Key.Location,
+                                               Segments = (from row in repg.Select(p => new { p.Segment, p.Observations }).ToArray()
+                                                           group row by new { row.Segment, row.Observations } into segg
+                                                           select new SegmentClass
+                                                           {
+                                                               ID = Guid.NewGuid(),
+                                                               Segment = segg.Key.Segment,
+                                                               Observations = segg.Key.Observations
+                                                           }).ToList()
+                                           }).ToList()
+                          }).ToList();
 
             #region update the guids for childs
 
-            foreach(var row in report)
+            foreach (var row in report)
             {
                 foreach (var loc in row.Locations)
                 {
@@ -646,7 +648,7 @@ namespace RadiographyTracking.Web.Services
             }
 
             FixedPatternTemplate fpTemplate = this.DbContext.FixedPatternTemplates.Include(p => p.FPTemplateRows.Select(r => r.FilmSize))
-                                                                                  .Include(p=>p.FixedPattern.Customer.Foundry)
+                                                                                  .Include(p => p.FixedPattern.Customer.Foundry)
                                                                                  .Where(p =>
                                                                                         p.FixedPattern.FPNo == fixedPattern.FPNo &&
                                                                                         p.Coverage.CoverageName == coverage.CoverageName).FirstOrDefault();
@@ -837,7 +839,7 @@ namespace RadiographyTracking.Web.Services
             var foundryID = getFoundryIDForCurrentUser();
             return this.DbContext.RGReports.Include(p => p.RGReportRows.Select(r => r.Remark))
                                             .Where(p => p.ReportNo == RGReportNo &&
-                                                    p.FixedPattern.Customer.Foundry.ID == 
+                                                    p.FixedPattern.Customer.Foundry.ID ==
                                                         (foundryID ?? p.FixedPattern.Customer.Foundry.ID));
         }
 
@@ -880,7 +882,7 @@ namespace RadiographyTracking.Web.Services
             int fpID = fp.ID;
             int coverageID = coverage.ID;
             FixedPatternTemplate fpTemplate = this.GetFixedPatternTemplateForFP(strFPNo, strCoverage);
-            
+
             //get the latest report in the sequence
             //can't use Last() here, have to use first() since this gets converted into a store query
 
@@ -908,7 +910,7 @@ namespace RadiographyTracking.Web.Services
                 if (rgReport.Status != null && rgReport.Status.Status == "COMPLETE") return null;
 
                 //if any remark for the earlier report is pending, return it again
-                if (rgReport.RGReportRows.Where(p => p.Remark == null).Count() > 0) 
+                if (rgReport.RGReportRows.Where(p => p.Remark == null).Count() > 0)
                     return rgReport;
 
                 //else create a new child report
@@ -996,7 +998,7 @@ namespace RadiographyTracking.Web.Services
 
 
             int slno = 1;
-            foreach (var r in reportRows.Where(p=> (filter=="False" || p.RemarkText != "ACCEPTABLE")).OrderBy(p => p.FPSLNo ?? 10000 + p.ID)) //for rows added, not present in FP Templates
+            foreach (var r in reportRows.Where(p => (filter == "False" || p.RemarkText != "ACCEPTABLE")).OrderBy(p => p.FPSLNo ?? 10000 + p.ID)) //for rows added, not present in FP Templates
             {
                 FinalRTReportRow row = new FinalRTReportRow();
                 r.CopyTo(row, string.Empty);
@@ -1044,7 +1046,7 @@ namespace RadiographyTracking.Web.Services
         }
 
         #endregion
-        
+
         #region RGRowTypes
 
         public IQueryable<RGReportRowType> GetRGRowTypes()
@@ -1136,7 +1138,7 @@ namespace RadiographyTracking.Web.Services
 
 
         #endregion
-        
+
         #region Technicians
         public IQueryable<Technician> GetTechnicians()
         {
@@ -1196,10 +1198,10 @@ namespace RadiographyTracking.Web.Services
                                     .Include("Remark")
                                     .Include("RGReport")
                                     .Include("RGReport.Shift")
-                                orderby r.RGReport.ReportDate, r.RGReport.Shift
-                                where r.Technician.ID == (technicianId == -1 ? r.Technician.ID : technicianId)
-                                && r.RGReport.ReportDate >= fromDate && r.RGReport.ReportDate <= toDate
-                                select r).ToList();
+                                 orderby r.RGReport.ReportDate, r.RGReport.Shift
+                                 where r.Technician.ID == (technicianId == -1 ? r.Technician.ID : technicianId)
+                                 && r.RGReport.ReportDate >= fromDate && r.RGReport.ReportDate <= toDate
+                                 select r).ToList();
 
             var intermediate2 = from r in intermediate1
                                 group r by new
@@ -1296,7 +1298,7 @@ namespace RadiographyTracking.Web.Services
             }
         }
         #endregion
-        
+
         #region Users
 
         //public IQueryable GetUsers()
@@ -1310,7 +1312,7 @@ namespace RadiographyTracking.Web.Services
         //    {
         //       // urs.CreateUser(user, user.Password);
         //    }
-            
+
         //}
 
         //public void UpdateUser(User user)
@@ -1374,7 +1376,7 @@ namespace RadiographyTracking.Web.Services
             }
         }
         #endregion
-        
+
         #region FileUpload
 
         public IQueryable<UploadedFile> GetUploadedFiles()
@@ -1410,7 +1412,7 @@ namespace RadiographyTracking.Web.Services
             this.DbContext.UploadedFiles.Add(file);
             this.DbContext.SaveChanges();
 
-            return file.ID;            
+            return file.ID;
         }
 
         #endregion
@@ -1426,6 +1428,9 @@ namespace RadiographyTracking.Web.Services
 
             rows.AddRange(reportRows);
 
+            //if not even, add something to the end to make it even
+            if (rows.Count % 2 > 0) rows.Add(null);
+
             var addressStickerRows = new List<AddressStickerRow>();
 
             for (int i = 0; i < rows.Count / 2; i++)
@@ -1438,6 +1443,27 @@ namespace RadiographyTracking.Web.Services
             }
 
             return addressStickerRows;
+        }
+
+        /// <summary>
+        /// Gets list of report templates filtered by an optional filter parameter
+        /// </summary>
+        [Invoke]
+        public List<String> GetAddressStickerTemplates()
+        {
+            string absolutepath = HttpContext.Current.Server.MapPath("~/ReportTemplates/");
+
+            if (Directory.Exists(absolutepath))
+            {
+                DirectoryInfo di = new DirectoryInfo(absolutepath);
+                return di.GetFiles().Where(p => p.Name.ToLower().Contains("address"))
+                    .Select(p => p.Name)
+                    .ToList();
+            }
+            else
+            {
+                return null;
+            }
         }
     }
 }

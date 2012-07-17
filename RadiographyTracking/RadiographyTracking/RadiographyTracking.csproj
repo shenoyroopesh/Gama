@@ -143,6 +143,9 @@
       <DependentUpon>SecurityQuestions.resx</DependentUpon>
     </Compile>
     <Compile Include="Utility.cs" />
+    <Compile Include="Views\AddressStickers\PrintAddressStickers.xaml.cs">
+      <DependentUpon>PrintAddressStickers.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\BaseCRUDView.cs" />
     <Compile Include="Views\ChangeReasons.xaml.cs">
       <DependentUpon>ChangeReasons.xaml</DependentUpon>
@@ -260,6 +263,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Controls\FileUpload.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\AddressStickers\PrintAddressStickers.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
