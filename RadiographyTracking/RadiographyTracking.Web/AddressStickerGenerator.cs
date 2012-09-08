@@ -84,44 +84,46 @@ namespace RadiographyTracking.Web
         /// <returns></returns>
         protected override Dictionary<string, PlaceHolderType> GetPlaceHolderTagToTypeCollection()
         {
-            Dictionary<string, PlaceHolderType> placeHolderTagToTypeCollection = new Dictionary<string, PlaceHolderType>();
+            var placeHolderTagToTypeCollection = new Dictionary<string, PlaceHolderType>
+                {
+                    {AddressLabelRow, PlaceHolderType.Recursive},
+                    {AddressStickerCol1, PlaceHolderType.NonRecursive},
+                    {CustomerName1, PlaceHolderType.NonRecursive},
+                    {City1, PlaceHolderType.NonRecursive},
+                    {EndCustomerName1, PlaceHolderType.NonRecursive},
+                    {Description1, PlaceHolderType.NonRecursive},
+                    {RTNo1, PlaceHolderType.NonRecursive},
+                    {Location1, PlaceHolderType.NonRecursive},
+                    {HeatNo1, PlaceHolderType.NonRecursive},
+                    {Designation1, PlaceHolderType.NonRecursive},
+                    {Thickness1, PlaceHolderType.NonRecursive},
+                    {Density1, PlaceHolderType.NonRecursive},
+                    {Energy1, PlaceHolderType.NonRecursive},
+                    {Sensitivity1, PlaceHolderType.NonRecursive},
+                    {Technique1, PlaceHolderType.NonRecursive},
+                    {DateOfTest1, PlaceHolderType.NonRecursive},
+                    {Specification1, PlaceHolderType.NonRecursive},
+                    {AddressStickerCol2, PlaceHolderType.NonRecursive},
+                    {CustomerName2, PlaceHolderType.NonRecursive},
+                    {City2, PlaceHolderType.NonRecursive},
+                    {EndCustomerName2, PlaceHolderType.NonRecursive},
+                    {Description2, PlaceHolderType.NonRecursive},
+                    {RTNo2, PlaceHolderType.NonRecursive},
+                    {Location2, PlaceHolderType.NonRecursive},
+                    {HeatNo2, PlaceHolderType.NonRecursive},
+                    {Designation2, PlaceHolderType.NonRecursive},
+                    {Thickness2, PlaceHolderType.NonRecursive},
+                    {Density2, PlaceHolderType.NonRecursive},
+                    {Energy2, PlaceHolderType.NonRecursive},
+                    {Sensitivity2, PlaceHolderType.NonRecursive},
+                    {Technique2, PlaceHolderType.NonRecursive},
+                    {DateOfTest2, PlaceHolderType.NonRecursive},
+                    {Specification2, PlaceHolderType.NonRecursive}
+                };
 
             // Handle Rowlevel place holders
-            placeHolderTagToTypeCollection.Add(AddressLabelRow, PlaceHolderType.Recursive);
 
             //within each row, these are non-recursive
-            placeHolderTagToTypeCollection.Add(AddressStickerCol1, PlaceHolderType.NonRecursive);
-            placeHolderTagToTypeCollection.Add(CustomerName1, PlaceHolderType.NonRecursive);
-            placeHolderTagToTypeCollection.Add(City1, PlaceHolderType.NonRecursive);
-            placeHolderTagToTypeCollection.Add(EndCustomerName1, PlaceHolderType.NonRecursive);
-            placeHolderTagToTypeCollection.Add(Description1, PlaceHolderType.NonRecursive);
-            placeHolderTagToTypeCollection.Add(RTNo1, PlaceHolderType.NonRecursive);
-            placeHolderTagToTypeCollection.Add(Location1, PlaceHolderType.NonRecursive);
-            placeHolderTagToTypeCollection.Add(HeatNo1, PlaceHolderType.NonRecursive);
-            placeHolderTagToTypeCollection.Add(Designation1, PlaceHolderType.NonRecursive);
-            placeHolderTagToTypeCollection.Add(Thickness1, PlaceHolderType.NonRecursive);
-            placeHolderTagToTypeCollection.Add(Density1, PlaceHolderType.NonRecursive);
-            placeHolderTagToTypeCollection.Add(Energy1, PlaceHolderType.NonRecursive);
-            placeHolderTagToTypeCollection.Add(Sensitivity1, PlaceHolderType.NonRecursive);
-            placeHolderTagToTypeCollection.Add(Technique1, PlaceHolderType.NonRecursive);
-            placeHolderTagToTypeCollection.Add(DateOfTest1, PlaceHolderType.NonRecursive);
-            placeHolderTagToTypeCollection.Add(Specification1, PlaceHolderType.NonRecursive);
-            placeHolderTagToTypeCollection.Add(AddressStickerCol2, PlaceHolderType.NonRecursive);
-            placeHolderTagToTypeCollection.Add(CustomerName2, PlaceHolderType.NonRecursive);
-            placeHolderTagToTypeCollection.Add(City2, PlaceHolderType.NonRecursive);
-            placeHolderTagToTypeCollection.Add(EndCustomerName2, PlaceHolderType.NonRecursive);
-            placeHolderTagToTypeCollection.Add(Description2, PlaceHolderType.NonRecursive);
-            placeHolderTagToTypeCollection.Add(RTNo2, PlaceHolderType.NonRecursive);
-            placeHolderTagToTypeCollection.Add(Location2, PlaceHolderType.NonRecursive);
-            placeHolderTagToTypeCollection.Add(HeatNo2, PlaceHolderType.NonRecursive);
-            placeHolderTagToTypeCollection.Add(Designation2, PlaceHolderType.NonRecursive);
-            placeHolderTagToTypeCollection.Add(Thickness2, PlaceHolderType.NonRecursive);
-            placeHolderTagToTypeCollection.Add(Density2, PlaceHolderType.NonRecursive);
-            placeHolderTagToTypeCollection.Add(Energy2, PlaceHolderType.NonRecursive);
-            placeHolderTagToTypeCollection.Add(Sensitivity2, PlaceHolderType.NonRecursive);
-            placeHolderTagToTypeCollection.Add(Technique2, PlaceHolderType.NonRecursive);
-            placeHolderTagToTypeCollection.Add(DateOfTest2, PlaceHolderType.NonRecursive);
-            placeHolderTagToTypeCollection.Add(Specification2, PlaceHolderType.NonRecursive);
             return placeHolderTagToTypeCollection;
         }
 

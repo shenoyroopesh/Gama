@@ -1,23 +1,18 @@
-﻿
-namespace RadiographyTracking.Web.Services
+﻿namespace RadiographyTracking.Web.Services
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel;
-    using System.ComponentModel.DataAnnotations;
     using System.Linq;
     using System.ServiceModel.DomainServices.Hosting;
     using System.ServiceModel.DomainServices.Server;
-    using RadiographyTracking.Web.Models;
-    using RadiographyTracking.Web;
+    using Models;
+    using Web;
     using System.Data.Entity.Infrastructure;
     using System.Data;
     using System.ServiceModel.DomainServices.EntityFramework;
     using System.Data.Entity;
     using System.Web.Security;
-    using System.Collections;
-    using System.Data.Objects;
-    using RadiographyTracking.Web.Utility;
+    using Utility;
     using System.IO;
     using System.Web;
 
@@ -479,7 +474,7 @@ namespace RadiographyTracking.Web.Services
                                 && r.RowType.Value != "RETAKE"               //retakes are not considered in the film consumption report
                                 && r.RGReport.ReportDate >= fromDate && r.RGReport.ReportDate <= toDate
                                 group r by new { r.RGReport, r.RGReport.FixedPattern, r.Energy, r.RowType } into g
-                                select new { Key = g.Key, Area = g.Sum(p => p.FilmSize.Area * p.FilmCount) }).ToList();
+                                select new {g.Key, Area = g.Sum(p => p.FilmSize.Area * p.FilmCount) }).ToList();
 
 
             return from g in intermediate
@@ -975,16 +970,16 @@ namespace RadiographyTracking.Web.Services
                                 .Include(p => p.Coverage)
                                 .OrderByDescending(p => p.ID).FirstOrDefault();
 
-            FinalRTReport finalReport = new FinalRTReport();
+            var finalReport = new FinalRTReport();
             rgReport.CopyTo(finalReport, "ReportDate,DateOfTest"); //since they are of different types it could cause issues
             finalReport.DateOfTest = rgReport.DateOfTest.ToString("dd-MM-yyyy");
             finalReport.ReportDate = rgReport.ReportDate.ToString("dd-MM-yyyy");
 
-            List<FinalRTReportRow> finalRows = new List<FinalRTReportRow>();
+            var finalRows = new List<FinalRTReportRow>();
 
             //get the latest rows for all locations for this rt no
 
-            var reportRows = (from r in this.DbContext.RGReportRows
+            var reportRows = (from r in DbContext.RGReportRows
                               where r.RGReport.RTNo == rtNo
                               group r by new { r.Location, r.Segment } into g
                               //latest row for each combination
@@ -1000,7 +995,7 @@ namespace RadiographyTracking.Web.Services
             int slno = 1;
             foreach (var r in reportRows.Where(p => (filter == "False" || p.RemarkText != "ACCEPTABLE")).OrderBy(p => p.FPSLNo ?? 10000 + p.ID)) //for rows added, not present in FP Templates
             {
-                FinalRTReportRow row = new FinalRTReportRow();
+                var row = new FinalRTReportRow();
                 r.CopyTo(row, string.Empty);
                 //set parent id
                 row.FinalRTReportID = finalReport.ID;
@@ -1016,7 +1011,7 @@ namespace RadiographyTracking.Web.Services
 
         public void UpdateRGReport(RGReport currentRGReport)
         {
-            this.DbContext.RGReports.AttachAsModified(currentRGReport, this.ChangeSet.GetOriginal(currentRGReport), this.DbContext);
+            DbContext.RGReports.AttachAsModified(currentRGReport, ChangeSet.GetOriginal(currentRGReport), DbContext);
         }
 
         public void DeleteRGReport(RGReport entity)
@@ -1032,8 +1027,8 @@ namespace RadiographyTracking.Web.Services
             }
             else
             {
-                this.DbContext.RGReports.Attach(entity);
-                this.DbContext.RGReports.Remove(entity);
+                DbContext.RGReports.Attach(entity);
+                DbContext.RGReports.Remove(entity);
             }
         }
         #endregion
@@ -1259,120 +1254,69 @@ namespace RadiographyTracking.Web.Services
             int filterInt;
             if (Int32.TryParse(filter, out filterInt))
             {
-                return this.DbContext.ThicknessRangesForEnergy
+                return DbContext.ThicknessRangesForEnergy
                         .Where(p => p.Energy.Name.Contains(filter) || (p.ThicknessFrom <= filterInt && p.ThicknessTo >= filterInt));
             }
 
-            return this.DbContext.ThicknessRangesForEnergy.Where(p => p.Energy.Name.Contains(filter));
+            return DbContext.ThicknessRangesForEnergy.Where(p => p.Energy.Name.Contains(filter));
         }
 
         public void InsertThicknessRangeForEnergy(ThicknessRangeForEnergy entity)
         {
-            DbEntityEntry<ThicknessRangeForEnergy> entityEntry = this.DbContext.Entry(entity);
+            var entityEntry = DbContext.Entry(entity);
             if ((entityEntry.State != EntityState.Detached))
-            {
                 entityEntry.State = EntityState.Added;
-            }
             else
-            {
-                this.DbContext.ThicknessRangesForEnergy.Add(entity);
-            }
+                DbContext.ThicknessRangesForEnergy.Add(entity);
         }
 
         public void UpdateThicknessRangeForEnergy(ThicknessRangeForEnergy currentThicknessRangeForEnergy)
         {
-            this.DbContext.ThicknessRangesForEnergy.AttachAsModified(currentThicknessRangeForEnergy, this.ChangeSet.GetOriginal(currentThicknessRangeForEnergy), this.DbContext);
+            DbContext.ThicknessRangesForEnergy.AttachAsModified(currentThicknessRangeForEnergy, ChangeSet.GetOriginal(currentThicknessRangeForEnergy), DbContext);
         }
 
         public void DeleteThicknessRangeForEnergy(ThicknessRangeForEnergy entity)
         {
-            DbEntityEntry<ThicknessRangeForEnergy> entityEntry = this.DbContext.Entry(entity);
+            var entityEntry = DbContext.Entry(entity);
             if ((entityEntry.State != EntityState.Deleted))
-            {
                 entityEntry.State = EntityState.Deleted;
-            }
             else
             {
-                this.DbContext.ThicknessRangesForEnergy.Attach(entity);
-                this.DbContext.ThicknessRangesForEnergy.Remove(entity);
+                DbContext.ThicknessRangesForEnergy.Attach(entity);
+                DbContext.ThicknessRangesForEnergy.Remove(entity);
             }
         }
-        #endregion
-
-        #region Users
-
-        //public IQueryable GetUsers()
-        //{
-        //    return Membership.GetAllUsers().AsQueryable();
-        //}
-
-        //public void InsertUser(User user)
-        //{
-        //    using (UserRegistrationService urs = new UserRegistrationService())
-        //    {
-        //       // urs.CreateUser(user, user.Password);
-        //    }
-
-        //}
-
-        //public void UpdateUser(User user)
-        //{
-        //    //this.DbContext.Users.AttachAsModified(currentUser, this.ChangeSet.GetOriginal(currentUser), this.DbContext);
-        //    //Membership.UpdateUser((MembershipUser)user);
-        //}
-
-        //public void DeleteUser(User entity)
-        //{
-        //    DbEntityEntry<User> entityEntry = this.DbContext.Entry(entity);
-        //    if ((entityEntry.State != EntityState.Deleted))
-        //    {
-        //        entityEntry.State = EntityState.Deleted;
-        //    }
-        //    else
-        //    {
-        //        //this.DbContext.Users.Attach(entity);
-        //        //this.DbContext.Users.Remove(entity);
-        //    }
-        //}
-
-
         #endregion
 
         #region Welders
         public IQueryable<Welder> GetWelders()
         {
-            return this.DbContext.Welders;
+            return DbContext.Welders;
         }
 
         public void InsertWelder(Welder entity)
         {
-            DbEntityEntry<Welder> entityEntry = this.DbContext.Entry(entity);
+            var entityEntry = DbContext.Entry(entity);
             if ((entityEntry.State != EntityState.Detached))
-            {
                 entityEntry.State = EntityState.Added;
-            }
             else
-            {
-                this.DbContext.Welders.Add(entity);
-            }
+                DbContext.Welders.Add(entity);
         }
 
         public void UpdateWelder(Welder currentWelder)
         {
-            this.DbContext.Welders.AttachAsModified(currentWelder, this.ChangeSet.GetOriginal(currentWelder), this.DbContext);
+            DbContext.Welders.AttachAsModified(currentWelder, this.ChangeSet.GetOriginal(currentWelder), this.DbContext);
         }
 
         public void DeleteWelder(Welder entity)
         {
-            DbEntityEntry<Welder> entityEntry = this.DbContext.Entry(entity);
+            var entityEntry = DbContext.Entry(entity);
             if ((entityEntry.State != EntityState.Deleted))
-            {
                 entityEntry.State = EntityState.Deleted;
-            }
             else
             {
-                this.DbContext.Welders.Attach(entity);
-                this.DbContext.Welders.Remove(entity);
+                DbContext.Welders.Attach(entity);
+                DbContext.Welders.Remove(entity);
             }
         }
         #endregion
@@ -1381,48 +1325,45 @@ namespace RadiographyTracking.Web.Services
 
         public IQueryable<UploadedFile> GetUploadedFiles()
         {
-            return this.DbContext.UploadedFiles;
+            return DbContext.UploadedFiles;
         }
 
         public void InsertUploadedFile(UploadedFile entity)
         {
-            DbEntityEntry<UploadedFile> entityEntry = this.DbContext.Entry(entity);
+            var entityEntry = DbContext.Entry(entity);
             if ((entityEntry.State != EntityState.Detached))
-            {
                 entityEntry.State = EntityState.Added;
-            }
             else
-            {
-                this.DbContext.UploadedFiles.Add(entity);
-            }
+                DbContext.UploadedFiles.Add(entity);
         }
-
-
 
         [Invoke]
         public int UploadFile(string fileName, string fileType, string fileExtension, UInt64 fileSize, byte[] fileData)
         {
-            UploadedFile file = new UploadedFile();
-            file.FileName = fileName;
-            file.FileType = fileType;
-            file.FileExtension = fileExtension;
-            file.FileSize = fileSize;
-            file.FileData = fileData;
+            var file = new UploadedFile
+                {
+                    FileName = fileName,
+                    FileType = fileType,
+                    FileExtension = fileExtension,
+                    FileSize = fileSize,
+                    FileData = fileData
+                };
 
-            this.DbContext.UploadedFiles.Add(file);
-            this.DbContext.SaveChanges();
+            DbContext.UploadedFiles.Add(file);
+            DbContext.SaveChanges();
 
             return file.ID;
         }
 
         #endregion
 
+        #region address stickers
         public List<AddressStickerRow> GetAddressStickers(string reportNo, int cellNo)
         {
             var rows = new List<RGReportRow>();
-            for (int i = 1; i < cellNo; i++) rows.Add(null);
+            for (var i = 1; i < cellNo; i++) rows.Add(null);
 
-            var reportRows = this.DbContext
+            var reportRows = DbContext
                             .RGReportRows.Include(p => p.RGReport.FixedPattern.Customer).Include(p => p.Energy)
                             .Where(p => p.RGReport.ReportNo == reportNo);
 
@@ -1433,7 +1374,7 @@ namespace RadiographyTracking.Web.Services
 
             var addressStickerRows = new List<AddressStickerRow>();
 
-            for (int i = 0; i < rows.Count / 2; i++)
+            for (var i = 0; i < rows.Count / 2; i++)
             {
                 addressStickerRows.Add(new AddressStickerRow
                 {
@@ -1451,19 +1392,16 @@ namespace RadiographyTracking.Web.Services
         [Invoke]
         public List<String> GetAddressStickerTemplates()
         {
-            string absolutepath = HttpContext.Current.Server.MapPath("~/ReportTemplates/");
+            var absolutepath = HttpContext.Current.Server.MapPath("~/ReportTemplates/");
 
-            if (Directory.Exists(absolutepath))
-            {
-                DirectoryInfo di = new DirectoryInfo(absolutepath);
-                return di.GetFiles().Where(p => p.Name.ToLower().Contains("address"))
-                    .Select(p => p.Name)
-                    .ToList();
-            }
-            else
-            {
+            if (!Directory.Exists(absolutepath))
                 return null;
-            }
+            
+            var di = new DirectoryInfo(absolutepath);
+            return di.GetFiles().Where(p => p.Name.ToLower().Contains("address"))
+                .Select(p => p.Name)
+                .ToList();
         }
+        #endregion
     }
 }

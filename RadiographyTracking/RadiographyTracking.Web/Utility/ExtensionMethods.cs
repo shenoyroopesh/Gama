@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Web;
-using System.Reflection;
 using System.Web.Security;
 using System.Web.Profile;
 
@@ -20,18 +17,15 @@ namespace RadiographyTracking.Web.Utility
         /// <returns></returns>
         public static string GetStringValue(this Enum value)
         {
-            // Get the type
-            Type type = value.GetType();
-
             // Get fieldinfo for this type
-            FieldInfo fieldInfo = type.GetField(value.ToString());
+            var fieldInfo = value.GetType().GetField(value.ToString());
 
             // Get the stringvalue attributes
-            StringValueAttribute[] attribs = fieldInfo.GetCustomAttributes(
+            var attribs = fieldInfo.GetCustomAttributes(
                 typeof(StringValueAttribute), false) as StringValueAttribute[];
 
             // Return the first if there was a match.
-            return attribs.Length > 0 ? attribs[0].StringValue : null;
+            return attribs != null && attribs.Length > 0 ? attribs[0].StringValue : null;
         }
 
         /// <summary>
@@ -41,11 +35,11 @@ namespace RadiographyTracking.Web.Utility
         /// <returns></returns>
         public static User GetUser(this MembershipUser membershipUser)
         {
-            User user = new User()
+            var user = new User()
             {
                 Name = membershipUser.UserName
             };
-            ProfileBase p = ProfileBase.Create(user.Name);
+            var p = ProfileBase.Create(user.Name);
             user.Foundry = (string)p.GetPropertyValue("Foundry");
             user.FriendlyName = (string)p.GetPropertyValue("FriendlyName");
             return user;
@@ -65,16 +59,14 @@ namespace RadiographyTracking.Web.Utility
         /// <returns></returns>
         public static void CopyTo(this Object source, Object destination, string excludeProperties)
         {
-            Type SourceType = source.GetType();
-            Type DestinationType = destination.GetType();
+            var sourceType = source.GetType();
+            var destinationType = destination.GetType();
             string[] excluded = null;
 
             if (!String.IsNullOrEmpty(excludeProperties))
-            {
                 excluded = excludeProperties.Split(',');
-            }
 
-            PropertyInfo[] properties = DestinationType.GetProperties();
+            var properties = destinationType.GetProperties();
 
             foreach (var destProperty in properties)
             {
@@ -85,7 +77,7 @@ namespace RadiographyTracking.Web.Utility
                 if (excluded != null && excluded.Contains(destProperty.Name.Replace("ID", ""))) 
                     continue;
 
-                var sourceProperty = SourceType.GetProperty(destProperty.Name);
+                var sourceProperty = sourceType.GetProperty(destProperty.Name);
 
                 if(sourceProperty == null || !sourceProperty.CanRead)
                     continue;

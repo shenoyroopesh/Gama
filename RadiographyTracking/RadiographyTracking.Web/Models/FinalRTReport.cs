@@ -129,7 +129,7 @@ namespace RadiographyTracking.Web.Models
                               {
                                   Energy = g.Key,
                                   Area = g.Sum(p => p.FilmSize == null ? 0 : p.FilmSize.Area * p.FilmCount)
-                              };
+                              }; //TODO: note this exact logic is present in RGReport as well. Whenever making changes here make there too. 
 
                 return summary.ToDictionary(s => s.Energy, s => s.Area);
             }

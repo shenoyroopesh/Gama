@@ -4641,6 +4641,8 @@ namespace RadiographyTracking.Web.Models
         
         private string _technicianText;
         
+        private string _technique;
+        
         private int _thickness;
         
         private string _thicknessRange;
@@ -4696,6 +4698,8 @@ namespace RadiographyTracking.Web.Models
         partial void OnTechnicianIDChanged();
         partial void OnTechnicianTextChanging(string value);
         partial void OnTechnicianTextChanged();
+        partial void OnTechniqueChanging(string value);
+        partial void OnTechniqueChanged();
         partial void OnThicknessChanging(int value);
         partial void OnThicknessChanged();
         partial void OnThicknessRangeChanging(string value);
@@ -5355,6 +5359,35 @@ namespace RadiographyTracking.Web.Models
                     this._technicianText = value;
                     this.RaiseDataMemberChanged("TechnicianText");
                     this.OnTechnicianTextChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'Technique' value.
+        /// </summary>
+        // The following attributes were not generated:
+        // 
+        // - The attribute 'System.ComponentModel.DataAnnotations.NotMappedAttribute' is not visible in the client project 'RadiographyTracking'. Are you missing an assembly reference?
+        // [NotMappedAttribute()]
+        // 
+        [DataMember()]
+        public string Technique
+        {
+            get
+            {
+                return this._technique;
+            }
+            set
+            {
+                if ((this._technique != value))
+                {
+                    this.OnTechniqueChanging(value);
+                    this.RaiseDataMemberChanging("Technique");
+                    this.ValidateProperty("Technique", value);
+                    this._technique = value;
+                    this.RaiseDataMemberChanged("Technique");
+                    this.OnTechniqueChanged();
                 }
             }
         }

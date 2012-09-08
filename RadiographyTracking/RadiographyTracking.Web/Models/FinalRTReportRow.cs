@@ -115,6 +115,12 @@ namespace RadiographyTracking.Web.Models
         }
 
         /// <summary>
+        /// Technique used for this measurement
+        /// </summary>
+        [NotMapped]
+        public string Technique { get; set; }
+
+        /// <summary>
         /// Gets a combination of location and segment - for eg, if location is LN and segment is 1-2, then 
         /// this returns LN1-LN2
         /// </summary>

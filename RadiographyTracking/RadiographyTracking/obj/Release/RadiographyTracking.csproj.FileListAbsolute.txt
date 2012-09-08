@@ -76,3 +76,4 @@ D:\ClientWork\Gama\Sources\RadiographyTracking\RadiographyTracking\obj\Release\V
 D:\ClientWork\Gama\Sources\RadiographyTracking\RadiographyTracking\obj\Release\Views\Login\RegistrationForm.g.i.cs
 D:\ClientWork\Gama\Sources\RadiographyTracking\RadiographyTracking\obj\Release\Views\ThicknessToEnergyType.g.i.cs
 D:\ClientWork\Gama\Sources\RadiographyTracking\RadiographyTracking\obj\Release\Views\Users.g.i.cs
+D:\ClientWork\Gama\Sources\RadiographyTracking\RadiographyTracking\obj\Release\Views\AddressStickers\PrintAddressStickers.g.cs

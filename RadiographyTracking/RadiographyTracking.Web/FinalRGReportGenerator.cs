@@ -9,14 +9,12 @@ namespace RadiographyTracking.Web
     using System.Collections.Generic;
     using DocumentFormat.OpenXml.Wordprocessing;
     using WordDocumentGenerator.Library;
-    using RadiographyTracking.Web.Models;
+    using Models;
     using System;
-    using System.Drawing;
     using System.IO;
     using DocumentFormat.OpenXml.Packaging;
     using System.Linq;
     using DocumentFormat.OpenXml.Drawing;
-    using DocumentFormat.OpenXml;
 
     /// <summary>
     /// Sample refreshable document generator for Test_Template - 2.docx(has table) template
@@ -52,6 +50,8 @@ namespace RadiographyTracking.Web
         protected const string RGReportRow = "RGReportRow";
         protected const string SlNo = "SlNo";
         protected const string Location = "Location";
+        protected const string Segment = "Segment";
+        protected const string LocationSegment = "LocationSegment";
         protected const string Thickness = "Thickness";
         protected const string SFD = "SFD";
         protected const string Designation = "Designation";
@@ -60,6 +60,7 @@ namespace RadiographyTracking.Web
         protected const string FilmSize = "FilmSize";
         protected const string Observation = "Observation";
         protected const string Remarks = "Remarks";
+        protected const string Technique = "Technique";
 
         protected const string Result = "Result";
         protected const string TotalArea = "TotalArea";
@@ -92,55 +93,59 @@ namespace RadiographyTracking.Web
         /// <returns></returns>
         protected override Dictionary<string, PlaceHolderType> GetPlaceHolderTagToTypeCollection()
         {
-            Dictionary<string, PlaceHolderType> placeHolderTagToTypeCollection = new Dictionary<string, PlaceHolderType>();
+            var placeHolderTagToTypeCollection = new Dictionary<string, PlaceHolderType>
+                {
+                    {FPNo, PlaceHolderType.NonRecursive},
+                    {CustomerName, PlaceHolderType.NonRecursive},
+                    {Description, PlaceHolderType.NonRecursive},
+                    {Specification, PlaceHolderType.NonRecursive},
+                    {DrawingNo, PlaceHolderType.NonRecursive},
+                    {RTNo, PlaceHolderType.NonRecursive},
+                    {HeatNo, PlaceHolderType.NonRecursive},
+                    {Coverage, PlaceHolderType.NonRecursive},
+                    {ProcedureRef, PlaceHolderType.NonRecursive},
+                    {ReportNo, PlaceHolderType.NonRecursive},
+                    {Date, PlaceHolderType.NonRecursive},
+                    {Film, PlaceHolderType.NonRecursive},
+                    {LeadScreen, PlaceHolderType.NonRecursive},
+                    {Source, PlaceHolderType.NonRecursive},
+                    {DateOfTest, PlaceHolderType.NonRecursive},
+                    {Evaluation, PlaceHolderType.NonRecursive},
+                    {Acceptance, PlaceHolderType.NonRecursive},
+                    {Logo, PlaceHolderType.NonRecursive},
+                    {CustomerLogo, PlaceHolderType.NonRecursive},
+                    {CustomerAddress, PlaceHolderType.NonRecursive},
+                    {CustomerEmail, PlaceHolderType.NonRecursive},
+                    {CustomerPhone, PlaceHolderType.NonRecursive},
+                    {ReportTypeNo, PlaceHolderType.NonRecursive},
+
+                    {RGReportRow, PlaceHolderType.Recursive},
+                    {SlNo, PlaceHolderType.NonRecursive},
+                    {Location, PlaceHolderType.NonRecursive},
+                    {Segment, PlaceHolderType.NonRecursive},
+                    {LocationSegment, PlaceHolderType.NonRecursive},
+                    {Thickness, PlaceHolderType.NonRecursive},
+                    {SFD, PlaceHolderType.NonRecursive},
+                    {Designation, PlaceHolderType.NonRecursive},
+                    {Sensitivity, PlaceHolderType.NonRecursive},
+                    {Density, PlaceHolderType.NonRecursive},
+                    {FilmSize, PlaceHolderType.NonRecursive},
+                    {Observation, PlaceHolderType.NonRecursive},
+                    {Remarks, PlaceHolderType.NonRecursive},
+                    {Result, PlaceHolderType.NonRecursive},
+                    {Technique, PlaceHolderType.NonRecursive},
+                    
+                    {TotalArea, PlaceHolderType.NonRecursive},
+                    {Isotope, PlaceHolderType.NonRecursive},
+                    {Area, PlaceHolderType.NonRecursive},
+                    {IsotopeCollection, PlaceHolderType.Recursive},
+                    {AreaCollection, PlaceHolderType.Recursive}
+                };
             // Handle non recursive placeholders
 
-            placeHolderTagToTypeCollection.Add(FPNo, PlaceHolderType.NonRecursive);
-            placeHolderTagToTypeCollection.Add(CustomerName, PlaceHolderType.NonRecursive);
-            placeHolderTagToTypeCollection.Add(Description, PlaceHolderType.NonRecursive);
-            placeHolderTagToTypeCollection.Add(Specification, PlaceHolderType.NonRecursive);
-            placeHolderTagToTypeCollection.Add(DrawingNo, PlaceHolderType.NonRecursive);
-            placeHolderTagToTypeCollection.Add(RTNo, PlaceHolderType.NonRecursive);
-            placeHolderTagToTypeCollection.Add(HeatNo, PlaceHolderType.NonRecursive);
-            placeHolderTagToTypeCollection.Add(Coverage, PlaceHolderType.NonRecursive);
-            placeHolderTagToTypeCollection.Add(ProcedureRef, PlaceHolderType.NonRecursive);
-            placeHolderTagToTypeCollection.Add(ReportNo, PlaceHolderType.NonRecursive);
-            placeHolderTagToTypeCollection.Add(Date, PlaceHolderType.NonRecursive);
-            placeHolderTagToTypeCollection.Add(Film, PlaceHolderType.NonRecursive);
-            placeHolderTagToTypeCollection.Add(LeadScreen, PlaceHolderType.NonRecursive);
-            placeHolderTagToTypeCollection.Add(Source, PlaceHolderType.NonRecursive);
-            placeHolderTagToTypeCollection.Add(DateOfTest, PlaceHolderType.NonRecursive);
-            placeHolderTagToTypeCollection.Add(Evaluation, PlaceHolderType.NonRecursive);
-            placeHolderTagToTypeCollection.Add(Acceptance, PlaceHolderType.NonRecursive);
-            placeHolderTagToTypeCollection.Add(Logo, PlaceHolderType.NonRecursive);
-            placeHolderTagToTypeCollection.Add(CustomerLogo, PlaceHolderType.NonRecursive);
-            placeHolderTagToTypeCollection.Add(CustomerAddress, PlaceHolderType.NonRecursive);
-            placeHolderTagToTypeCollection.Add(CustomerEmail, PlaceHolderType.NonRecursive);
-            placeHolderTagToTypeCollection.Add(CustomerPhone, PlaceHolderType.NonRecursive);
-            placeHolderTagToTypeCollection.Add(ReportTypeNo, PlaceHolderType.NonRecursive);
-
             // Handle Rowlevel place holders
-            placeHolderTagToTypeCollection.Add(RGReportRow, PlaceHolderType.Recursive);
 
             //within each row, these are non-recursive
-            placeHolderTagToTypeCollection.Add(SlNo, PlaceHolderType.NonRecursive);
-            placeHolderTagToTypeCollection.Add(Location, PlaceHolderType.NonRecursive);
-            placeHolderTagToTypeCollection.Add(Thickness, PlaceHolderType.NonRecursive);
-            placeHolderTagToTypeCollection.Add(SFD, PlaceHolderType.NonRecursive);
-            placeHolderTagToTypeCollection.Add(Designation, PlaceHolderType.NonRecursive);
-            placeHolderTagToTypeCollection.Add(Sensitivity, PlaceHolderType.NonRecursive);
-            placeHolderTagToTypeCollection.Add(Density, PlaceHolderType.NonRecursive);
-            placeHolderTagToTypeCollection.Add(FilmSize, PlaceHolderType.NonRecursive);
-            placeHolderTagToTypeCollection.Add(Observation, PlaceHolderType.NonRecursive);
-            placeHolderTagToTypeCollection.Add(Remarks, PlaceHolderType.NonRecursive);
-            placeHolderTagToTypeCollection.Add(Result, PlaceHolderType.NonRecursive);
-            placeHolderTagToTypeCollection.Add(TotalArea, PlaceHolderType.NonRecursive);
-
-            placeHolderTagToTypeCollection.Add(Isotope, PlaceHolderType.NonRecursive);
-            placeHolderTagToTypeCollection.Add(Area, PlaceHolderType.NonRecursive);
-
-            placeHolderTagToTypeCollection.Add(IsotopeCollection, PlaceHolderType.Recursive);
-            placeHolderTagToTypeCollection.Add(AreaCollection, PlaceHolderType.Recursive);
 
 
             return placeHolderTagToTypeCollection;
@@ -158,13 +163,12 @@ namespace RadiographyTracking.Web
                 return;
             }
 
-            string tagPlaceHolderValue = string.Empty;
-            string tagGuidPart = string.Empty;
+            string tagPlaceHolderValue;
+            string tagGuidPart;
             GetTagValue(openXmlElementDataContext.Element as SdtElement, out tagPlaceHolderValue, out tagGuidPart);
 
             var row = openXmlElementDataContext.DataContext as FinalRTReport;
 
-            string tagValue = string.Empty;
             string content = string.Empty;
 
             if (row != null)
@@ -232,7 +236,7 @@ namespace RadiographyTracking.Web
                         content = row.AcceptanceAsPer;
                         break;
                     case TotalArea:
-                        content = row.TotalArea.ToString();
+                        content = row.TotalArea;
                         break;
                     case Result:
                         content = row.Status.Status;
@@ -260,10 +264,19 @@ namespace RadiographyTracking.Web
                     switch (tagPlaceHolderValue)
                     {
                         case SlNo:
-                            content = reportRow.SlNo.ToString();
+                            content = reportRow.SlNo.ToString(); 
+                            break;
+                        case Technique:
+                            content = reportRow.Technique;
+                            break;
+                        case LocationSegment:
+                            content = reportRow.LocationAndSegment;
                             break;
                         case Location:
-                            content = reportRow.LocationAndSegment;
+                            content = reportRow.Location;
+                            break;
+                        case Segment:
+                            content = reportRow.Segment;
                             break;
                         case Thickness:
                             content = reportRow.Thickness.ToString();
@@ -310,7 +323,7 @@ namespace RadiographyTracking.Web
             if (tagPlaceHolderValue != Logo && tagPlaceHolderValue != CustomerLogo)
             {
                 // Set the content for the content control
-                this.SetContentOfContentControl(openXmlElementDataContext.Element as SdtElement, content);
+                SetContentOfContentControl(openXmlElementDataContext.Element as SdtElement, content);
             }
         }
 
@@ -324,12 +337,10 @@ namespace RadiographyTracking.Web
                 string imgId = "LogoPicture";
 
                 //assuming only one headerpart will have images
-                var imagePart = document.MainDocumentPart.HeaderParts
-                                    .Where(p => p.ImageParts.Count() > 0)
-                                    .First()
+                var imagePart = document.MainDocumentPart.HeaderParts.First(p => p.ImageParts.Any())
                                     .AddImagePart(ImagePartType.Png, imgId);
 
-                using (MemoryStream imageStream = new MemoryStream(image))
+                using (var imageStream = new MemoryStream(image))
                 {
                     imagePart.FeedData(imageStream);
                 }
@@ -357,24 +368,24 @@ namespace RadiographyTracking.Web
                 return;
             }
 
-            string tagPlaceHolderValue = string.Empty;
-            string tagGuidPart = string.Empty;
+            string tagPlaceHolderValue;
+            string tagGuidPart;
             GetTagValue(openXmlElementDataContext.Element as SdtElement, out tagPlaceHolderValue, out tagGuidPart);
 
             switch (tagPlaceHolderValue)
             {
                 case RGReportRow:
-                    foreach (var row in ((openXmlElementDataContext.DataContext) as FinalRTReport).FinalRTReportRows)
+                    foreach (var row in ((FinalRTReport) (openXmlElementDataContext.DataContext)).FinalRTReportRows)
                     {
-                        SdtElement clonedElement = this.CloneElementAndSetContentInPlaceholders(new OpenXmlElementDataContext() { Element = openXmlElementDataContext.Element, DataContext = row }, document);
+                        CloneElementAndSetContentInPlaceholders(new OpenXmlElementDataContext() { Element = openXmlElementDataContext.Element, DataContext = row }, document);
                     }
                     openXmlElementDataContext.Element.Remove();
                     break;
                 case IsotopeCollection:
                 case AreaCollection:
-                    foreach (var pair in ((openXmlElementDataContext.DataContext) as FinalRTReport).EnergyAreas)
+                    foreach (var pair in ((FinalRTReport) (openXmlElementDataContext.DataContext)).EnergyAreas)
                     {
-                        SdtElement clonedElement = this.CloneElementAndSetContentInPlaceholders(new OpenXmlElementDataContext() { Element = openXmlElementDataContext.Element, DataContext = pair }, document);
+                        CloneElementAndSetContentInPlaceholders(new OpenXmlElementDataContext() { Element = openXmlElementDataContext.Element, DataContext = pair }, document);
                     }
                     openXmlElementDataContext.Element.Remove();
                     break;
@@ -385,12 +396,12 @@ namespace RadiographyTracking.Web
 
         protected override void IgnorePlaceholderFound(string placeholderTag, OpenXmlElementDataContext openXmlElementDataContext, WordprocessingDocument document)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         protected override void ContainerPlaceholderFound(string placeholderTag, OpenXmlElementDataContext openXmlElementDataContext, WordprocessingDocument document)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
     }
 }
