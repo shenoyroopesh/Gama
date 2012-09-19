@@ -583,6 +583,20 @@
             Gets or sets the query expression.
             </summary>
         </member>
+        <member name="M:System.Linq.Dynamic.ExpressionParser.IsMemberAccessAllowed(System.Reflection.MethodBase,System.Linq.Expressions.Expression[])">
+            <summary>
+            Determines if the method is allowed to be executed based on an allow list.
+            </summary>
+            <param name="method">The method to check for access allowance.</param>
+            <param name="args">The arguments passed to the method.</param>
+            <returns><c>true</c> when the member access is allowed, otherwise <c>false</c>.</returns>
+        </member>
+        <member name="M:System.Linq.Dynamic.ExpressionParser.ConvertEnumExpression(System.Linq.Expressions.Expression,System.Linq.Expressions.Expression)">
+            <summary>
+            We perform comparisons against enums using the underlying type
+            because a more complete set of comparisons can be performed.
+            </summary>
+        </member>
         <member name="T:System.ServiceModel.DomainServices.Hosting.IQueryOperationSettings">
             <summary>
             Encapsulates the settings the user specified for the query method.
@@ -1338,12 +1352,6 @@
             <param name="member">The member name.</param>
             <param name="instance">The instance to form the MemberExpression on.</param>
             <returns>A MemberExpression if the member can be resolved, null otherwise.</returns>
-        </member>
-        <member name="M:System.Linq.Dynamic.ExpressionParser.ConvertEnumExpression(System.Linq.Expressions.Expression,System.Linq.Expressions.Expression)">
-            <summary>
-            We perform comparisons against enums using the underlying type
-            because a more complete set of comparisons can be performed.
-            </summary>
         </member>
         <member name="T:System.Linq.Dynamic.QueryDeserializer">
             <summary>

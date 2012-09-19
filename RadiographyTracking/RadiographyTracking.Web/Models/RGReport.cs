@@ -210,12 +210,56 @@ namespace RadiographyTracking.Web.Models
                               select new
                               {
                                   Energy = g.Key,
-                                  Area = g.Sum(p => p.FilmSize == null ? 0 : p.FilmSize.Area * p.FilmCount)
+                                  Area = g.Sum(p => p.FilmArea)
                               }; //TODO: note this exact logic is present in FinalRTReport as well. Whenever making changes here make there too. 
 
                 return summary.ToDictionary(s => s.Energy, s => s.Area);
             }
         }
+
+        [NotMapped]
+        [Exclude]
+        public Dictionary<String, float> ExposedEnergyAreas
+        {
+            get
+            {
+                if (RGReportRows == null)
+                    return null;
+
+                var summary = from r in RGReportRows
+                              group r by r.EnergyText into g
+                              select new
+                              {
+                                  Energy = g.Key,
+                                  Area = g.Sum(p => p.FilmArea)
+                              }; //TODO: note this exact logic is present in FinalRTReport as well. Whenever making changes here make there too. 
+
+                return summary.ToDictionary(s => s.Energy, s => s.Area);
+            }
+        }
+
+        [NotMapped]
+        [Exclude]
+        public Dictionary<String, float> RetakeEnergyAreas
+        {
+            get
+            {
+                if (RGReportRows == null)
+                    return null;
+
+                var summary = from r in RGReportRows
+                              where r.RemarkText == "RETAKE" //Roopesh: 30-Jun-2012
+                              group r by r.EnergyText into g
+                              select new
+                              {
+                                  Energy = g.Key,
+                                  Area = g.Sum(p => p.FilmArea)
+                              }; //TODO: note this exact logic is present in FinalRTReport as well. Whenever making changes here make there too. 
+
+                return summary.ToDictionary(s => s.Energy, s => s.Area);
+            }
+        }
+
 
         [NotMapped]
         [Exclude]
@@ -226,8 +270,37 @@ namespace RadiographyTracking.Web.Models
                 return this.RGReportRows == null ? "0" :
                     this.RGReportRows
                     .Where(p => p.RemarkText != "RETAKE")
-                    .Sum(p => p.FilmSize == null ? 0 : p.FilmSize.Area * p.FilmCount)
+                    .Sum(p => p.FilmArea)
                     .ToString();
+            }
+        }
+
+        [NotMapped]
+        [Exclude]
+        public string ExposedTotalArea
+        {
+            get
+            {
+                return RGReportRows == null
+                           ? "0"
+                           : RGReportRows
+                                 .Sum(p => p.FilmArea)
+                                 .ToString();
+            }
+        }
+
+        [NotMapped]
+        [Exclude]
+        public string RetakeTotalArea
+        {
+            get
+            {
+                return RGReportRows == null
+                           ? "0"
+                           : RGReportRows
+                                 .Where(p => p.RemarkText == "RETAKE")
+                                 .Sum(p => p.FilmArea)
+                                 .ToString();
             }
         }
 

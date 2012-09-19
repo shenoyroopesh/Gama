@@ -280,5 +280,12 @@ namespace RadiographyTracking.Web.Models
                 return String.Join("-", joined);
             }
         }
+
+        [NotMapped]
+        [Exclude]
+        public float FilmArea
+        {
+            get { return FilmSize == null ? 0 : FilmSize.Area*FilmCount; }
+        }
     }
 }
