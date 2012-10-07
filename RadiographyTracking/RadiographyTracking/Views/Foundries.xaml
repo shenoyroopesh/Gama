@@ -41,6 +41,7 @@
                             </sdk:DataGridTemplateColumn.CellEditingTemplate>
                         </sdk:DataGridTemplateColumn>
                         <sdk:DataGridTextColumn x:Name="reportPrefixColumn" Binding="{Binding Path=ReportNumberPrefix, Mode=TwoWay}" Header="Report No. Prefix" Width="Auto" />
+                        <sdk:DataGridTextColumn x:Name="reportTemplateColumn" Binding="{Binding Path=ReportTemplate, Mode=TwoWay}" Header="Report Template" Width="Auto" />
                         <sdk:DataGridTemplateColumn Header="Delete" Width="Auto">
                             <sdk:DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>

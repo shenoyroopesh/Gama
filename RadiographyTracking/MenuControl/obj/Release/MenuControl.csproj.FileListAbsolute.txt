@@ -33,3 +33,4 @@ D:\ClientWork\Gama\Sources\RadiographyTracking\MenuControl\Bin\Release\MenuContr
 D:\ClientWork\Gama\Sources\RadiographyTracking\MenuControl\obj\Release\MenuControl.g.resources
 D:\ClientWork\Gama\Sources\RadiographyTracking\MenuControl\obj\Release\MenuControl.dll
 D:\ClientWork\Gama\Sources\RadiographyTracking\MenuControl\obj\Release\MenuControl.pdb
+D:\ClientWork\Gama\Sources\RadiographyTracking\MenuControl\obj\Release\MenuControl.csprojResolveAssemblyReference.cache

@@ -1,16 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
 using RadiographyTracking.Web.Models;
 using WordDocumentGenerator.Library;
 using System.IO;
 using System.Data.Entity;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml;
-using System.Threading;
 
 namespace RadiographyTracking.Web
 {
@@ -18,11 +13,14 @@ namespace RadiographyTracking.Web
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            DocumentGenerationInfo generationInfo = GetDocumentGenerationInfo("RGReportGenerator", "1.0", GetDataContext(),
-                                        "RadiographyReportTemplate.docx", false);
+            var data = GetDataContext();
+            var reportTemplate = data.FixedPattern.Customer.Foundry.ReportTemplate;
 
-            RGReportGenerator sampleDocumentGenerator = new RGReportGenerator(generationInfo);
-            byte[] result = result = sampleDocumentGenerator.GenerateDocument();
+            var generationInfo = GetDocumentGenerationInfo("RGReportGenerator", "1.0", data,
+                                        reportTemplate, false);
+
+            var sampleDocumentGenerator = new RGReportGenerator(generationInfo);
+            byte[] result = sampleDocumentGenerator.GenerateDocument();
             var filePath = WriteOutputToFile("RadiographyReportTemplate_Out" + DateTime.Now.ToString("SSMIHH") + ".docx", result);
 
             using (var wordDocument = WordprocessingDocument.Open(filePath, true))
@@ -38,7 +36,7 @@ namespace RadiographyTracking.Web
 
             //download the file to the user 
 
-            string filename = "ReportNo" + Request.Params["ReportNo"] + ".docx";
+            var filename = "ReportNo" + Request.Params["ReportNo"] + ".docx";
             Response.ContentType = "application/ms-word";
             Response.AddHeader("content-disposition", "attachment; filename="+filename);
             Response.TransmitFile(filePath);
@@ -55,19 +53,17 @@ namespace RadiographyTracking.Web
         /// <returns></returns>
         private RGReport GetDataContext()
         {
-            string reportNo = Request.Params["ReportNo"];
+            var reportNo = Request.Params["ReportNo"];
 
             if (String.IsNullOrEmpty(reportNo))
                 return null;
 
-            using (RadiographyContext ctx = new RadiographyContext())
+            using (var ctx = new RadiographyContext())
             {
-                return ctx.RGReports.Include(p => p.FixedPattern.Customer)
-                        .Include(p => p.Status)
-                        .Include(p => p.RGReportRows.Select(r => r.FilmSize))
-                        .Include(p => p.Coverage)
-                        .Where(p => p.ReportNo == reportNo)
-                        .FirstOrDefault();
+                return ctx.RGReports.Include(p => p.FixedPattern.Customer.Foundry)
+                    .Include(p => p.Status)
+                    .Include(p => p.RGReportRows.Select(r => r.FilmSize))
+                    .Include(p => p.Coverage).FirstOrDefault(p => p.ReportNo == reportNo);
             }
         }
 
@@ -82,7 +78,7 @@ namespace RadiographyTracking.Web
         /// <returns></returns>
         private DocumentGenerationInfo GetDocumentGenerationInfo(string docType, string docVersion, object dataContext, string fileName, bool useDataBoundControls)
         {
-            DocumentGenerationInfo generationInfo = new DocumentGenerationInfo();
+            var generationInfo = new DocumentGenerationInfo();
             generationInfo.Metadata = new DocumentMetadata() { DocumentType = docType, DocumentVersion = docVersion };
             generationInfo.DataContext = dataContext;
             generationInfo.TemplateData = File.ReadAllBytes(Server.MapPath("~/ReportTemplates/" + fileName));
@@ -95,14 +91,12 @@ namespace RadiographyTracking.Web
         /// Writes the output to file.
         /// </summary>
         /// <param name="fileName">Name of the file.</param>
-        /// <param name="templateName">Name of the template.</param>
         /// <param name="fileContents">The file contents.</param>
         private string WriteOutputToFile(string fileName, byte[] fileContents)
         {
-            ConsoleColor consoleColor = Console.ForegroundColor;
             if (fileContents != null)
             {
-                String path = Server.MapPath("~/ReportTemplates/" + fileName);
+                var path = Server.MapPath("~/ReportTemplates/" + fileName);
                 File.WriteAllBytes(path, fileContents);
                 return path;
             }

@@ -17,6 +17,8 @@ namespace RadiographyTracking.Web.Models
         public String ReportNumberPrefix { get; set; }
         public ICollection<Customer> Customers { get; set; }
 
+        public string ReportTemplate { get; set; }
+
         /// <summary>
         /// Gets the next report number for this foundry
         /// </summary>
@@ -24,13 +26,9 @@ namespace RadiographyTracking.Web.Models
         /// <returns></returns>
         public String getNextReportNumber(RadiographyContext ctx)
         {
-            int lastNumber;
             //fetch immediately from the database, otherwise convert.toint32 will fail
             var reports = ctx.RGReports.Where(p => p.ReportNo.StartsWith(this.ReportNumberPrefix)).ToList();
-            if (reports.Count() == 0) 
-                lastNumber = 0;
-            else 
-                lastNumber = reports.Max(p => Convert.ToInt32(p.ReportNo.Replace(ReportNumberPrefix, "")));
+            var lastNumber = !reports.Any() ? 0 : reports.Max(p => Convert.ToInt32(p.ReportNo.Replace(ReportNumberPrefix, "")));
             return String.Concat(ReportNumberPrefix, Convert.ToString(lastNumber + 1));
         }
     }

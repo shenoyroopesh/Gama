@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.ServiceModel.DomainServices.Server;
 using System.ComponentModel.DataAnnotations;
 
@@ -131,15 +129,21 @@ namespace RadiographyTracking.Web.Models
             get
             {
                 //very rarely this should happen, but check none-the-less
-                if (string.IsNullOrEmpty(this.Location) || string.IsNullOrEmpty(this.Segment))
-                {
+                if (string.IsNullOrEmpty(Location) || string.IsNullOrEmpty(Segment))
                     return "";
-                }
+                
                 //if location is LN and segment is 1-2, return LN1-LN2
-                var segments = this.Segment.Split('-');
-                var joined = segments.Select(p => this.Location + p);
+                var segments = Segment.Split('-');
+                var joined = segments.Select(p => Location + p);
                 return String.Join("-", joined);
             }
+        }
+
+        [NotMapped]
+        [Exclude]
+        public float FilmArea
+        {
+            get { return FilmSize == null ? 0 : FilmSize.Area * FilmCount; }
         }
     }
 }

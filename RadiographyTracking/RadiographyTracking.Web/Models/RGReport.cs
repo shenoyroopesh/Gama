@@ -248,7 +248,7 @@ namespace RadiographyTracking.Web.Models
                     return null;
 
                 var summary = from r in RGReportRows
-                              where r.RemarkText == "RETAKE" //Roopesh: 30-Jun-2012
+                              where r.RemarkText == "RETAKE"
                               group r by r.EnergyText into g
                               select new
                               {

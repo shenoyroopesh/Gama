@@ -14,4 +14,3 @@ D:\ClientWork\Gama\Sources\RadiographyTracking\WordDocumentGenerator.Library\bin
 D:\ClientWork\Gama\Sources\RadiographyTracking\WordDocumentGenerator.Library\bin\Debug\WordDocumentGenerator.Library.pdb
 D:\ClientWork\Gama\Sources\RadiographyTracking\WordDocumentGenerator.Library\obj\Debug\WordDocumentGenerator.Library.dll
 D:\ClientWork\Gama\Sources\RadiographyTracking\WordDocumentGenerator.Library\obj\Debug\WordDocumentGenerator.Library.pdb
-D:\ClientWork\Gama\Sources\RadiographyTracking\WordDocumentGenerator.Library\obj\Debug\WordDocumentGenerator.Library.csprojResolveAssemblyReference.cache

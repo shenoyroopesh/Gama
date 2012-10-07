@@ -1,22 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Windows.Shapes;
 using RadiographyTracking.Web.Services;
-using System.Threading;
 using RadiographyTracking.Web.Models;
 using System.ServiceModel.DomainServices.Client;
 using BindableDataGrid.Data;
-using System.Collections;
-using RadiographyTracking.Controls;
-using System.Windows.Data;
 
 
 namespace RadiographyTracking.Views
@@ -25,6 +14,8 @@ namespace RadiographyTracking.Views
     {        
         DataTable reportTable;
         RadiographyContext ctx;
+        string[] rowTypes = new string[] { "ACCEPTABLE", "REPAIR", "RESHOOT", "RETAKE" };
+        
 
         public FilmConsumptionReport()
             : base()
@@ -40,7 +31,6 @@ namespace RadiographyTracking.Views
             busyIndicator.IsBusy = true;
             
             ctx.Load(ctx.GetEnergiesQuery()).Completed += new EventHandler(FilmConsumptionReport_Completed);
-            
         }
 
         void FilmConsumptionReport_Completed(object sender, EventArgs e)
@@ -64,10 +54,10 @@ namespace RadiographyTracking.Views
             var cols = reportTable.Columns;
             var rows = reportTable.Rows;
 
-            DataRow headerRow = new DataRow();
+            var headerRow = new DataRow();
             rows.Add(headerRow);
 
-            DataRow subHeaderRow = new DataRow();
+            var subHeaderRow = new DataRow();
             rows.Add(subHeaderRow);
 
             AddTextColumn(reportTable, "ReportNo", "Report No");
@@ -88,18 +78,13 @@ namespace RadiographyTracking.Views
             //filmsize columns
             foreach (var row in ctx.Energies)
             {
-                var freshCol = row.Name + "FRESH";
-                var repairCol = row.Name + "REPAIR";
-                var reshootCol = row.Name + "RESHOOT";
-                AddTextColumn(reportTable, freshCol, freshCol);
-                AddTextColumn(reportTable, repairCol, repairCol);
-                AddTextColumn(reportTable, reshootCol, reshootCol);
-                headerRow[freshCol] = row.Name;
-                headerRow[repairCol] = "";
-                headerRow[reshootCol] = "";
-                subHeaderRow[freshCol] = "F";
-                subHeaderRow[repairCol] = "RP";
-                subHeaderRow[reshootCol] = "RS";
+                foreach (var type in rowTypes)
+                {
+                    var colName = String.Format("{0}{1}", row.Name, type);
+                    AddTextColumn(reportTable, colName, colName);
+                    headerRow[colName] = type == "ACCEPTABLE" ? row.Name : string.Empty;
+                    subHeaderRow[colName] = type == "ACCEPTABLE" ? "F" : type == "REPAIR" ? "RP" : type == "RETAKE" ? "RT" : "RS";
+                }
             }
 
             string prevReportNo = "";
@@ -124,20 +109,21 @@ namespace RadiographyTracking.Views
             if(dataRow != null) rows.Add(dataRow);
 
             //totals row
-            DataRow totalRow = new DataRow();
+            var totalRow = new DataRow();
+
+            
             foreach (var row in ctx.Energies)
             {
-                var freshCol = row.Name + "FRESH";
-                var repairCol = row.Name + "REPAIR";
-                var reshootCol = row.Name + "RESHOOT";
-                totalRow[freshCol] = rows.Select(p => (p[freshCol] as float?) ?? 0 ).Sum();
-                totalRow[repairCol] = rows.Select(p => (p[repairCol] as float?) ?? 0).Sum();
-                totalRow[reshootCol] = rows.Select(p => (p[reshootCol] as float?) ?? 0).Sum();
+                foreach (var type in rowTypes)
+                {
+                    var colName = String.Format("{0}{1}", row.Name, type);
+                    totalRow[colName] = rows.Select(p => (p[colName] as float?) ?? 0).Sum();
+                }
             }
 
             rows.Add(totalRow);
 
-            DataSet ds = new DataSet("ReportDataSet");
+            var ds = new DataSet("ReportDataSet");
             ds.Tables.Add(reportTable);
 
             reportGrid.DataSource = ds;
@@ -150,7 +136,7 @@ namespace RadiographyTracking.Views
 
         private static void AddTextColumn(DataTable reportTable, String columnName, String caption)
         {
-            DataColumn dc = new DataColumn(columnName);
+            var dc = new DataColumn(columnName);
             dc.Caption = caption;
             dc.ReadOnly = true;
             dc.DataType = typeof(String);

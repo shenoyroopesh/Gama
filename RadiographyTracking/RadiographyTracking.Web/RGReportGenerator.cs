@@ -1,8 +1,4 @@
-﻿// ----------------------------------------------------------------------
-// <copyright file="SampleDocumentWithTableGenerator.cs" author="Atul Verma">
-//     Copyright (c) Atul Verma. This utility along with samples demonstrate how to use the Open Xml 2.0 SDK and VS 2010 for document generation. They are unsupported, but you can use them as-is.
-// </copyright>
-// ------------------------------------------------------------------------
+﻿using RadiographyTracking.Web.Utility;
 
 namespace RadiographyTracking.Web
 {
@@ -128,6 +124,7 @@ namespace RadiographyTracking.Web
                     {FilmSize, PlaceHolderType.NonRecursive},
                     {Observation, PlaceHolderType.NonRecursive},
                     {Remarks, PlaceHolderType.NonRecursive},
+                    {Technique, PlaceHolderType.NonRecursive},
                     {Result, PlaceHolderType.NonRecursive},
                     {TotalArea, PlaceHolderType.NonRecursive},
                     {ExposedTotalArea, PlaceHolderType.NonRecursive},
@@ -152,10 +149,9 @@ namespace RadiographyTracking.Web
         /// <param name="openXmlElementDataContext">The open XML element data context.</param>
         protected override void NonRecursivePlaceholderFound(string placeholderTag, OpenXmlElementDataContext openXmlElementDataContext, WordprocessingDocument document)
         {
-            if (openXmlElementDataContext == null || openXmlElementDataContext.Element == null || openXmlElementDataContext.DataContext == null)
-            {
+            if (openXmlElementDataContext == null || openXmlElementDataContext.Element == null ||
+                openXmlElementDataContext.DataContext == null)
                 return;
-            }
 
             string tagPlaceHolderValue;
             string tagGuidPart;
@@ -165,6 +161,7 @@ namespace RadiographyTracking.Web
             if (openXmlElementDataContext.DataContext is RGReport)
             {
                 var row = openXmlElementDataContext.DataContext as RGReport;
+
                 switch (tagPlaceHolderValue)
                 {
                     case FPNo:

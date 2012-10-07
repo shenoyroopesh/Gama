@@ -344,7 +344,7 @@
         }
         #endregion
 
-        #region Film Trasactions and other Film related functions
+        #region Film Trasactions and other Film related methods
         public IQueryable<FilmTransaction> GetFilmTransactions()
         {
             return this.DbContext.FilmTransactions;
@@ -467,13 +467,12 @@
             fromDate = fromDate.Date;
             toDate = toDate.Date.AddDays(1);
 
-            var intermediate = (from r in this.DbContext.RGReportRows
+            var intermediate = (from r in DbContext.RGReportRows
                                 orderby r.RGReport.ReportDate, r.RGReport.ReportNo
                                 let rowFID = r.RGReport.FixedPattern.Customer.FoundryID
                                 where rowFID == (foundryId == -1 ? rowFID : foundryId)
-                                && r.RowType.Value != "RETAKE"               //retakes are not considered in the film consumption report
                                 && r.RGReport.ReportDate >= fromDate && r.RGReport.ReportDate <= toDate
-                                group r by new { r.RGReport, r.RGReport.FixedPattern, r.Energy, r.RowType } into g
+                                group r by new { r.RGReport, r.RGReport.FixedPattern, r.Energy, r.Remark } into g
                                 select new {g.Key, Area = g.Sum(p => p.FilmSize.Area * p.FilmCount) }).ToList();
 
 
@@ -486,7 +485,7 @@
                        FPNo = g.Key.RGReport.FixedPattern.FPNo,
                        RTNo = g.Key.RGReport.RTNo,
                        Energy = g.Key.Energy.Name,
-                       RowType = g.Key.RowType.Value,
+                       RowType = g.Key.Remark == null ? string.Empty : g.Key.Remark.Value,
                        Area = g.Area
                    };
         }

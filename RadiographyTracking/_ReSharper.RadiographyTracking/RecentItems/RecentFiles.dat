@@ -1,31 +1,34 @@
 ﻿<RecentFiles>
   <RecentFiles>
-    <File id="BE633745-04FC-4865-8B0F-337B74356E75/d:Services/f:UserRegistrationService.cs" caret="6154" fromTop="15" />
-    <File id="4D601F4D-7221-452D-9981-A9A092C14922/d:Views/f:FinalRadioGraphyReport.xaml.cs" caret="7746" fromTop="6" />
-    <File id="C041C8C6-AC4E-4F74-A827-7F3D790E1ACE/f:DocumentGenerator.cs" caret="21724" fromTop="19" />
-    <File id="BE633745-04FC-4865-8B0F-337B74356E75/d:Models/f:Change.cs" caret="0" fromTop="0" />
-    <File id="4D601F4D-7221-452D-9981-A9A092C14922/d:Models/f:RGReportRow.partial.cs" caret="1088" fromTop="6" />
-    <File id="4D601F4D-7221-452D-9981-A9A092C14922/d:Models/f:ChangePasswordInfo.cs" caret="6658" fromTop="10" />
-    <File id="4D601F4D-7221-452D-9981-A9A092C14922/d:Models/f:Energy.Partial.cs" caret="563" fromTop="8" />
-    <File id="4D601F4D-7221-452D-9981-A9A092C14922/d:Models/f:Welder.Partial.cs" caret="567" fromTop="8" />
-    <File id="4D601F4D-7221-452D-9981-A9A092C14922/d:Views/f:CastingStatusReport.xaml.cs" caret="13" fromTop="0" />
     <File id="4D601F4D-7221-452D-9981-A9A092C14922/d:Views/f:CastingStatusReport.xaml" caret="5297" fromTop="4" />
     <File id="BE633745-04FC-4865-8B0F-337B74356E75/f:AddressStickerGenerator.cs" caret="7024" fromTop="16" />
     <File id="4D601F4D-7221-452D-9981-A9A092C14922/d:Views/f:EnterRadioGraphyReport.xaml" caret="607" fromTop="8" />
-    <File id="BE633745-04FC-4865-8B0F-337B74356E75/f:FinalRGReportGenerate.aspx.cs" caret="1" fromTop="0" />
     <File id="BE633745-04FC-4865-8B0F-337B74356E75/d:Utility/f:ExtensionMethods.cs" caret="13" fromTop="0" />
-    <File id="BE633745-04FC-4865-8B0F-337B74356E75/f:FinalRGReportGenerator.cs" caret="13890" fromTop="8" />
-    <File id="BE633745-04FC-4865-8B0F-337B74356E75/f:RGReportGenerator.cs" caret="9862" fromTop="13" />
-    <File id="BE633745-04FC-4865-8B0F-337B74356E75/d:Models/f:FinalRTReportRow.cs" caret="3321" fromTop="13" />
-    <File id="BE633745-04FC-4865-8B0F-337B74356E75/d:Models/f:FinalRTReport.cs" caret="4340" fromTop="7" />
-    <File id="BE633745-04FC-4865-8B0F-337B74356E75/d:Models/f:RGReportRow.cs" caret="2767" fromTop="15" />
-    <File id="BE633745-04FC-4865-8B0F-337B74356E75/d:Models/f:RGReport.cs" caret="2143" fromTop="3" />
     <File id="BE633745-04FC-4865-8B0F-337B74356E75/f:Web.config" caret="830" fromTop="12" />
-    <File id="BE633745-04FC-4865-8B0F-337B74356E75/d:Services/f:RadiographyService.cs" caret="9058" fromTop="15" />
     <File id="BE633745-04FC-4865-8B0F-337B74356E75/d:Models/f:RadiographyContext.cs" caret="770" fromTop="15" />
+    <File id="BE633745-04FC-4865-8B0F-337B74356E75/d:Models/f:Direction.cs" caret="249" fromTop="9" />
+    <File id="BE633745-04FC-4865-8B0F-337B74356E75/d:Utility/f:Switch.cs" caret="4" fromTop="0" />
+    <File id="BE633745-04FC-4865-8B0F-337B74356E75/d:Models/f:RGReport.cs" caret="10989" fromTop="3" />
+    <File id="BE633745-04FC-4865-8B0F-337B74356E75/d:Models/f:FinalRTReport.cs" caret="5565" fromTop="13" />
+    <File id="BE633745-04FC-4865-8B0F-337B74356E75/d:Models/f:FinalRTReportRow.cs" caret="2792" fromTop="28" />
+    <File id="4D601F4D-7221-452D-9981-A9A092C14922/d:Views/f:RadiographyReports.xaml.cs" caret="3258" fromTop="21" />
+    <File id="BE633745-04FC-4865-8B0F-337B74356E75/d:Models/f:Foundry.cs" caret="555" fromTop="11" />
+    <File id="4D601F4D-7221-452D-9981-A9A092C14922/d:Views/f:Foundries.xaml.cs" caret="1297" fromTop="18" />
+    <File id="BE633745-04FC-4865-8B0F-337B74356E75/f:RGReportGenerate.aspx.cs" caret="411" fromTop="14" />
+    <File id="BE633745-04FC-4865-8B0F-337B74356E75/f:RGReportGenerator.cs" caret="12534" fromTop="13" />
+    <File id="4D601F4D-7221-452D-9981-A9A092C14922/d:Models/f:RGReportRow.partial.cs" caret="13" fromTop="0" />
+    <File id="4D601F4D-7221-452D-9981-A9A092C14922/d:Views/f:CastingStatusReport.xaml.cs" caret="2780" fromTop="21" />
+    <File id="BE633745-04FC-4865-8B0F-337B74356E75/d:Models/f:RGReportRow.cs" caret="6525" fromTop="29" />
     <File id="4D601F4D-7221-452D-9981-A9A092C14922/d:Views/f:FinalRadioGraphyReport.xaml" caret="1086" fromTop="4" />
     <File id="4D601F4D-7221-452D-9981-A9A092C14922/d:Views/f:ShiftWisePerformance.xaml" caret="999" fromTop="13" />
-    <File id="BE633745-04FC-4865-8B0F-337B74356E75/d:Models/f:Direction.cs" caret="324" fromTop="11" />
+    <File id="4D601F4D-7221-452D-9981-A9A092C14922/d:Views/f:Foundries.xaml" caret="2960" fromTop="4" />
+    <File id="BE633745-04FC-4865-8B0F-337B74356E75/f:FinalRGReportGenerator.cs" caret="4806" fromTop="12" />
+    <File id="BE633745-04FC-4865-8B0F-337B74356E75/f:FinalRGReportGenerate.aspx.cs" caret="594" fromTop="9" />
+    <File id="4D601F4D-7221-452D-9981-A9A092C14922/d:Views/f:FilmTransactions.xaml" caret="0" fromTop="0" />
+    <File id="4D601F4D-7221-452D-9981-A9A092C14922/d:Views/f:FilmTransactions.xaml.cs" caret="1964" fromTop="0" />
+    <File id="BE633745-04FC-4865-8B0F-337B74356E75/d:Services/f:RadiographyService.cs" caret="18441" fromTop="16" />
+    <File id="4D601F4D-7221-452D-9981-A9A092C14922/d:Views/f:BaseCRUDView.cs" caret="1088" fromTop="18" />
+    <File id="4D601F4D-7221-452D-9981-A9A092C14922/d:Views/f:FilmConsumptionReport.xaml.cs" caret="4160" fromTop="15" />
   </RecentFiles>
   <RecentEdits>
     <File id="4D601F4D-7221-452D-9981-A9A092C14922/d:Views/f:EnterRadioGraphyReport.xaml.cs" caret="831" fromTop="24" />
@@ -33,12 +36,21 @@
     <File id="4D601F4D-7221-452D-9981-A9A092C14922/d:Views/f:EnterRadioGraphyReport.xaml" caret="5386" fromTop="3" />
     <File id="BE633745-04FC-4865-8B0F-337B74356E75/f:AddressStickerGenerator.cs" caret="3912" fromTop="17" />
     <File id="BE633745-04FC-4865-8B0F-337B74356E75/d:Utility/f:ExtensionMethods.cs" caret="13" fromTop="0" />
-    <File id="BE633745-04FC-4865-8B0F-337B74356E75/d:Models/f:FinalRTReportRow.cs" caret="3468" fromTop="23" />
-    <File id="BE633745-04FC-4865-8B0F-337B74356E75/f:FinalRGReportGenerator.cs" caret="6768" fromTop="15" />
-    <File id="BE633745-04FC-4865-8B0F-337B74356E75/f:RGReportGenerator.cs" caret="16736" fromTop="23" />
-    <File id="BE633745-04FC-4865-8B0F-337B74356E75/d:Models/f:RGReport.cs" caret="9810" fromTop="6" />
-    <File id="BE633745-04FC-4865-8B0F-337B74356E75/d:Models/f:FinalRTReport.cs" caret="4340" fromTop="7" />
     <File id="BE633745-04FC-4865-8B0F-337B74356E75/f:Web.config" caret="573" fromTop="8" />
-    <File id="BE633745-04FC-4865-8B0F-337B74356E75/d:Services/f:RadiographyService.cs" caret="0" fromTop="0" />
+    <File id="BE633745-04FC-4865-8B0F-337B74356E75/d:Models/f:RGReportRow.cs" caret="9838" fromTop="25" />
+    <File id="BE633745-04FC-4865-8B0F-337B74356E75/d:Utility/f:Switch.cs" caret="916" fromTop="27" />
+    <File id="BE633745-04FC-4865-8B0F-337B74356E75/d:Models/f:FinalRTReportRow.cs" caret="13" fromTop="0" />
+    <File id="BE633745-04FC-4865-8B0F-337B74356E75/d:Models/f:RGReport.cs" caret="10989" fromTop="3" />
+    <File id="BE633745-04FC-4865-8B0F-337B74356E75/d:Models/f:FinalRTReport.cs" caret="6596" fromTop="12" />
+    <File id="BE633745-04FC-4865-8B0F-337B74356E75/f:FinalRGReportGenerator.cs" caret="19380" fromTop="24" />
+    <File id="BE633745-04FC-4865-8B0F-337B74356E75/d:Models/f:Foundry.cs" caret="605" fromTop="12" />
+    <File id="4D601F4D-7221-452D-9981-A9A092C14922/d:Views/f:Foundries.xaml" caret="3427" fromTop="8" />
+    <File id="4D601F4D-7221-452D-9981-A9A092C14922/d:Views/f:Foundries.xaml.cs" caret="282" fromTop="7" />
+    <File id="BE633745-04FC-4865-8B0F-337B74356E75/f:RGReportGenerate.aspx.cs" caret="2547" fromTop="5" />
+    <File id="BE633745-04FC-4865-8B0F-337B74356E75/f:RGReportGenerator.cs" caret="6196" fromTop="21" />
+    <File id="4D601F4D-7221-452D-9981-A9A092C14922/d:Models/f:RGReportRow.partial.cs" caret="558" fromTop="23" />
+    <File id="BE633745-04FC-4865-8B0F-337B74356E75/d:Services/f:RadiographyService.cs" caret="18918" fromTop="10" />
+    <File id="4D601F4D-7221-452D-9981-A9A092C14922/d:Views/f:FilmTransactions.xaml.cs" caret="746" fromTop="6" />
+    <File id="4D601F4D-7221-452D-9981-A9A092C14922/d:Views/f:FilmConsumptionReport.xaml.cs" caret="5588" fromTop="23" />
   </RecentEdits>
 </RecentFiles>

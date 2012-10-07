@@ -106,10 +106,10 @@ D:\ClientWork\Gama\Sources\RadiographyTracking\RadiographyTracking.Web\bin\ko\Sy
 D:\ClientWork\Gama\Sources\RadiographyTracking\RadiographyTracking.Web\bin\ru\System.ServiceModel.DomainServices.Hosting.resources.dll
 D:\ClientWork\Gama\Sources\RadiographyTracking\RadiographyTracking.Web\bin\zh-Hans\System.ServiceModel.DomainServices.Hosting.resources.dll
 D:\ClientWork\Gama\Sources\RadiographyTracking\RadiographyTracking.Web\bin\zh-Hant\System.ServiceModel.DomainServices.Hosting.resources.dll
+D:\ClientWork\Gama\Sources\RadiographyTracking\RadiographyTracking.Web\obj\Debug\RadiographyTracking.Web.csprojResolveAssemblyReference.cache
 D:\ClientWork\Gama\Sources\RadiographyTracking\RadiographyTracking.Web\obj\Debug\RadiographyTracking.Web.g.resources
 D:\ClientWork\Gama\Sources\RadiographyTracking\RadiographyTracking.Web\obj\Debug\RadiographyTracking.Web.Resources.ValidationErrorResources.resources
 D:\ClientWork\Gama\Sources\RadiographyTracking\RadiographyTracking.Web\obj\Debug\RadiographyTracking.Web.Resources.RegistrationDataResources.resources
+D:\ClientWork\Gama\Sources\RadiographyTracking\RadiographyTracking.Web\obj\Debug\RadiographyTracking.Web.csproj.GenerateResource.Cache
 D:\ClientWork\Gama\Sources\RadiographyTracking\RadiographyTracking.Web\obj\Debug\RadiographyTracking.Web.dll
 D:\ClientWork\Gama\Sources\RadiographyTracking\RadiographyTracking.Web\obj\Debug\RadiographyTracking.Web.pdb
-D:\ClientWork\Gama\Sources\RadiographyTracking\RadiographyTracking.Web\obj\Debug\RadiographyTracking.Web.csprojResolveAssemblyReference.cache
-D:\ClientWork\Gama\Sources\RadiographyTracking\RadiographyTracking.Web\obj\Debug\RadiographyTracking.Web.csproj.GenerateResource.Cache

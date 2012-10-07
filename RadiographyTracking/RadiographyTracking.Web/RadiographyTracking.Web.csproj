@@ -220,6 +220,7 @@
     <Compile Include="Models\Shared\User.shared.cs" />
     <Compile Include="Utility\ExtensionMethods.cs" />
     <Compile Include="Utility\StringValueAttribute.cs" />
+    <Compile Include="Utility\Switch.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\ValidationErrorResources.resx">

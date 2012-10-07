@@ -81,7 +81,36 @@ namespace RadiographyTracking.Web.Models
 
                 return this.FinalRTReportRows
                     .Where(p=> p.RemarkText != "RETAKE")
-                    .Sum(p => p.FilmSize.Area * p.FilmCount).ToString();
+                    .Sum(p => p.FilmArea).ToString();
+            }
+        }
+
+        [NotMapped]
+        [Exclude]
+        public string ExposedTotalArea
+        {
+            get
+            {
+                return FinalRTReportRows == null
+                           ? "0"
+                           : FinalRTReportRows
+                                 .Sum(p => p.FilmArea)
+                                 .ToString();
+            }
+        }
+
+        [NotMapped]
+        [Exclude]
+        public string RetakeTotalArea
+        {
+            get
+            {
+                return FinalRTReportRows == null
+                           ? "0"
+                           : FinalRTReportRows
+                                 .Where(p => p.RemarkText == "RETAKE")
+                                 .Sum(p => p.FilmArea)
+                                 .ToString();
             }
         }
 
@@ -128,12 +157,56 @@ namespace RadiographyTracking.Web.Models
                               select new
                               {
                                   Energy = g.Key,
-                                  Area = g.Sum(p => p.FilmSize == null ? 0 : p.FilmSize.Area * p.FilmCount)
+                                  Area = g.Sum(p => p.FilmArea)
                               }; //TODO: note this exact logic is present in RGReport as well. Whenever making changes here make there too. 
 
                 return summary.ToDictionary(s => s.Energy, s => s.Area);
             }
         }
+
+        [NotMapped]
+        [Exclude]
+        public Dictionary<String, float> ExposedEnergyAreas
+        {
+            get
+            {
+                if (FinalRTReportRows == null)
+                    return null;
+
+                var summary = from r in FinalRTReportRows
+                              group r by r.Energy.Name into g
+                              select new
+                              {
+                                  Energy = g.Key,
+                                  Area = g.Sum(p => p.FilmArea)
+                              }; 
+
+                return summary.ToDictionary(s => s.Energy, s => s.Area);
+            }
+        }
+
+        [NotMapped]
+        [Exclude]
+        public Dictionary<String, float> RetakeEnergyAreas
+        {
+            get
+            {
+                if (FinalRTReportRows == null)
+                    return null;
+
+                var summary = from r in FinalRTReportRows
+                              where r.RemarkText == "RETAKE" 
+                              group r by r.Energy.Name into g
+                              select new
+                              {
+                                  Energy = g.Key,
+                                  Area = g.Sum(p => p.FilmArea)
+                              }; 
+
+                return summary.ToDictionary(s => s.Energy, s => s.Area);
+            }
+        }
+
 
         public byte[] GetCompanyLogo()
         {

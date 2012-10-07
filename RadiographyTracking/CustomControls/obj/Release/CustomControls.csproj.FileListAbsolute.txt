@@ -234,3 +234,4 @@ D:\ClientWork\Gama\Sources\RadiographyTracking\CustomControls\Bin\Release\zh-Han
 D:\ClientWork\Gama\Sources\RadiographyTracking\CustomControls\Bin\Release\zh-Hant\System.Windows.Data.resources.dll
 D:\ClientWork\Gama\Sources\RadiographyTracking\CustomControls\obj\Release\CustomControls.dll
 D:\ClientWork\Gama\Sources\RadiographyTracking\CustomControls\obj\Release\CustomControls.pdb
+D:\ClientWork\Gama\Sources\RadiographyTracking\CustomControls\obj\Release\CustomControls.csprojResolveAssemblyReference.cache

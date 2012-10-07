@@ -6176,6 +6176,8 @@ namespace RadiographyTracking.Web.Models
         
         private string _reportNumberPrefix;
         
+        private string _reportTemplate;
+        
         #region Extensibility Method Definitions
 
         /// <summary>
@@ -6191,6 +6193,8 @@ namespace RadiographyTracking.Web.Models
         partial void OnIDChanged();
         partial void OnReportNumberPrefixChanging(string value);
         partial void OnReportNumberPrefixChanged();
+        partial void OnReportTemplateChanging(string value);
+        partial void OnReportTemplateChanged();
 
         #endregion
         
@@ -6320,6 +6324,30 @@ namespace RadiographyTracking.Web.Models
                     this._reportNumberPrefix = value;
                     this.RaiseDataMemberChanged("ReportNumberPrefix");
                     this.OnReportNumberPrefixChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'ReportTemplate' value.
+        /// </summary>
+        [DataMember()]
+        public string ReportTemplate
+        {
+            get
+            {
+                return this._reportTemplate;
+            }
+            set
+            {
+                if ((this._reportTemplate != value))
+                {
+                    this.OnReportTemplateChanging(value);
+                    this.RaiseDataMemberChanging("ReportTemplate");
+                    this.ValidateProperty("ReportTemplate", value);
+                    this._reportTemplate = value;
+                    this.RaiseDataMemberChanged("ReportTemplate");
+                    this.OnReportTemplateChanged();
                 }
             }
         }

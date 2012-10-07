@@ -66,10 +66,17 @@ namespace RadiographyTracking.Web
         protected const string TotalArea = "TotalArea";
         protected const string Isotope = "Isotope";
         protected const string Area = "Area";
-
+        protected const string ExposedTotalArea = "ExposedTotalArea";
+        protected const string RetakeTotalArea = "RetakeTotalArea";
+   
         protected const string IsotopeCollection = "IsotopeCollection";
+        protected const string ExposedIsotopeCollection = "ExposedIsotopeCollection";
+        protected const string RetakeIsotopeCollection = "RetakeIsotopeCollection";
+   
         protected const string AreaCollection = "AreaCollection";
-
+        protected const string ExposedAreaCollection = "ExposedAreaCollection";
+        protected const string RetakeAreaCollection = "RetakeAreaCollection";
+   
         #endregion
 
         #region Constructor
@@ -136,18 +143,20 @@ namespace RadiographyTracking.Web
                     {Technique, PlaceHolderType.NonRecursive},
                     
                     {TotalArea, PlaceHolderType.NonRecursive},
+                    {ExposedTotalArea, PlaceHolderType.NonRecursive},
+                    {RetakeTotalArea, PlaceHolderType.NonRecursive},
+   
                     {Isotope, PlaceHolderType.NonRecursive},
                     {Area, PlaceHolderType.NonRecursive},
                     {IsotopeCollection, PlaceHolderType.Recursive},
-                    {AreaCollection, PlaceHolderType.Recursive}
+                    {AreaCollection, PlaceHolderType.Recursive},
+                    {ExposedIsotopeCollection, PlaceHolderType.Recursive},
+                    {ExposedAreaCollection, PlaceHolderType.Recursive},
+                    {RetakeIsotopeCollection, PlaceHolderType.Recursive},
+                    {RetakeAreaCollection, PlaceHolderType.Recursive}
+   
                 };
-            // Handle non recursive placeholders
-
-            // Handle Rowlevel place holders
-
-            //within each row, these are non-recursive
-
-
+            
             return placeHolderTagToTypeCollection;
         }
 
@@ -167,12 +176,12 @@ namespace RadiographyTracking.Web
             string tagGuidPart;
             GetTagValue(openXmlElementDataContext.Element as SdtElement, out tagPlaceHolderValue, out tagGuidPart);
 
-            var row = openXmlElementDataContext.DataContext as FinalRTReport;
+            var content = string.Empty;
 
-            string content = string.Empty;
-
-            if (row != null)
+            if (openXmlElementDataContext.DataContext is FinalRTReport)
             {
+                var row = openXmlElementDataContext.DataContext as FinalRTReport;
+
                 switch (tagPlaceHolderValue)
                 {
                     case FPNo:
@@ -238,6 +247,13 @@ namespace RadiographyTracking.Web
                     case TotalArea:
                         content = row.TotalArea;
                         break;
+                    case ExposedTotalArea:
+                        content = row.ExposedTotalArea;
+                        break;
+                    case RetakeTotalArea:
+                        content = row.RetakeTotalArea;
+                        break;
+
                     case Result:
                         content = row.Status.Status;
                         break;
@@ -255,67 +271,64 @@ namespace RadiographyTracking.Web
                         break;
                 }
             }
-            else
+            else if (openXmlElementDataContext.DataContext is FinalRTReportRow)
             {
                 var reportRow = openXmlElementDataContext.DataContext as FinalRTReportRow;
 
-                if (reportRow != null)
+                switch (tagPlaceHolderValue)
                 {
-                    switch (tagPlaceHolderValue)
-                    {
-                        case SlNo:
-                            content = reportRow.SlNo.ToString(); 
-                            break;
-                        case Technique:
-                            content = reportRow.Technique;
-                            break;
-                        case LocationSegment:
-                            content = reportRow.LocationAndSegment;
-                            break;
-                        case Location:
-                            content = reportRow.Location;
-                            break;
-                        case Segment:
-                            content = reportRow.Segment;
-                            break;
-                        case Thickness:
-                            content = reportRow.Thickness.ToString();
-                            break;
-                        case SFD:
-                            content = reportRow.SFD.ToString();
-                            break;
-                        case Designation:
-                            content = reportRow.Designation;
-                            break;
-                        case Sensitivity:
-                            content = reportRow.Sensitivity;
-                            break;
-                        case Density:
-                            content = reportRow.Density;
-                            break;
-                        case FilmSize:
-                            content = reportRow.FilmSizeWithCount;
-                            break;
-                        case Observation:
-                            content = reportRow.Observations;
-                            break;
-                        case Remarks:
-                            content = reportRow.RemarkText;
-                            break;
-                    }
+                    case SlNo:
+                        content = reportRow.SlNo.ToString();
+                        break;
+                    case Technique:
+                        content = reportRow.Technique;
+                        break;
+                    case LocationSegment:
+                        content = reportRow.LocationAndSegment;
+                        break;
+                    case Location:
+                        content = reportRow.Location;
+                        break;
+                    case Segment:
+                        content = reportRow.Segment;
+                        break;
+                    case Thickness:
+                        content = reportRow.Thickness.ToString();
+                        break;
+                    case SFD:
+                        content = reportRow.SFD.ToString();
+                        break;
+                    case Designation:
+                        content = reportRow.Designation;
+                        break;
+                    case Sensitivity:
+                        content = reportRow.Sensitivity;
+                        break;
+                    case Density:
+                        content = reportRow.Density;
+                        break;
+                    case FilmSize:
+                        content = reportRow.FilmSizeWithCount;
+                        break;
+                    case Observation:
+                        content = reportRow.Observations;
+                        break;
+                    case Remarks:
+                        content = reportRow.RemarkText;
+                        break;
                 }
-                else if (openXmlElementDataContext.DataContext is KeyValuePair<String, float>)
+            }
+            else if (openXmlElementDataContext.DataContext is KeyValuePair<String, float>)
+            {
+                var keyvalue = (KeyValuePair<String, float>)openXmlElementDataContext.DataContext;
+                switch (tagPlaceHolderValue)
                 {
-                    var keyvalue = (KeyValuePair<String, float>)openXmlElementDataContext.DataContext;
-                    switch (tagPlaceHolderValue)
-                    {
-                        case Isotope:
-                            content = keyvalue.Key;
-                            break;
-                        case Area:
-                            content = keyvalue.Value.ToString();
-                            break;
-                    }
+                    case Isotope:
+                        content = keyvalue.Key;
+                        break;
+                    case Area:
+                        content = keyvalue.Value.ToString();
+                        break;
                 }
             }
 
@@ -384,6 +397,22 @@ namespace RadiographyTracking.Web
                 case IsotopeCollection:
                 case AreaCollection:
                     foreach (var pair in ((FinalRTReport) (openXmlElementDataContext.DataContext)).EnergyAreas)
+                    {
+                        CloneElementAndSetContentInPlaceholders(new OpenXmlElementDataContext() { Element = openXmlElementDataContext.Element, DataContext = pair }, document);
+                    }
+                    openXmlElementDataContext.Element.Remove();
+                    break;
+                case ExposedIsotopeCollection:
+                case ExposedAreaCollection:
+                    foreach (var pair in ((FinalRTReport)(openXmlElementDataContext.DataContext)).ExposedEnergyAreas)
+                    {
+                        CloneElementAndSetContentInPlaceholders(new OpenXmlElementDataContext() { Element = openXmlElementDataContext.Element, DataContext = pair }, document);
+                    }
+                    openXmlElementDataContext.Element.Remove();
+                    break;
+                case RetakeIsotopeCollection:
+                case RetakeAreaCollection:
+                    foreach (var pair in ((FinalRTReport)(openXmlElementDataContext.DataContext)).RetakeEnergyAreas)
                     {
                         CloneElementAndSetContentInPlaceholders(new OpenXmlElementDataContext() { Element = openXmlElementDataContext.Element, DataContext = pair }, document);
                     }

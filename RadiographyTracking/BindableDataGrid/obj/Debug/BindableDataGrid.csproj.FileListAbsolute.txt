@@ -137,4 +137,3 @@ D:\ClientWork\Gama\Sources\RadiographyTracking\BindableDataGrid\Bin\Debug\Bindab
 D:\ClientWork\Gama\Sources\RadiographyTracking\BindableDataGrid\Bin\Debug\BindableDataGrid.pdb
 D:\ClientWork\Gama\Sources\RadiographyTracking\BindableDataGrid\obj\Debug\BindableDataGrid.dll
 D:\ClientWork\Gama\Sources\RadiographyTracking\BindableDataGrid\obj\Debug\BindableDataGrid.pdb
-D:\ClientWork\Gama\Sources\RadiographyTracking\BindableDataGrid\obj\Debug\BindableDataGrid.csprojResolveAssemblyReference.cache
