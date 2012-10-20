@@ -83,7 +83,7 @@ namespace RadiographyTracking.Views
                     var colName = String.Format("{0}{1}", row.Name, type);
                     AddTextColumn(reportTable, colName, colName);
                     headerRow[colName] = type == "ACCEPTABLE" ? row.Name : string.Empty;
-                    subHeaderRow[colName] = type == "ACCEPTABLE" ? "F" : type == "REPAIR" ? "RP" : type == "RETAKE" ? "RT" : "RS";
+                    subHeaderRow[colName] = type == "ACCEPTABLE" ? "T" : type == "REPAIR" ? "RP" : type == "RETAKE" ? "RT" : "RS";
                 }
             }
 
@@ -91,19 +91,41 @@ namespace RadiographyTracking.Views
 
             DataRow dataRow = null;
 
+            float totalArea = 0;
+
+            string prevEnergy = String.Empty;
+            int rowCount = 1;
+
             //the loop pivots the data wrt to energy and row types
             foreach (var r in report)
             {
                 if(r.ReportNo != prevReportNo)
                 {
-                    if(dataRow != null) rows.Add(dataRow);
+                    if (dataRow != null)
+                    {
+                        //prev Row last energy total col - temp fix for issue 0000109
+                        dataRow[prevEnergy + "ACCEPTABLE"] = totalArea;
+                        totalArea = 0;
+                        rows.Add(dataRow);
+                    }
                     dataRow = new DataRow();
                     dataRow["ReportNo"] = prevReportNo = r.ReportNo; //set prevReportNo for next time
                     dataRow["ReportDate"] = r.Date;
                     dataRow["FPNo"] = r.FPNo;
-                    dataRow["RTNo"] = r.RTNo;                    
+                    dataRow["RTNo"] = r.RTNo;
                 }
-                dataRow[r.Energy + r.RowType] = r.Area;                
+
+                //prev Row last energy total col - temp fix for issue 0000109
+                if (r.Energy != prevEnergy)
+                {
+                    dataRow[prevEnergy + "ACCEPTABLE"] = totalArea;
+                    totalArea = 0;
+                }
+
+                dataRow[r.Energy + r.RowType] = r.Area;
+                totalArea += r.Area;
+
+                prevEnergy = r.Energy;
             }
             //last report row
             if(dataRow != null) rows.Add(dataRow);

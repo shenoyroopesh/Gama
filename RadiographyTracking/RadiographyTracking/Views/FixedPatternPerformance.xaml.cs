@@ -88,8 +88,8 @@ namespace RadiographyTracking.Views
                             prevLocn = loc.Location;
                             segmentRow[colname] = seg.Segment;                   
                         }
-                        //no need to show NSD
-                        row[colname] = seg.Observations.ToUpper().Replace("NSD", "");
+                        //no need to show NSD - not any more
+                        row[colname] = seg.Observations.ToUpper(); //.Replace("NSD", "");
                     }
                 }
                 rows.Add(row);

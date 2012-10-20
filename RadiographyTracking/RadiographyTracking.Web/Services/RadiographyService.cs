@@ -551,9 +551,9 @@
             var rows = (from r in ctx.RGReportRows
                         where r.RGReport != null &&
                         r.RGReport.FixedPattern.FPNo == fpNo &&
-                        r.RGReport.FixedPattern.ID == (foundryID ?? r.RGReport.FixedPattern.ID) &&
-                            //ensure that the report has at least one defect
-                        r.RGReport.RGReportRows.Where(p => (p.Observations ?? "").Trim() != "NSD").Count() > 0
+                        r.RGReport.FixedPattern.ID == (foundryID ?? r.RGReport.FixedPattern.ID) //&&
+                        //ensure that the report has at least one defect - 21-Oct-2012: not any more
+                        //r.RGReport.RGReportRows.Where(p => (p.Observations ?? "").Trim() != "NSD").Count() > 0  // issue 0000111
                         select new
                         {
                             RTNo = r.RGReport.RTNo,
