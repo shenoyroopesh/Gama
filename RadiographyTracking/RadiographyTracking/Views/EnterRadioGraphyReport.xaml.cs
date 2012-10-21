@@ -39,8 +39,8 @@ namespace RadiographyTracking.Views
                 if (currentRole.ToLower() == "clerk")
                 {
                     clerkMode = true;
-                    this.RGReportDataGrid.Visibility = System.Windows.Visibility.Collapsed;
-                    this.RGReportDataGridClerk.Visibility = System.Windows.Visibility.Visible;
+                    this.RGReportDataGrid.Visibility = Visibility.Collapsed;
+                    this.RGReportDataGridClerk.Visibility = Visibility.Visible;
 
                     //make sure the rows are not frozen for the clerk-specific datagrid
                     CustomGrid.IsEditAllowed = true;
@@ -60,6 +60,9 @@ namespace RadiographyTracking.Views
             SetBindings();
 
             if (IsEditMode) DomainSource.Load();
+
+            //var ctx = new RadiographyContext();
+            //ctx.Load(ctx.GetEndCustomerNames());
         }
 
         private bool clerkMode = false;
@@ -77,12 +80,8 @@ namespace RadiographyTracking.Views
 
         public override String ChangeContextValue
         {
-            get
-            {
-                if (this.RGReport != null)
-                    return String.Concat(this.RGReport.RTNo, " Row");
-                else
-                    return ""; //ideally this should never get called
+            get {
+                return RGReport != null ? String.Concat(RGReport.RTNo, " Row") : String.Empty;
             }
         }
 
@@ -117,7 +116,7 @@ namespace RadiographyTracking.Views
             BindToPage(txtHeatNo, TextBox.TextProperty, "RGReport.HeatNo");
             BindToPage(txtProcedureRef, TextBox.TextProperty, "RGReport.ProcedureRef");
             BindToPage(txtSpecifications, TextBox.TextProperty, "RGReport.Specifications");
-            BindToPage(txtEndCustomerName, TextBox.TextProperty, "RGReport.EndCustomerName");
+            BindToPage(txtEndCustomerName,  AutoCompleteBox.TextProperty, "RGReport.EndCustomerName");
             BindToPage(txtFilm, TextBox.TextProperty, "RGReport.Film");
             BindToPage(ReportDatePicker, DatePicker.SelectedDateProperty, "RGReport.ReportDate");
             BindToPage(TestDatePicker, DatePicker.SelectedDateProperty, "RGReport.DateOfTest");
@@ -136,12 +135,12 @@ namespace RadiographyTracking.Views
         [CLSCompliant(false)]
         public override CustomGrid Grid
         {
-            get { return clerkMode ? this.RGReportDataGridClerk : this.RGReportDataGrid; }
+            get { return clerkMode ? RGReportDataGridClerk : RGReportDataGrid; }
         }
 
         public override DomainDataSource DomainSource
         {
-            get { return IsEditMode ? this.EditRGReportsSource : this.RGReportSource; }
+            get { return IsEditMode ? EditRGReportsSource : RGReportSource; }
         }
 
         public override Type MainType
@@ -158,7 +157,7 @@ namespace RadiographyTracking.Views
 
         public bool Enabled
         {
-            get { return !(RGReport == null); }
+            get { return RGReport != null; }
         }
 
         private RGReport _rgReport;
@@ -170,11 +169,11 @@ namespace RadiographyTracking.Views
         {
             get
             {
-                return this._rgReport;
+                return _rgReport;
             }
             set
             {
-                this._rgReport = value;
+                _rgReport = value;
                 OnPropertyChanged("RGReport");
                 OnPropertyChanged("Enabled");
                 OnPropertyChanged("FetchEnabled");
@@ -510,6 +509,19 @@ namespace RadiographyTracking.Views
                 };
                 addressStickersWindow.Show();
             }
+        }
+
+        void txtEndCustomer_Populating(object sender, PopulatingEventArgs e)
+        {
+            var ctx = new RadiographyContext();
+            if (RGReport != null)
+                ctx.GetEndCustomerNames(EndCustomerNames_Loaded, null);
+        }
+
+        void EndCustomerNames_Loaded(InvokeOperation<IEnumerable<string>> op)
+        {
+            txtEndCustomerName.ItemsSource = op.Value;
+            txtEndCustomerName.PopulateComplete();
         }
     }
 }

@@ -11880,6 +11880,28 @@ namespace RadiographyTracking.Web.Services
         }
         
         /// <summary>
+        /// Asynchronously invokes the 'GetEndCustomerNames' method of the DomainService.
+        /// </summary>
+        /// <param name="callback">Callback to invoke when the operation completes.</param>
+        /// <param name="userState">Value to pass to the callback.  It can be <c>null</c>.</param>
+        /// <returns>An operation instance that can be used to manage the asynchronous request.</returns>
+        public InvokeOperation<IEnumerable<string>> GetEndCustomerNames(Action<InvokeOperation<IEnumerable<string>>> callback, object userState)
+        {
+            this.ValidateMethod("GetEndCustomerNames", null);
+            return ((InvokeOperation<IEnumerable<string>>)(this.InvokeOperation("GetEndCustomerNames", typeof(IEnumerable<string>), null, true, callback, userState)));
+        }
+        
+        /// <summary>
+        /// Asynchronously invokes the 'GetEndCustomerNames' method of the DomainService.
+        /// </summary>
+        /// <returns>An operation instance that can be used to manage the asynchronous request.</returns>
+        public InvokeOperation<IEnumerable<string>> GetEndCustomerNames()
+        {
+            this.ValidateMethod("GetEndCustomerNames", null);
+            return ((InvokeOperation<IEnumerable<string>>)(this.InvokeOperation("GetEndCustomerNames", typeof(IEnumerable<string>), null, true, null, null)));
+        }
+        
+        /// <summary>
         /// Asynchronously invokes the 'GetRoles' method of the DomainService.
         /// </summary>
         /// <param name="callback">Callback to invoke when the operation completes.</param>
@@ -12147,6 +12169,23 @@ namespace RadiographyTracking.Web.Services
             /// <param name="result">The IAsyncResult returned from 'BeginGetDirections'.</param>
             /// <returns>The 'QueryResult' returned from the 'GetDirections' operation.</returns>
             QueryResult<Direction> EndGetDirections(IAsyncResult result);
+            
+            /// <summary>
+            /// Asynchronously invokes the 'GetEndCustomerNames' operation.
+            /// </summary>
+            /// <param name="callback">Callback to invoke on completion.</param>
+            /// <param name="asyncState">Optional state object.</param>
+            /// <returns>An IAsyncResult that can be used to monitor the request.</returns>
+            [FaultContract(typeof(DomainServiceFault), Action="http://tempuri.org/RadiographyService/GetEndCustomerNamesDomainServiceFault", Name="DomainServiceFault", Namespace="DomainServices")]
+            [OperationContract(AsyncPattern=true, Action="http://tempuri.org/RadiographyService/GetEndCustomerNames", ReplyAction="http://tempuri.org/RadiographyService/GetEndCustomerNamesResponse")]
+            IAsyncResult BeginGetEndCustomerNames(AsyncCallback callback, object asyncState);
+            
+            /// <summary>
+            /// Completes the asynchronous operation begun by 'BeginGetEndCustomerNames'.
+            /// </summary>
+            /// <param name="result">The IAsyncResult returned from 'BeginGetEndCustomerNames'.</param>
+            /// <returns>The 'IEnumerable`1' returned from the 'GetEndCustomerNames' operation.</returns>
+            IEnumerable<string> EndGetEndCustomerNames(IAsyncResult result);
             
             /// <summary>
             /// Asynchronously invokes the 'GetEnergies' operation.

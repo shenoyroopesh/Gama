@@ -155,8 +155,9 @@
                         <TextBlock Text="Report Date" TextWrapping="Wrap"   Grid.Column="0" Grid.Row="10" />
                         <sdk:DatePicker Name="ReportDatePicker" Grid.Column="2" Grid.Row="10"  />
                         <TextBlock Text="End Customer Name" TextWrapping="Wrap"  Grid.Column="0" Grid.Row="11"/>
-                        <TextBox Name="txtEndCustomerName" Grid.Column="2" Grid.Row="11" />
-                        
+                        <!--<TextBox Name="txtEndCustomerName" Grid.Column="2" Grid.Row="11" />-->
+                        <sdk:AutoCompleteBox Name="txtEndCustomerName" Grid.Column="2" Grid.Row="11" 
+                                             Populating="txtEndCustomer_Populating"/>
                         <TextBlock Text="Film"  Grid.Column="4" Grid.Row="5" />
                         <TextBox Name="txtFilm"  Grid.Column="6" Grid.Row="5" Text="" />
                         <TextBlock Text="Date Of Test"   Grid.Column="4" Grid.Row="6" />

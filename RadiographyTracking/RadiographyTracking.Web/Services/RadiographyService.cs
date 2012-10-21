@@ -915,6 +915,21 @@
             }
         }
 
+        /// <summary>
+        /// Gets all existing used distinct end customer names
+        /// </summary>
+        /// <param name="foundryName"></param>
+        /// <returns>Enumerable of distinct End customer names</returns>
+        public IEnumerable<String> GetEndCustomerNames()
+        {
+            var foundryId = getFoundryIDForCurrentUser();
+            //get the distinct end customer names and send it back
+            return DbContext.RGReports
+                .Where(p => foundryId == null || p.FixedPattern.Customer.FoundryID == foundryId)
+                .Where(p => p.EndCustomerName.ToUpper() != "NULL" && p.EndCustomerName != "-" && p.EndCustomerName != "")
+                .Select(p => p.EndCustomerName)
+                .Distinct();
+        }
 
         public IEnumerable<RTStatusReportRow> GetRTStatus(int foundryId, DateTime fromDate, DateTime toDate)
         {
