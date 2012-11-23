@@ -22,5 +22,10 @@ using RadiographyTracking.Web.Models;
         /// Used for identifying which Foundry this user belongs to
         /// </summary>
         public string Foundry { get; set; }
+
+        /// <summary>
+        /// Used for identifying customer company in case user's role is Customer
+        /// </summary>
+        public string CustomerCompany { get; set; }
     }
 }

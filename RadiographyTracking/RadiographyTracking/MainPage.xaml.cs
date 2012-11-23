@@ -20,7 +20,7 @@
         private const string Supervisor = "foundry supervisor";
         private const string ManagingDirector = "managing director";
         private const string Corrector = "corrector";
-
+        private const string Customer = "customer";
 
         /// <summary>
         /// Creates a new <see cref="MainPage"/> instance.
@@ -104,18 +104,21 @@
                     clerkMenuBar.Visibility = Visibility.Collapsed;
                     ManagingDirectorMenuBar.Visibility = Visibility.Collapsed;
                     supervisorMenuBar.Visibility = Visibility.Collapsed;
+                    CustomerMenuBar.Visibility = Visibility.Collapsed;   
                     break;
                 case ManagingDirector:
                     adminMenuBar.Visibility = Visibility.Collapsed;
                     clerkMenuBar.Visibility = Visibility.Collapsed;
                     ManagingDirectorMenuBar.Visibility = Visibility.Visible;
                     supervisorMenuBar.Visibility = Visibility.Collapsed;
+                    CustomerMenuBar.Visibility = Visibility.Collapsed;   
                     break;
                 case Supervisor:
                     adminMenuBar.Visibility = Visibility.Collapsed;
                     clerkMenuBar.Visibility = Visibility.Collapsed;
                     ManagingDirectorMenuBar.Visibility = Visibility.Collapsed;
                     supervisorMenuBar.Visibility = Visibility.Visible;
+                    CustomerMenuBar.Visibility = Visibility.Collapsed;   
                     break;
                 case Corrector:
                 case Clerk:
@@ -123,12 +126,21 @@
                     clerkMenuBar.Visibility = Visibility.Visible;
                     ManagingDirectorMenuBar.Visibility = Visibility.Collapsed;
                     supervisorMenuBar.Visibility = Visibility.Collapsed;
+                    CustomerMenuBar.Visibility = Visibility.Collapsed;   
+                    break;
+                case Customer:
+                    adminMenuBar.Visibility = Visibility.Collapsed;
+                    clerkMenuBar.Visibility = Visibility.Collapsed;
+                    ManagingDirectorMenuBar.Visibility = Visibility.Collapsed;
+                    supervisorMenuBar.Visibility = Visibility.Collapsed;
+                    CustomerMenuBar.Visibility = Visibility.Visible;                    
                     break;
                 default:
                     adminMenuBar.Visibility = Visibility.Collapsed;
                     clerkMenuBar.Visibility = Visibility.Collapsed;
                     ManagingDirectorMenuBar.Visibility = Visibility.Collapsed;
                     supervisorMenuBar.Visibility = Visibility.Collapsed;
+                    CustomerMenuBar.Visibility = Visibility.Collapsed;   
                     break;
             }
         }

@@ -27,3 +27,8 @@ D:\ClientWork\Gama\Sources\RadiographyTracking\MenuControl\Bin\Debug\MenuControl
 D:\ClientWork\Gama\Sources\RadiographyTracking\MenuControl\obj\Debug\MenuControl.g.resources
 D:\ClientWork\Gama\Sources\RadiographyTracking\MenuControl\obj\Debug\MenuControl.dll
 D:\ClientWork\Gama\Sources\RadiographyTracking\MenuControl\obj\Debug\MenuControl.pdb
+C:\Users\YATHISH\Gama\RadiographyTracking\MenuControl\Bin\Debug\MenuControl.dll
+C:\Users\YATHISH\Gama\RadiographyTracking\MenuControl\Bin\Debug\MenuControl.pdb
+C:\Users\YATHISH\Gama\RadiographyTracking\MenuControl\obj\Debug\MenuControl.g.resources
+C:\Users\YATHISH\Gama\RadiographyTracking\MenuControl\obj\Debug\MenuControl.dll
+C:\Users\YATHISH\Gama\RadiographyTracking\MenuControl\obj\Debug\MenuControl.pdb
