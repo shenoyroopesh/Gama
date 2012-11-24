@@ -47,7 +47,8 @@
                                             UserName = user.Name,
                                             Role = Roles.GetRolesForUser(user.Name).FirstOrDefault(),
                                             Foundry = user.Foundry,
-                                            FriendlyName = user.FriendlyName
+                                            FriendlyName = user.FriendlyName,
+                                            CustomerCompany=user.CustomerCompany
                                         };
                 registeredUsers.Add(data);
             }
@@ -87,6 +88,7 @@
             ProfileBase profile = ProfileBase.Create(user.UserName, false);
             profile.SetPropertyValue("FriendlyName", user.FriendlyName);
             profile.SetPropertyValue("Foundry", user.Foundry);
+            profile.SetPropertyValue("CustomerCompany", user.CustomerCompany);
             profile.Save();
         }
 
@@ -120,6 +122,7 @@
             ProfileBase profile = ProfileBase.Create(user.UserName, false);
             profile.SetPropertyValue("FriendlyName", user.FriendlyName);
             profile.SetPropertyValue("Foundry", user.Foundry);
+            profile.SetPropertyValue("CustomerCompany", user.CustomerCompany);
             profile.Save();
         }
 

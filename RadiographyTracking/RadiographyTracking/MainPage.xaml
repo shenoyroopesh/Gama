@@ -92,7 +92,7 @@
                             </menu:MenuBarItem>
                         </menu:MenuBar>
                         <menu:MenuBar Name="clerkMenuBar" VerticalAlignment="Center" Visibility="Collapsed">
-						    <menu:MenuBarItem MenuText="Foundry Setup" >
+                            <menu:MenuBarItem MenuText="Foundry Setup" >
                                 <menu:MenuItem MenuText="Fixed Patterns"  Click="MenuItem_Click" NavigationURI="/FixedPatterns"/>
                             </menu:MenuBarItem>
                             <menu:MenuBarItem  MenuText="Entry" >
@@ -108,6 +108,11 @@
                                 <menu:MenuItem MenuText="Shiftwise Performance"  Click="MenuItem_Click" NavigationURI="/ShiftWisePerformance"/>
                                 <menu:MenuItem MenuText="FP Performance"  Click="MenuItem_Click" NavigationURI="/FixedPatternPerformance"/>
                                 <menu:MenuItem MenuText="Changes"  Click="MenuItem_Click" NavigationURI="/ChangesMadeReport"/>
+                            </menu:MenuBarItem>
+                        </menu:MenuBar>                        
+                        <menu:MenuBar Name="CustomerMenuBar" VerticalAlignment="Center" Visibility="Collapsed">
+                            <menu:MenuBarItem MenuText="Reports" >
+                                <menu:MenuItem MenuText="FP Performance"  Click="MenuItem_Click" NavigationURI="/FixedPatternPerformance"/>
                             </menu:MenuBarItem>
                         </menu:MenuBar>
                     </StackPanel>

@@ -4,12 +4,13 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    d:DesignWidth="640" d:DesignHeight="480" xmlns:sdk="http://schemas.microsoft.com/winfx/2006/xaml/presentation/sdk"
+    d:DesignWidth="640" d:DesignHeight="480" 
+    xmlns:sdk="http://schemas.microsoft.com/winfx/2006/xaml/presentation/sdk"
     xmlns:views="clr-namespace:RadiographyTracking.Views"
     xmlns:custom="clr-namespace:Vagsons.Controls;assembly=CustomControls"
     xmlns:local="clr-namespace:RadiographyTracking.Controls"
     xmlns:ex="clr-namespace:ComboBoxExtensions;assembly=ComboBoxExtensions">
-
+    
     <Grid x:Name="LayoutRoot" Background="White">
         <sdk:Label Name="headerLabel" Style="{StaticResource PageHeaderStyle}" Content="USERS"/>
         <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,20,0,0">
@@ -27,6 +28,7 @@
                                                 Header="Friendly Name" Width="Auto" />
                         <sdk:DataGridTextColumn Binding="{Binding Path=Foundry, Mode=OneWay}" Header="Foundry" Width="Auto" />
                         <sdk:DataGridTextColumn Binding="{Binding Path=Role, Mode=OneWay}" Header="Role" Width="Auto" />
+                        <sdk:DataGridTextColumn Binding="{Binding Path=CustomerCompany, Mode=OneWay}" Header="CustomerCompany" Width="Auto" Visibility="Collapsed"/>
                         <sdk:DataGridTemplateColumn Header="Edit" Width="Auto">
                             <sdk:DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
