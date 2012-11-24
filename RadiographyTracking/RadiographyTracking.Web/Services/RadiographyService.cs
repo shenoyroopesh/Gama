@@ -544,14 +544,6 @@
 
         public IEnumerable<FixedPatternPerformanceRow> GetFixedPatternPerformanceReport(string fpNo)
         {
-            if (Roles.GetRolesForUser(Membership.GetUser().UserName).First().ToLower() == "customer")
-            {
-                FixedPattern objFixedPattern = GetFixedPatterns(fpNo).FirstOrDefault();
-                if (objFixedPattern == null) return null; // if the user doesnot belong to the foundry of the fpNo sent
-                if (this.GetCustomers().Where(p => p.ID == objFixedPattern.CustomerID).FirstOrDefault().CustomerName != Membership.GetUser().GetUser().CustomerCompany)
-                    return null;
-            }
-
             var ctx = this.DbContext;
             var foundryID = getFoundryIDForCurrentUser();
             //fetch required rows from database first, then form the complex object - linq to entities doesn't support
@@ -559,7 +551,9 @@
             var rows = (from r in ctx.RGReportRows
                         where r.RGReport != null &&
                         r.RGReport.FixedPattern.FPNo == fpNo &&
-                        r.RGReport.FixedPattern.Customer.FoundryID == (foundryID ?? r.RGReport.FixedPattern.Customer.FoundryID) //&&
+                        r.RGReport.FixedPattern.Customer.FoundryID == (foundryID ?? r.RGReport.FixedPattern.Customer.FoundryID) &&
+                        (Roles.GetRolesForUser(Membership.GetUser().UserName).First().ToLower() != "customer" || 
+                          r.RGReport.FixedPattern.Customer.CustomerName ==Membership.GetUser().GetUser().CustomerCompany)
                         //ensure that the report has at least one defect - 21-Oct-2012: not any more
                         //r.RGReport.RGReportRows.Where(p => (p.Observations ?? "").Trim() != "NSD").Count() > 0  // issue 0000111
                         select new
