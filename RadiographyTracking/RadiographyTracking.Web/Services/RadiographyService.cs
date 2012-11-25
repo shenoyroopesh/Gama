@@ -188,6 +188,7 @@
                                                      p.FoundryID == (foundryID ?? p.FoundryID));
         }
 
+
         public void InsertCustomer(Customer entity)
         {
             DbEntityEntry<Customer> entityEntry = this.DbContext.Entry(entity);
@@ -473,7 +474,7 @@
                                 where rowFID == (foundryId == -1 ? rowFID : foundryId)
                                 && r.RGReport.ReportDate >= fromDate && r.RGReport.ReportDate <= toDate
                                 group r by new { r.RGReport, r.RGReport.FixedPattern, r.Energy, r.Remark } into g
-                                select new {g.Key, Area = g.Sum(p => p.FilmSize.Area * p.FilmCount) }).ToList();
+                                select new { g.Key, Area = g.Sum(p => p.FilmSize.Area * p.FilmCount) }).ToList();
 
 
             return from g in intermediate
@@ -545,13 +546,16 @@
         {
             var ctx = this.DbContext;
             var foundryID = getFoundryIDForCurrentUser();
+            var role = Roles.GetRolesForUser(Membership.GetUser().UserName).First().ToLower();
+            var customerComapny = Membership.GetUser().GetUser().CustomerCompany;
 
             //fetch required rows from database first, then form the complex object - linq to entities doesn't support
             //creating complex objects directly
             var rows = (from r in ctx.RGReportRows
                         where r.RGReport != null &&
                         r.RGReport.FixedPattern.FPNo == fpNo &&
-                        r.RGReport.FixedPattern.ID == (foundryID ?? r.RGReport.FixedPattern.ID) //&&
+                        r.RGReport.FixedPattern.Customer.FoundryID == (foundryID ?? r.RGReport.FixedPattern.Customer.FoundryID) &&
+                        (role != "customer" || r.RGReport.FixedPattern.Customer.CustomerName == customerComapny)
                         //ensure that the report has at least one defect - 21-Oct-2012: not any more
                         //r.RGReport.RGReportRows.Where(p => (p.Observations ?? "").Trim() != "NSD").Count() > 0  // issue 0000111
                         select new
@@ -1410,7 +1414,7 @@
 
             if (!Directory.Exists(absolutepath))
                 return null;
-            
+
             var di = new DirectoryInfo(absolutepath);
             return di.GetFiles().Where(p => p.Name.ToLower().Contains("address"))
                 .Select(p => p.Name)
