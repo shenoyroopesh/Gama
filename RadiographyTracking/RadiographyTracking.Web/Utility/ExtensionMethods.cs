@@ -42,6 +42,7 @@ namespace RadiographyTracking.Web.Utility
             var p = ProfileBase.Create(user.Name);
             user.Foundry = (string)p.GetPropertyValue("Foundry");
             user.FriendlyName = (string)p.GetPropertyValue("FriendlyName");
+            user.CustomerCompany = (string)p.GetPropertyValue("CustomerCompany");
             return user;
         }
 

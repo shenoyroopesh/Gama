@@ -137,3 +137,12 @@ D:\ClientWork\Gama\Sources\RadiographyTracking\BindableDataGrid\Bin\Debug\Bindab
 D:\ClientWork\Gama\Sources\RadiographyTracking\BindableDataGrid\Bin\Debug\BindableDataGrid.pdb
 D:\ClientWork\Gama\Sources\RadiographyTracking\BindableDataGrid\obj\Debug\BindableDataGrid.dll
 D:\ClientWork\Gama\Sources\RadiographyTracking\BindableDataGrid\obj\Debug\BindableDataGrid.pdb
+C:\Users\YATHISH\Gama\RadiographyTracking\BindableDataGrid\Bin\Debug\BindableDataGrid.dll
+C:\Users\YATHISH\Gama\RadiographyTracking\BindableDataGrid\Bin\Debug\BindableDataGrid.pdb
+C:\Users\YATHISH\Gama\RadiographyTracking\BindableDataGrid\obj\Debug\BindableDataGrid.dll
+C:\Users\YATHISH\Gama\RadiographyTracking\BindableDataGrid\obj\Debug\BindableDataGrid.pdb
+C:\Documents and Settings\eqa40593\Gama\RadiographyTracking\BindableDataGrid\Bin\Debug\BindableDataGrid.dll
+C:\Documents and Settings\eqa40593\Gama\RadiographyTracking\BindableDataGrid\Bin\Debug\BindableDataGrid.pdb
+C:\Documents and Settings\eqa40593\Gama\RadiographyTracking\BindableDataGrid\obj\Debug\ResolveAssemblyReference.cache
+C:\Documents and Settings\eqa40593\Gama\RadiographyTracking\BindableDataGrid\obj\Debug\BindableDataGrid.dll
+C:\Documents and Settings\eqa40593\Gama\RadiographyTracking\BindableDataGrid\obj\Debug\BindableDataGrid.pdb

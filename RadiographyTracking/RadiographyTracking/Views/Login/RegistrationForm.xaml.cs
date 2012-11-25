@@ -11,6 +11,7 @@
     using System.Windows.Controls;
     using System.Windows.Input;
     using RadiographyTracking.Web;
+    using RadiographyTracking.Web.Models;
     using RadiographyTracking.Web.Services;
     using RadiographyTracking.Views;
 
@@ -21,8 +22,11 @@
     {
         private RegistrationFormWindow parentWindow;
         private UserRegistrationContext userRegistrationContext = new UserRegistrationContext();
+        private RadiographyContext radiologyContext = new RadiographyContext();
         private TextBox userNameTextBox;
-
+        private ComboBox customerCombobox;
+        private ComboBox roleCombobox;
+        private ComboBox foundryCombobox;
         /// <summary>
         /// Creates a new <see cref="RegistrationForm"/> instance.
         /// </summary>
@@ -45,6 +49,8 @@
         public IEnumerable<String> Roles { get; set; }
 
         public IEnumerable<String> Foundries { get; set; }
+
+        public IEnumerable<String> CustomerOfFoundry { get; set; }
 
         public bool IsEditing { get; set; }
 
@@ -78,15 +84,23 @@
             }
             else if (e.PropertyName == "Foundry")
             {
-                ComboBox foundryCombobox = new ComboBox();
+                this.foundryCombobox = new ComboBox();
                 foundryCombobox.ItemsSource = Foundries;
                 e.Field.ReplaceTextBox(foundryCombobox, ComboBox.SelectedItemProperty);
+                foundryCombobox.SelectionChanged += this.foundryComboboxSelectionChanged;
             }
             else if (e.PropertyName == "Role")
             {
-                ComboBox roleCombobox = new ComboBox();
+                roleCombobox = new ComboBox();
                 roleCombobox.ItemsSource = Roles;
                 e.Field.ReplaceTextBox(roleCombobox, ComboBox.SelectedItemProperty);
+                roleCombobox.SelectionChanged += this.roleComboboxSelectionChanged;
+            }
+
+            else if (e.PropertyName == "CustomerCompany")
+            {
+                this.customerCombobox = new ComboBox();
+                e.Field.ReplaceTextBox(customerCombobox, ComboBox.SelectedItemProperty);
             }
         }
 
@@ -141,6 +155,7 @@
                 return this.registerForm.ValidateItem();
             }
         }
+
 
 
         /// <summary>
@@ -203,6 +218,39 @@
         public void SetInitialFocus()
         {
             this.userNameTextBox.Focus();
+        }
+
+        /// <summary>
+        /// when the foundry combo box changed load customer  combo box for selected foundry        
+        /// </summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
+        private void foundryComboboxSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (this.roleCombobox.SelectedValue != null)
+                if (this.roleCombobox.SelectedValue.ToString().ToLower() != "customer")
+                    this.customerCombobox.IsEnabled = false;
+
+            radiologyContext.Load(radiologyContext.GetCustomersFilteredQuery(foundryCombobox.SelectedValue.ToString())).Completed += CustomerOfFoundry_Loaded;
+        }
+
+        void CustomerOfFoundry_Loaded(object sender, EventArgs e)
+        {
+            CustomerOfFoundry = ((LoadOperation<Customer>)sender).Entities.Select(p => p.CustomerName);
+            this.customerCombobox.ItemsSource = CustomerOfFoundry;
+
+        }
+
+        private void roleComboboxSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (((ComboBox)sender).SelectedValue.ToString().ToLower() != "customer")
+            {
+                this.customerCombobox.SelectedItem = null;
+                this.customerCombobox.IsEnabled = false;
+            }
+            else
+                this.customerCombobox.IsEnabled = true;
+
         }
     }
 }
