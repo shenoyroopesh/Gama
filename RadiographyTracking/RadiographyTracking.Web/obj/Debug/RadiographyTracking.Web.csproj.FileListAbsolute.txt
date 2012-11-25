@@ -150,3 +150,41 @@ C:\Users\YATHISH\Gama\RadiographyTracking\RadiographyTracking.Web\obj\Debug\Radi
 C:\Users\YATHISH\Gama\RadiographyTracking\RadiographyTracking.Web\obj\Debug\RadiographyTracking.Web.csproj.GenerateResource.Cache
 C:\Users\YATHISH\Gama\RadiographyTracking\RadiographyTracking.Web\obj\Debug\RadiographyTracking.Web.dll
 C:\Users\YATHISH\Gama\RadiographyTracking\RadiographyTracking.Web\obj\Debug\RadiographyTracking.Web.pdb
+C:\Documents and Settings\eqa40593\Gama\RadiographyTracking\RadiographyTracking.Web\bin\RadiographyTracking.Web.dll
+C:\Documents and Settings\eqa40593\Gama\RadiographyTracking\RadiographyTracking.Web\bin\RadiographyTracking.Web.pdb
+C:\Documents and Settings\eqa40593\Gama\RadiographyTracking\RadiographyTracking.Web\bin\EntityFramework.dll
+C:\Documents and Settings\eqa40593\Gama\RadiographyTracking\RadiographyTracking.Web\bin\EntityFramework.Migrations.dll
+C:\Documents and Settings\eqa40593\Gama\RadiographyTracking\RadiographyTracking.Web\bin\Microsoft.ServiceModel.DomainServices.EntityFramework.dll
+C:\Documents and Settings\eqa40593\Gama\RadiographyTracking\RadiographyTracking.Web\bin\System.ServiceModel.DomainServices.Hosting.dll
+C:\Documents and Settings\eqa40593\Gama\RadiographyTracking\RadiographyTracking.Web\bin\System.ServiceModel.DomainServices.Server.dll
+C:\Documents and Settings\eqa40593\Gama\RadiographyTracking\RadiographyTracking.Web\bin\WordDocumentGenerator.Library.dll
+C:\Documents and Settings\eqa40593\Gama\RadiographyTracking\RadiographyTracking.Web\bin\WordDocumentGenerator.Library.pdb
+C:\Documents and Settings\eqa40593\Gama\RadiographyTracking\RadiographyTracking.Web\bin\EntityFramework.xml
+C:\Documents and Settings\eqa40593\Gama\RadiographyTracking\RadiographyTracking.Web\bin\System.ServiceModel.DomainServices.Server.xml
+C:\Documents and Settings\eqa40593\Gama\RadiographyTracking\RadiographyTracking.Web\bin\System.ServiceModel.DomainServices.Hosting.xml
+C:\Documents and Settings\eqa40593\Gama\RadiographyTracking\RadiographyTracking.Web\bin\de\System.ServiceModel.DomainServices.Server.resources.dll
+C:\Documents and Settings\eqa40593\Gama\RadiographyTracking\RadiographyTracking.Web\bin\es\System.ServiceModel.DomainServices.Server.resources.dll
+C:\Documents and Settings\eqa40593\Gama\RadiographyTracking\RadiographyTracking.Web\bin\fr\System.ServiceModel.DomainServices.Server.resources.dll
+C:\Documents and Settings\eqa40593\Gama\RadiographyTracking\RadiographyTracking.Web\bin\it\System.ServiceModel.DomainServices.Server.resources.dll
+C:\Documents and Settings\eqa40593\Gama\RadiographyTracking\RadiographyTracking.Web\bin\ja\System.ServiceModel.DomainServices.Server.resources.dll
+C:\Documents and Settings\eqa40593\Gama\RadiographyTracking\RadiographyTracking.Web\bin\ko\System.ServiceModel.DomainServices.Server.resources.dll
+C:\Documents and Settings\eqa40593\Gama\RadiographyTracking\RadiographyTracking.Web\bin\ru\System.ServiceModel.DomainServices.Server.resources.dll
+C:\Documents and Settings\eqa40593\Gama\RadiographyTracking\RadiographyTracking.Web\bin\zh-Hans\System.ServiceModel.DomainServices.Server.resources.dll
+C:\Documents and Settings\eqa40593\Gama\RadiographyTracking\RadiographyTracking.Web\bin\zh-Hant\System.ServiceModel.DomainServices.Server.resources.dll
+C:\Documents and Settings\eqa40593\Gama\RadiographyTracking\RadiographyTracking.Web\bin\de\System.ServiceModel.DomainServices.Hosting.resources.dll
+C:\Documents and Settings\eqa40593\Gama\RadiographyTracking\RadiographyTracking.Web\bin\es\System.ServiceModel.DomainServices.Hosting.resources.dll
+C:\Documents and Settings\eqa40593\Gama\RadiographyTracking\RadiographyTracking.Web\bin\fr\System.ServiceModel.DomainServices.Hosting.resources.dll
+C:\Documents and Settings\eqa40593\Gama\RadiographyTracking\RadiographyTracking.Web\bin\it\System.ServiceModel.DomainServices.Hosting.resources.dll
+C:\Documents and Settings\eqa40593\Gama\RadiographyTracking\RadiographyTracking.Web\bin\ja\System.ServiceModel.DomainServices.Hosting.resources.dll
+C:\Documents and Settings\eqa40593\Gama\RadiographyTracking\RadiographyTracking.Web\bin\ko\System.ServiceModel.DomainServices.Hosting.resources.dll
+C:\Documents and Settings\eqa40593\Gama\RadiographyTracking\RadiographyTracking.Web\bin\ru\System.ServiceModel.DomainServices.Hosting.resources.dll
+C:\Documents and Settings\eqa40593\Gama\RadiographyTracking\RadiographyTracking.Web\bin\zh-Hans\System.ServiceModel.DomainServices.Hosting.resources.dll
+C:\Documents and Settings\eqa40593\Gama\RadiographyTracking\RadiographyTracking.Web\bin\zh-Hant\System.ServiceModel.DomainServices.Hosting.resources.dll
+C:\Documents and Settings\eqa40593\Gama\RadiographyTracking\RadiographyTracking.Web\obj\Debug\ResolveAssemblyReference.cache
+C:\Documents and Settings\eqa40593\Gama\RadiographyTracking\RadiographyTracking.Web\obj\Debug\RadiographyTracking.Web.g.resources
+C:\Documents and Settings\eqa40593\Gama\RadiographyTracking\RadiographyTracking.Web\obj\Debug\RadiographyTracking.Web.Resources.ValidationErrorResources.resources
+C:\Documents and Settings\eqa40593\Gama\RadiographyTracking\RadiographyTracking.Web\obj\Debug\RadiographyTracking.Web.Resources.RegistrationDataResources.resources
+C:\Documents and Settings\eqa40593\Gama\RadiographyTracking\RadiographyTracking.Web\obj\Debug\GenerateResource.read.1.tlog
+C:\Documents and Settings\eqa40593\Gama\RadiographyTracking\RadiographyTracking.Web\obj\Debug\GenerateResource.write.1.tlog
+C:\Documents and Settings\eqa40593\Gama\RadiographyTracking\RadiographyTracking.Web\obj\Debug\RadiographyTracking.Web.dll
+C:\Documents and Settings\eqa40593\Gama\RadiographyTracking\RadiographyTracking.Web\obj\Debug\RadiographyTracking.Web.pdb

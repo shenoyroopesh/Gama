@@ -90,6 +90,7 @@ namespace RadiographyTracking.Web
     using System.ServiceModel.DomainServices.Client;
     using System.ServiceModel.DomainServices.Client.ApplicationServices;
     using System.ServiceModel.Web;
+    using RadiographyTracking.Web.Resources;
     
     
     /// <summary>
@@ -386,14 +387,9 @@ namespace RadiographyTracking.Web
         /// <summary>
         /// Gets or sets the 'FriendlyName' value.
         /// </summary>
-        // The following attributes were not generated:
-        // 
-        // - The attribute 'System.ComponentModel.DataAnnotations.StringLengthAttribute' references type 'RadiographyTracking.Web.Resources.ValidationErrorResources' that is not accessible in the client project 'RadiographyTracking'. If you would like the attribute to be generated, make sure the assembly containing the attribute is referenced on the client.
-        // - The attribute 'System.ComponentModel.DataAnnotations.StringLengthAttribute' references a property 'ValidationErrorBadFriendlyNameLength' on type 'RadiographyTracking.Web.Resources.ValidationErrorResources' that is not accessible in the client project 'RadiographyTracking'.
-        // [StringLengthAttribute(255, ErrorMessageResourceName = "ValidationErrorBadFriendlyNameLength", ErrorMessageResourceType = typeof(RadiographyTracking.Web.Resources.ValidationErrorResources))]
-        // 
         [DataMember()]
-        [Display(Description="FriendlyNameDescription", Name="FriendlyNameLabel", Order=1, ResourceType=typeof(global::RadiographyTracking.Web.Resources.RegistrationDataResources))]
+        [Display(Description="FriendlyNameDescription", Name="FriendlyNameLabel", Order=1, ResourceType=typeof(RegistrationDataResources))]
+        [StringLength(255, ErrorMessageResourceName="ValidationErrorBadFriendlyNameLength", ErrorMessageResourceType=typeof(ValidationErrorResources))]
         public string FriendlyName
         {
             get
@@ -442,22 +438,11 @@ namespace RadiographyTracking.Web
         /// <summary>
         /// Gets or sets the 'UserName' value.
         /// </summary>
-        // The following attributes were not generated:
-        // 
-        // - The attribute 'System.ComponentModel.DataAnnotations.RegularExpressionAttribute' references type 'RadiographyTracking.Web.Resources.ValidationErrorResources' that is not accessible in the client project 'RadiographyTracking'. If you would like the attribute to be generated, make sure the assembly containing the attribute is referenced on the client.
-        // - The attribute 'System.ComponentModel.DataAnnotations.RegularExpressionAttribute' references a property 'ValidationErrorInvalidUserName' on type 'RadiographyTracking.Web.Resources.ValidationErrorResources' that is not accessible in the client project 'RadiographyTracking'.
-        // [RegularExpressionAttribute("^[a-zA-Z0-9_]*$", ErrorMessageResourceName = "ValidationErrorInvalidUserName", ErrorMessageResourceType = typeof(RadiographyTracking.Web.Resources.ValidationErrorResources))]
-        // 
-        // - The attribute 'System.ComponentModel.DataAnnotations.RequiredAttribute' references type 'RadiographyTracking.Web.Resources.ValidationErrorResources' that is not accessible in the client project 'RadiographyTracking'. If you would like the attribute to be generated, make sure the assembly containing the attribute is referenced on the client.
-        // - The attribute 'System.ComponentModel.DataAnnotations.RequiredAttribute' references a property 'ValidationErrorRequiredField' on type 'RadiographyTracking.Web.Resources.ValidationErrorResources' that is not accessible in the client project 'RadiographyTracking'.
-        // [RequiredAttribute(ErrorMessageResourceName = "ValidationErrorRequiredField", ErrorMessageResourceType = typeof(RadiographyTracking.Web.Resources.ValidationErrorResources))]
-        // 
-        // - The attribute 'System.ComponentModel.DataAnnotations.StringLengthAttribute' references type 'RadiographyTracking.Web.Resources.ValidationErrorResources' that is not accessible in the client project 'RadiographyTracking'. If you would like the attribute to be generated, make sure the assembly containing the attribute is referenced on the client.
-        // - The attribute 'System.ComponentModel.DataAnnotations.StringLengthAttribute' references a property 'ValidationErrorBadUserNameLength' on type 'RadiographyTracking.Web.Resources.ValidationErrorResources' that is not accessible in the client project 'RadiographyTracking'.
-        // [StringLengthAttribute(255, ErrorMessageResourceName = "ValidationErrorBadUserNameLength", ErrorMessageResourceType = typeof(RadiographyTracking.Web.Resources.ValidationErrorResources), MinimumLength = 4)]
-        // 
         [DataMember()]
-        [Display(Name="UserNameLabel", Order=0, ResourceType=typeof(global::RadiographyTracking.Web.Resources.RegistrationDataResources))]
+        [Display(Name="UserNameLabel", Order=0, ResourceType=typeof(RegistrationDataResources))]
+        [RegularExpression("^[a-zA-Z0-9_]*$", ErrorMessageResourceName="ValidationErrorInvalidUserName", ErrorMessageResourceType=typeof(ValidationErrorResources))]
+        [Required(ErrorMessageResourceName="ValidationErrorRequiredField", ErrorMessageResourceType=typeof(ValidationErrorResources))]
+        [StringLength(255, ErrorMessageResourceName="ValidationErrorBadUserNameLength", ErrorMessageResourceType=typeof(ValidationErrorResources), MinimumLength=4)]
         public string UserName
         {
             get
@@ -488,8 +473,6 @@ namespace RadiographyTracking.Web
         
         private string _customerCompany;
         
-        private string _displayName;
-        
         private string _foundry;
         
         private string _friendlyName;
@@ -507,8 +490,6 @@ namespace RadiographyTracking.Web
         partial void OnCreated();
         partial void OnCustomerCompanyChanging(string value);
         partial void OnCustomerCompanyChanged();
-        partial void OnDisplayNameChanging(string value);
-        partial void OnDisplayNameChanged();
         partial void OnFoundryChanging(string value);
         partial void OnFoundryChanged();
         partial void OnFriendlyNameChanging(string value);
@@ -549,31 +530,6 @@ namespace RadiographyTracking.Web
                     this._customerCompany = value;
                     this.RaiseDataMemberChanged("CustomerCompany");
                     this.OnCustomerCompanyChanged();
-                }
-            }
-        }
-        
-        /// <summary>
-        /// Gets or sets the 'DisplayName' value.
-        /// </summary>
-        [DataMember()]
-        [Editable(false)]
-        [ReadOnly(true)]
-        public string DisplayName
-        {
-            get
-            {
-                return this._displayName;
-            }
-            set
-            {
-                if ((this._displayName != value))
-                {
-                    this.OnDisplayNameChanging(value);
-                    this.ValidateProperty("DisplayName", value);
-                    this._displayName = value;
-                    this.RaisePropertyChanged("DisplayName");
-                    this.OnDisplayNameChanged();
                 }
             }
         }
@@ -827,13 +783,7 @@ namespace RadiographyTracking.Web
         /// <param name="callback">Callback to invoke when the operation completes.</param>
         /// <param name="userState">Value to pass to the callback.  It can be <c>null</c>.</param>
         /// <returns>An operation instance that can be used to manage the asynchronous request.</returns>
-        // Unable to generate the following attributes for parameter 'password' due to the following errors:
-        // 
-        // - The attribute 'System.ComponentModel.DataAnnotations.RequiredAttribute' references type 'RadiographyTracking.Web.Resources.ValidationErrorResources' that is not accessible in the client project 'RadiographyTracking'. If you would like the attribute to be generated, make sure the assembly containing the attribute is referenced on the client.
-        // - The attribute 'System.ComponentModel.DataAnnotations.RequiredAttribute' references a property 'ValidationErrorRequiredField' on type 'RadiographyTracking.Web.Resources.ValidationErrorResources' that is not accessible in the client project 'RadiographyTracking'.
-        // [RequiredAttribute(ErrorMessageResourceName = "ValidationErrorRequiredField", ErrorMessageResourceType = typeof(RadiographyTracking.Web.Resources.ValidationErrorResources))]
-        // 
-        public InvokeOperation CreateUser(RegistrationData user, string password, Action<InvokeOperation> callback, object userState)
+        public InvokeOperation CreateUser(RegistrationData user, [Required(ErrorMessageResourceName="ValidationErrorRequiredField", ErrorMessageResourceType=typeof(ValidationErrorResources))] string password, Action<InvokeOperation> callback, object userState)
         {
             Dictionary<string, object> parameters = new Dictionary<string, object>();
             parameters.Add("user", user);
@@ -848,13 +798,7 @@ namespace RadiographyTracking.Web
         /// <param name="user">The value for the 'user' parameter of this action.</param>
         /// <param name="password">The value for the 'password' parameter of this action.</param>
         /// <returns>An operation instance that can be used to manage the asynchronous request.</returns>
-        // Unable to generate the following attributes for parameter 'password' due to the following errors:
-        // 
-        // - The attribute 'System.ComponentModel.DataAnnotations.RequiredAttribute' references type 'RadiographyTracking.Web.Resources.ValidationErrorResources' that is not accessible in the client project 'RadiographyTracking'. If you would like the attribute to be generated, make sure the assembly containing the attribute is referenced on the client.
-        // - The attribute 'System.ComponentModel.DataAnnotations.RequiredAttribute' references a property 'ValidationErrorRequiredField' on type 'RadiographyTracking.Web.Resources.ValidationErrorResources' that is not accessible in the client project 'RadiographyTracking'.
-        // [RequiredAttribute(ErrorMessageResourceName = "ValidationErrorRequiredField", ErrorMessageResourceType = typeof(RadiographyTracking.Web.Resources.ValidationErrorResources))]
-        // 
-        public InvokeOperation CreateUser(RegistrationData user, string password)
+        public InvokeOperation CreateUser(RegistrationData user, [Required(ErrorMessageResourceName="ValidationErrorRequiredField", ErrorMessageResourceType=typeof(ValidationErrorResources))] string password)
         {
             Dictionary<string, object> parameters = new Dictionary<string, object>();
             parameters.Add("user", user);
@@ -1073,6 +1017,7 @@ namespace RadiographyTracking.Web.Models
     using System.ServiceModel.DomainServices;
     using System.ServiceModel.DomainServices.Client;
     using System.ServiceModel.DomainServices.Client.ApplicationServices;
+    using RadiographyTracking.Web.Resources;
     
     
     /// <summary>
@@ -1460,14 +1405,10 @@ namespace RadiographyTracking.Web.Models
         /// <summary>
         /// Gets or sets the 'Email' value.
         /// </summary>
-        // The following attributes were not generated:
-        // 
-        // - The attribute 'System.ComponentModel.DataAnnotations.RegularExpressionAttribute' references type 'RadiographyTracking.Web.Resources.ValidationErrorResources' that is not accessible in the client project 'RadiographyTracking'. If you would like the attribute to be generated, make sure the assembly containing the attribute is referenced on the client.
-        // - The attribute 'System.ComponentModel.DataAnnotations.RegularExpressionAttribute' references a property 'ValidationErrorInvalidEmail' on type 'RadiographyTracking.Web.Resources.ValidationErrorResources' that is not accessible in the client project 'RadiographyTracking'.
-        // [RegularExpressionAttribute("^([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$", ErrorMessageResourceName = "ValidationErrorInvalidEmail", ErrorMessageResourceType = typeof(RadiographyTracking.Web.Resources.ValidationErrorResources))]
-        // 
         [DataMember()]
         [Display(Order=4)]
+        [RegularExpression("^([\\w-\\.]+)@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.)|(([\\w-]+\\.)+))([a-zA-Z]{2,4" +
+            "}|[0-9]{1,3})(\\]?)$", ErrorMessageResourceName="ValidationErrorInvalidEmail", ErrorMessageResourceType=typeof(ValidationErrorResources))]
         public string Email
         {
             get
@@ -1918,13 +1859,9 @@ namespace RadiographyTracking.Web.Models
         /// <summary>
         /// Gets or sets the 'Email' value.
         /// </summary>
-        // The following attributes were not generated:
-        // 
-        // - The attribute 'System.ComponentModel.DataAnnotations.RegularExpressionAttribute' references type 'RadiographyTracking.Web.Resources.ValidationErrorResources' that is not accessible in the client project 'RadiographyTracking'. If you would like the attribute to be generated, make sure the assembly containing the attribute is referenced on the client.
-        // - The attribute 'System.ComponentModel.DataAnnotations.RegularExpressionAttribute' references a property 'ValidationErrorInvalidEmail' on type 'RadiographyTracking.Web.Resources.ValidationErrorResources' that is not accessible in the client project 'RadiographyTracking'.
-        // [RegularExpressionAttribute("^([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$", ErrorMessageResourceName = "ValidationErrorInvalidEmail", ErrorMessageResourceType = typeof(RadiographyTracking.Web.Resources.ValidationErrorResources))]
-        // 
         [DataMember()]
+        [RegularExpression("^([\\w-\\.]+)@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.)|(([\\w-]+\\.)+))([a-zA-Z]{2,4" +
+            "}|[0-9]{1,3})(\\]?)$", ErrorMessageResourceName="ValidationErrorInvalidEmail", ErrorMessageResourceType=typeof(ValidationErrorResources))]
         public string Email
         {
             get

@@ -546,14 +546,16 @@
         {
             var ctx = this.DbContext;
             var foundryID = getFoundryIDForCurrentUser();
+            var role = Roles.GetRolesForUser(Membership.GetUser().UserName).First().ToLower();
+            var customerComapny = Membership.GetUser().GetUser().CustomerCompany;
+
             //fetch required rows from database first, then form the complex object - linq to entities doesn't support
             //creating complex objects directly
             var rows = (from r in ctx.RGReportRows
                         where r.RGReport != null &&
                         r.RGReport.FixedPattern.FPNo == fpNo &&
                         r.RGReport.FixedPattern.Customer.FoundryID == (foundryID ?? r.RGReport.FixedPattern.Customer.FoundryID) &&
-                        (Roles.GetRolesForUser(Membership.GetUser().UserName).First().ToLower() != "customer" || 
-                          r.RGReport.FixedPattern.Customer.CustomerName ==Membership.GetUser().GetUser().CustomerCompany)
+                        (role != "customer" || r.RGReport.FixedPattern.Customer.CustomerName == customerComapny)
                         //ensure that the report has at least one defect - 21-Oct-2012: not any more
                         //r.RGReport.RGReportRows.Where(p => (p.Observations ?? "").Trim() != "NSD").Count() > 0  // issue 0000111
                         select new

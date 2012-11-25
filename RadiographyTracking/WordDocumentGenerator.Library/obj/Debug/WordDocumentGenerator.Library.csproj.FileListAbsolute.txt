@@ -19,3 +19,8 @@ C:\Users\YATHISH\Gama\RadiographyTracking\WordDocumentGenerator.Library\bin\Debu
 C:\Users\YATHISH\Gama\RadiographyTracking\WordDocumentGenerator.Library\bin\Debug\WordDocumentGenerator.Library.pdb
 C:\Users\YATHISH\Gama\RadiographyTracking\WordDocumentGenerator.Library\obj\Debug\WordDocumentGenerator.Library.dll
 C:\Users\YATHISH\Gama\RadiographyTracking\WordDocumentGenerator.Library\obj\Debug\WordDocumentGenerator.Library.pdb
+C:\Documents and Settings\eqa40593\Gama\RadiographyTracking\WordDocumentGenerator.Library\bin\Debug\WordDocumentGenerator.Library.dll
+C:\Documents and Settings\eqa40593\Gama\RadiographyTracking\WordDocumentGenerator.Library\bin\Debug\WordDocumentGenerator.Library.pdb
+C:\Documents and Settings\eqa40593\Gama\RadiographyTracking\WordDocumentGenerator.Library\obj\Debug\ResolveAssemblyReference.cache
+C:\Documents and Settings\eqa40593\Gama\RadiographyTracking\WordDocumentGenerator.Library\obj\Debug\WordDocumentGenerator.Library.dll
+C:\Documents and Settings\eqa40593\Gama\RadiographyTracking\WordDocumentGenerator.Library\obj\Debug\WordDocumentGenerator.Library.pdb
