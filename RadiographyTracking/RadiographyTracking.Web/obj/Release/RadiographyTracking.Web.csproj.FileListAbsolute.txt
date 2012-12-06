@@ -3,3 +3,9 @@ D:\ClientWork\Gama\Sources\RadiographyTracking\RadiographyTracking.Web\obj\Relea
 D:\ClientWork\Gama\Sources\RadiographyTracking\RadiographyTracking.Web\obj\Release\RadiographyTracking.Web.Resources.ValidationErrorResources.resources
 D:\ClientWork\Gama\Sources\RadiographyTracking\RadiographyTracking.Web\obj\Release\RadiographyTracking.Web.Resources.RegistrationDataResources.resources
 D:\ClientWork\Gama\Sources\RadiographyTracking\RadiographyTracking.Web\obj\Release\RadiographyTracking.Web.csproj.GenerateResource.Cache
+C:\Documents and Settings\eqa40593\Gama\RadiographyTracking\RadiographyTracking.Web\obj\Release\ResolveAssemblyReference.cache
+C:\Documents and Settings\eqa40593\Gama\RadiographyTracking\RadiographyTracking.Web\obj\Release\RadiographyTracking.Web.g.resources
+C:\Documents and Settings\eqa40593\Gama\RadiographyTracking\RadiographyTracking.Web\obj\Release\RadiographyTracking.Web.Resources.ValidationErrorResources.resources
+C:\Documents and Settings\eqa40593\Gama\RadiographyTracking\RadiographyTracking.Web\obj\Release\RadiographyTracking.Web.Resources.RegistrationDataResources.resources
+C:\Documents and Settings\eqa40593\Gama\RadiographyTracking\RadiographyTracking.Web\obj\Release\GenerateResource.read.1.tlog
+C:\Documents and Settings\eqa40593\Gama\RadiographyTracking\RadiographyTracking.Web\obj\Release\GenerateResource.write.1.tlog

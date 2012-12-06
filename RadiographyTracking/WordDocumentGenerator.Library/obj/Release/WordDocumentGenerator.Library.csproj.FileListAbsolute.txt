@@ -1,1 +1,2 @@
 D:\ClientWork\Gama\Sources\RadiographyTracking\WordDocumentGenerator.Library\obj\Release\WordDocumentGenerator.Library.csprojResolveAssemblyReference.cache
+C:\Documents and Settings\eqa40593\Gama\RadiographyTracking\WordDocumentGenerator.Library\obj\Release\ResolveAssemblyReference.cache

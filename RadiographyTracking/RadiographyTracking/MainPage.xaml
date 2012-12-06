@@ -113,6 +113,7 @@
                         <menu:MenuBar Name="CustomerMenuBar" VerticalAlignment="Center" Visibility="Collapsed">
                             <menu:MenuBarItem MenuText="Reports" >
                                 <menu:MenuItem MenuText="FP Performance"  Click="MenuItem_Click" NavigationURI="/FixedPatternPerformance"/>
+                                <menu:MenuItem MenuText="Casting Status"  Click="MenuItem_Click" NavigationURI="/CastingStatusReport"/>
                             </menu:MenuBarItem>
                         </menu:MenuBar>
                     </StackPanel>

@@ -28,7 +28,7 @@
             this.ApplicationLifetimeObjects.Add(webContext);
 
             //initialize culture
-            Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-IN");
+            //Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-IN");
         }
 
         //Global properties - used to pass objects between pages without having to query

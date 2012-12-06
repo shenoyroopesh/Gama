@@ -16,6 +16,8 @@ using System.Windows.Data;
 using RadiographyTracking.Web.Services;
 using System.Collections;
 using System.ServiceModel.DomainServices.Client;
+using BindableDataGrid.Data;
+using System.Windows.Browser;
 
 namespace RadiographyTracking.Views
 {
@@ -90,6 +92,7 @@ namespace RadiographyTracking.Views
             txtFPTemplateID.SetBinding(TextBlock.TextProperty, new Binding() { Source = this, Path = new PropertyPath("FixedPatternTemplate.ID") });
             FPTemplatesDataGrid.SetBinding(CustomGrid.ItemsSourceProperty, new Binding() { Source = this, Path = new PropertyPath("FPTemplateRows") });
             btnAdd.SetBinding(Button.IsEnabledProperty, new Binding() { Source = this, Path = new PropertyPath("Enabled") });
+            BindToPage(txtTotalArea, TextBlock.TextProperty, "TotalArea", BindingMode.OneWay);
         }
 
         [CLSCompliant(false)]
@@ -188,7 +191,7 @@ namespace RadiographyTracking.Views
                                                 Location = " ",
                                                 Segment = " ",
                                                 Sensitivity = " ",
-                                                FilmSizeString = " "
+                                                FilmSizeString = " ",
                                             };
 
             FPTemplateRows.Add(FPTemplateRow);
@@ -201,6 +204,9 @@ namespace RadiographyTracking.Views
             //first item returned is the current fixed pattern template for the given combination of fixed pattern and coverage
             FixedPatternTemplate = (FixedPatternTemplate)((DomainDataSourceView)((DomainDataSource)sender).Data).GetItemAt(0);
             FPTemplateRows = FixedPatternTemplate.FPTemplateRows;
+
+            UpdateEnergyWiseArea();
+            OnPropertyChanged("TotalArea");
         }
 
         /// <summary>
@@ -246,7 +252,9 @@ namespace RadiographyTracking.Views
                 }
             }
 
-            base.SaveOperation(sender, e);
+            base.SaveOperation(sender, e);            
+            //update the energy grid
+            UpdateEnergyWiseArea();
         }
 
 
@@ -259,6 +267,20 @@ namespace RadiographyTracking.Views
             }
         }
 
+        /// <summary>
+        /// Total area for the entire report
+        /// </summary>
+        public String TotalArea
+        {
+            get
+            {
+                return (FPTemplateRows == null ? 0 :
+                            FPTemplateRows
+                    //.Where(p => p.RemarkText != "RETAKE" != "RETAKE")
+                            .Sum(p => (p.FilmSize == null ? 0 : p.FilmSize.Area )))
+                            .ToString() + " Sq. Inches";
+            }
+        }
 
         /// <summary>
         /// Have to update filmsize string manually
@@ -271,5 +293,54 @@ namespace RadiographyTracking.Views
             var row = ((DataGridCell)cmb.Parent).DataContext;
             ((FPTemplateRow)row).FilmSizeString = ((FilmSize)cmb.SelectedValue).Name;
         }
+
+        public void UpdateEnergyWiseArea()
+        {            
+            var ctx = (RadiographyContext)this.DomainSource.DomainContext;
+            var dt = new  DataTable("EnergyTable");
+            AddTextColumn(dt, "HeadRow", "HeadRow");
+            var headerRow = new DataRow();
+            var actualRow = new DataRow();
+            headerRow["HeadRow"] = "Isotope";
+            actualRow["HeadRow"] = "Sq. Inches";
+
+            //instead of encountering an error if context is still loading, just don't do it, it will get 
+            //done on the first save operation
+            if (ctx.IsLoading)
+                return;
+
+            foreach (var e in ctx.Energies)
+            {
+                AddTextColumn(dt, e.Name, e.Name);
+                headerRow[e.Name] = e.Name;
+                actualRow[e.Name] = this.FPTemplateRows
+                                   .Where(p => p.EnergyID == e.ID)
+                                   // .Sum(p => p.FilmSize.Area * p.FilmCount);
+                                   .Sum(p => p.FilmSize.Area );
+            }
+
+            dt.Rows.Add(headerRow);
+            dt.Rows.Add(actualRow);
+
+            energyAreas.DataSource = dt;
+            energyAreas.DataBind();
+
+            OnPropertyChanged("TotalArea");
+        }
+        private static void AddTextColumn(DataTable reportTable, String columnName, String caption)
+        {
+            var dc = new DataColumn(columnName)
+            {
+                Caption = caption,
+                ReadOnly = true,
+                DataType = typeof(String),
+                AllowResize = true,
+                AllowSort = false,
+                AllowReorder = false
+            };
+            reportTable.Columns.Add(dc);
+        }
+
+       
     }
 }

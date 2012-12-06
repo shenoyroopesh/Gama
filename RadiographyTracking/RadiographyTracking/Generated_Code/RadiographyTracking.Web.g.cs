@@ -6445,6 +6445,10 @@ namespace RadiographyTracking.Web.Models
         
         private string _designation;
         
+        private int _energyID;
+        
+        private string _energyName;
+        
         private EntityRef<FilmSize> _filmSize;
         
         private int _filmSizeID;
@@ -6482,6 +6486,10 @@ namespace RadiographyTracking.Web.Models
         partial void OnDensityChanged();
         partial void OnDesignationChanging(string value);
         partial void OnDesignationChanged();
+        partial void OnEnergyIDChanging(int value);
+        partial void OnEnergyIDChanged();
+        partial void OnEnergyNameChanging(string value);
+        partial void OnEnergyNameChanged();
         partial void OnFilmSizeIDChanging(int value);
         partial void OnFilmSizeIDChanged();
         partial void OnFilmSizeStringChanging(string value);
@@ -6560,6 +6568,64 @@ namespace RadiographyTracking.Web.Models
                     this._designation = value;
                     this.RaiseDataMemberChanged("Designation");
                     this.OnDesignationChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'EnergyID' value.
+        /// </summary>
+        // The following attributes were not generated:
+        // 
+        // - The attribute 'System.ComponentModel.DataAnnotations.NotMappedAttribute' is not visible in the client project 'RadiographyTracking'. Are you missing an assembly reference?
+        // [NotMappedAttribute()]
+        // 
+        [DataMember()]
+        public int EnergyID
+        {
+            get
+            {
+                return this._energyID;
+            }
+            set
+            {
+                if ((this._energyID != value))
+                {
+                    this.OnEnergyIDChanging(value);
+                    this.RaiseDataMemberChanging("EnergyID");
+                    this.ValidateProperty("EnergyID", value);
+                    this._energyID = value;
+                    this.RaiseDataMemberChanged("EnergyID");
+                    this.OnEnergyIDChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'EnergyName' value.
+        /// </summary>
+        // The following attributes were not generated:
+        // 
+        // - The attribute 'System.ComponentModel.DataAnnotations.NotMappedAttribute' is not visible in the client project 'RadiographyTracking'. Are you missing an assembly reference?
+        // [NotMappedAttribute()]
+        // 
+        [DataMember()]
+        public string EnergyName
+        {
+            get
+            {
+                return this._energyName;
+            }
+            set
+            {
+                if ((this._energyName != value))
+                {
+                    this.OnEnergyNameChanging(value);
+                    this.RaiseDataMemberChanging("EnergyName");
+                    this.ValidateProperty("EnergyName", value);
+                    this._energyName = value;
+                    this.RaiseDataMemberChanged("EnergyName");
+                    this.OnEnergyNameChanged();
                 }
             }
         }
@@ -11801,13 +11867,17 @@ namespace RadiographyTracking.Web.Services
         /// <param name="foundryId">The value for the 'foundryId' parameter of the query.</param>
         /// <param name="fromDate">The value for the 'fromDate' parameter of the query.</param>
         /// <param name="toDate">The value for the 'toDate' parameter of the query.</param>
+        /// <param name="RTNo">The value for the 'RTNo' parameter of the query.</param>
+        /// <param name="HeatNo">The value for the 'HeatNo' parameter of the query.</param>
         /// <returns>An EntityQuery that can be loaded to retrieve <see cref="RTStatusReportRow"/> entity instances.</returns>
-        public EntityQuery<RTStatusReportRow> GetRTStatusQuery(int foundryId, DateTime fromDate, DateTime toDate)
+        public EntityQuery<RTStatusReportRow> GetRTStatusQuery(int foundryId, Nullable<DateTime> fromDate, Nullable<DateTime> toDate, string RTNo, string HeatNo)
         {
             Dictionary<string, object> parameters = new Dictionary<string, object>();
             parameters.Add("foundryId", foundryId);
             parameters.Add("fromDate", fromDate);
             parameters.Add("toDate", toDate);
+            parameters.Add("RTNo", RTNo);
+            parameters.Add("HeatNo", HeatNo);
             this.ValidateMethod("GetRTStatusQuery", parameters);
             return base.CreateQuery<RTStatusReportRow>("GetRTStatus", parameters, false, true);
         }
@@ -12708,13 +12778,15 @@ namespace RadiographyTracking.Web.Services
             /// <param name="foundryId">The value for the 'foundryId' parameter of this action.</param>
             /// <param name="fromDate">The value for the 'fromDate' parameter of this action.</param>
             /// <param name="toDate">The value for the 'toDate' parameter of this action.</param>
+            /// <param name="RTNo">The value for the 'RTNo' parameter of this action.</param>
+            /// <param name="HeatNo">The value for the 'HeatNo' parameter of this action.</param>
             /// <param name="callback">Callback to invoke on completion.</param>
             /// <param name="asyncState">Optional state object.</param>
             /// <returns>An IAsyncResult that can be used to monitor the request.</returns>
             [FaultContract(typeof(DomainServiceFault), Action="http://tempuri.org/RadiographyService/GetRTStatusDomainServiceFault", Name="DomainServiceFault", Namespace="DomainServices")]
             [OperationContract(AsyncPattern=true, Action="http://tempuri.org/RadiographyService/GetRTStatus", ReplyAction="http://tempuri.org/RadiographyService/GetRTStatusResponse")]
             [WebGet()]
-            IAsyncResult BeginGetRTStatus(int foundryId, DateTime fromDate, DateTime toDate, AsyncCallback callback, object asyncState);
+            IAsyncResult BeginGetRTStatus(int foundryId, Nullable<DateTime> fromDate, Nullable<DateTime> toDate, string RTNo, string HeatNo, AsyncCallback callback, object asyncState);
             
             /// <summary>
             /// Completes the asynchronous operation begun by 'BeginGetRTStatus'.

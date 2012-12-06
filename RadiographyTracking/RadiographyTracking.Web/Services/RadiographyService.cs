@@ -935,16 +935,21 @@
                 .Distinct();
         }
 
-        public IEnumerable<RTStatusReportRow> GetRTStatus(int foundryId, DateTime fromDate, DateTime toDate)
+        public IEnumerable<RTStatusReportRow> GetRTStatus(int foundryId, DateTime? fromDate, DateTime? toDate, string RTNo, string HeatNo)
         {
             //from date and to date to not consider time
-            fromDate = fromDate.Date;
-            toDate = toDate.Date.AddDays(1);
+            if (fromDate != null)
+                fromDate = ((DateTime)fromDate).Date;
+            if (toDate != null)
+                toDate = ((DateTime)toDate).Date.AddDays(1);       
 
             var intermediate = (from r in this.DbContext.RGReports
                                 let rowFId = r.FixedPattern.Customer.FoundryID
                                 where rowFId == (foundryId == -1 ? rowFId : foundryId)
-                                && r.ReportDate >= fromDate && r.ReportDate < toDate
+                                && (fromDate == null || r.ReportDate >= fromDate) 
+                                && (toDate == null || r.ReportDate < toDate)
+                                && (RTNo == string.Empty || r.RTNo.Contains(RTNo)) 
+                                && (HeatNo == string.Empty || r.HeatNo.Contains(HeatNo)) 
                                 group r by new { r.FixedPattern, r.RTNo } into g
                                 let allrows = g.SelectMany(p => p.RGReportRows)
                                                 .Where(p => p.Remark != null) //don't count the rows with blank remarks
@@ -963,6 +968,7 @@
                                     Reshoots = allLatestRows.Where(p => p.Remark.Value == "RESHOOT").Count(),
                                     Status = g.OrderByDescending(p => p.ReportDate).FirstOrDefault().Status.Status
                                 }).ToList();
+
 
             return from r in intermediate
                    select new RTStatusReportRow

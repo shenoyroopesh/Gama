@@ -30,7 +30,7 @@ namespace RadiographyTracking.Web.Models
         {
             get
             {
-                if(this.FilmSizeID == 0) return  " ";
+                if (this.FilmSizeID == 0) return " ";
                 //TODO: see if context can be injected instead of using like this
                 using (var ctx = new RadiographyContext())
                 {
@@ -65,5 +65,36 @@ namespace RadiographyTracking.Web.Models
 
         public int FixedPatternTemplateID { get; set; }
         public FixedPatternTemplate FixedPatternTemplate { get; set; }
+       
+        int _EnergyID;
+        [NotMapped]
+        public int EnergyID
+        {
+            get
+            {
+                using (var ctx = new RadiographyContext())
+                    return Energy.getEnergyForThickness(Thickness, ctx).ID;
+
+            }
+            set
+            {
+                _EnergyID = value;
+            }
+        }
+
+        string _EnergyName;
+        [NotMapped]
+        public string EnergyName
+        {
+            get
+            {
+                using (var ctx = new RadiographyContext())
+                    return Energy.getEnergyForThickness(Thickness, ctx).Name;
+            }
+            set
+            {
+                _EnergyName = value;
+            }
+        }
     }
 }

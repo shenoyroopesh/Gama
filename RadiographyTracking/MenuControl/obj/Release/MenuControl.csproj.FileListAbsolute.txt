@@ -34,3 +34,9 @@ D:\ClientWork\Gama\Sources\RadiographyTracking\MenuControl\obj\Release\MenuContr
 D:\ClientWork\Gama\Sources\RadiographyTracking\MenuControl\obj\Release\MenuControl.dll
 D:\ClientWork\Gama\Sources\RadiographyTracking\MenuControl\obj\Release\MenuControl.pdb
 D:\ClientWork\Gama\Sources\RadiographyTracking\MenuControl\obj\Release\MenuControl.csprojResolveAssemblyReference.cache
+C:\Documents and Settings\eqa40593\Gama\RadiographyTracking\MenuControl\Bin\Release\MenuControl.dll
+C:\Documents and Settings\eqa40593\Gama\RadiographyTracking\MenuControl\Bin\Release\MenuControl.pdb
+C:\Documents and Settings\eqa40593\Gama\RadiographyTracking\MenuControl\obj\Release\ResolveAssemblyReference.cache
+C:\Documents and Settings\eqa40593\Gama\RadiographyTracking\MenuControl\obj\Release\MenuControl.g.resources
+C:\Documents and Settings\eqa40593\Gama\RadiographyTracking\MenuControl\obj\Release\MenuControl.dll
+C:\Documents and Settings\eqa40593\Gama\RadiographyTracking\MenuControl\obj\Release\MenuControl.pdb
