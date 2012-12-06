@@ -35,6 +35,12 @@
                     <sdk:DatePicker Name="toDatePicker" IsEnabled="{Binding ElementName=filmTransactionsDomainDataSource, Path=CanLoad}"
                                     SelectedDateChanged="SelectionChanged"/>
                 </StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="20, 10,0,0">
+                    <TextBlock Text="RT No" VerticalAlignment="Center" Margin="10,0,0,0"/>
+                    <TextBox Name="txtRTNo" Margin="20, 0,20,0" MinWidth="50" TextChanged="TextChanged" />
+                    <TextBlock Text="Heat No" VerticalAlignment="Center" Margin="10,0,0,0"/>
+                    <TextBox Name="txtHeatNo" Margin="20, 0,20,0" MinWidth="50" TextChanged="TextChanged" />
+                </StackPanel>
                 <Button Name="btnFetch" Content="Generate" Click="btnFetch_Click" HorizontalAlignment="Center" 
                         Margin="0,10,0,0" IsEnabled="False"/>
                 <local:BusyIndicator x:Name="busyIndicator">

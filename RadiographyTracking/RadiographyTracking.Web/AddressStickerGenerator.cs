@@ -42,7 +42,9 @@ namespace RadiographyTracking.Web
         protected const string Technique1 = "Technique1";
         protected const string DateOfTest1 = "DateOfTest1";
         protected const string Specification1 = "Specification1";
-
+        protected const string LocationOnly1 = "LocationOnly1";
+        protected const string Segment1 = "Segment1";
+        protected const string ThicknessRange1 = "ThicknessRange1";
 
         protected const string AddressStickerCol2 = "AddressStickerCol2";
         protected const string CustomerName2 = "CustomerName2";
@@ -60,6 +62,9 @@ namespace RadiographyTracking.Web
         protected const string Technique2 = "Technique2";
         protected const string DateOfTest2 = "DateOfTest2";
         protected const string Specification2 = "Specification2";
+        protected const string LocationOnly2 = "LocationOnly2";
+        protected const string Segment2 = "Segment2";
+        protected const string ThicknessRange2 = "ThicknessRange2";
         #endregion
 
 
@@ -103,6 +108,9 @@ namespace RadiographyTracking.Web
                     {Technique1, PlaceHolderType.NonRecursive},
                     {DateOfTest1, PlaceHolderType.NonRecursive},
                     {Specification1, PlaceHolderType.NonRecursive},
+                    {LocationOnly1, PlaceHolderType.NonRecursive},
+                    {Segment1, PlaceHolderType.NonRecursive},
+                    {ThicknessRange1, PlaceHolderType.NonRecursive},
                     {AddressStickerCol2, PlaceHolderType.NonRecursive},
                     {CustomerName2, PlaceHolderType.NonRecursive},
                     {City2, PlaceHolderType.NonRecursive},
@@ -118,7 +126,10 @@ namespace RadiographyTracking.Web
                     {Sensitivity2, PlaceHolderType.NonRecursive},
                     {Technique2, PlaceHolderType.NonRecursive},
                     {DateOfTest2, PlaceHolderType.NonRecursive},
-                    {Specification2, PlaceHolderType.NonRecursive}
+                    {Specification2, PlaceHolderType.NonRecursive},
+                    {LocationOnly2, PlaceHolderType.NonRecursive},
+                    {Segment2, PlaceHolderType.NonRecursive},
+                    {ThicknessRange2, PlaceHolderType.NonRecursive}
                 };
 
             // Handle Rowlevel place holders
@@ -217,6 +228,15 @@ namespace RadiographyTracking.Web
                         case Specification1:
                             content = reportRow.AddressLabelCol1.RGReport.Specifications;
                             break;
+                        case LocationOnly1:
+                            content = reportRow.AddressLabelCol1.Location;
+                            break;
+                        case Segment1:
+                            content = reportRow.AddressLabelCol1.Segment;
+                            break;
+                        case ThicknessRange1:
+                            content = reportRow.AddressLabelCol1.ThicknessRange;
+                            break;
                     }
                 }
                 else
@@ -291,7 +311,15 @@ namespace RadiographyTracking.Web
                         case Specification2:
                             content = reportRow.AddressLabelCol2.RGReport.Specifications;
                             break;
-
+                        case LocationOnly2:
+                            content = reportRow.AddressLabelCol2.Location;
+                            break;
+                        case Segment2:
+                            content = reportRow.AddressLabelCol2.Segment;
+                            break;
+                        case ThicknessRange2:
+                            content = reportRow.AddressLabelCol2.ThicknessRange;
+                            break;
                     }
                 }
                 else

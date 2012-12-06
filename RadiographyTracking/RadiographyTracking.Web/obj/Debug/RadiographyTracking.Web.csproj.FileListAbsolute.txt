@@ -152,14 +152,12 @@ C:\Users\YATHISH\Gama\RadiographyTracking\RadiographyTracking.Web\obj\Debug\Radi
 C:\Users\YATHISH\Gama\RadiographyTracking\RadiographyTracking.Web\obj\Debug\RadiographyTracking.Web.pdb
 C:\Documents and Settings\eqa40593\Gama\RadiographyTracking\RadiographyTracking.Web\bin\RadiographyTracking.Web.dll
 C:\Documents and Settings\eqa40593\Gama\RadiographyTracking\RadiographyTracking.Web\bin\RadiographyTracking.Web.pdb
-C:\Documents and Settings\eqa40593\Gama\RadiographyTracking\RadiographyTracking.Web\bin\EntityFramework.dll
 C:\Documents and Settings\eqa40593\Gama\RadiographyTracking\RadiographyTracking.Web\bin\EntityFramework.Migrations.dll
 C:\Documents and Settings\eqa40593\Gama\RadiographyTracking\RadiographyTracking.Web\bin\Microsoft.ServiceModel.DomainServices.EntityFramework.dll
 C:\Documents and Settings\eqa40593\Gama\RadiographyTracking\RadiographyTracking.Web\bin\System.ServiceModel.DomainServices.Hosting.dll
 C:\Documents and Settings\eqa40593\Gama\RadiographyTracking\RadiographyTracking.Web\bin\System.ServiceModel.DomainServices.Server.dll
 C:\Documents and Settings\eqa40593\Gama\RadiographyTracking\RadiographyTracking.Web\bin\WordDocumentGenerator.Library.dll
 C:\Documents and Settings\eqa40593\Gama\RadiographyTracking\RadiographyTracking.Web\bin\WordDocumentGenerator.Library.pdb
-C:\Documents and Settings\eqa40593\Gama\RadiographyTracking\RadiographyTracking.Web\bin\EntityFramework.xml
 C:\Documents and Settings\eqa40593\Gama\RadiographyTracking\RadiographyTracking.Web\bin\System.ServiceModel.DomainServices.Server.xml
 C:\Documents and Settings\eqa40593\Gama\RadiographyTracking\RadiographyTracking.Web\bin\System.ServiceModel.DomainServices.Hosting.xml
 C:\Documents and Settings\eqa40593\Gama\RadiographyTracking\RadiographyTracking.Web\bin\de\System.ServiceModel.DomainServices.Server.resources.dll

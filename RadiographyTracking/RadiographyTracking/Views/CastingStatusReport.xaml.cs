@@ -30,8 +30,8 @@ namespace RadiographyTracking.Views
             : base()
         {
             InitializeComponent();
-            fromDatePicker.SelectedDate = fromDatePicker.DisplayDate = DateTime.Now.AddDays(-15);
-            toDatePicker.SelectedDate = toDatePicker.DisplayDate = DateTime.Now;
+           // fromDatePicker.SelectedDate = fromDatePicker.DisplayDate = DateTime.Now.AddDays(-15);
+            //toDatePicker.SelectedDate = toDatePicker.DisplayDate = DateTime.Now;
         }
 
         private void btnFetch_Click(object sender, RoutedEventArgs e)
@@ -40,8 +40,8 @@ namespace RadiographyTracking.Views
             busyIndicator.IsBusy = true;
 
             int foundryId = cmbFoundry.SelectedIndex == -1 ? -1 : ((Foundry)cmbFoundry.SelectedItem).ID;
-            ctx.Load(ctx.GetRTStatusQuery(foundryId, (DateTime)fromDatePicker.SelectedDate, 
-                (DateTime)toDatePicker.SelectedDate)).Completed += loadCompleted;            
+            ctx.Load(ctx.GetRTStatusQuery(foundryId, (DateTime?)fromDatePicker.SelectedDate,
+                (DateTime?)toDatePicker.SelectedDate, txtRTNo.Text, txtHeatNo.Text)).Completed += loadCompleted;            
         }
 
         private void loadCompleted(object sender, EventArgs e)
@@ -72,9 +72,8 @@ namespace RadiographyTracking.Views
         }
 
         private void SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            btnFetch.IsEnabled = !(cmbFoundry.SelectedIndex == -1 || String.IsNullOrEmpty(fromDatePicker.Text) || 
-                                  String.IsNullOrEmpty(toDatePicker.Text));
+        {                    
+            btnFetch.IsEnabled = ValueChanged();              
         }
 
         private void grdDetailsButton_Click(object sender, RoutedEventArgs e)
@@ -82,6 +81,19 @@ namespace RadiographyTracking.Views
             DataGridRow row = DataGridRow.GetRowContainingElement(sender as FrameworkElement);
             App.FinalReport = new FinalRTReport() { RTNo = ((RTStatusReportRow)row.DataContext).RTNo };
             Navigate("/FinalRadiographyReport");
+        }
+
+        private void TextChanged(object sender, TextChangedEventArgs e)
+        {
+            btnFetch.IsEnabled = ValueChanged();
+        }
+
+        public bool ValueChanged()
+        {
+         return   !(cmbFoundry.SelectedIndex == -1 || String.IsNullOrEmpty(fromDatePicker.Text) ||
+                                  String.IsNullOrEmpty(toDatePicker.Text)) 
+               || !(cmbFoundry.SelectedIndex == -1 || (String.IsNullOrEmpty(txtRTNo.Text) &&
+                                  String.IsNullOrEmpty(txtHeatNo.Text)));
         }
     }
 }
