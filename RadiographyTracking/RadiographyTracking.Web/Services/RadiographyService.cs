@@ -946,7 +946,8 @@
             var intermediate = (from r in this.DbContext.RGReports
                                 let rowFId = r.FixedPattern.Customer.FoundryID
                                 where rowFId == (foundryId == -1 ? rowFId : foundryId)
-                                && r.ReportDate >= (fromDate ?? r.ReportDate) && (toDate ==null || r.ReportDate < toDate )
+                                && (fromDate == null || r.ReportDate >= fromDate) 
+                                && (toDate == null || r.ReportDate < toDate)
                                 && (RTNo == string.Empty || r.RTNo.Contains(RTNo)) 
                                 && (HeatNo == string.Empty || r.HeatNo.Contains(HeatNo)) 
                                 group r by new { r.FixedPattern, r.RTNo } into g
