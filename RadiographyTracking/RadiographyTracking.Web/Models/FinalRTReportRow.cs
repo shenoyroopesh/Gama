@@ -2,6 +2,7 @@
 using System.Linq;
 using System.ServiceModel.DomainServices.Server;
 using System.ComponentModel.DataAnnotations;
+using RadiographyTracking.Web.Utility;
 
 namespace RadiographyTracking.Web.Models
 {
@@ -39,9 +40,30 @@ namespace RadiographyTracking.Web.Models
         [NotMapped]
         public int FilmCount { get; set; }
 
+
+        private string _observations;
+
+        //ensure that the findings and classifications are calculated as and when observations are updated
         [NotMapped]
-        public String Observations { get; set; }
-        
+        public String Observations
+        {
+            get { return _observations; }
+            set
+            {
+                _observations = value;
+                var split = _observations.SplitObservation();
+                Findings = split.Item1;
+                Classifications = split.Item2;
+            }
+        }
+
+        //observations split into finding and classification
+        [NotMapped]
+        public String Findings { get; set; }
+
+        [NotMapped]
+        public string Classifications { get; set; }
+
         [NotMapped]
         public int? RemarkID { get; set; }
         [NotMapped]

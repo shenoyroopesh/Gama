@@ -51,6 +51,10 @@ namespace RadiographyTracking.Web
         protected const string Density = "Density";
         protected const string FilmSize = "FilmSize";
         protected const string Observation = "Observation";
+
+        protected const string Finding = "Finding";
+        protected const string Classification = "Classification";
+
         protected const string Remarks = "Remarks";
         protected const string Technique = "Technique";
 
@@ -123,6 +127,8 @@ namespace RadiographyTracking.Web
                     {Density, PlaceHolderType.NonRecursive},
                     {FilmSize, PlaceHolderType.NonRecursive},
                     {Observation, PlaceHolderType.NonRecursive},
+                    {Finding, PlaceHolderType.NonRecursive},
+                    {Classification, PlaceHolderType.NonRecursive},
                     {Remarks, PlaceHolderType.NonRecursive},
                     {Technique, PlaceHolderType.NonRecursive},
                     {Result, PlaceHolderType.NonRecursive},
@@ -275,6 +281,12 @@ namespace RadiographyTracking.Web
                         break;
                     case Observation:
                         content = reportRow.Observations;
+                        break;
+                    case Finding:
+                        content = reportRow.Findings;
+                        break;
+                    case Classification:
+                        content = reportRow.Classifications;
                         break;
                     case Remarks:
                         content = reportRow.RemarkText;

@@ -239,11 +239,6 @@
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="ReportTemplates\RadiographyReportTemplate.docx">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\WordDocumentGenerator.Library\WordDocumentGenerator.Library.csproj">
       <Project>{C041C8C6-AC4E-4F74-A827-7F3D790E1ACE}</Project>
       <Name>WordDocumentGenerator.Library</Name>
@@ -262,6 +257,9 @@
   <ItemGroup>
     <None Include="Properties\PublishProfiles\Profile1.pubxml" />
     <None Include="ReportTemplates\AddressLabels.docx" />
+    <Resource Include="ReportTemplates\Copy of RadiographyReportTemplate.docx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

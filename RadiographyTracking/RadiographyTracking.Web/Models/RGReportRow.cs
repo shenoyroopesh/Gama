@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.ServiceModel.DomainServices.Server;
 using System.ComponentModel.DataAnnotations;
+using RadiographyTracking.Web.Utility;
 
 namespace RadiographyTracking.Web.Models
 {
@@ -48,7 +49,28 @@ namespace RadiographyTracking.Web.Models
         //added by Roopesh: 26-May-2012 - need to allow multiple films in a row
         public int FilmCount { get; set; }
 
-        public String Observations { get; set; }
+        private string _observations;
+
+        //ensure that the findings and classifications are calculated as and when observations are updated
+        public String Observations
+        {
+            get { return _observations; }
+            set
+            {
+                _observations = value;
+                var split = _observations.SplitObservation();
+                Findings = split.Item1;
+                Classifications = split.Item2;
+            }
+        }
+
+        //observations split into finding and classification
+        [NotMapped]
+        public String Findings { get; set; }
+
+        [NotMapped]
+        public string Classifications { get; set; }
+
 
         public int? RemarkID { get; set; }
         public Remark Remark { get; set; }
