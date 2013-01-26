@@ -35,7 +35,7 @@ namespace RadiographyTracking.Views
         {
             ctx = new RadiographyContext();
             busyIndicator.IsBusy = true;
-            ctx.Load(ctx.GetFixedPatternPerformanceReportQuery(txtFPNo.Text)).Completed += loadCompleted;
+            ctx.Load(ctx.GetFixedPatternPerformanceReportQuery(txtFPNo.Text, (bool)chkLike.IsChecked)).Completed += loadCompleted;
         }
 
         private void loadCompleted(object sender, EventArgs e)
@@ -64,7 +64,7 @@ namespace RadiographyTracking.Views
             foreach (var rt in report)
             {
                 DataRow row = new DataRow();
-                row["FPNo"] = txtFPNo.Text; //won't change throughout the report
+                row["FPNo"] = rt.FPNo; //txtFPNo.Text; //won't change throughout the report
                 row["RTNo"] = prevRTNo == rt.RTNo ? "" : rt.RTNo; //prevent same RT No from repeating
                 row["ReportNo"] = rt.ReportNo;
                 prevRTNo = rt.RTNo;

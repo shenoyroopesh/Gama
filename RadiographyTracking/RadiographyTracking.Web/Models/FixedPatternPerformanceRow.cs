@@ -13,6 +13,9 @@ namespace RadiographyTracking.Web.Models
         public Guid ID { get; set; }
 
         [NotMapped]
+        public String FPNo { get; set; }
+
+        [NotMapped]
         public String RTNo { get; set; }
 
         [NotMapped]

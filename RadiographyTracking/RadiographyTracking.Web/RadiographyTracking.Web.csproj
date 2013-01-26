@@ -257,7 +257,7 @@
   <ItemGroup>
     <None Include="Properties\PublishProfiles\Profile1.pubxml" />
     <None Include="ReportTemplates\AddressLabels.docx" />
-    <Resource Include="ReportTemplates\Copy of RadiographyReportTemplate.docx">
+    <Resource Include="ReportTemplates\RadiographyReportTemplate.docx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
   </ItemGroup>

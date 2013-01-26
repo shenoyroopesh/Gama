@@ -542,7 +542,7 @@
         }
 
 
-        public IEnumerable<FixedPatternPerformanceRow> GetFixedPatternPerformanceReport(string fpNo)
+        public IEnumerable<FixedPatternPerformanceRow> GetFixedPatternPerformanceReport(string fpNo, bool like)
         {
             var ctx = this.DbContext;
             var foundryID = getFoundryIDForCurrentUser();
@@ -553,13 +553,14 @@
             //creating complex objects directly
             var rows = (from r in ctx.RGReportRows
                         where r.RGReport != null &&
-                        r.RGReport.FixedPattern.FPNo == fpNo &&
+                        ((r.RGReport.FixedPattern.FPNo == fpNo && !like) || (r.RGReport.FixedPattern.FPNo.Contains(fpNo) && like)) &&
                         r.RGReport.FixedPattern.Customer.FoundryID == (foundryID ?? r.RGReport.FixedPattern.Customer.FoundryID) &&
                         (role != "customer" || r.RGReport.FixedPattern.Customer.CustomerName == customerComapny)
                         //ensure that the report has at least one defect - 21-Oct-2012: not any more
                         //r.RGReport.RGReportRows.Where(p => (p.Observations ?? "").Trim() != "NSD").Count() > 0  // issue 0000111
                         select new
                         {
+                            FPNo = r.RGReport.FixedPattern.FPNo,
                             RTNo = r.RGReport.RTNo,
                             ReportNo = r.RGReport.ReportNo,
                             ReportDate = r.RGReport.ReportDate,
@@ -570,10 +571,11 @@
 
             var report = (from r in rows
                           orderby r.RTNo, r.ReportDate
-                          group r by new { r.RTNo, r.ReportNo, r.ReportDate } into g
+                          group r by new {r.FPNo, r.RTNo, r.ReportNo, r.ReportDate } into g
                           select new FixedPatternPerformanceRow
                           {
                               ID = Guid.NewGuid(),
+                              FPNo = g.Key.FPNo,
                               RTNo = g.Key.RTNo,
                               ReportNo = g.Key.ReportNo,
                               Date = g.Key.ReportDate,

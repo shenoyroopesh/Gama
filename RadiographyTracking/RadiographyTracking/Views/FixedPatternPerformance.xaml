@@ -20,6 +20,7 @@
                 <StackPanel Orientation="Horizontal" Margin="20, 0,0,0">
                     <TextBlock Text="FP No" VerticalAlignment="Center" Margin="10,0,0,0"/>
                     <TextBox Name="txtFPNo" Margin="20, 0,20,0" MinWidth="50"/>
+                    <CheckBox Name="chkLike" Content="Use Like-Search" Margin="20, 0,20,0" MinWidth="50"/>
                     <Button Name="btnFetch" Content="Generate" Click="btnFetch_Click" />
                 </StackPanel>
                 <local:BusyIndicator x:Name="busyIndicator">
