@@ -1,4 +1,0 @@
-D:\ClientWork\Gama\Sources\RadiographyTracking\BindableDataGrid\BindableDataGrid.csproj,634761414373309853,
-D:\ClientWork\Gama\Sources\RadiographyTracking\ComboBoxExtensions\ComboBoxExtensions.csproj,634687555213463001,
-D:\ClientWork\Gama\Sources\RadiographyTracking\CustomControls\CustomControls.csproj,634687555216763006,
-D:\ClientWork\Gama\Sources\RadiographyTracking\MenuControl\MenuControl.csproj,634761414378090126,

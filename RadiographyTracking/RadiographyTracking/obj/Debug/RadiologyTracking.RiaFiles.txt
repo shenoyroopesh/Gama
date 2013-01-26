@@ -1,3 +1,0 @@
-D:\DotNet\Gama\RadiologyTracking\RadiologyTracking
-Generated_Code\RadiologyTracking.Web.g.cs
-Generated_Code\Models\Shared\User.shared.cs

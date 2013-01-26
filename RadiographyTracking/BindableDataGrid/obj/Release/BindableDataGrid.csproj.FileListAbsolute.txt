@@ -1,1 +1,0 @@
-D:\ClientWork\Gama\Sources\RadiographyTracking\BindableDataGrid\obj\Release\BindableDataGrid.csprojResolveAssemblyReference.cache

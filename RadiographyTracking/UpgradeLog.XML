@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type='text/xsl' href='_UpgradeReport_Files/UpgradeReport.xslt'?><UpgradeLog>
-<Properties><Property Name="Solution" Value="RadiologyTracking">
-</Property><Property Name="Solution File" Value="D:\DotNet\Gama\RadiologyTracking\RadiologyTracking.sln">
-</Property><Property Name="Date" Value="29 January 2012">
-</Property><Property Name="Time" Value="23:04:55">
-</Property></Properties><Event ErrorLevel="0" Project="MenuControl" Source="MenuControl\MenuControl.csproj" Description="Project converted successfully">
-</Event><Event ErrorLevel="3" Project="MenuControl" Source="MenuControl\MenuControl.csproj" Description="Converted">
-</Event><Event ErrorLevel="0" Project="MenuControl" Source="MenuControl\MenuControl.csproj" Description="Scan complete: Upgrade not required for project files.">
-</Event></UpgradeLog>
