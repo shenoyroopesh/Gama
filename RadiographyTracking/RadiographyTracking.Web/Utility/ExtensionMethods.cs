@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web.Security;
 using System.Web.Profile;
@@ -85,6 +86,31 @@ namespace RadiographyTracking.Web.Utility
 
                 destProperty.SetValue(destination, sourceProperty.GetValue(source, null), null);                
             }
+        }
+
+        /// <summary>
+        /// Splits the observations into albhabetical and numerical components
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns>array of strings with two strings - first element for alphabet components, second one for numeric ones</returns>
+        public static Tuple<string, string> SplitObservation(this string input)
+        {
+            var observations = input.Split(',').Select(p => p.Trim());
+
+            var results = (from observation in observations
+                           let indexOfFirstNumber = observation.IndexOfAny("0123456789".ToCharArray())
+                           select
+                               new Tuple<string, string>(
+                               observation.Substring(0, indexOfFirstNumber < 0 ? observation.Length : indexOfFirstNumber),
+                               indexOfFirstNumber < 0 ? "" : observation.Substring(indexOfFirstNumber))).ToList();
+
+            return
+                new Tuple<string, string>(
+                    String.Join(",", results.Select(p => p.Item1)),
+                    String.Join(",", results.Select(p => p.Item2)
+                    //This filter is needed to ensure that if number is not present it doesn't
+                    //cause stray commas
+                                         .Where(q => !String.IsNullOrEmpty(q))));
         }
     }
 }
