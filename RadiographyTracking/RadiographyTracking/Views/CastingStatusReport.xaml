@@ -44,6 +44,7 @@
                                        ColumnHeaderStyle="{StaticResource DataGridHeaderGlassEffect}">
                         <custom:CustomGrid.Columns>
                             <sdk:DataGridTextColumn Header="FP No" Binding="{Binding Path=FPNo}" />
+                            <sdk:DataGridTextColumn Header="Coverage" Binding="{Binding Path=Coverage}" />
                             <sdk:DataGridTextColumn Header="RT No" Binding="{Binding Path=RTNo}" />
                             <sdk:DataGridTextColumn Header="Date Of Inspection" Binding="{Binding Path=Date}" />
                             <sdk:DataGridTextColumn Header="Repairs" Binding="{Binding Path=Repairs}" />

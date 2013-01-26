@@ -945,7 +945,7 @@
                                 let rowFId = r.FixedPattern.Customer.FoundryID
                                 where rowFId == (foundryId == -1 ? rowFId : foundryId)
                                 && r.ReportDate >= fromDate && r.ReportDate < toDate
-                                group r by new { r.FixedPattern, r.RTNo } into g
+                                group r by new { r.FixedPattern, r.RTNo, r.Coverage } into g
                                 let allrows = g.SelectMany(p => p.RGReportRows)
                                                 .Where(p => p.Remark != null) //don't count the rows with blank remarks
                                 let allLatestRows = allrows.Where(p => allrows
@@ -956,6 +956,7 @@
                                 {
                                     ID = Guid.NewGuid(),
                                     FPNo = g.Key.FixedPattern.FPNo,
+                                    Coverage = g.Key.Coverage,
                                     RTNo = g.Key.RTNo,
                                     Date = g.OrderByDescending(p => p.ReportDate).FirstOrDefault().ReportDate,
                                     Repairs = allLatestRows.Where(p => p.Remark.Value == "REPAIR").Count(),
@@ -969,6 +970,7 @@
                    {
                        ID = r.ID,
                        FPNo = r.FPNo,
+                       Coverage = r.Coverage.CoverageName,
                        RTNo = r.RTNo,
                        Date = r.Date.ToString("dd/MM/yyyy"),
                        Repairs = r.Repairs.ToString(),
