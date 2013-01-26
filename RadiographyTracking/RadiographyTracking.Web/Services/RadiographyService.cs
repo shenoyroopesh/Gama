@@ -560,23 +560,21 @@
                         //r.RGReport.RGReportRows.Where(p => (p.Observations ?? "").Trim() != "NSD").Count() > 0  // issue 0000111
                         select new
                         {
-                            FPNo = r.RGReport.FixedPattern.FPNo,
-                            RTNo = r.RGReport.RTNo,
-                            ReportNo = r.RGReport.ReportNo,
-                            ReportDate = r.RGReport.ReportDate,
+                            r.RGReport.FixedPattern.FPNo, r.RGReport.RTNo, r.RGReport.ReportNo, r.RGReport.Coverage.CoverageName, r.RGReport.HeatNo, r.RGReport.ReportDate,
                             Location = r.Location.Trim(),
-                            Segment = r.Segment.Trim(),
-                            Observations = r.Observations
+                            Segment = r.Segment.Trim(), r.Observations
                         }).ToList();
 
             var report = (from r in rows
                           orderby r.RTNo, r.ReportDate
-                          group r by new {r.FPNo, r.RTNo, r.ReportNo, r.ReportDate } into g
+                          group r by new {r.FPNo, r.RTNo, r.ReportNo, r.CoverageName, r.HeatNo, r.ReportDate } into g
                           select new FixedPatternPerformanceRow
                           {
                               ID = Guid.NewGuid(),
                               FPNo = g.Key.FPNo,
                               RTNo = g.Key.RTNo,
+                              Coverage = g.Key.CoverageName ?? string.Empty,
+                              HeatNo = g.Key.HeatNo ?? string.Empty,
                               ReportNo = g.Key.ReportNo,
                               Date = g.Key.ReportDate,
                               Locations = (from rep in g

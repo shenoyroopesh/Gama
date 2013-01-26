@@ -19,6 +19,12 @@ namespace RadiographyTracking.Web.Models
         public String RTNo { get; set; }
 
         [NotMapped]
+        public String Coverage { get; set; }
+
+        [NotMapped]
+        public String HeatNo { get; set; }
+
+        [NotMapped]
         public String ReportNo { get; set; }
 
         [NotMapped]

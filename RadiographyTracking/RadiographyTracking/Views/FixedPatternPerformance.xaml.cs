@@ -40,7 +40,7 @@ namespace RadiographyTracking.Views
 
         private void loadCompleted(object sender, EventArgs e)
         {
-            var report = ((LoadOperation<FixedPatternPerformanceRow>)sender).Entities;         
+            var report = ((LoadOperation<FixedPatternPerformanceRow>)sender).Entities;
 
             //Can't directly bind the report to the grid due to variable no of columns. Using a custom datagrid bindable
             //to a datatable instead
@@ -58,8 +58,17 @@ namespace RadiographyTracking.Views
             AddTextColumn(reportTable, "FPNo", "FP No");
             AddTextColumn(reportTable, "RTNo", "RT No");
             AddTextColumn(reportTable, "ReportNo", "Report No");
+            AddTextColumn(reportTable, "Coverage", "Coverage");
+            AddTextColumn(reportTable, "HeatNo", "Heat No");
             AddTextColumn(reportTable, "Date", "Date");
 
+            segmentRow["FPNo"] = "FPNo";
+            segmentRow["ReportNo"] = "ReportNo";
+            segmentRow["RTNo"] = "RTNo";
+            segmentRow["HeatNo"] = "HeatNo";
+            segmentRow["Coverage"] = "Coverage";
+            segmentRow["Date"] = "Date";
+            
             string prevRTNo = "";
             foreach (var rt in report)
             {
@@ -67,16 +76,14 @@ namespace RadiographyTracking.Views
                 row["FPNo"] = rt.FPNo; //txtFPNo.Text; //won't change throughout the report
                 row["RTNo"] = prevRTNo == rt.RTNo ? "" : rt.RTNo; //prevent same RT No from repeating
                 row["ReportNo"] = rt.ReportNo;
+                row["Coverage"] = rt.Coverage;
+                row["HeatNo"] = rt.HeatNo;
                 prevRTNo = rt.RTNo;
-                segmentRow["FPNo"] = "FPNo";
-                segmentRow["ReportNo"] = "ReportNo";
-                segmentRow["RTNo"] = "RTNo";
                 row["Date"] = rt.Date.ToString("dd/MM/yyyy");
-                segmentRow["Date"] = "Date";
 
                 string prevLocn = "";
                 foreach (var loc in rt.Locations)
-                {                    
+                {
                     foreach (var seg in loc.Segments)
                     {
                         string header = String.Concat(loc.Location, "-", seg.Segment);
@@ -84,9 +91,9 @@ namespace RadiographyTracking.Views
                         if (cols.FirstOrDefault(p => p.Caption == header) == null)
                         {
                             AddTextColumn(reportTable, colname, header);
-                            locationRow[colname] = loc.Location == prevLocn? "" : loc.Location; //do not get location get repeated
+                            locationRow[colname] = loc.Location == prevLocn ? "" : loc.Location; //do not get location get repeated
                             prevLocn = loc.Location;
-                            segmentRow[colname] = seg.Segment;                   
+                            segmentRow[colname] = seg.Segment;
                         }
                         //no need to show NSD - not any more
                         row[colname] = seg.Observations.ToUpper(); //.Replace("NSD", "");
