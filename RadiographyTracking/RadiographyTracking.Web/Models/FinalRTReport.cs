@@ -29,6 +29,10 @@ namespace RadiographyTracking.Web.Models
         [NotMapped]
         public String LeadScreen { get; set; }
         [NotMapped]
+        public String Strength { get; set; }
+        [NotMapped]
+        public String Source { get; set; }
+        [NotMapped]
         public String SourceSize { get; set; }
         [NotMapped]
         public String RTNo { get; set; }

@@ -107,7 +107,8 @@
                             <RowDefinition></RowDefinition>
                             <RowDefinition></RowDefinition>
                             <RowDefinition></RowDefinition>
-                            <RowDefinition Height="20"></RowDefinition>
+                            <RowDefinition></RowDefinition>
+                            <RowDefinition Height="12"/>
                             <RowDefinition></RowDefinition>
                             <RowDefinition></RowDefinition>
                             <RowDefinition></RowDefinition>
@@ -128,41 +129,45 @@
                             <ColumnDefinition></ColumnDefinition>
                         </Grid.ColumnDefinitions>
                         <TextBlock Text="FP No"  Grid.Column="0" Grid.Row="0" />
-                        <TextBlock Name="lblFPNo" Grid.Column="2" Grid.Row="0" />
-                        <TextBlock Text="Customer" Grid.Column="0" Grid.Row="1" />
-                        <TextBlock Name="lblCustomer" Grid.Column="2" Grid.Row="1" />
-                        <TextBlock Text="Coverage"  Grid.Column="0" Grid.Row="2" />
-                        <TextBlock Name="lblCoverage" Grid.Column="2" Grid.Row="2" />
+                        <TextBlock Name="lblFPNo" Grid.Column="2" Grid.Row="0" Margin="0,8" />
+                        <TextBlock Text="Customer" Grid.Column="0" Grid.Row="1" Margin="0,8" />
+                        <TextBlock Name="lblCustomer" Grid.Column="2" Grid.Row="1" Margin="0,16" />
+                        <TextBlock Text="Coverage"  Grid.Column="0" Grid.Row="2" Margin="0,4" />
+                        <TextBlock Name="lblCoverage" Grid.Column="2" Grid.Row="2" Margin="0,12" />
                         <TextBlock Text="Description"   Grid.Column="4" Grid.Row="0" />
-                        <TextBlock Name="lblDescription" Grid.Column="6" Grid.Row="0" />
+                        <TextBlock Name="lblDescription" Grid.Column="6" Grid.Row="0" Margin="0,8" />
                         <TextBlock Text="Lead Screen (Front/Black)" TextWrapping="Wrap"   Grid.Column="4" Grid.Row="1" />
                         <TextBox Name="txtLeadScreen" Grid.Column="6" Grid.Row="1" Text="" />
-                        <TextBlock Text="Source/S.Size"  Grid.Column="4" Grid.Row="2" />
-                        <TextBox Name="txtSourceSize" Grid.Column="6" Grid.Row="2"  />
-                        <TextBlock Name="lblRGReportID" Visibility="Collapsed"/>
-                        <TextBlock Name="lblFixedPatternID" Visibility="Collapsed"/>
+                        <TextBlock Text="Source"  Grid.Column="4" Grid.Row="2" Margin="0,4" />
+                        <TextBox Name="txtSource" Grid.Column="6" Grid.Row="2"  />
+                        <TextBlock Name="lblRGReportID" Visibility="Collapsed" Margin="0,8"/>
+                        <TextBlock Name="lblFixedPatternID" Visibility="Collapsed" Margin="0,8"/>
 
-                        <TextBlock Text="RT No"  Grid.Column="0" Grid.Row="5" />
-                        <TextBlock Name="lblRTNo"  Grid.Column="2" Grid.Row="5" />
-                        <TextBlock Text="Report No"   Grid.Column="0" Grid.Row="6" />
-                        <TextBox Name="txtReportNo" Grid.Column="2" Grid.Row="6" />
-                        <TextBlock Text="Heat No" TextWrapping="Wrap"   Grid.Column="0" Grid.Row="7" />
-                        <TextBox Name="txtHeatNo" Grid.Column="2" Grid.Row="7" />
-                        <TextBlock Text="Procedure Ref" TextWrapping="Wrap"   Grid.Column="0" Grid.Row="8" />
-                        <TextBox Name="txtProcedureRef" Grid.Column="2" Grid.Row="8"  />
-                        <TextBlock Text="Specifications" TextWrapping="Wrap"   Grid.Column="0" Grid.Row="9" />
-                        <TextBox Name="txtSpecifications" Grid.Column="2" Grid.Row="9" />
-                        <TextBlock Text="Report Date" TextWrapping="Wrap"   Grid.Column="0" Grid.Row="10" />
-                        <sdk:DatePicker Name="ReportDatePicker" Grid.Column="2" Grid.Row="10"  />
-                        <TextBlock Text="End Customer Name" TextWrapping="Wrap"  Grid.Column="0" Grid.Row="11"/>
+                        <TextBlock Text="Strength"  Grid.Column="0" Grid.Row="3" Margin="0,4" />
+                        <TextBox Name="txtStrength" Grid.Column="2" Grid.Row="3"  />
+                        <TextBlock Text="Source Size"  Grid.Column="4" Grid.Row="3" Margin="0,4" />
+                        <TextBox Name="txtSourceSize" Grid.Column="6" Grid.Row="3"  />
+                        <TextBlock Text="RT No"  Grid.Column="0" Grid.Row="5" Margin="0,4" Grid.RowSpan="2" />
+                        <TextBlock Name="lblRTNo"  Grid.Column="2" Grid.Row="5" Margin="0,12" Grid.RowSpan="2" />
+                        <TextBlock Text="Report No"   Grid.Column="0" Grid.Row="7" Margin="0,4" />
+                        <TextBox Name="txtReportNo" Grid.Column="2" Grid.Row="7" />
+                        <TextBlock Text="Heat No" TextWrapping="Wrap"   Grid.Column="0" Grid.Row="8" Margin="0,4" />
+                        <TextBox Name="txtHeatNo" Grid.Column="2" Grid.Row="8" />
+                        <TextBlock Text="Procedure Ref" TextWrapping="Wrap"   Grid.Column="0" Grid.Row="9" Margin="0,8" />
+                        <TextBox Name="txtProcedureRef" Grid.Column="2" Grid.Row="9"  />
+                        <TextBlock Text="Specifications" TextWrapping="Wrap"   Grid.Column="0" Grid.Row="10" Margin="0,4" />
+                        <TextBox Name="txtSpecifications" Grid.Column="2" Grid.Row="10" />
+                        <TextBlock Text="Report Date" TextWrapping="Wrap"   Grid.Column="0" Grid.Row="11" Margin="0,4" />
+                        <sdk:DatePicker Name="ReportDatePicker" Grid.Column="2" Grid.Row="11"  />
+                        <TextBlock Text="End Customer Name" TextWrapping="Wrap"  Grid.Column="0" Grid.Row="12"/>
                         <!--<TextBox Name="txtEndCustomerName" Grid.Column="2" Grid.Row="11" />-->
-                        <sdk:AutoCompleteBox Name="txtEndCustomerName" Grid.Column="2" Grid.Row="11" 
+                        <sdk:AutoCompleteBox Name="txtEndCustomerName" Grid.Column="2" Grid.Row="12" 
                                              Populating="txtEndCustomer_Populating"/>
-                        <TextBlock Text="Film"  Grid.Column="4" Grid.Row="5" />
-                        <TextBox Name="txtFilm"  Grid.Column="6" Grid.Row="5" Text="" />
-                        <TextBlock Text="Date Of Test"   Grid.Column="4" Grid.Row="6" />
-                        <sdk:DatePicker Name="TestDatePicker" Grid.Column="6" Grid.Row="6"  />
-                        <StackPanel Orientation="Horizontal" Grid.Column="7" Grid.Row="6">
+                        <TextBlock Text="Film"  Grid.Column="4" Grid.Row="5" Margin="0,4" Grid.RowSpan="2" />
+                        <TextBox Name="txtFilm"  Grid.Column="6" Grid.Row="5" Text="" Grid.RowSpan="2" />
+                        <TextBlock Text="Date Of Test"   Grid.Column="4" Grid.Row="7" Margin="0,4" />
+                        <sdk:DatePicker Name="TestDatePicker" Grid.Column="6" Grid.Row="7"  />
+                        <StackPanel Orientation="Horizontal" Grid.Column="7" Grid.Row="7">
                             <TextBlock Text="Shift" />
                             <ComboBox Name="cmbShift" Width="Auto" HorizontalAlignment="Left" 
                                       Style="{StaticResource ComboBoxStyle}"
@@ -172,14 +177,14 @@
                                       ItemsSource="{Binding Source={StaticResource ShiftsSource}, Path=Data}"
                                       DisplayMemberPath="Value"/>
                         </StackPanel>
-                        <TextBlock Text="Evaluation As Per" Grid.Column="4" Grid.Row="7" />
-                        <TextBox Name="txtEvaluation" Grid.Column="6" Grid.Row="7" />
-                        <TextBlock Text="Acceptance As Per" TextWrapping="Wrap"   Grid.Column="4" Grid.Row="8" />
-                        <TextBox Name="txtAcceptance" Grid.Column="6" Grid.Row="8"  />
-                        <TextBlock Text="Drawing No" TextWrapping="Wrap"   Grid.Column="4" Grid.Row="9" />
-                        <TextBox Name="txtDrawingNo" Grid.Column="6" Grid.Row="9"  />
-                        <TextBlock Text="Status:" Grid.Column="4" Grid.Row="10"  />
-                        <TextBlock Name="lblStatus" FontWeight="Bold" Grid.Column="6" Grid.Row="10" />
+                        <TextBlock Text="Evaluation As Per" Grid.Column="4" Grid.Row="8" Margin="0,4" />
+                        <TextBox Name="txtEvaluation" Grid.Column="6" Grid.Row="8" />
+                        <TextBlock Text="Acceptance As Per" TextWrapping="Wrap"   Grid.Column="4" Grid.Row="9" />
+                        <TextBox Name="txtAcceptance" Grid.Column="6" Grid.Row="9"  />
+                        <TextBlock Text="Drawing No" TextWrapping="Wrap"   Grid.Column="4" Grid.Row="10" Margin="0,4" />
+                        <TextBox Name="txtDrawingNo" Grid.Column="6" Grid.Row="10"  />
+                        <TextBlock Text="Status:" Grid.Column="4" Grid.Row="11" Margin="0,4"  />
+                        <TextBlock Name="lblStatus" FontWeight="Bold" Grid.Column="6" Grid.Row="11" Margin="0,12" />
                     </Grid>
 
                     <StackPanel>

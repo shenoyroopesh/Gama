@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.ServiceModel.DomainServices.Server;
 using System.ComponentModel.DataAnnotations;
 using RadiographyTracking.Web.Utility;
-using System.Drawing;
-using System.IO;
 using System.Data.Entity;
 
 namespace RadiographyTracking.Web.Models
@@ -156,6 +153,8 @@ namespace RadiographyTracking.Web.Models
         public int CoverageID { get; set; }
         public Coverage Coverage { get; set; }
         public String LeadScreen { get; set; }
+        public String Strength { get; set; }
+        public String Source { get; set; }
         public String SourceSize { get; set; }
         public String RTNo { get; set; }
         public String ReportNo { get; set; }

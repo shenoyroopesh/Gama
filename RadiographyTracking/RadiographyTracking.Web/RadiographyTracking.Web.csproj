@@ -155,6 +155,10 @@
     <Compile Include="Migrations\201203311409394_FilmSizeIntToFloat.Designer.cs">
       <DependentUpon>201203311409394_FilmSizeIntToFloat.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201301281706301_SourceSizeAndStrength.cs" />
+    <Compile Include="Migrations\201301281706301_SourceSizeAndStrength.Designer.cs">
+      <DependentUpon>201301281706301_SourceSizeAndStrength.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Settings.cs" />
     <Compile Include="Models\AddressStickerRow.cs" />
     <Compile Include="Models\Change.cs" />

@@ -33,6 +33,8 @@ namespace RadiographyTracking.Web
         protected const string Film = "Film";
         protected const string LeadScreen = "LeadScreen";
         protected const string Source = "Source";
+        protected const string Strength = "Strength";
+        protected const string SourceSize = "SourceSize";
         protected const string DateOfTest = "DateOfTest";
         protected const string Evaluation = "Evaluation";
         protected const string Acceptance = "Acceptance";
@@ -111,6 +113,8 @@ namespace RadiographyTracking.Web
                     {Film, PlaceHolderType.NonRecursive},
                     {LeadScreen, PlaceHolderType.NonRecursive},
                     {Source, PlaceHolderType.NonRecursive},
+                    {SourceSize, PlaceHolderType.NonRecursive},
+                    {Strength, PlaceHolderType.NonRecursive},
                     {DateOfTest, PlaceHolderType.NonRecursive},
                     {Evaluation, PlaceHolderType.NonRecursive},
                     {Acceptance, PlaceHolderType.NonRecursive},
@@ -188,7 +192,13 @@ namespace RadiographyTracking.Web
                         content = row.ProcedureRef;
                         break;
                     case Source:
+                        content = row.Source;
+                        break;
+                    case SourceSize:
                         content = row.SourceSize;
+                        break;
+                    case Strength:
+                        content = row.Strength;
                         break;
                     case Description:
                         content = row.FixedPattern.Description;

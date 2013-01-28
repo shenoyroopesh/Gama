@@ -111,6 +111,8 @@ namespace RadiographyTracking.Views
             BindToPage(lblCoverage, TextBlock.TextProperty, "RGReport.Coverage.CoverageName", BindingMode.OneWay);
             BindToPage(lblRTNo, TextBlock.TextProperty, "RGReport.RTNo", BindingMode.OneWay);
             BindToPage(txtLeadScreen, TextBox.TextProperty, "RGReport.LeadScreen");
+            BindToPage(txtSource, TextBox.TextProperty, "RGReport.Source");
+            BindToPage(txtStrength, TextBox.TextProperty, "RGReport.Strength");
             BindToPage(txtSourceSize, TextBox.TextProperty, "RGReport.SourceSize");
             BindToPage(txtReportNo, TextBox.TextProperty, "RGReport.ReportNo");
             BindToPage(txtHeatNo, TextBox.TextProperty, "RGReport.HeatNo");
