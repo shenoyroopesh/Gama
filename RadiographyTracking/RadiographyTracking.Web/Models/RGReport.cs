@@ -275,6 +275,20 @@ namespace RadiographyTracking.Web.Models
             }
         }
 
+
+        [NotMapped]
+        [Exclude]
+        public string TotalAreaWithRetake
+        {
+            get
+            {
+                return this.RGReportRows == null ? "0" :
+                    this.RGReportRows
+                    .Sum(p => p.FilmArea)
+                    .ToString();
+            }
+        }
+
         [NotMapped]
         [Exclude]
         public string ExposedTotalArea

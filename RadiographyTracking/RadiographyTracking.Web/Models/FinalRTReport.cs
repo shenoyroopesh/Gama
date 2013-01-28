@@ -86,6 +86,19 @@ namespace RadiographyTracking.Web.Models
         }
 
         [NotMapped]
+        public String TotalAreaWithRetake
+        {
+            get
+            {
+                if (this.FinalRTReportRows == null)
+                    return "0";
+
+                return this.FinalRTReportRows
+                    .Sum(p => p.FilmArea).ToString();
+            }
+        }
+
+        [NotMapped]
         [Exclude]
         public string ExposedTotalArea
         {
