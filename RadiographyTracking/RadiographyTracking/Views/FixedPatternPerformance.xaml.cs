@@ -71,6 +71,7 @@ namespace RadiographyTracking.Views
 
             string prevRTNo = "";
 
+            //get the columns in order first
             string prevLocn = "";
             foreach (var locseg in report
                                     .SelectMany(p => p.Locations)
@@ -107,15 +108,8 @@ namespace RadiographyTracking.Views
                     {
                         string header = String.Concat(loc.Location, "-", seg.Segment);
                         string colname = "col" + header.Replace("-", "");
-                        if (cols.FirstOrDefault(p => p.Caption == header) == null)
-                        {
-                            AddTextColumn(reportTable, colname, header);
-                            locationRow[colname] = loc.Location == prevLocn ? "" : loc.Location; //do not get location get repeated
-                            prevLocn = loc.Location;
-                            segmentRow[colname] = seg.Segment;
-                        }
                         //no need to show NSD - not any more
-                        row[colname] = seg.Observations.ToUpper(); //.Replace("NSD", "");
+                        row[colname] = seg.Observations.ToUpper(); 
                     }
                 }
                 rows.Add(row);
