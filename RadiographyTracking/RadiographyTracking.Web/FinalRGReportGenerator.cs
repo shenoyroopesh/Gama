@@ -222,7 +222,7 @@ namespace RadiographyTracking.Web
                         content = row.ProcedureRef;
                         break;
                     case Source:
-                        content = row.SourceSize;
+                        content = row.Source;
                         break;
                     case SourceSize:
                         content = row.SourceSize;
