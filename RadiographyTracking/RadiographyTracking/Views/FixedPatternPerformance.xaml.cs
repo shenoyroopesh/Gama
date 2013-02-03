@@ -68,8 +68,27 @@ namespace RadiographyTracking.Views
             segmentRow["HeatNo"] = "HeatNo";
             segmentRow["Coverage"] = "Coverage";
             segmentRow["Date"] = "Date";
-            
+
             string prevRTNo = "";
+
+            string prevLocn = "";
+            foreach (var locseg in report
+                                    .SelectMany(p => p.Locations)
+                                    .SelectMany(l => l.Segments.Select(s => new Tuple<string, string>(l.Location, s.Segment)))
+                                    .Distinct()
+                                    .OrderBy(q => q.Item1).ThenBy(q => q.Item2))
+            {
+                string header = String.Concat(locseg.Item1, "-", locseg.Item2);
+                string colname = "col" + header.Replace("-", "");
+                if (cols.FirstOrDefault(p => p.Caption == header) == null)
+                {
+                    AddTextColumn(reportTable, colname, header);
+                    locationRow[colname] = locseg.Item1 == prevLocn ? "" : locseg.Item1; //do not get location get repeated
+                    prevLocn = locseg.Item1;
+                    segmentRow[colname] = locseg.Item2;
+                }
+            }
+
             foreach (var rt in report)
             {
                 DataRow row = new DataRow();
@@ -81,7 +100,7 @@ namespace RadiographyTracking.Views
                 prevRTNo = rt.RTNo;
                 row["Date"] = rt.Date.ToString("dd/MM/yyyy");
 
-                string prevLocn = "";
+                prevLocn = "";
                 foreach (var loc in rt.Locations)
                 {
                     foreach (var seg in loc.Segments)
