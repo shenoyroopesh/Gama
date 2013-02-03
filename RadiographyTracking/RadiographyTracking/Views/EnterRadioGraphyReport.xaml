@@ -185,6 +185,8 @@
                         <TextBox Name="txtDrawingNo" Grid.Column="6" Grid.Row="10"  />
                         <TextBlock Text="Status:" Grid.Column="4" Grid.Row="11" Margin="0,4"  />
                         <TextBlock Name="lblStatus" FontWeight="Bold" Grid.Column="6" Grid.Row="11" Margin="0,12" />
+                        <TextBlock Text="Viewing" Grid.Column="4" Grid.Row="12" Margin="0,4"  />
+                        <TextBlock Name="lblViewing" FontWeight="Bold" Grid.Column="6" Grid.Row="12" Margin="0,12" />
                     </Grid>
 
                     <StackPanel>

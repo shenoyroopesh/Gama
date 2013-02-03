@@ -40,6 +40,7 @@ namespace RadiographyTracking.Web
         protected const string Acceptance = "Acceptance";
         protected const string Logo = "Logo";
         protected const string ReportTypeNo = "ReportTypeNo";
+        protected const string Viewing = "Viewing";
 
         protected const string RGReportRow = "RGReportRow";
         protected const string SlNo = "SlNo";
@@ -134,6 +135,7 @@ namespace RadiographyTracking.Web
                     {Observation, PlaceHolderType.NonRecursive},
                     {Finding, PlaceHolderType.NonRecursive},
                     {Classification, PlaceHolderType.NonRecursive},
+                    {Viewing, PlaceHolderType.NonRecursive},
                     {Remarks, PlaceHolderType.NonRecursive},
                     {Technique, PlaceHolderType.NonRecursive},
                     {Result, PlaceHolderType.NonRecursive},
@@ -208,6 +210,9 @@ namespace RadiographyTracking.Web
                         break;
                     case DrawingNo:
                         content = row.DrawingNo;
+                        break;
+                    case Viewing:
+                        content = row.Viewing;
                         break;
                     case LeadScreen:
                         content = row.LeadScreen;

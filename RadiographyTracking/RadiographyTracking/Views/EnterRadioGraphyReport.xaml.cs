@@ -27,6 +27,7 @@ namespace RadiographyTracking.Views
             this.ExcludePropertiesFromTracking.Add("ThicknessRangeUI");
             this.ExcludePropertiesFromTracking.Add("Thickness");
             this.ExcludePropertiesFromTracking.Add("FilmSizeWithCount");
+            this.ExcludePropertiesFromTracking.Add("Viewing");
 
             this.OnCancelNavigation = "/RadiographyReports";
 
@@ -125,6 +126,7 @@ namespace RadiographyTracking.Views
             BindToPage(cmbShift, ComboBox.SelectedValueProperty, "RGReport.Shift");
             BindToPage(txtEvaluation, TextBox.TextProperty, "RGReport.EvaluationAsPer");
             BindToPage(txtAcceptance, TextBox.TextProperty, "RGReport.AcceptanceAsPer");
+            BindToPage(lblViewing, TextBlock.TextProperty, "RGReport.Viewing");
             BindToPage(txtDrawingNo, TextBox.TextProperty, "RGReport.DrawingNo");
             BindToPage(RGReportDataGrid, CustomGrid.ItemsSourceProperty, "RGReportRows");
             BindToPage(RGReportDataGridClerk, CustomGrid.ItemsSourceProperty, "RGReportRows");
@@ -305,6 +307,7 @@ namespace RadiographyTracking.Views
             FixedPatternsSource.Load();
             UpdateEnergyWiseArea();
             OnPropertyChanged("TotalArea");
+            SetViewing();
 
             //if edit mode, add a clone of original RGReport to original entities for change tracking
             if (IsEditMode)
@@ -372,6 +375,10 @@ namespace RadiographyTracking.Views
                 }
             }
 
+            //set the viewing
+            SetViewing();
+
+
             /** FOR SIMPLICITY OF DESIGN, SERVER DEPENDS ON THE CLIENT TO SET THE STATUS. THIS IS IMPORTANT! WITHOUT THIS THE LOGIC WILL FAIL **/
 
             MessageBoxResult result;
@@ -411,6 +418,11 @@ namespace RadiographyTracking.Views
             //clear and repopulate the original entities collection
             OriginalEntities.Clear();
             OriginalEntities.Add(RGReport.ID, RGReport.Clone(ExcludePropertiesFromTracking));
+        }
+
+        private void SetViewing()
+        {
+            RGReport.Viewing = (RGReport.RGReportRows.Any(p => p.FilmCount > 1)) ? "Single And Double" : "Single";
         }
 
         #region combobox change handlers

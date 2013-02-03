@@ -48,6 +48,7 @@ namespace RadiographyTracking.Web
         protected const string Logo = "Logo";
         protected const string CustomerLogo = "CustomerLogo";
         protected const string ReportTypeNo = "ReportTypeNo";
+        protected const string Viewing = "Viewing";
 
         protected const string RGReportRow = "RGReportRow";
         protected const string SlNo = "SlNo";
@@ -132,6 +133,7 @@ namespace RadiographyTracking.Web
                     {CustomerEmail, PlaceHolderType.NonRecursive},
                     {CustomerPhone, PlaceHolderType.NonRecursive},
                     {ReportTypeNo, PlaceHolderType.NonRecursive},
+                    {Viewing, PlaceHolderType.NonRecursive},
 
                     {RGReportRow, PlaceHolderType.Recursive},
                     {SlNo, PlaceHolderType.NonRecursive},
@@ -256,6 +258,9 @@ namespace RadiographyTracking.Web
                         break;
                     case Evaluation:
                         content = row.EvaluationAsPer;
+                        break;
+                    case Viewing:
+                        content = row.Viewing;
                         break;
                     case Acceptance:
                         content = row.AcceptanceAsPer;

@@ -157,6 +157,8 @@
                                   Checked="chkOnlyRepairs_Checked" Unchecked="chkOnlyRepairs_Checked" />
                         <TextBlock Name="lblReportTemplate" Text="Report Template" Grid.Row="12" Grid.Column="4" Margin="0,2" />
                         <ComboBox Name="cmbSelectTemplate" Grid.Column="6" Grid.Row="12" />
+                        <TextBlock Text="Viewing" Grid.Row="12" Grid.Column="0" Margin="0,2" />
+                        <TextBlock Name="lblViewing" Grid.Row="12" Grid.Column="2" Margin="0,2" />
                     </Grid>
                     <StackPanel>
                         <custom:CustomGrid Name="ReportDataGrid" Style="{StaticResource DataGridStyle}" 
