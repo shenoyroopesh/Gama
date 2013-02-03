@@ -60,6 +60,8 @@ namespace RadiographyTracking.Views
             BindToPage(lblCoverage, TextBlock.TextProperty, "FinalReport.Coverage.CoverageName", BindingMode.OneWay);
             BindToPage(lblRTNo, TextBlock.TextProperty, "FinalReport.RTNo", BindingMode.OneWay);
             BindToPage(txtLeadScreen, TextBlock.TextProperty, "FinalReport.LeadScreen");
+            BindToPage(txtSource, TextBlock.TextProperty, "FinalReport.Source");
+            BindToPage(txtStrength, TextBlock.TextProperty, "FinalReport.Strength");
             BindToPage(txtSourceSize, TextBlock.TextProperty, "FinalReport.SourceSize");
             BindToPage(txtReportNo, TextBlock.TextProperty, "FinalReport.ReportNo");
             BindToPage(txtHeatNo, TextBlock.TextProperty, "FinalReport.HeatNo");

@@ -171,6 +171,7 @@ namespace RadiographyTracking.Web.Models
         public String DrawingNo { get; set; }
         public int StatusID { get; set; }
         public RGStatus Status { get; set; }
+        public String Viewing { get; set; }
 
         /// <summary>
         /// Whether this is a Fresh report or a Reshoot report - can be null as well, if it is only a retake report
@@ -277,13 +278,13 @@ namespace RadiographyTracking.Web.Models
 
         [NotMapped]
         [Exclude]
-        public string TotalAreaWithRetake
+        public string TotalFilmCount
         {
             get
             {
                 return this.RGReportRows == null ? "0" :
                     this.RGReportRows
-                    .Sum(p => p.FilmArea)
+                    .Sum(p => p.FilmCount)
                     .ToString();
             }
         }

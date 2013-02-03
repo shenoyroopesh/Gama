@@ -159,6 +159,10 @@
     <Compile Include="Migrations\201301281706301_SourceSizeAndStrength.Designer.cs">
       <DependentUpon>201301281706301_SourceSizeAndStrength.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201301292158447_Add_Viewing.cs" />
+    <Compile Include="Migrations\201301292158447_Add_Viewing.Designer.cs">
+      <DependentUpon>201301292158447_Add_Viewing.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Settings.cs" />
     <Compile Include="Models\AddressStickerRow.cs" />
     <Compile Include="Models\Change.cs" />

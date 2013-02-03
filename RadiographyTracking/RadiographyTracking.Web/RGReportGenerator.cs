@@ -62,7 +62,7 @@ namespace RadiographyTracking.Web
 
         protected const string Result = "Result";
         protected const string TotalArea = "TotalArea";
-        protected const string TotalAreaWithRetake = "TotalAreaWithRetake";
+        protected const string TotalFilmCount = "TotalFilmCount";
         protected const string ExposedTotalArea = "ExposedTotalArea";
         protected const string RetakeTotalArea = "RetakeTotalArea";
         protected const string Isotope = "Isotope";
@@ -138,7 +138,7 @@ namespace RadiographyTracking.Web
                     {Technique, PlaceHolderType.NonRecursive},
                     {Result, PlaceHolderType.NonRecursive},
                     {TotalArea, PlaceHolderType.NonRecursive},
-                    {TotalAreaWithRetake, PlaceHolderType.NonRecursive},
+                    {TotalFilmCount, PlaceHolderType.NonRecursive},
                     {ExposedTotalArea, PlaceHolderType.NonRecursive},
                     {RetakeTotalArea, PlaceHolderType.NonRecursive},
                     {Isotope, PlaceHolderType.NonRecursive},
@@ -236,8 +236,8 @@ namespace RadiographyTracking.Web
                     case TotalArea:
                         content = row.TotalArea;
                         break;
-                    case TotalAreaWithRetake:
-                        content = row.TotalAreaWithRetake;
+                    case TotalFilmCount:
+                        content = row.TotalFilmCount;
                         break;
                     case ExposedTotalArea:
                         content = row.ExposedTotalArea;

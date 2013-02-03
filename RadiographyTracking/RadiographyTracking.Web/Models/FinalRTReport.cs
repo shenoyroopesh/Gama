@@ -65,6 +65,9 @@ namespace RadiographyTracking.Web.Models
         public RGStatus Status { get; set; }
 
         [NotMapped]
+        public String Viewing { get; set; }
+
+        [NotMapped]
         [Include]
         [Association("FinalRTReport", "ID", "FinalRTReportID")]
         public ICollection<FinalRTReportRow> FinalRTReportRows { get; set; }
@@ -90,15 +93,15 @@ namespace RadiographyTracking.Web.Models
         }
 
         [NotMapped]
-        public String TotalAreaWithRetake
+        public String TotalFilmCount
         {
             get
             {
-                if (this.FinalRTReportRows == null)
-                    return "0";
-
-                return this.FinalRTReportRows
-                    .Sum(p => p.FilmArea).ToString();
+                return FinalRTReportRows == null
+                           ? "0"
+                           : FinalRTReportRows
+                                 .Sum(p => p.FilmCount)
+                                 .ToString();
             }
         }
 
