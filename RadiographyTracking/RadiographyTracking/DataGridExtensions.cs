@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Media;
@@ -146,10 +147,22 @@ public static class DataGridExtensions
         sw.WriteLine("<Styles>");
         sw.WriteLine("  <Style ss:ID=\"sCenter\" ss:Name=\"Normal\" >");
         sw.WriteLine("   <Alignment ss:Horizontal=\"Center\" ss:Vertical=\"Center\"/>");
+        sw.WriteLine("<Borders>");
+        sw.WriteLine("<Border ss:Position=\"Bottom\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
+        sw.WriteLine("<Border ss:Position=\"Left\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
+        sw.WriteLine("<Border ss:Position=\"Right\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
+        sw.WriteLine("<Border ss:Position=\"Top\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
+        sw.WriteLine("</Borders>");
         sw.WriteLine("  </Style>");
         sw.WriteLine("  <Style ss:ID=\"sCenterBold\">");
         sw.WriteLine("   <Alignment ss:Horizontal=\"Center\" ss:Vertical=\"Center\"/>");
         sw.WriteLine("   <Font ss:Family=\"Verdana\" ss:Bold=\"1\"/>");
+        sw.WriteLine("<Borders>");
+        sw.WriteLine("<Border ss:Position=\"Bottom\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
+        sw.WriteLine("<Border ss:Position=\"Left\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
+        sw.WriteLine("<Border ss:Position=\"Right\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
+        sw.WriteLine("<Border ss:Position=\"Top\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
+        sw.WriteLine("</Borders>");
         sw.WriteLine("  </Style>");
         sw.WriteLine("</Styles>");
         sw.WriteLine("<Worksheet ss:Name=\"Silverlight Export\" xmlns:ss=\"urn:schemas-microsoft-com:office:spreadsheet\">");
@@ -184,15 +197,17 @@ public static class DataGridExtensions
                     String type = "String";
                     decimal number = 0;
                     //check if data is number
-                    if (decimal.TryParse(data, out number))
-                        type = "Number";
+                    if( Regex.IsMatch(data, @"^[\-0-9]\d*(\.\d+)?$"))
+                        if (decimal.TryParse(data, out number))
+                            type = "Number";
 
-                    return String.Format("<Cell ss:StyleID=\"" + style + "\"><Data ss:Type=\"{1}\">{0}</Data></Cell>", data, type);
+                    return String.Format("<Cell ss:StyleID=\"" + style + "\"><Data ss:Type=\"{1}\">{0}</Data>" +
+                                         "</Cell>", data, type);
                 }
-                else
-                    return String.Format("<Cell ss:MergeAcross=\"" + merge +
-                        "\" ss:StyleID=\"" + style + "\"><Data ss:Type=\"String\" >{0}</Data></Cell>", data);
-            //merge is applicable only for xml format not for csv
+                return String.Format("<Cell ss:MergeAcross=\"" + merge +
+                                     "\" ss:StyleID=\"" + style + "\"><Data ss:Type=\"String\" >{0}</Data>" +
+                                     "</Cell>", data);
+                //merge is applicable only for xml format not for csv
             case "CSV":
                 return String.Format("\"{0}\"", data.Replace("\"", "\"\"\"").Replace("\n", "").Replace("\r", ""));
         }
