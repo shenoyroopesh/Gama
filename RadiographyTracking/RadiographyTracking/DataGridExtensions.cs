@@ -147,40 +147,22 @@ public static class DataGridExtensions
         sw.WriteLine("<Styles>");
         sw.WriteLine("  <Style ss:ID=\"sCenter\" ss:Name=\"Normal\" >");
         sw.WriteLine("   <Alignment ss:Horizontal=\"Center\" ss:Vertical=\"Center\"/>");
-<<<<<<< HEAD
-        sw.WriteLine("<Borders>");
-        sw.WriteLine("<Border ss:Position=\"Bottom\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
-        sw.WriteLine("<Border ss:Position=\"Left\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
-        sw.WriteLine("<Border ss:Position=\"Right\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
-        sw.WriteLine("<Border ss:Position=\"Top\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
-        sw.WriteLine("</Borders>");
-=======
         sw.WriteLine("   <Borders>");
         sw.WriteLine("      <Border ss:Position=\"Bottom\" ss:LineStyle=\"Continuous\" ss:Weight=\"2\"/>");
         sw.WriteLine("      <Border ss:Position=\"Left\" ss:LineStyle=\"Continuous\" ss:Weight=\"2\"/>");
         sw.WriteLine("      <Border ss:Position=\"Right\" ss:LineStyle=\"Continuous\" ss:Weight=\"2\"/>");
         sw.WriteLine("      <Border ss:Position=\"Top\" ss:LineStyle=\"Continuous\" ss:Weight=\"2\"/>");
         sw.WriteLine("   </Borders>");
->>>>>>> nithesh/master
         sw.WriteLine("  </Style>");
         sw.WriteLine("  <Style ss:ID=\"sCenterBold\">");
         sw.WriteLine("   <Alignment ss:Horizontal=\"Center\" ss:Vertical=\"Center\"/>");
         sw.WriteLine("   <Font ss:Family=\"Verdana\" ss:Bold=\"1\"/>");
-<<<<<<< HEAD
-        sw.WriteLine("<Borders>");
-        sw.WriteLine("<Border ss:Position=\"Bottom\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
-        sw.WriteLine("<Border ss:Position=\"Left\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
-        sw.WriteLine("<Border ss:Position=\"Right\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
-        sw.WriteLine("<Border ss:Position=\"Top\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
-        sw.WriteLine("</Borders>");
-=======
         sw.WriteLine("   <Borders>");
         sw.WriteLine("      <Border ss:Position=\"Bottom\" ss:LineStyle=\"Continuous\" ss:Weight=\"2\"/>");
         sw.WriteLine("      <Border ss:Position=\"Left\" ss:LineStyle=\"Continuous\" ss:Weight=\"2\"/>");
         sw.WriteLine("      <Border ss:Position=\"Right\" ss:LineStyle=\"Continuous\" ss:Weight=\"2\"/>");
         sw.WriteLine("      <Border ss:Position=\"Top\" ss:LineStyle=\"Continuous\" ss:Weight=\"2\"/>");
         sw.WriteLine("   </Borders>");
->>>>>>> nithesh/master
         sw.WriteLine("  </Style>");
         sw.WriteLine("</Styles>");
         sw.WriteLine("<Worksheet ss:Name=\"Silverlight Export\" xmlns:ss=\"urn:schemas-microsoft-com:office:spreadsheet\">");

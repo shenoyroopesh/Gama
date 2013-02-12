@@ -946,16 +946,11 @@
             var intermediate = (from r in this.DbContext.RGReports
                                 let rowFId = r.FixedPattern.Customer.FoundryID
                                 where rowFId == (foundryId == -1 ? rowFId : foundryId)
-<<<<<<< HEAD
-                                && r.ReportDate >= fromDate && r.ReportDate < toDate
-                                group r by new { r.FixedPattern, r.RTNo, r.Coverage } into g
-=======
                                 && (fromDate == null || r.ReportDate >= fromDate) 
                                 && (toDate == null || r.ReportDate < toDate)
                                 && (RTNo == string.Empty || r.RTNo.Contains(RTNo)) 
                                 && (HeatNo == string.Empty || r.HeatNo.Contains(HeatNo)) 
-                                group r by new { r.FixedPattern, r.RTNo } into g
->>>>>>> nithesh/master
+                                group r by new { r.FixedPattern, r.RTNo, r.Coverage } into g
                                 let allrows = g.SelectMany(p => p.RGReportRows)
                                                 .Where(p => p.Remark != null) //don't count the rows with blank remarks
                                 let allLatestRows = allrows.Where(p => allrows
