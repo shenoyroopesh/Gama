@@ -37,7 +37,7 @@ public static class DataGridExtensions
         List<List<String>> mergeCellsList = new List<List<string>>();
         if (!String.IsNullOrEmpty(mergeCells))
         {
-            List<String> temp = mergeCells.Split(',').ToList();            
+            List<String> temp = mergeCells.Split(',').ToList();
             temp.ForEach(p => mergeCellsList.Add(p.Split('-').ToList()));
         }
 
@@ -135,7 +135,7 @@ public static class DataGridExtensions
     {
         sw.WriteLine("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
         sw.WriteLine("<?mso-application progid=\"Excel.Sheet\"?>");
-        sw.WriteLine("<Workbook xmlns=\"urn:schemas-microsoft-com:office:spreadsheet\" "+
+        sw.WriteLine("<Workbook xmlns=\"urn:schemas-microsoft-com:office:spreadsheet\" " +
                                "xmlns:ss=\"urn:schemas-microsoft-com:office:spreadsheet\">"); //check if this alias is really needed
         sw.WriteLine("<DocumentProperties xmlns=\"urn:schemas-microsoft-com:office:office\">");
         sw.WriteLine("<Author>" + author + "</Author>");
@@ -147,22 +147,40 @@ public static class DataGridExtensions
         sw.WriteLine("<Styles>");
         sw.WriteLine("  <Style ss:ID=\"sCenter\" ss:Name=\"Normal\" >");
         sw.WriteLine("   <Alignment ss:Horizontal=\"Center\" ss:Vertical=\"Center\"/>");
+<<<<<<< HEAD
         sw.WriteLine("<Borders>");
         sw.WriteLine("<Border ss:Position=\"Bottom\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
         sw.WriteLine("<Border ss:Position=\"Left\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
         sw.WriteLine("<Border ss:Position=\"Right\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
         sw.WriteLine("<Border ss:Position=\"Top\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
         sw.WriteLine("</Borders>");
+=======
+        sw.WriteLine("   <Borders>");
+        sw.WriteLine("      <Border ss:Position=\"Bottom\" ss:LineStyle=\"Continuous\" ss:Weight=\"2\"/>");
+        sw.WriteLine("      <Border ss:Position=\"Left\" ss:LineStyle=\"Continuous\" ss:Weight=\"2\"/>");
+        sw.WriteLine("      <Border ss:Position=\"Right\" ss:LineStyle=\"Continuous\" ss:Weight=\"2\"/>");
+        sw.WriteLine("      <Border ss:Position=\"Top\" ss:LineStyle=\"Continuous\" ss:Weight=\"2\"/>");
+        sw.WriteLine("   </Borders>");
+>>>>>>> nithesh/master
         sw.WriteLine("  </Style>");
         sw.WriteLine("  <Style ss:ID=\"sCenterBold\">");
         sw.WriteLine("   <Alignment ss:Horizontal=\"Center\" ss:Vertical=\"Center\"/>");
         sw.WriteLine("   <Font ss:Family=\"Verdana\" ss:Bold=\"1\"/>");
+<<<<<<< HEAD
         sw.WriteLine("<Borders>");
         sw.WriteLine("<Border ss:Position=\"Bottom\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
         sw.WriteLine("<Border ss:Position=\"Left\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
         sw.WriteLine("<Border ss:Position=\"Right\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
         sw.WriteLine("<Border ss:Position=\"Top\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
         sw.WriteLine("</Borders>");
+=======
+        sw.WriteLine("   <Borders>");
+        sw.WriteLine("      <Border ss:Position=\"Bottom\" ss:LineStyle=\"Continuous\" ss:Weight=\"2\"/>");
+        sw.WriteLine("      <Border ss:Position=\"Left\" ss:LineStyle=\"Continuous\" ss:Weight=\"2\"/>");
+        sw.WriteLine("      <Border ss:Position=\"Right\" ss:LineStyle=\"Continuous\" ss:Weight=\"2\"/>");
+        sw.WriteLine("      <Border ss:Position=\"Top\" ss:LineStyle=\"Continuous\" ss:Weight=\"2\"/>");
+        sw.WriteLine("   </Borders>");
+>>>>>>> nithesh/master
         sw.WriteLine("  </Style>");
         sw.WriteLine("</Styles>");
         sw.WriteLine("<Worksheet ss:Name=\"Silverlight Export\" xmlns:ss=\"urn:schemas-microsoft-com:office:spreadsheet\">");

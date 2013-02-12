@@ -11,7 +11,8 @@
     xmlns:custom="clr-namespace:Vagsons.Controls;assembly=CustomControls"
     xmlns:local="clr-namespace:RadiographyTracking.Controls"
     xmlns:ex="clr-namespace:ComboBoxExtensions;assembly=ComboBoxExtensions"
-    xmlns:views="clr-namespace:RadiographyTracking.Views">
+    xmlns:views="clr-namespace:RadiographyTracking.Views"
+    xmlns:dtGrid="clr-namespace:BindableDataGrid;assembly=BindableDataGrid">
     
     <UserControl.Resources>
         <my1:RadiographyContext x:Key="RadiographyContext" />
@@ -28,6 +29,9 @@
                 <riaControls:Parameter ParameterName="fixedPatternNo" Value="{Binding ElementName=txtFPNo, Path=Text}" />
                 <riaControls:Parameter ParameterName="strCoverage" Value="{Binding ElementName=cmbCoverage, Path=SelectedValue.CoverageName}" />
             </riaControls:DomainDataSource.QueryParameters>
+        </riaControls:DomainDataSource>
+        <riaControls:DomainDataSource Name="EnergySource" AutoLoad="True" DomainContext="{StaticResource RadiographyContext}"
+                                      QueryName="GetEnergiesQuery">
         </riaControls:DomainDataSource>
         <sdk:Label Name="headerLabel" Style="{StaticResource PageHeaderStyle}" Content="FIXED PATTERN TEMPLATES"/>
         <ScrollViewer IsHitTestVisible="True">
@@ -113,6 +117,11 @@
                         </custom:CustomGrid.Columns>
                     </custom:CustomGrid>
                 </local:BusyIndicator>
+                <StackPanel Orientation="Horizontal" Margin="20, 20, 0, 0">
+                    <TextBlock Text="Total Area of  films Submitted:" />
+                    <TextBlock Name="txtTotalArea" />
+                </StackPanel>
+                <dtGrid:BindableDataGrid Name="energyAreas" HeadersVisibility="None" HorizontalAlignment="Left" Margin="20,10,0,0" />
                 <StackPanel Orientation="Horizontal" Height="23" Margin="0,20,0,0" HorizontalAlignment="Center" Name="ButtonsPanel">
                     <Button Name="btnSave" Background="Transparent" Style="{StaticResource SaveButtonStyle}"/>
                     <Button Name="btnCancel" Margin="20,0,0,0" Style="{StaticResource CancelButtonStyle}" />
