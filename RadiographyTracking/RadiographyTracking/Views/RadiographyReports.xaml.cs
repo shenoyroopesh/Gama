@@ -1,7 +1,9 @@
 ﻿using System;
+using System.ServiceModel.DomainServices.Client;
 using System.Windows;
 using System.Windows.Controls;
 using RadiographyTracking.Web.Models;
+using RadiographyTracking.Web.Services;
 using Vagsons.Controls;
 using System.Windows.Browser;
 
@@ -9,6 +11,7 @@ namespace RadiographyTracking.Views
 {
     public partial class RadiographyReports : BaseCRUDView
     {
+       // RadiographyContext ctx;
         public RadiographyReports()
             : base()
         {
@@ -18,6 +21,8 @@ namespace RadiographyTracking.Views
 
             fromDatePicker.SelectedDate = fromDatePicker.DisplayDate = DateTime.Now.AddDays(-15);
             toDatePicker.SelectedDate = toDatePicker.DisplayDate = DateTime.Now;
+            txtRTNo.Text = string.Empty;
+            txtCoverage.Text = string.Empty;
         }
 
         public override string ChangeContext
@@ -98,5 +103,7 @@ namespace RadiographyTracking.Views
             Uri reportURI = new Uri(string.Format(appRoot + "RGReportGenerate.aspx?ReportNo={0}", report.ReportNo), UriKind.Absolute);
             HtmlPage.Window.Navigate(reportURI, "_blank");
         }
+
+ 
     }
 }

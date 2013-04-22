@@ -40,6 +40,10 @@
                     <TextBox Name="txtRTNo" Margin="20, 0,20,0" MinWidth="50" TextChanged="TextChanged" />
                     <TextBlock Text="Heat No" VerticalAlignment="Center" Margin="10,0,0,0"/>
                     <TextBox Name="txtHeatNo" Margin="20, 0,20,0" MinWidth="50" TextChanged="TextChanged" />
+                    <TextBlock Text="FP No" VerticalAlignment="Center" Margin="10,0,0,0"/>
+                    <TextBox Name="txtFPNo" Margin="20, 0,20,0" MinWidth="50" TextChanged="TextChanged" />
+                    <TextBlock Text="Coverage" VerticalAlignment="Center" Margin="10,0,0,0"/>
+                    <TextBox Name="txtCoverage" Margin="20, 0,20,0" MinWidth="50" TextChanged="TextChanged" />
                 </StackPanel>
                 <Button Name="btnFetch" Content="Generate" Click="btnFetch_Click" HorizontalAlignment="Center" 
                         Margin="0,10,0,0" IsEnabled="False"/>

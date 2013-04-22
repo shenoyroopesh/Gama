@@ -560,14 +560,20 @@
                         //r.RGReport.RGReportRows.Where(p => (p.Observations ?? "").Trim() != "NSD").Count() > 0  // issue 0000111
                         select new
                         {
-                            r.RGReport.FixedPattern.FPNo, r.RGReport.RTNo, r.RGReport.ReportNo, r.RGReport.Coverage.CoverageName, r.RGReport.HeatNo, r.RGReport.ReportDate,
+                            r.RGReport.FixedPattern.FPNo,
+                            r.RGReport.RTNo,
+                            r.RGReport.ReportNo,
+                            r.RGReport.Coverage.CoverageName,
+                            r.RGReport.HeatNo,
+                            r.RGReport.ReportDate,
                             Location = r.Location.Trim(),
-                            Segment = r.Segment.Trim(), r.Observations
+                            Segment = r.Segment.Trim(),
+                            r.Observations
                         }).ToList();
 
             var report = (from r in rows
                           orderby r.RTNo, r.ReportDate
-                          group r by new {r.FPNo, r.RTNo, r.ReportNo, r.CoverageName, r.HeatNo, r.ReportDate } into g
+                          group r by new { r.FPNo, r.RTNo, r.ReportNo, r.CoverageName, r.HeatNo, r.ReportDate } into g
                           select new FixedPatternPerformanceRow
                           {
                               ID = Guid.NewGuid(),
@@ -841,16 +847,18 @@
                                                         (foundryID ?? p.FixedPattern.Customer.Foundry.ID));
         }
 
-        public IQueryable<RGReport> GetRGReportsByDate(DateTime fromDate, DateTime toDate)
+        public IQueryable<RGReport> GetRGReportsByDate(DateTime fromDate, DateTime toDate, string rtNo, string coverage)
         {
             //to ensure that time component of the date does not make some dates get excluded
-            fromDate = fromDate.Date;
-            toDate = toDate.Date.AddDays(1);
+            var fromDateValue = fromDate.Date;
+            var toDateValue = toDate.Date.AddDays(1);
             var foundryID = getFoundryIDForCurrentUser();
 
             return this.DbContext.RGReports.Where(p =>
-                                                    p.ReportDate >= fromDate &&
-                                                    p.ReportDate <= toDate &&
+                                                   (p.ReportDate >= fromDateValue || fromDate == default(DateTime)) &&
+                                                   (p.ReportDate <= toDateValue || toDate == default(DateTime)) &&
+                                                   (rtNo == string.Empty || p.RTNo.Contains(rtNo)) &&
+                                                   (coverage == string.Empty || p.Coverage.CoverageName.Contains(coverage)) &&
                                                     p.FixedPattern.Customer.Foundry.ID ==
                                                         (foundryID ?? p.FixedPattern.Customer.Foundry.ID));
         }
@@ -935,21 +943,23 @@
                 .Distinct();
         }
 
-        public IEnumerable<RTStatusReportRow> GetRTStatus(int foundryId, DateTime? fromDate, DateTime? toDate, string RTNo, string HeatNo)
+        public IEnumerable<RTStatusReportRow> GetRTStatus(int foundryId, DateTime? fromDate, DateTime? toDate, string RTNo, string HeatNo, string fpNo, string coverage)
         {
             //from date and to date to not consider time
             if (fromDate != null)
                 fromDate = ((DateTime)fromDate).Date;
             if (toDate != null)
-                toDate = ((DateTime)toDate).Date.AddDays(1);       
+                toDate = ((DateTime)toDate).Date.AddDays(1);
 
             var intermediate = (from r in this.DbContext.RGReports
                                 let rowFId = r.FixedPattern.Customer.FoundryID
                                 where rowFId == (foundryId == -1 ? rowFId : foundryId)
-                                && (fromDate == null || r.ReportDate >= fromDate) 
+                                && (fromDate == null || r.ReportDate >= fromDate)
                                 && (toDate == null || r.ReportDate < toDate)
-                                && (RTNo == string.Empty || r.RTNo.Contains(RTNo)) 
-                                && (HeatNo == string.Empty || r.HeatNo.Contains(HeatNo)) 
+                                && (RTNo == string.Empty || r.RTNo.Contains(RTNo))
+                                && (HeatNo == string.Empty || r.HeatNo.Contains(HeatNo))
+                                && ((fpNo == string.Empty && coverage == string.Empty)
+                                    || (r.Coverage.CoverageName.Contains(coverage) && r.FixedPattern.FPNo.Contains(fpNo)))
                                 group r by new { r.FixedPattern, r.RTNo, r.Coverage } into g
                                 let allrows = g.SelectMany(p => p.RGReportRows)
                                                 .Where(p => p.Remark != null) //don't count the rows with blank remarks

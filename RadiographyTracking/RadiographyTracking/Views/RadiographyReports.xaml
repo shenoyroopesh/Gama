@@ -22,6 +22,8 @@
             <riaControls:DomainDataSource.QueryParameters>
                 <riaControls:Parameter ParameterName="fromDate" Value="{Binding ElementName=fromDatePicker, Path=SelectedDate}" />
                 <riaControls:Parameter ParameterName="toDate" Value="{Binding ElementName=toDatePicker, Path=SelectedDate}" />
+                <riaControls:Parameter ParameterName="rtNo" Value="{Binding ElementName=txtRTNo, Path=Text}" />
+                <riaControls:Parameter ParameterName="coverage" Value="{Binding ElementName=txtCoverage, Path=Text}" />
             </riaControls:DomainDataSource.QueryParameters>
         </riaControls:DomainDataSource>
         <riaControls:DomainDataSource AutoLoad="True" Name="FPDomainSource" QueryName="GetFixedPatternsQuery" 
@@ -33,11 +35,17 @@
         <riaControls:DomainDataSource AutoLoad="True" Name="CoverageDomainSource" QueryName="GetCoveragesQuery" 
                                       DomainContext="{StaticResource RadiographyContext}" />
         <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
-            <StackPanel Height="30" HorizontalAlignment="Left" Orientation="Horizontal" VerticalAlignment="Top" Margin="20">
+            <StackPanel Height="30" HorizontalAlignment="Left" Orientation="Horizontal" VerticalAlignment="Top" Margin="20,20,20,0">
                 <sdk:Label Content="From:" Margin="3" VerticalAlignment="Center" />
                 <sdk:DatePicker Name="fromDatePicker" IsEnabled="{Binding ElementName=RGDomainDataSource, Path=CanLoad}" />
                 <sdk:Label Content="To:" Margin="3" VerticalAlignment="Center" />
                 <sdk:DatePicker Name="toDatePicker" IsEnabled="{Binding ElementName=RGDomainDataSource, Path=CanLoad}" />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="10, 10,0,10">
+                <TextBlock Text="RT No" VerticalAlignment="Center" Margin="10,0,0,0"/>
+                <TextBox Name="txtRTNo"  Margin="20, 0,20,0" MinWidth="50" IsEnabled="{Binding ElementName=RGDomainDataSource, Path=CanLoad}" />
+                <TextBlock Text="Coverage" VerticalAlignment="Center" Margin="10,0,0,0"/>
+                <TextBox Name="txtCoverage" Margin="20, 0,20,0" MinWidth="50" IsEnabled="{Binding ElementName=RGDomainDataSource, Path=CanLoad}" />
             </StackPanel>
             <local:BusyIndicator x:Name="busyIndicator" IsBusy="{Binding IsBusy, ElementName=RGDomainDataSource}">
                 <custom:CustomGrid ItemsSource="{Binding ElementName=RGDomainDataSource, Path=Data, Mode=TwoWay}" 
