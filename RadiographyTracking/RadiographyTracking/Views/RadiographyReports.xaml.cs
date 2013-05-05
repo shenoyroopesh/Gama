@@ -23,8 +23,8 @@ namespace RadiographyTracking.Views
             DomainSource.LoadedData += domainDataSource_LoadedData;
             btnAdd.Click += AddOperation;
 
-            fromDatePicker.SelectedDate = Convert.ToDateTime("03/03/2012"); //fromDatePicker.DisplayDate = DateTime.Now.AddDays(-15);
-            toDatePicker.SelectedDate = Convert.ToDateTime("03/23/2012");//toDatePicker.DisplayDate = DateTime.Now;
+            fromDatePicker.SelectedDate = fromDatePicker.DisplayDate = DateTime.Now.AddDays(-15);
+            toDatePicker.SelectedDate = toDatePicker.DisplayDate = DateTime.Now;
             txtRTNo.Text = string.Empty;
             // cmbCoverage.SelectedValue = null;
         }
