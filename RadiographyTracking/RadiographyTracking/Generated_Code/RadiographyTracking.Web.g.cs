@@ -7580,8 +7580,6 @@ namespace RadiographyTracking.Web.Models
         
         private string _endCustomerName;
         
-        private string _evaluationAsPer;
-        
         private string _film;
         
         private bool _first;
@@ -7653,8 +7651,6 @@ namespace RadiographyTracking.Web.Models
         partial void OnDrawingNoChanged();
         partial void OnEndCustomerNameChanging(string value);
         partial void OnEndCustomerNameChanged();
-        partial void OnEvaluationAsPerChanging(string value);
-        partial void OnEvaluationAsPerChanged();
         partial void OnFilmChanging(string value);
         partial void OnFilmChanged();
         partial void OnFirstChanging(bool value);
@@ -7892,30 +7888,6 @@ namespace RadiographyTracking.Web.Models
                     this._endCustomerName = value;
                     this.RaiseDataMemberChanged("EndCustomerName");
                     this.OnEndCustomerNameChanged();
-                }
-            }
-        }
-        
-        /// <summary>
-        /// Gets or sets the 'EvaluationAsPer' value.
-        /// </summary>
-        [DataMember()]
-        public string EvaluationAsPer
-        {
-            get
-            {
-                return this._evaluationAsPer;
-            }
-            set
-            {
-                if ((this._evaluationAsPer != value))
-                {
-                    this.OnEvaluationAsPerChanging(value);
-                    this.RaiseDataMemberChanging("EvaluationAsPer");
-                    this.ValidateProperty("EvaluationAsPer", value);
-                    this._evaluationAsPer = value;
-                    this.RaiseDataMemberChanged("EvaluationAsPer");
-                    this.OnEvaluationAsPerChanged();
                 }
             }
         }
@@ -12302,15 +12274,15 @@ namespace RadiographyTracking.Web.Services
         /// <param name="fromDate">The value for the 'fromDate' parameter of the query.</param>
         /// <param name="toDate">The value for the 'toDate' parameter of the query.</param>
         /// <param name="rtNo">The value for the 'rtNo' parameter of the query.</param>
-        /// <param name="coverage">The value for the 'coverage' parameter of the query.</param>
+        /// <param name="coverageId">The value for the 'coverageId' parameter of the query.</param>
         /// <returns>An EntityQuery that can be loaded to retrieve <see cref="RGReport"/> entity instances.</returns>
-        public EntityQuery<RGReport> GetRGReportsByDateQuery(DateTime fromDate, DateTime toDate, string rtNo, string coverage)
+        public EntityQuery<RGReport> GetRGReportsByDateQuery(DateTime fromDate, DateTime toDate, string rtNo, int coverageId)
         {
             Dictionary<string, object> parameters = new Dictionary<string, object>();
             parameters.Add("fromDate", fromDate);
             parameters.Add("toDate", toDate);
             parameters.Add("rtNo", rtNo);
-            parameters.Add("coverage", coverage);
+            parameters.Add("coverageId", coverageId);
             this.ValidateMethod("GetRGReportsByDateQuery", parameters);
             return base.CreateQuery<RGReport>("GetRGReportsByDate", parameters, false, true);
         }
@@ -12357,9 +12329,9 @@ namespace RadiographyTracking.Web.Services
         /// <param name="RTNo">The value for the 'RTNo' parameter of the query.</param>
         /// <param name="HeatNo">The value for the 'HeatNo' parameter of the query.</param>
         /// <param name="fpNo">The value for the 'fpNo' parameter of the query.</param>
-        /// <param name="coverage">The value for the 'coverage' parameter of the query.</param>
+        /// <param name="coverageId">The value for the 'coverageId' parameter of the query.</param>
         /// <returns>An EntityQuery that can be loaded to retrieve <see cref="RTStatusReportRow"/> entity instances.</returns>
-        public EntityQuery<RTStatusReportRow> GetRTStatusQuery(int foundryId, Nullable<DateTime> fromDate, Nullable<DateTime> toDate, string RTNo, string HeatNo, string fpNo, string coverage)
+        public EntityQuery<RTStatusReportRow> GetRTStatusQuery(int foundryId, Nullable<DateTime> fromDate, Nullable<DateTime> toDate, string RTNo, string HeatNo, string fpNo, Nullable<int> coverageId)
         {
             Dictionary<string, object> parameters = new Dictionary<string, object>();
             parameters.Add("foundryId", foundryId);
@@ -12368,7 +12340,7 @@ namespace RadiographyTracking.Web.Services
             parameters.Add("RTNo", RTNo);
             parameters.Add("HeatNo", HeatNo);
             parameters.Add("fpNo", fpNo);
-            parameters.Add("coverage", coverage);
+            parameters.Add("coverageId", coverageId);
             this.ValidateMethod("GetRTStatusQuery", parameters);
             return base.CreateQuery<RTStatusReportRow>("GetRTStatus", parameters, false, true);
         }
@@ -13178,14 +13150,14 @@ namespace RadiographyTracking.Web.Services
             /// <param name="fromDate">The value for the 'fromDate' parameter of this action.</param>
             /// <param name="toDate">The value for the 'toDate' parameter of this action.</param>
             /// <param name="rtNo">The value for the 'rtNo' parameter of this action.</param>
-            /// <param name="coverage">The value for the 'coverage' parameter of this action.</param>
+            /// <param name="coverageId">The value for the 'coverageId' parameter of this action.</param>
             /// <param name="callback">Callback to invoke on completion.</param>
             /// <param name="asyncState">Optional state object.</param>
             /// <returns>An IAsyncResult that can be used to monitor the request.</returns>
             [FaultContract(typeof(DomainServiceFault), Action="http://tempuri.org/RadiographyService/GetRGReportsByDateDomainServiceFault", Name="DomainServiceFault", Namespace="DomainServices")]
             [OperationContract(AsyncPattern=true, Action="http://tempuri.org/RadiographyService/GetRGReportsByDate", ReplyAction="http://tempuri.org/RadiographyService/GetRGReportsByDateResponse")]
             [WebGet()]
-            IAsyncResult BeginGetRGReportsByDate(DateTime fromDate, DateTime toDate, string rtNo, string coverage, AsyncCallback callback, object asyncState);
+            IAsyncResult BeginGetRGReportsByDate(DateTime fromDate, DateTime toDate, string rtNo, int coverageId, AsyncCallback callback, object asyncState);
             
             /// <summary>
             /// Completes the asynchronous operation begun by 'BeginGetRGReportsByDate'.
@@ -13275,14 +13247,14 @@ namespace RadiographyTracking.Web.Services
             /// <param name="RTNo">The value for the 'RTNo' parameter of this action.</param>
             /// <param name="HeatNo">The value for the 'HeatNo' parameter of this action.</param>
             /// <param name="fpNo">The value for the 'fpNo' parameter of this action.</param>
-            /// <param name="coverage">The value for the 'coverage' parameter of this action.</param>
+            /// <param name="coverageId">The value for the 'coverageId' parameter of this action.</param>
             /// <param name="callback">Callback to invoke on completion.</param>
             /// <param name="asyncState">Optional state object.</param>
             /// <returns>An IAsyncResult that can be used to monitor the request.</returns>
             [FaultContract(typeof(DomainServiceFault), Action="http://tempuri.org/RadiographyService/GetRTStatusDomainServiceFault", Name="DomainServiceFault", Namespace="DomainServices")]
             [OperationContract(AsyncPattern=true, Action="http://tempuri.org/RadiographyService/GetRTStatus", ReplyAction="http://tempuri.org/RadiographyService/GetRTStatusResponse")]
             [WebGet()]
-            IAsyncResult BeginGetRTStatus(int foundryId, Nullable<DateTime> fromDate, Nullable<DateTime> toDate, string RTNo, string HeatNo, string fpNo, string coverage, AsyncCallback callback, object asyncState);
+            IAsyncResult BeginGetRTStatus(int foundryId, Nullable<DateTime> fromDate, Nullable<DateTime> toDate, string RTNo, string HeatNo, string fpNo, Nullable<int> coverageId, AsyncCallback callback, object asyncState);
             
             /// <summary>
             /// Completes the asynchronous operation begun by 'BeginGetRTStatus'.

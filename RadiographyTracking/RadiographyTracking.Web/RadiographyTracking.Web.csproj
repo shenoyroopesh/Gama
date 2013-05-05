@@ -193,6 +193,9 @@
     <Compile Include="Models\RGStatus.cs" />
     <Compile Include="Models\RTStatusReportRow.cs" />
     <Compile Include="Models\SegmentClass.cs" />
+    <Compile Include="Models\Shared\RGReport.shared.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Models\Shift.cs" />
     <Compile Include="Models\ShiftWisePerformanceRow.cs" />
     <Compile Include="Models\Technician.cs" />

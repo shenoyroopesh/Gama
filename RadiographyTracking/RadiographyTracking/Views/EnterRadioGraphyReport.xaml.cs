@@ -98,7 +98,6 @@ namespace RadiographyTracking.Views
         private void SetBindings()
         {
             BindToPage(txtTotalArea, TextBlock.TextProperty, "TotalArea", BindingMode.OneWay);
-            BindToPage(txtEvaluation, TextBlock.TextProperty, "EvaluationValue", BindingMode.OneWay);
             BindToPage(lblFixedPatternID, TextBlock.TextProperty, "RGReport.FixedPatternID", BindingMode.OneWay);
             BindToPage(lblRGReportID, TextBlock.TextProperty, "RGReport.ID", BindingMode.OneWay);
             BindToPage(lblStatus, TextBlock.TextProperty, "RGReport.Status.Status", BindingMode.OneWay);
@@ -120,7 +119,7 @@ namespace RadiographyTracking.Views
             BindToPage(ReportDatePicker, DatePicker.SelectedDateProperty, "RGReport.ReportDate");
             BindToPage(TestDatePicker, DatePicker.SelectedDateProperty, "RGReport.DateOfTest");
             BindToPage(cmbShift, ComboBox.SelectedValueProperty, "RGReport.Shift");
-            // BindToPage(txtEvaluation, TextBox.TextProperty, "RGReport.EvaluationAsPer");
+            BindToPage(txtEvaluation, TextBlock.TextProperty, "RGReport.EvaluationAsPer");
             BindToPage(txtAcceptance, TextBox.TextProperty, "RGReport.AcceptanceAsPer");
             BindToPage(lblViewing, TextBlock.TextProperty, "RGReport.Viewing");
             BindToPage(txtDrawingNo, TextBox.TextProperty, "RGReport.DrawingNo");
@@ -191,6 +190,7 @@ namespace RadiographyTracking.Views
             }
         }
 
+ 
         /// <summary>
         /// Total area for the entire report
         /// </summary>
@@ -207,50 +207,7 @@ namespace RadiographyTracking.Views
             }
         }
 
-        /// <summary>
-        /// Evaluation Value
-        /// </summary>
-        public String EvaluationValue
-        {
-            get
-            {
-
-                if (RGReportRows == null)
-                    return string.Empty;
-                else
-                {
-                    try
-                    {
-                        var range1 =
-                            RGReportRows.Count(
-                                p =>
-                                Convert.ToInt32(p.ThicknessRangeUI) >= 0 && Convert.ToInt32(p.ThicknessRangeUI) <= 50);
-                        var range2 =
-                            RGReportRows.Count(
-                                p =>
-                                Convert.ToInt32(p.ThicknessRangeUI) >= 51 && Convert.ToInt32(p.ThicknessRangeUI) <= 114);
-                        var range3 =
-                            RGReportRows.Count(
-                                p =>
-                                Convert.ToInt32(p.ThicknessRangeUI) >= 115 && Convert.ToInt32(p.ThicknessRangeUI) <= 305);
-
-                        var eval = "ASTM";
-                        if (range1 > 0)
-                            eval = eval + " E446";
-                        if (range2 > 0)
-                            eval = eval == "ASTM" ? eval + " E186" : eval + " / E186 ";
-                        if (range3 > 0)
-                            eval = eval == "ASTM" ? eval + " E280" : eval + " / E280 ";
-
-                        return eval == "ASTM" ? string.Empty : eval;
-                    }
-                    catch
-                    {
-                        return string.Empty;
-                    }
-                }
-            }
-        }
+     
 
         public void UpdateEnergyWiseArea()
         {
@@ -285,8 +242,7 @@ namespace RadiographyTracking.Views
             energyAreas.DataBind();
 
             OnPropertyChanged("TotalArea");
-            OnPropertyChanged("EvaluationValue");
-        }
+           }
 
         private static void AddTextColumn(DataTable reportTable, String columnName, String caption)
         {
@@ -342,11 +298,11 @@ namespace RadiographyTracking.Views
 
             RGReport = (RGReport)((DomainDataSourceView)((DomainDataSource)sender).Data).GetItemAt(0);
             RGReportRows = RGReport.RGReportRows;
+          
             //now that fixedpatternid is available
             FixedPatternsSource.Load();
             UpdateEnergyWiseArea();
             OnPropertyChanged("TotalArea");
-            OnPropertyChanged("EvaluationValue");
             SetViewing();
 
             //if edit mode, add a clone of original RGReport to original entities for change tracking
@@ -426,8 +382,7 @@ namespace RadiographyTracking.Views
             //set the viewing
             SetViewing();
 
-
-            /** FOR SIMPLICITY OF DESIGN, SERVER DEPENDS ON THE CLIENT TO SET THE STATUS. THIS IS IMPORTANT! WITHOUT THIS THE LOGIC WILL FAIL **/
+      /** FOR SIMPLICITY OF DESIGN, SERVER DEPENDS ON THE CLIENT TO SET THE STATUS. THIS IS IMPORTANT! WITHOUT THIS THE LOGIC WILL FAIL **/
 
             MessageBoxResult result;
             if (RGReportRows.Any(p => p.RemarkText.Trim() == String.Empty))

@@ -41,7 +41,7 @@
                     <dtGrid:BindableDataGrid Name="reportGrid" CanUserSortColumns="False" CanUserReorderColumns="False" Margin="20"
                                              IsReadOnly="True" CellStyle="{StaticResource AlignCenter}" 
                                              HeadersVisibility="None"
-                                             MinWidth="400" MinHeight="250" MaxHeight="300" AutoGenerateColumns="False">
+                                             MinWidth="400" MinHeight="250" MaxHeight="450" AutoGenerateColumns="False">
                     </dtGrid:BindableDataGrid>
                 </local:BusyIndicator>
                 <Button Name="btnExport" Content="Export To Excel" HorizontalAlignment="Center" Click="btnExport_Click"/>

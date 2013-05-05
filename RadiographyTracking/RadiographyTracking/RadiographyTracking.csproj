@@ -143,6 +143,7 @@
       <DependentUpon>SecurityQuestions.resx</DependentUpon>
     </Compile>
     <Compile Include="Utility.cs" />
+    <Compile Include="Helpers\CovergaeIdfromCoverage.cs" />
     <Compile Include="Views\AddressStickers\PrintAddressStickers.xaml.cs">
       <DependentUpon>PrintAddressStickers.xaml</DependentUpon>
     </Compile>
@@ -480,6 +481,12 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\print.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ExcelLogo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="ValueConverters\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Silverlight\$(SilverlightVersion)\Microsoft.Silverlight.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

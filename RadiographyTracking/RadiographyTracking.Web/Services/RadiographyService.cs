@@ -841,13 +841,14 @@
         public IQueryable<RGReport> GetRGReports(String RGReportNo)
         {
             var foundryID = getFoundryIDForCurrentUser();
-            return this.DbContext.RGReports.Include(p => p.RGReportRows.Select(r => r.Remark))
+            var result= this.DbContext.RGReports.Include(p => p.RGReportRows.Select(r => r.Remark))
                                             .Where(p => p.ReportNo == RGReportNo &&
                                                     p.FixedPattern.Customer.Foundry.ID ==
                                                         (foundryID ?? p.FixedPattern.Customer.Foundry.ID));
+            return result;
         }
 
-        public IQueryable<RGReport> GetRGReportsByDate(DateTime fromDate, DateTime toDate, string rtNo, string coverage)
+        public IQueryable<RGReport> GetRGReportsByDate(DateTime fromDate, DateTime toDate, string rtNo, int coverageId)
         {
             //to ensure that time component of the date does not make some dates get excluded
             var fromDateValue = fromDate.Date;
@@ -858,7 +859,7 @@
                                                    (p.ReportDate >= fromDateValue || fromDate == default(DateTime)) &&
                                                    (p.ReportDate <= toDateValue || toDate == default(DateTime)) &&
                                                    (rtNo == string.Empty || p.RTNo.Contains(rtNo)) &&
-                                                   (coverage == string.Empty || p.Coverage.CoverageName.Contains(coverage)) &&
+                                                   (coverageId==-1 || p.CoverageID==coverageId) &&
                                                     p.FixedPattern.Customer.Foundry.ID ==
                                                         (foundryID ?? p.FixedPattern.Customer.Foundry.ID));
         }
@@ -943,7 +944,7 @@
                 .Distinct();
         }
 
-        public IEnumerable<RTStatusReportRow> GetRTStatus(int foundryId, DateTime? fromDate, DateTime? toDate, string RTNo, string HeatNo, string fpNo, string coverage)
+        public IEnumerable<RTStatusReportRow> GetRTStatus(int foundryId, DateTime? fromDate, DateTime? toDate, string RTNo, string HeatNo, string fpNo, int? coverageId)
         {
             //from date and to date to not consider time
             if (fromDate != null)
@@ -958,8 +959,8 @@
                                 && (toDate == null || r.ReportDate < toDate)
                                 && (RTNo == string.Empty || r.RTNo.Contains(RTNo))
                                 && (HeatNo == string.Empty || r.HeatNo.Contains(HeatNo))
-                                && ((fpNo == string.Empty && coverage == string.Empty)
-                                    || (r.Coverage.CoverageName.Contains(coverage) && r.FixedPattern.FPNo.Contains(fpNo)))
+                                && ((fpNo == string.Empty && (coverageId == null || coverageId==-1))
+                                    || (r.CoverageID==coverageId && r.FixedPattern.FPNo.Contains(fpNo)))
                                 group r by new { r.FixedPattern, r.RTNo, r.Coverage } into g
                                 let allrows = g.SelectMany(p => p.RGReportRows)
                                                 .Where(p => p.Remark != null) //don't count the rows with blank remarks
