@@ -73,17 +73,12 @@ namespace RadiographyTracking.Views
         /// </summary>
         public override String ChangeContext
         {
-            get
-            {
-                return "RGReport";
-            }
+            get { return "RGReport"; }
         }
 
         public override String ChangeContextValue
         {
-            get {
-                return RGReport != null ? String.Concat(RGReport.RTNo, " Row") : String.Empty;
-            }
+            get { return RGReport != null ? String.Concat(RGReport.RTNo, " Row") : String.Empty; }
         }
 
         /// <summary>
@@ -119,12 +114,12 @@ namespace RadiographyTracking.Views
             BindToPage(txtHeatNo, TextBox.TextProperty, "RGReport.HeatNo");
             BindToPage(txtProcedureRef, TextBox.TextProperty, "RGReport.ProcedureRef");
             BindToPage(txtSpecifications, TextBox.TextProperty, "RGReport.Specifications");
-            BindToPage(txtEndCustomerName,  AutoCompleteBox.TextProperty, "RGReport.EndCustomerName");
+            BindToPage(txtEndCustomerName, AutoCompleteBox.TextProperty, "RGReport.EndCustomerName");
             BindToPage(txtFilm, TextBox.TextProperty, "RGReport.Film");
             BindToPage(ReportDatePicker, DatePicker.SelectedDateProperty, "RGReport.ReportDate");
             BindToPage(TestDatePicker, DatePicker.SelectedDateProperty, "RGReport.DateOfTest");
             BindToPage(cmbShift, ComboBox.SelectedValueProperty, "RGReport.Shift");
-            BindToPage(txtEvaluation, TextBox.TextProperty, "RGReport.EvaluationAsPer");
+            BindToPage(txtEvaluation, TextBlock.TextProperty, "RGReport.EvaluationAsPer");
             BindToPage(txtAcceptance, TextBox.TextProperty, "RGReport.AcceptanceAsPer");
             BindToPage(lblViewing, TextBlock.TextProperty, "RGReport.Viewing");
             BindToPage(txtDrawingNo, TextBox.TextProperty, "RGReport.DrawingNo");
@@ -171,10 +166,7 @@ namespace RadiographyTracking.Views
         /// </summary>
         public RGReport RGReport
         {
-            get
-            {
-                return _rgReport;
-            }
+            get { return _rgReport; }
             set
             {
                 _rgReport = value;
@@ -189,17 +181,16 @@ namespace RadiographyTracking.Views
 
         public EntityCollection<RGReportRow> RGReportRows
         {
-            get
-            {
-                return _rgReportRows;
-            }
+            get { return _rgReportRows; }
             set
             {
                 _rgReportRows = value;
                 OnPropertyChanged("RGReportRows");
+
             }
         }
 
+ 
         /// <summary>
         /// Total area for the entire report
         /// </summary>
@@ -207,13 +198,16 @@ namespace RadiographyTracking.Views
         {
             get
             {
-                return (RGReportRows == null ? 0 :
-                            RGReportRows
-                            .Where(p=>p.RemarkText != "RETAKE")
-                            .Sum(p => (p.FilmSize == null ? 0 : p.FilmSize.Area * p.FilmCount)))
-                            .ToString() + " Sq. Inches";
+                return (RGReportRows == null
+                            ? 0
+                            : RGReportRows
+                                  .Where(p => p.RemarkText != "RETAKE")
+                                  .Sum(p => (p.FilmSize == null ? 0 : p.FilmSize.Area * p.FilmCount)))
+                           .ToString() + " Sq. Inches";
             }
         }
+
+     
 
         public void UpdateEnergyWiseArea()
         {
@@ -235,9 +229,10 @@ namespace RadiographyTracking.Views
                 AddTextColumn(dt, e.Name, e.Name);
                 headerRow[e.Name] = e.Name;
                 actualRow[e.Name] = RGReportRows
-                                    .Where(p => p.EnergyID == e.ID &&
-                                                p.RemarkText != "RETAKE") //30-Jun-12 - Roopesh added this to ensure that retake areas are not included
-                                    .Sum(p => p.FilmSize.Area * p.FilmCount);
+                    .Where(p => p.EnergyID == e.ID &&
+                                p.RemarkText != "RETAKE")
+                    //30-Jun-12 - Roopesh added this to ensure that retake areas are not included
+                    .Sum(p => p.FilmSize.Area * p.FilmCount);
             }
 
             dt.Rows.Add(headerRow);
@@ -247,19 +242,19 @@ namespace RadiographyTracking.Views
             energyAreas.DataBind();
 
             OnPropertyChanged("TotalArea");
-        }
+           }
 
         private static void AddTextColumn(DataTable reportTable, String columnName, String caption)
         {
             var dc = new DataColumn(columnName)
-                         {
-                             Caption = caption,
-                             ReadOnly = true,
-                             DataType = typeof(String),
-                             AllowResize = true,
-                             AllowSort = false,
-                             AllowReorder = false
-                         };
+                {
+                    Caption = caption,
+                    ReadOnly = true,
+                    DataType = typeof(String),
+                    AllowResize = true,
+                    AllowSort = false,
+                    AllowReorder = false
+                };
             reportTable.Columns.Add(dc);
         }
 
@@ -268,24 +263,24 @@ namespace RadiographyTracking.Views
         {
             //also give a few default empty string values so that UI copy operation is possible
             var rgReportRow = new RGReportRow
-                                            {
-                                                RGReport = this.RGReport,
-                                                //auto increment sl no for each additional row
-                                                SlNo = RGReportRows.Max(p => p.SlNo) + 1,
-                                                Density = " ",
-                                                Designation = " ",
-                                                Location = " ",
-                                                Segment = " ",
-                                                Sensitivity = " ",
-                                                FilmSizeString = " ",
-                                                RemarkText = " ",
-                                                TechnicianText = " ",
-                                                WelderText = " ",
-                                                FilmCount = 1, //default value for film counts
-                                                RowType = ((RadiographyContext)DomainSource.DomainContext)
-                                                                .RGReportRowTypes
-                                                                .FirstOrDefault(p => p.Value == "FRESH")
-                                            };
+                {
+                    RGReport = this.RGReport,
+                    //auto increment sl no for each additional row
+                    SlNo = RGReportRows.Max(p => p.SlNo) + 1,
+                    Density = " ",
+                    Designation = " ",
+                    Location = " ",
+                    Segment = " ",
+                    Sensitivity = " ",
+                    FilmSizeString = " ",
+                    RemarkText = " ",
+                    TechnicianText = " ",
+                    WelderText = " ",
+                    FilmCount = 1, //default value for film counts
+                    RowType = ((RadiographyContext)DomainSource.DomainContext)
+                        .RGReportRowTypes
+                        .FirstOrDefault(p => p.Value == "FRESH")
+                };
 
             RGReportRows.Add(rgReportRow);
             OnPropertyChanged("RGReportRows");
@@ -303,6 +298,7 @@ namespace RadiographyTracking.Views
 
             RGReport = (RGReport)((DomainDataSourceView)((DomainDataSource)sender).Data).GetItemAt(0);
             RGReportRows = RGReport.RGReportRows;
+          
             //now that fixedpatternid is available
             FixedPatternsSource.Load();
             UpdateEnergyWiseArea();
@@ -319,7 +315,9 @@ namespace RadiographyTracking.Views
         //Kept here only for the template column to work fine
         public override void DeleteOperation(object sender, RoutedEventArgs e)
         {
-            if (MessageBox.Show("Are you sure you want to delete this item?", "Confirm Delete", MessageBoxButton.OKCancel) == MessageBoxResult.Cancel)
+            if (
+                MessageBox.Show("Are you sure you want to delete this item?", "Confirm Delete",
+                                MessageBoxButton.OKCancel) == MessageBoxResult.Cancel)
                 return;
 
             DataGridRow row = DataGridRow.GetRowContainingElement(sender as FrameworkElement);
@@ -329,7 +327,7 @@ namespace RadiographyTracking.Views
                 RGReportRows.Remove((RGReportRow)row.DataContext);
                 //also delete from the datacontext
                 ((RadiographyContext)this.DomainSource.DomainContext).RGReportRows
-                                    .Remove(row.DataContext as RGReportRow);
+                                                                      .Remove(row.DataContext as RGReportRow);
 
                 //mark at least one row deleted
                 RGReport.RowsDeleted = true;
@@ -362,15 +360,21 @@ namespace RadiographyTracking.Views
                 var duplicateRow = RGReportRows.FirstOrDefault(p => p.SlNo == row.SlNo && p != row);
                 if (duplicateRow != null)
                 {
-                    MessageBox.Show(string.Format("Sl no {0} has been repeated twice, Correct this before saving", row.SlNo));
+                    MessageBox.Show(string.Format("Sl no {0} has been repeated twice, Correct this before saving",
+                                                  row.SlNo));
                     return;
                 }
 
                 //Location + segment uniqueness validation validation
-                var conflictingRow = RGReportRows.FirstOrDefault(p => p.SlNo != row.SlNo && p.Location == row.Location && p.Segment == row.Segment);
+                var conflictingRow =
+                    RGReportRows.FirstOrDefault(
+                        p => p.SlNo != row.SlNo && p.Location == row.Location && p.Segment == row.Segment);
                 if (conflictingRow != null)
                 {
-                    MessageBox.Show(string.Format("Rows with Sl No {0} and {1} have the same location and segments. Correct this before saving", row.SlNo, conflictingRow.SlNo));
+                    MessageBox.Show(
+                        string.Format(
+                            "Rows with Sl No {0} and {1} have the same location and segments. Correct this before saving",
+                            row.SlNo, conflictingRow.SlNo));
                     return;
                 }
             }
@@ -378,32 +382,38 @@ namespace RadiographyTracking.Views
             //set the viewing
             SetViewing();
 
-
-            /** FOR SIMPLICITY OF DESIGN, SERVER DEPENDS ON THE CLIENT TO SET THE STATUS. THIS IS IMPORTANT! WITHOUT THIS THE LOGIC WILL FAIL **/
+      /** FOR SIMPLICITY OF DESIGN, SERVER DEPENDS ON THE CLIENT TO SET THE STATUS. THIS IS IMPORTANT! WITHOUT THIS THE LOGIC WILL FAIL **/
 
             MessageBoxResult result;
             if (RGReportRows.Any(p => p.RemarkText.Trim() == String.Empty))
             {
                 result = MessageBox.Show("Save Incomplete Report. Fetching this RT No will fetch Same Report again",
-                    "Confirm Save", MessageBoxButton.OKCancel);
+                                         "Confirm Save", MessageBoxButton.OKCancel);
             }
-                //for the first report, deleted rows do not affect status of the casting but for later reports if even a single row
-                // is deleted, then the report can never be the final report (hence the casting will remain in pending state)
-            else if (RGReportRows.Any(p => p.RemarkText.ToUpper() != "ACCEPTABLE") || ((!RGReport.First) && RGReport.RowsDeleted))
+            //for the first report, deleted rows do not affect status of the casting but for later reports if even a single row
+            // is deleted, then the report can never be the final report (hence the casting will remain in pending state)
+            else if (RGReportRows.Any(p => p.RemarkText.ToUpper() != "ACCEPTABLE") ||
+                     ((!RGReport.First) && RGReport.RowsDeleted))
             {
-                result = MessageBox.Show("Mark Casting as Pending. At least one report is needed after this for this RT No",
-                    "Confirm Save", MessageBoxButton.OKCancel);
+                result =
+                    MessageBox.Show(
+                        "Mark Casting as Pending. At least one report is needed after this for this RT No",
+                        "Confirm Save", MessageBoxButton.OKCancel);
 
                 if (result != MessageBoxResult.Cancel)
-                    RGReport.Status = ((RadiographyContext)DomainSource.DomainContext).RGStatus.FirstOrDefault(p => p.Status == "PENDING");
+                    RGReport.Status =
+                        ((RadiographyContext)DomainSource.DomainContext).RGStatus.FirstOrDefault(
+                            p => p.Status == "PENDING");
             }
             else
             {
                 result = MessageBox.Show("Mark Casting as complete. This will be Last Report for this RT No.",
-                    "Confirm Save", MessageBoxButton.OKCancel);
+                                         "Confirm Save", MessageBoxButton.OKCancel);
 
                 if (result != MessageBoxResult.Cancel)
-                    RGReport.Status = ((RadiographyContext)DomainSource.DomainContext).RGStatus.FirstOrDefault(p => p.Status == "COMPLETE");
+                    RGReport.Status =
+                        ((RadiographyContext)DomainSource.DomainContext).RGStatus.FirstOrDefault(
+                            p => p.Status == "COMPLETE");
             }
 
             //allow cancel
@@ -501,7 +511,7 @@ namespace RadiographyTracking.Views
 
         #endregion
 
-        void FilmSizeAreaLoadCompleted(object sender, System.ComponentModel.AsyncCompletedEventArgs e)
+        private void FilmSizeAreaLoadCompleted(object sender, System.ComponentModel.AsyncCompletedEventArgs e)
         {
             //in case it din't load earlier
             UpdateEnergyWiseArea();
@@ -518,24 +528,27 @@ namespace RadiographyTracking.Views
             else
             {
                 MessageBox.Show("Saved Successfully", "Success", MessageBoxButton.OK);
-                var addressStickersWindow = new PrintAddressStickers {
-                    ReportNo = this.RGReport.ReportNo
-                };
+                var addressStickersWindow = new PrintAddressStickers
+                    {
+                        ReportNo = this.RGReport.ReportNo
+                    };
                 addressStickersWindow.Show();
             }
         }
 
-        void txtEndCustomer_Populating(object sender, PopulatingEventArgs e)
+        private void txtEndCustomer_Populating(object sender, PopulatingEventArgs e)
         {
             var ctx = new RadiographyContext();
             if (RGReport != null)
                 ctx.GetEndCustomerNames(EndCustomerNames_Loaded, null);
         }
 
-        void EndCustomerNames_Loaded(InvokeOperation<IEnumerable<string>> op)
+        private void EndCustomerNames_Loaded(InvokeOperation<IEnumerable<string>> op)
         {
             txtEndCustomerName.ItemsSource = op.Value;
             txtEndCustomerName.PopulateComplete();
         }
+
+
     }
 }

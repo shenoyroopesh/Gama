@@ -40,8 +40,9 @@ namespace RadiographyTracking.Views
             busyIndicator.IsBusy = true;
 
             int foundryId = cmbFoundry.SelectedIndex == -1 ? -1 : ((Foundry)cmbFoundry.SelectedItem).ID;
+            var coverageId =cmbCoverage.SelectedValue==null?-1: ((Coverage)cmbCoverage.SelectedValue).ID;
             ctx.Load(ctx.GetRTStatusQuery(foundryId, (DateTime?)fromDatePicker.SelectedDate,
-                (DateTime?)toDatePicker.SelectedDate, txtRTNo.Text, txtHeatNo.Text)).Completed += loadCompleted;            
+                (DateTime?)toDatePicker.SelectedDate, txtRTNo.Text, txtHeatNo.Text, txtFPNo.Text, coverageId)).Completed += loadCompleted;            
         }
 
         private void loadCompleted(object sender, EventArgs e)
@@ -90,10 +91,20 @@ namespace RadiographyTracking.Views
 
         public bool ValueChanged()
         {
-         return   !(cmbFoundry.SelectedIndex == -1 || String.IsNullOrEmpty(fromDatePicker.Text) ||
-                                  String.IsNullOrEmpty(toDatePicker.Text)) 
-               || !(cmbFoundry.SelectedIndex == -1 || (String.IsNullOrEmpty(txtRTNo.Text) &&
-                                  String.IsNullOrEmpty(txtHeatNo.Text)));
+            return (!(cmbFoundry.SelectedIndex == -1 || String.IsNullOrEmpty(fromDatePicker.Text) ||
+                      String.IsNullOrEmpty(toDatePicker.Text))
+                    || !(cmbFoundry.SelectedIndex == -1 || (String.IsNullOrEmpty(txtRTNo.Text) &&
+                                                            String.IsNullOrEmpty(txtHeatNo.Text)))
+                    || !(cmbFoundry.SelectedIndex == -1 || String.IsNullOrEmpty(txtFPNo.Text) ||
+                     cmbCoverage.SelectedIndex == -1));
+       
         }
+
+        private void CmbCoverage_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ValueChanged();
+        }
+
+       
     }
 }

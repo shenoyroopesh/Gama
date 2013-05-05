@@ -1843,7 +1843,7 @@
         </Setter>
     </Style>
 
-    <!--Save Button Style-->
+    <!--Print Button Style-->
     <Style x:Key="PrintButtonStyle" TargetType="Button" BasedOn="{StaticResource BaseButtonStyle}">
         <Setter Property="ContentTemplate">
             <Setter.Value>
@@ -1851,6 +1851,20 @@
                     <StackPanel Orientation="Horizontal">
                         <Image Stretch="UniformToFill" Source="/RadiographyTracking;component/Images/print.png" />
                         <TextBlock Text="Print" FontSize="12" Margin="10,0,0,0"/>
+                    </StackPanel>
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!--Excel Button Style-->
+    <Style x:Key="ExcelButtonStyle" TargetType="Button" BasedOn="{StaticResource BaseButtonStyle}">
+        <Setter Property="ContentTemplate">
+            <Setter.Value>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <Image Stretch="UniformToFill" Source="/RadiographyTracking;component/Images/ExcelLogo.png" />
+                        <TextBlock Text="Excel" FontSize="12" Margin="10,0,0,0"/>
                     </StackPanel>
                 </DataTemplate>
             </Setter.Value>
