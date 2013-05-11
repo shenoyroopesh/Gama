@@ -14,14 +14,18 @@
     xmlns:views="clr-namespace:RadiographyTracking.Views">
     <UserControl.Resources>
         <my1:RadiographyContext x:Key="RadiographyContext" />
-    </UserControl.Resources>    
+        <ex:ComboBoxDataSource x:Key="CoveragesSource" DomainContext="{StaticResource RadiographyContext}" 
+                               OperationName="GetCoveragesQuery" />
+    </UserControl.Resources>
     <Grid x:Name="LayoutRoot" Background="White">
         <sdk:Label Name="headerLabel" Style="{StaticResource PageHeaderStyle}" Content="RADIOGRAPHY REPORTS"/>
-        <riaControls:DomainDataSource AutoLoad="True" Name="RGDomainDataSource" QueryName="GetRGReportsByDateQuery"
+        <riaControls:DomainDataSource AutoLoad="False" Name="RGDomainDataSource" QueryName="GetRGReportsByDateQuery"
                                       DomainContext="{StaticResource RadiographyContext}">
             <riaControls:DomainDataSource.QueryParameters>
                 <riaControls:Parameter ParameterName="fromDate" Value="{Binding ElementName=fromDatePicker, Path=SelectedDate}" />
                 <riaControls:Parameter ParameterName="toDate" Value="{Binding ElementName=toDatePicker, Path=SelectedDate}" />
+                <riaControls:Parameter ParameterName="rtNo" Value="{Binding ElementName=txtRTNo, Path=Text}" />
+                <riaControls:Parameter ParameterName="coverageId" Value="{Binding ElementName=cmbCoverage, Path=SelectedValue,Converter={StaticResource CovergaeIdfromCoverage}}" />
             </riaControls:DomainDataSource.QueryParameters>
         </riaControls:DomainDataSource>
         <riaControls:DomainDataSource AutoLoad="True" Name="FPDomainSource" QueryName="GetFixedPatternsQuery" 
@@ -33,11 +37,24 @@
         <riaControls:DomainDataSource AutoLoad="True" Name="CoverageDomainSource" QueryName="GetCoveragesQuery" 
                                       DomainContext="{StaticResource RadiographyContext}" />
         <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
-            <StackPanel Height="30" HorizontalAlignment="Left" Orientation="Horizontal" VerticalAlignment="Top" Margin="20">
+            <StackPanel Height="30" HorizontalAlignment="Left" Orientation="Horizontal" VerticalAlignment="Top" Margin="20,20,20,0">
                 <sdk:Label Content="From:" Margin="3" VerticalAlignment="Center" />
                 <sdk:DatePicker Name="fromDatePicker" IsEnabled="{Binding ElementName=RGDomainDataSource, Path=CanLoad}" />
                 <sdk:Label Content="To:" Margin="3" VerticalAlignment="Center" />
                 <sdk:DatePicker Name="toDatePicker" IsEnabled="{Binding ElementName=RGDomainDataSource, Path=CanLoad}" />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="10, 10,0,10">
+                <TextBlock Text="RT No" VerticalAlignment="Center" Margin="10,0,0,0"/>
+                <TextBox Name="txtRTNo"  Margin="10,0,0,0" MinWidth="50" IsEnabled="{Binding ElementName=RGDomainDataSource, Path=CanLoad}" />
+                <TextBlock Text="Coverage" VerticalAlignment="Center" Margin="10,0,0,0"/>
+                <ComboBox Width="100" HorizontalAlignment="Left" Name="cmbCoverage" Margin="10,0,0,0"
+                          Style="{StaticResource ComboBoxStyle}"
+                          IsEnabled="{Binding ElementName=RGReportsSource, Path=HasChanges, 
+                                    Converter={StaticResource NotOperatorValueConverter}}"
+                          ItemContainerStyle="{StaticResource ComboBoxItemStyle}"
+                          ItemsSource="{Binding Source={StaticResource CoveragesSource}, Path=Data}"
+                          DisplayMemberPath="CoverageName"/>
+                <Button Name="btnFetch" Content="Generate" Click="btnFetch_Click" Margin="10,0,0,0" />
             </StackPanel>
             <local:BusyIndicator x:Name="busyIndicator" IsBusy="{Binding IsBusy, ElementName=RGDomainDataSource}">
                 <custom:CustomGrid ItemsSource="{Binding ElementName=RGDomainDataSource, Path=Data, Mode=TwoWay}" 
@@ -82,11 +99,24 @@
                                 </DataTemplate>
                             </sdk:DataGridTemplateColumn.CellTemplate>
                         </sdk:DataGridTemplateColumn>
+                        <sdk:DataGridTemplateColumn Header="Excel" Width="Auto">
+                            <sdk:DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Button Name="grdExcelButton" Tag="{Binding}" Style="{StaticResource ExcelButtonStyle}"
+                                            Click="ExcelExportOperation"/>
+                                </DataTemplate>
+                            </sdk:DataGridTemplateColumn.CellTemplate>
+                        </sdk:DataGridTemplateColumn>
                     </sdk:DataGrid.Columns>
                 </custom:CustomGrid>
             </local:BusyIndicator>
-            <Button Margin="20" Name="btnAdd" Width="75" Style="{StaticResource AddButtonStyle}"
-                    HorizontalAlignment="Right"/>
+            <Grid>
+                <Button Name="btnDownload" Content="Download Excel" HorizontalAlignment="left" 
+                        Click="btnDownload_Click" Visibility="Collapsed" Grid.Column="0"/>
+                <Button  Name="btnAdd" Width="75" Style="{StaticResource AddButtonStyle}" 
+                         HorizontalAlignment="Right" Grid.Column="1"/>
+         
+            </Grid>
         </StackPanel>
     </Grid>
 </views:BaseCRUDView>

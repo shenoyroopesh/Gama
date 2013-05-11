@@ -178,7 +178,7 @@
                                       DisplayMemberPath="Value"/>
                         </StackPanel>
                         <TextBlock Text="Evaluation As Per" Grid.Column="4" Grid.Row="8" Margin="0,4" />
-                        <TextBox Name="txtEvaluation" Grid.Column="6" Grid.Row="8" />
+                        <TextBlock Name="txtEvaluation" Grid.Column="6" Grid.Row="8" />
                         <TextBlock Text="Acceptance As Per" TextWrapping="Wrap"   Grid.Column="4" Grid.Row="9" />
                         <TextBox Name="txtAcceptance" Grid.Column="6" Grid.Row="9"  />
                         <TextBlock Text="Drawing No" TextWrapping="Wrap"   Grid.Column="4" Grid.Row="10" Margin="0,4" />
@@ -193,7 +193,7 @@
                         <custom:CustomGrid Name="RGReportDataGrid" Style="{StaticResource DataGridStyle}" 
                                    ColumnHeaderStyle="{StaticResource DataGridHeaderGlassEffect}"
                                    CellStyle="{StaticResource Stretch}" MaxHeight="300" 
-                                   CanUserSortColumns="True">
+                                   CanUserSortColumns="True" >
                             <custom:CustomGrid.Resources>
                                 <Style TargetType="TextBlock">
                                     <Setter Property="TextAlignment" Value="Center" />
@@ -206,11 +206,11 @@
                                 <sdk:DataGridTextColumn Header="SlNo" Binding="{Binding Path=SlNo, Mode=TwoWay}"></sdk:DataGridTextColumn>
                                 <sdk:DataGridTextColumn Header="Location" Binding="{Binding Path=Location, Mode=TwoWay}"></sdk:DataGridTextColumn>
                                 <sdk:DataGridTextColumn Header="Segment" Binding="{Binding Path=Segment, Mode=TwoWay}"></sdk:DataGridTextColumn>
-                                <sdk:DataGridTextColumn Header="Thickness" Binding="{Binding Path=ThicknessRangeUI, Mode=TwoWay}"></sdk:DataGridTextColumn>
+                                <sdk:DataGridTextColumn Header="Thickness" Binding="{Binding Path=ThicknessRangeUI, Mode=TwoWay}"  ></sdk:DataGridTextColumn>
                                 <sdk:DataGridTemplateColumn Header="Energy">
                                     <sdk:DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
-                                            <TextBlock Text="{Binding Path=EnergyText, Mode=TwoWay}" VerticalAlignment="Center" />
+                                            <TextBlock Text="{Binding Path=EnergyText, Mode=TwoWay}" VerticalAlignment="Center"  />
                                         </DataTemplate>
                                     </sdk:DataGridTemplateColumn.CellTemplate>
                                     <sdk:DataGridTemplateColumn.CellEditingTemplate>

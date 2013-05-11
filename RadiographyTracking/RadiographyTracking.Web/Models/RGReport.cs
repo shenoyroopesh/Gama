@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.ServiceModel.DomainServices.Server;
 using System.ComponentModel.DataAnnotations;
@@ -12,7 +13,7 @@ namespace RadiographyTracking.Web.Models
     /// This class represents a single Radiography report entry, which forms the basis of all the work done 
     /// by the users of this software
     /// </summary>
-    public class RGReport
+    public partial class RGReport : INotifyPropertyChanged
     {
         /// <summary>
         /// Default constructor doesn't do much, here only for RIA services to work fine
@@ -166,7 +167,7 @@ namespace RadiographyTracking.Web.Models
         public DateTime DateOfTest { get; set; }
         public int? ShiftID { get; set; }
         public Shift Shift { get; set; }
-        public String EvaluationAsPer { get; set; }
+       // public String EvaluationAsPer { get; set; }
         public String AcceptanceAsPer { get; set; }
         public String DrawingNo { get; set; }
         public int StatusID { get; set; }
@@ -188,8 +189,34 @@ namespace RadiographyTracking.Web.Models
         /// </summary>
         public string ReportTypeAndNo { get; set; }
 
+       // [Include]
+       // public ICollection<RGReportRow> RGReportRows { get; set; }
+
+
+
+        private ICollection<RGReportRow> rgReportRows;
         [Include]
-        public ICollection<RGReportRow> RGReportRows { get; set; }
+        public ICollection<RGReportRow> RGReportRows
+        {
+            get
+            {
+                return rgReportRows;
+            }
+            set
+            {
+
+                if (rgReportRows != value)
+                {
+                    rgReportRows = value;
+                    this.RaisePropertyChanged("RGReportRows");
+                    this.RaisePropertyChanged("EvaluationAsPer");
+
+                }
+
+            }
+
+        }
+
         public String Result { get; set; }
 
         /// <summary>
@@ -347,5 +374,25 @@ namespace RadiographyTracking.Web.Models
             }
             return null;
         }
+
+        #region INotifyPropertyChanged
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        private void RaisePropertyChanged(string propertyName)
+        {
+            this.OnPropertyChanged(new PropertyChangedEventArgs(propertyName));
+        }
+
+        private void OnPropertyChanged(PropertyChangedEventArgs e)
+        {
+            PropertyChangedEventHandler handler = this.PropertyChanged;
+            if (handler != null)
+            {
+                handler(this, e);
+            }
+        }
+
+        #endregion
     }
 }
