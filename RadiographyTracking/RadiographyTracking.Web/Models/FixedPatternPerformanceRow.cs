@@ -33,5 +33,7 @@ namespace RadiographyTracking.Web.Models
         [Include]
         [Association("LocationClass", "ID", "FixedPatternPerformanceRowID")]
         public IEnumerable<LocationClass> Locations { get; set; }
+
+      
     }
 }

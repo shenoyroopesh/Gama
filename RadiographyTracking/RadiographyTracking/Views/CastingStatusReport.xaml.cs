@@ -73,7 +73,7 @@ namespace RadiographyTracking.Views
         }
 
         private void SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {                    
+        {
             btnFetch.IsEnabled = ValueChanged();              
         }
 
@@ -100,11 +100,15 @@ namespace RadiographyTracking.Views
        
         }
 
-        private void CmbCoverage_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            ValueChanged();
-        }
 
-       
+        private void CmbFoundry_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+                fromDatePicker.Text = null;
+                toDatePicker.Text = null;
+                txtRTNo.Text = string.Empty;
+                txtHeatNo.Text = string.Empty;
+                txtFPNo.Text = string.Empty;
+                cmbCoverage.SelectedItem = null;
+        }
     }
 }

@@ -37,6 +37,8 @@
     </SccAuxPath>
     <SccProvider>
     </SccProvider>
+    <InBrowserSettingsFile>Properties\InBrowserSettings.xml</InBrowserSettingsFile>
+    <RequireInBrowserElevation>false</RequireInBrowserElevation>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -119,6 +121,7 @@
     </Compile>
     <Compile Include="DataGridExtensions.cs" />
     <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="Helpers\BooleanToVisibilityConverter.cs" />
     <Compile Include="Models\FPTemplateRow.partial.cs" />
     <Compile Include="Models\RGReportRow.partial.cs" />
     <Compile Include="Models\Shift.Partial.cs" />
@@ -486,7 +489,7 @@
     <Resource Include="Images\ExcelLogo.png" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="ValueConverters\" />
+    <None Include="Properties\InBrowserSettings.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Silverlight\$(SilverlightVersion)\Microsoft.Silverlight.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

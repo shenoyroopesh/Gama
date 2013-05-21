@@ -29,7 +29,7 @@
                     <ComboBox Name="cmbFoundry" Style="{StaticResource ComboBoxStyle}" MinWidth="75" 
                               ItemsSource="{Binding Source={StaticResource FoundryDataSource}, Path=Data}" 
                               ItemContainerStyle="{StaticResource ComboBoxItemStyle}"
-                              SelectionChanged="SelectionChanged" DisplayMemberPath="FoundryName"/>
+                              SelectionChanged="CmbFoundry_OnSelectionChanged" DisplayMemberPath="FoundryName"/>
                     <sdk:Label Content="From:" Margin="3" VerticalAlignment="Center" />
                     <sdk:DatePicker Name="fromDatePicker" IsEnabled="{Binding ElementName=filmTransactionsDomainDataSource, Path=CanLoad}" 
                                     SelectedDateChanged="SelectionChanged"/>
@@ -45,7 +45,6 @@
                     <TextBlock Text="FP No" VerticalAlignment="Center" Margin="10,0,0,0"/>
                     <TextBox Name="txtFPNo" Margin="20, 0,20,0" MinWidth="50" TextChanged="TextChanged" />
                     <TextBlock Text="Coverage" VerticalAlignment="Center" Margin="10,0,0,0"/>
-                    <!--<TextBox Name="txtCoverage" Margin="20, 0,20,0" MinWidth="50" TextChanged="TextChanged" />-->
                     <ComboBox Width="100" HorizontalAlignment="Left" Name="cmbCoverage"
                           Style="{StaticResource ComboBoxStyle}"
                           IsEnabled="{Binding ElementName=RGReportsSource, Path=HasChanges, 
@@ -53,7 +52,7 @@
                           ItemContainerStyle="{StaticResource ComboBoxItemStyle}"
                           ItemsSource="{Binding Source={StaticResource CoveragesSource}, Path=Data}"
                           DisplayMemberPath="CoverageName"
-                              SelectionChanged="CmbCoverage_OnSelectionChanged"/>
+                              SelectionChanged="SelectionChanged"/>
                 </StackPanel>
                 <Button Name="btnFetch" Content="Generate" Click="btnFetch_Click" HorizontalAlignment="Center" 
                         Margin="0,10,0,0" IsEnabled="False"/>

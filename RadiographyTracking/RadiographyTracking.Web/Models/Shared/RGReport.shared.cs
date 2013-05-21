@@ -4,32 +4,32 @@ using System.Linq;
 
 namespace RadiographyTracking.Web.Models
 {
-    public partial class RGReport : INotifyPropertyChanged
+    public partial class RGReport
     {
         private string evaluationAsPer;
         public string EvaluationAsPer
         {
             get
             {
-
                 if (RGReportRows == null)
                     return string.Empty;
                 else
                 {
                     try
                     {
-                        var range1 = 
-                            RGReportRows.Count(
-                                p =>
-                                Convert.ToInt32(p.ThicknessRange) >= 0 && Convert.ToInt32(p.ThicknessRange) <= 50);
-                        var range2 =
-                            RGReportRows.Count(
-                                p =>
-                                Convert.ToInt32(p.ThicknessRange) >= 51 && Convert.ToInt32(p.ThicknessRange) <= 114);
-                        var range3 = 
-                        RGReportRows.Count(
-                            p =>
-                            Convert.ToInt32(p.ThicknessRange) >= 115 && Convert.ToInt32(p.ThicknessRange) <= 305);
+                        int range1=0, range2=0, range3=0;
+
+                        foreach (var row in RGReportRows)
+                        {
+                            var thicknessValue = Convert.ToInt32(row.ThicknessRange.Split('-').ToList().Select(k => int.Parse(k.Trim())).Average());
+                            if (thicknessValue >= 0 && thicknessValue <= 50)
+                                range1++;
+                            if (thicknessValue >= 51 && thicknessValue <= 114)
+                                range2++;
+                            if (thicknessValue >= 115 && thicknessValue <= 305)
+                                range3++;
+                        }
+                   
 
                         var eval = "ASTM";
                         if (range1 > 0)
@@ -47,20 +47,10 @@ namespace RadiographyTracking.Web.Models
                     }
                 }
             }
-            set
-            {
-                if (evaluationAsPer != value)
-                {
-                    evaluationAsPer = value;
-                    this.RaisePropertyChanged("EvaluationAsPer");
-
-                }
-            }
-
+            set { evaluationAsPer = value; }
 
         }
-
-        
+       
     }
 
         
