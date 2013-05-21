@@ -62,6 +62,8 @@ namespace RadiographyTracking.Views
 
             if (IsEditMode) DomainSource.Load();
 
+            
+
             //var ctx = new RadiographyContext();
             //ctx.Load(ctx.GetEndCustomerNames());
         }
@@ -207,7 +209,7 @@ namespace RadiographyTracking.Views
             }
         }
 
-     
+   
 
         public void UpdateEnergyWiseArea()
         {
@@ -242,6 +244,7 @@ namespace RadiographyTracking.Views
             energyAreas.DataBind();
 
             OnPropertyChanged("TotalArea");
+      
            }
 
         private static void AddTextColumn(DataTable reportTable, String columnName, String caption)
@@ -353,6 +356,8 @@ namespace RadiographyTracking.Views
 
         public override void SaveOperation(object sender, RoutedEventArgs e)
         {
+            
+
             //validations on each row
             foreach (var row in RGReportRows)
             {

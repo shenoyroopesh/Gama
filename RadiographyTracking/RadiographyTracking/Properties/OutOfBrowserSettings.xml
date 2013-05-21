@@ -1,4 +1,4 @@
-﻿<OutOfBrowserSettings ShortName="RadiologyTracking Application" EnableGPUAcceleration="False" ShowInstallMenuItem="True">
+<OutOfBrowserSettings ShortName="RadiologyTracking Application" EnableGPUAcceleration="False" ShowInstallMenuItem="True">
   <OutOfBrowserSettings.Blurb>RadiologyTracking Application on your desktop; at home, at work or on the go.</OutOfBrowserSettings.Blurb>
   <OutOfBrowserSettings.WindowSettings>
     <WindowSettings Title="RadiologyTracking Application" />

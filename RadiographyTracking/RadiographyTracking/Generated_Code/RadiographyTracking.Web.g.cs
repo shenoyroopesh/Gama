@@ -8631,6 +8631,8 @@ namespace RadiographyTracking.Web.Models
         
         private string _location;
         
+        private string _locationAndSegment;
+        
         private string _observations;
         
         private EntityRef<Remark> _remark;
@@ -8706,6 +8708,8 @@ namespace RadiographyTracking.Web.Models
         partial void OnIDChanged();
         partial void OnLocationChanging(string value);
         partial void OnLocationChanged();
+        partial void OnLocationAndSegmentChanging(string value);
+        partial void OnLocationAndSegmentChanged();
         partial void OnObservationsChanging(string value);
         partial void OnObservationsChanged();
         partial void OnRemarkIDChanging(Nullable<int> value);
@@ -9162,6 +9166,35 @@ namespace RadiographyTracking.Web.Models
                     this._location = value;
                     this.RaiseDataMemberChanged("Location");
                     this.OnLocationChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'LocationAndSegment' value.
+        /// </summary>
+        // The following attributes were not generated:
+        // 
+        // - The attribute 'System.ComponentModel.DataAnnotations.NotMappedAttribute' is not visible in the client project 'RadiographyTracking'. Are you missing an assembly reference?
+        // [NotMappedAttribute()]
+        // 
+        [DataMember()]
+        public string LocationAndSegment
+        {
+            get
+            {
+                return this._locationAndSegment;
+            }
+            set
+            {
+                if ((this._locationAndSegment != value))
+                {
+                    this.OnLocationAndSegmentChanging(value);
+                    this.RaiseDataMemberChanging("LocationAndSegment");
+                    this.ValidateProperty("LocationAndSegment", value);
+                    this._locationAndSegment = value;
+                    this.RaiseDataMemberChanged("LocationAndSegment");
+                    this.OnLocationAndSegmentChanged();
                 }
             }
         }
@@ -10370,6 +10403,8 @@ namespace RadiographyTracking.Web.Models
         
         private string _observations;
         
+        private string _remarkText;
+        
         private string _segment;
         
         #region Extensibility Method Definitions
@@ -10385,6 +10420,8 @@ namespace RadiographyTracking.Web.Models
         partial void OnLocationIDChanged();
         partial void OnObservationsChanging(string value);
         partial void OnObservationsChanged();
+        partial void OnRemarkTextChanging(string value);
+        partial void OnRemarkTextChanged();
         partial void OnSegmentChanging(string value);
         partial void OnSegmentChanged();
 
@@ -10479,6 +10516,35 @@ namespace RadiographyTracking.Web.Models
                     this._observations = value;
                     this.RaiseDataMemberChanged("Observations");
                     this.OnObservationsChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'RemarkText' value.
+        /// </summary>
+        // The following attributes were not generated:
+        // 
+        // - The attribute 'System.ComponentModel.DataAnnotations.NotMappedAttribute' is not visible in the client project 'RadiographyTracking'. Are you missing an assembly reference?
+        // [NotMappedAttribute()]
+        // 
+        [DataMember()]
+        public string RemarkText
+        {
+            get
+            {
+                return this._remarkText;
+            }
+            set
+            {
+                if ((this._remarkText != value))
+                {
+                    this.OnRemarkTextChanging(value);
+                    this.RaiseDataMemberChanging("RemarkText");
+                    this.ValidateProperty("RemarkText", value);
+                    this._remarkText = value;
+                    this.RaiseDataMemberChanged("RemarkText");
+                    this.OnRemarkTextChanged();
                 }
             }
         }
