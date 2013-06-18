@@ -17,6 +17,15 @@ namespace RadiographyTracking.Web.Models
         public String ReportNumberPrefix { get; set; }
         public ICollection<Customer> Customers { get; set; }
 
+        public ICollection<Period> Periods { get; set; } 
+
+        public Period CurrentPeriod
+        {
+            get { return Periods.Count == 0? null : Periods.First(p => p.StartDate == Periods.Min(q => q.StartDate)); }
+        }
+
+        public DateTime NextResetDate { get; set; }
+
         public string ReportTemplate { get; set; }
 
         /// <summary>
