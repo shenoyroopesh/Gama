@@ -18,6 +18,9 @@ namespace RadiographyTracking.Web.Models
         public String Observations { get; set; }
 
         [NotMapped]
+        public string RemarkText { get; set; }
+
+        [NotMapped]
         public Guid LocationID { get; set; }
     }
 }

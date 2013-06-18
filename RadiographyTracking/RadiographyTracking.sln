@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomControls", "CustomControls\CustomControls.csproj", "{B885C7C7-1917-483D-A179-1579D1428B7C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ComboBoxExtensions", "ComboBoxExtensions\ComboBoxExtensions.csproj", "{4B47504F-AC43-4A3E-9990-FA1183CD1F1F}"
@@ -12,6 +12,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RadiographyTracking.Web", "RadiographyTracking.Web\RadiographyTracking.Web.csproj", "{BE633745-04FC-4865-8B0F-337B74356E75}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RadiographyTracking", "RadiographyTracking\RadiographyTracking.csproj", "{4D601F4D-7221-452D-9981-A9A092C14922}"
+	ProjectSection(ProjectDependencies) = postProject
+		{BE633745-04FC-4865-8B0F-337B74356E75} = {BE633745-04FC-4865-8B0F-337B74356E75}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WordDocumentGenerator.Library", "WordDocumentGenerator.Library\WordDocumentGenerator.Library.csproj", "{C041C8C6-AC4E-4F74-A827-7F3D790E1ACE}"
 EndProject

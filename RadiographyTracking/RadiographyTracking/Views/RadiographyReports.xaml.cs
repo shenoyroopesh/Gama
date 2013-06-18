@@ -16,6 +16,7 @@ namespace RadiographyTracking.Views
     {
         RadiographyContext ctx;
         private BindableDataGrid.BindableDataGrid reportGrid;
+        private string reportNumberToDownload;
         public RadiographyReports()
             : base()
         {
@@ -23,11 +24,28 @@ namespace RadiographyTracking.Views
             DomainSource.LoadedData += domainDataSource_LoadedData;
             btnAdd.Click += AddOperation;
 
-            fromDatePicker.SelectedDate = fromDatePicker.DisplayDate = DateTime.Now.AddDays(-15);
-            toDatePicker.SelectedDate = toDatePicker.DisplayDate = DateTime.Now;
+            fromDatePicker.SelectedDate = fromDatePicker.DisplayDate = DateTime.Now.AddDays(-15);// Convert.ToDateTime("03/03/2012"); 
+            toDatePicker.SelectedDate = toDatePicker.DisplayDate = DateTime.Now;// Convert.ToDateTime("03/23/2012"); 
             txtRTNo.Text = string.Empty;
-            // cmbCoverage.SelectedValue = null;
+
+            if (WebContext.Current.User.Roles.FirstOrDefault() == "Customer")
+            {
+                customerMode = true;
+                btnAdd.Visibility = Visibility.Collapsed;
+                RGDataGrid.Visibility = Visibility.Collapsed;
+                RGDataGridCustomer.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                customerMode = false;
+                btnAdd.Visibility = Visibility.Visible;
+                RGDataGrid.Visibility = Visibility.Visible;
+                RGDataGridCustomer.Visibility = Visibility.Collapsed;
+            }
         }
+
+     
+        private bool customerMode = false;
 
         public override string ChangeContext
         {
@@ -49,7 +67,8 @@ namespace RadiographyTracking.Views
         [CLSCompliant(false)]
         public override CustomGrid Grid
         {
-            get { return this.RGDataGrid; }
+            //get { return this.RGDataGrid; }
+            get { return customerMode ? RGDataGridCustomer : RGDataGrid; }
         }
 
         public override DomainDataSource DomainSource
@@ -65,6 +84,9 @@ namespace RadiographyTracking.Views
 
         public void EditOperation(object sender, RoutedEventArgs e)
         {
+            if (WebContext.Current.User.Roles.FirstOrDefault() == "Customer")
+              return;
+
             DataGridRow row = DataGridRow.GetRowContainingElement(sender as FrameworkElement);
             App.RGReport = (RGReport)row.DataContext;
             Navigate("/EnterRadioGraphyReport");
@@ -79,6 +101,9 @@ namespace RadiographyTracking.Views
         //Kept here only for the template column to work fine
         public override void DeleteOperation(object sender, RoutedEventArgs e)
         {
+            if (WebContext.Current.User.Roles.FirstOrDefault() == "Customer")
+                return;
+
             DataGridRow row = DataGridRow.GetRowContainingElement(sender as FrameworkElement);
             RGReport report = (RGReport)row.DataContext;
             if (!report.CanDelete)
@@ -110,18 +135,12 @@ namespace RadiographyTracking.Views
 
         public void ExcelExportOperation(object sender, RoutedEventArgs e)
         {
-
             DataGridRow row = DataGridRow.GetRowContainingElement(sender as FrameworkElement);
             RGReport report = (RGReport)row.DataContext;
 
-            ctx = new RadiographyContext();
+            ctx = (RadiographyContext)RGDomainDataSource.DomainContext; 
             busyIndicator.IsBusy = true;
-            this.ctx.Load(this.ctx.GetRGReportsQuery(report.ReportNo)).Completed += loadCompleted; ;
-            var str = "";
-
-
-
-
+         this.ctx.Load(this.ctx.GetRGReportsQuery(report.ReportNo)).Completed += loadCompleted; ;
 
         }
         private void loadCompleted(object sender, EventArgs e)
@@ -131,7 +150,8 @@ namespace RadiographyTracking.Views
 
             var operation = sender as LoadOperation<RGReport>;
             var rgReport = operation.Entities.FirstOrDefault();
-
+            reportNumberToDownload = rgReport.ReportNo;
+           
             var reportTable = new DataTable("Report");
             var cols = reportTable.Columns;
             var rows = reportTable.Rows;
@@ -140,12 +160,19 @@ namespace RadiographyTracking.Views
             rows.Add(headerRow);
 
             var columnNames = new List<string>()
-               {"SlNo","Date","Location","Thickness","SFD","Designation","Sensitivity", 
+               {"SlNo","Location","Thickness","SFD","IQI Designation","IQI Sensitivity", 
                 "Density", "FilmSize","Observations","Classifactions","Remarks", "ReportNo",
                 "ReportDate", "Film","RTNO","FPNO","HEATNO","DateOfTest","LeadScreenFrontBack",
                 "Viewing","Source","SourceSize","Coverage","ProcedureReference","AcceptanceAsper",
-                "TotalNoOfFilms","Ir 192 Area","Co 60 Area","Ir 192 Strength","Co 60 Strenth"
+                "TotalNoOfFilms"
                };
+
+            foreach (var en in ctx.Energies)
+            {
+                columnNames.Add(en.Name + " Area");
+            }
+
+            columnNames.Add("Ir192_Co60 Strength");
 
             foreach (var columnName in columnNames)
             {
@@ -157,35 +184,49 @@ namespace RadiographyTracking.Views
                 headerRow[columnName] = columnName;
             }
 
+
+            var totalFilmCount = rgReport.RGReportRows.Sum(p=>p.FilmCount);
+
             foreach (RGReportRow row in rgReport.RGReportRows)
             {
                 var dataRow = new DataRow();
-                dataRow["SlNo"] = rows.Count + 1;
-                dataRow["Location"] = row.Location;
+                dataRow["SlNo"] = rows.Count;
+                dataRow["Location"] = row.LocationAndSegment??string.Empty;
                 dataRow["Thickness"] = row.Thickness;
                 dataRow["SFD"] = row.SFD;
-                dataRow["Designation"] = row.Designation;
-                dataRow["Sensitivity"] = row.Sensitivity;
-                dataRow["Density"] = row.Density;
-                dataRow["FilmSize"] = row.FilmSizeString;
-                dataRow["Observations"] = row.Observations;
-                dataRow["Classifactions"] = row.Classifications;
-                dataRow["Remarks"] = row.RemarkText;
-                dataRow["ReportNo"] = rgReport.ReportNo;
-                dataRow["ReportDate"] = rgReport.ReportDate;
-                dataRow["Film"] = rgReport.Film;
-                dataRow["RTNO"] = rgReport.RTNo;
-                dataRow["FPNO"] = rgReport.FixedPatternID;
-                dataRow["HEATNO"] = rgReport.HeatNo;
-                dataRow["DateOfTest"] = rgReport.DateOfTest;
+                dataRow["IQI Designation"] = row.Designation??string.Empty;
+                dataRow["IQI Sensitivity"] = row.Sensitivity??string.Empty;
+                dataRow["Density"] = row.Density??string.Empty;
+                dataRow["FilmSize"] = row.FilmSizeString??string.Empty;
+                dataRow["Observations"] = row.Findings??string.Empty;
+                dataRow["Classifactions"] = row.Classifications ?? string.Empty;
+                dataRow["Remarks"] = row.RemarkText??string.Empty;
+                dataRow["ReportNo"] = rgReport.ReportNo??string.Empty;
+                dataRow["ReportDate"] = rgReport.ReportDate.ToShortDateString();
+                dataRow["Film"] = rgReport.Film??string.Empty;
+                dataRow["RTNO"] = rgReport.RTNo??string.Empty;
+                dataRow["FPNO"] = rgReport.FixedPattern!=null? rgReport.FixedPattern.FPNo : string.Empty;
+                dataRow["HEATNO"] = rgReport.HeatNo??string.Empty;
+                dataRow["DateOfTest"] = rgReport.DateOfTest.ToShortDateString();
                 dataRow["LeadScreenFrontBack"] = rgReport.LeadScreen;
-                dataRow["Viewing"] = rgReport.Viewing;
-                dataRow["Source"] = rgReport.Source;
-                dataRow["SourceSize"] = rgReport.SourceSize;
-                //dataRow["Coverage"] = rgReport.Coverage.CoverageName;
+                dataRow["Viewing"] = rgReport.Viewing??string.Empty;
+                dataRow["Source"] = rgReport.Source??string.Empty;
+                dataRow["SourceSize"] = rgReport.SourceSize??string.Empty;
+                dataRow["Coverage"] = rgReport.Coverage != null ? rgReport.Coverage.CoverageName:string.Empty;
                 dataRow["ProcedureReference"] = rgReport.ProcedureRef ?? string.Empty;
                 dataRow["AcceptanceAsper"] = rgReport.AcceptanceAsPer ?? string.Empty;
-                dataRow["TotalNoOfFilms"] = row.FilmCount;
+                dataRow["TotalNoOfFilms"] = totalFilmCount;
+                dataRow["Ir192_Co60 Strength"] = rgReport.Strength ?? string.Empty;
+
+                foreach (var en in ctx.Energies)
+                {
+
+                    dataRow[en.Name + " Area"] = rgReport.RGReportRows
+                        .Where(p => p.EnergyID == en.ID &&
+                                    p.RemarkText != "RETAKE")
+                        .Sum(p => p.FilmSize.Area * p.FilmCount);
+                }
+
                 rows.Add(dataRow);
             }
 
@@ -201,17 +242,17 @@ namespace RadiographyTracking.Views
 
            busyIndicator.IsBusy = false;
 
-
-            MessageBox.Show("Report exported . Click on download button to download file !");
-            btnDownload.Visibility=Visibility.Visible;
+          myPopup.IsOpen = true;
 
         }
 
 
         private void btnDownload_Click(object sender, RoutedEventArgs e)
         {
-            reportGrid.Export("Nithesh", "Gama", "", 0);
-            btnDownload.Visibility = Visibility.Collapsed;
+            myPopup.IsOpen = false;
+            reportGrid.Export("Nithesh", "Gama", "", 1, "Report No "+reportNumberToDownload);
+          
+         
         }
         private static void AddTextColumn(DataTable reportTable, String columnName, String caption)
         {

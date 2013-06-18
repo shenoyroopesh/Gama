@@ -25,6 +25,9 @@ namespace RadiographyTracking.Views
     {
         RadiographyContext ctx;
         DataTable reportTable;
+        DataTable excelTable;
+        List<DataRow> lstExcelDataRows;
+        BindableDataGrid.BindableDataGrid reportGrid1; 
         public FixedPatternPerformance()
             : base()
         {
@@ -38,6 +41,14 @@ namespace RadiographyTracking.Views
             ctx.Load(ctx.GetFixedPatternPerformanceReportQuery(txtFPNo.Text, (bool)chkLike.IsChecked)).Completed += loadCompleted;
         }
 
+
+      public  Dictionary<string, string> RemarksColorCodeDic = new Dictionary<string, string>()
+	        {
+                {"REPAIR", "^"},
+	            {"RETAKE", "^^"},
+	            {"RESHOOT", "^^^"}
+	        };
+
         private void loadCompleted(object sender, EventArgs e)
         {
             var report = ((LoadOperation<FixedPatternPerformanceRow>)sender).Entities;
@@ -45,14 +56,16 @@ namespace RadiographyTracking.Views
             //Can't directly bind the report to the grid due to variable no of columns. Using a custom datagrid bindable
             //to a datatable instead
 
+           
             reportTable = new DataTable("Report");
+            
             var cols = reportTable.Columns;
             var rows = reportTable.Rows;
 
-            DataRow locationRow = new DataRow();
+            var locationRow = new DataRow();
             rows.Add(locationRow);
 
-            DataRow segmentRow = new DataRow();
+            var segmentRow = new DataRow();
             rows.Add(segmentRow);
 
             AddTextColumn(reportTable, "FPNo", "FP No");
@@ -90,16 +103,20 @@ namespace RadiographyTracking.Views
                 }
             }
 
+            lstExcelDataRows = new List<DataRow> {locationRow, segmentRow};
+
             foreach (var rt in report)
             {
-                DataRow row = new DataRow();
-                row["FPNo"] = rt.FPNo; //txtFPNo.Text; //won't change throughout the report
-                row["RTNo"] = prevRTNo == rt.RTNo ? "" : rt.RTNo; //prevent same RT No from repeating
-                row["ReportNo"] = rt.ReportNo;
-                row["Coverage"] = rt.Coverage;
-                row["HeatNo"] = rt.HeatNo;
+                var row = new DataRow();
+                var rowWithColor = new DataRow();
+
+                row["FPNo"] = rowWithColor["FPNo"] = rt.FPNo; //txtFPNo.Text; //won't change throughout the report
+                row["RTNo"] = rowWithColor["RTNo"] = prevRTNo == rt.RTNo ? "" : rt.RTNo; //prevent same RT No from repeating
+                row["ReportNo"] = rowWithColor["ReportNo"] = rt.ReportNo;
+                row["Coverage"] = rowWithColor["Coverage"] = rt.Coverage;
+                row["HeatNo"] = rowWithColor["HeatNo"] = rt.HeatNo;
                 prevRTNo = rt.RTNo;
-                row["Date"] = rt.Date.ToString("dd/MM/yyyy");
+                row["Date"] = rowWithColor["Date"] = rt.Date.ToString("dd/MM/yyyy");
 
                 prevLocn = "";
                 foreach (var loc in rt.Locations)
@@ -109,18 +126,40 @@ namespace RadiographyTracking.Views
                         string header = String.Concat(loc.Location, "-", seg.Segment);
                         string colname = "col" + header.Replace("-", "");
                         //no need to show NSD - not any more
-                        row[colname] = seg.Observations.ToUpper(); 
+                        row[colname] = seg.Observations.ToUpper();
+                        string colourCode;
+                        colourCode = RemarksColorCodeDic.ContainsKey(seg.RemarkText)
+                                         ? RemarksColorCodeDic[seg.RemarkText]
+                                         : string.Empty;
+                        rowWithColor[colname] = seg.Observations.ToUpper() + colourCode;
                     }
                 }
                 rows.Add(row);
+                lstExcelDataRows.Add(rowWithColor);
             }
 
             DataSet ds = new DataSet("ReportDataSet");
             ds.Tables.Add(reportTable);
 
+            excelTable = new DataTable("ExcelReport");
+            foreach (DataColumn column in reportTable.Columns)
+            {
+                excelTable.Columns.Add(column);
+            }
+
+            foreach (var row in lstExcelDataRows)
+            {
+               excelTable.Rows.Add(row);
+            }
+
             reportGrid.DataSource = ds;
             reportGrid.DataMember = "Report";
             reportGrid.DataBind();
+
+            var excelDs = new DataSet("ExcelDataSet");
+            excelDs.Tables.Add(excelTable);
+            reportGrid1 = new BindableDataGrid.BindableDataGrid {DataSource = excelDs, DataMember = "ExcelReport"};
+            reportGrid1.DataBind();
 
             busyIndicator.IsBusy = false;
         }
@@ -140,10 +179,10 @@ namespace RadiographyTracking.Views
         private void btnExport_Click(object sender, RoutedEventArgs e)
         {
             //identify cells to be merged
-            var row = reportTable.Rows[0];
-            var columns = reportTable.Columns;
+            var row = excelTable.Rows[0];
+            var columns = excelTable.Columns;
             String mergeCells = getMergeCells(row, columns);
-            reportGrid.Export("Roopesh", "Gama", mergeCells, 2);
+            reportGrid1.Export("Roopesh", "Gama", mergeCells, 2);
         }
     }
 }

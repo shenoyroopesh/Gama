@@ -286,7 +286,7 @@ namespace RadiographyTracking.Web.Models
         /// this returns LN1-LN2
         /// </summary>
         [NotMapped]
-        [Exclude]
+        //[Exclude]
         public string LocationAndSegment
         {
             get
@@ -301,6 +301,7 @@ namespace RadiographyTracking.Web.Models
                 var joined = segments.Select(p => this.Location + p);
                 return String.Join("-", joined);
             }
+            set {  }
         }
 
         [NotMapped]

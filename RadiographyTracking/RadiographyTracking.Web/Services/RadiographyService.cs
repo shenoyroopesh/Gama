@@ -568,7 +568,8 @@
                             r.RGReport.ReportDate,
                             Location = r.Location.Trim(),
                             Segment = r.Segment.Trim(),
-                            r.Observations
+                            r.Observations,
+                            Remark=r.Remark
                         }).ToList();
 
             var report = (from r in rows
@@ -589,13 +590,15 @@
                                            {
                                                ID = Guid.NewGuid(),
                                                Location = repg.Key.Location,
-                                               Segments = (from row in repg.Select(p => new { p.Segment, p.Observations }).ToArray()
-                                                           group row by new { row.Segment, row.Observations } into segg
+                                               Segments = (from row in repg.Select(p => new { p.Segment, p.Observations, p.Remark}).ToArray()
+                                                           group row by new { row.Segment, row.Observations,row.Remark } into segg
                                                            select new SegmentClass
                                                            {
                                                                ID = Guid.NewGuid(),
                                                                Segment = segg.Key.Segment,
-                                                               Observations = segg.Key.Observations
+                                                               Observations = segg.Key.Observations,
+                                                               RemarkText =segg.Key.Remark!=null? segg.Key.Remark.Value:string.Empty
+
                                                            }).ToList()
                                            }).ToList()
                           }).ToList();
@@ -841,7 +844,7 @@
         public IQueryable<RGReport> GetRGReports(String RGReportNo)
         {
             var foundryID = getFoundryIDForCurrentUser();
-            var result= this.DbContext.RGReports.Include(p => p.RGReportRows.Select(r => r.Remark))
+            var result = this.DbContext.RGReports.Include(p => p.RGReportRows.Select(r => r.Remark))
                                             .Where(p => p.ReportNo == RGReportNo &&
                                                     p.FixedPattern.Customer.Foundry.ID ==
                                                         (foundryID ?? p.FixedPattern.Customer.Foundry.ID));
@@ -859,7 +862,7 @@
                                                    (p.ReportDate >= fromDateValue || fromDate == default(DateTime)) &&
                                                    (p.ReportDate <= toDateValue || toDate == default(DateTime)) &&
                                                    (rtNo == string.Empty || p.RTNo.Contains(rtNo)) &&
-                                                   (coverageId==-1 || p.CoverageID==coverageId) &&
+                                                   (coverageId == -1 || p.CoverageID == coverageId) &&
                                                     p.FixedPattern.Customer.Foundry.ID ==
                                                         (foundryID ?? p.FixedPattern.Customer.Foundry.ID));
         }
@@ -959,8 +962,8 @@
                                 && (toDate == null || r.ReportDate < toDate)
                                 && (RTNo == string.Empty || r.RTNo.Contains(RTNo))
                                 && (HeatNo == string.Empty || r.HeatNo.Contains(HeatNo))
-                                && ((fpNo == string.Empty && (coverageId == null || coverageId==-1))
-                                    || (r.CoverageID==coverageId && r.FixedPattern.FPNo.Contains(fpNo)))
+                                && ((fpNo == string.Empty && (coverageId == null || coverageId == -1))
+                                    || (r.CoverageID == coverageId && r.FixedPattern.FPNo.Contains(fpNo)))
                                 group r by new { r.FixedPattern, r.RTNo, r.Coverage } into g
                                 let allrows = g.SelectMany(p => p.RGReportRows)
                                                 .Where(p => p.Remark != null) //don't count the rows with blank remarks

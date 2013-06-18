@@ -11,7 +11,7 @@
     xmlns:custom="clr-namespace:Vagsons.Controls;assembly=CustomControls"
     xmlns:local="clr-namespace:RadiographyTracking.Controls"
     xmlns:ex="clr-namespace:ComboBoxExtensions;assembly=ComboBoxExtensions"
-    xmlns:views="clr-namespace:RadiographyTracking.Views">
+    xmlns:views="clr-namespace:RadiographyTracking.Views" xmlns:radiographyTracking="clr-namespace:RadiographyTracking">
     <UserControl.Resources>
         <my1:RadiographyContext x:Key="RadiographyContext" />
         <ex:ComboBoxDataSource x:Key="CoveragesSource" DomainContext="{StaticResource RadiographyContext}" 
@@ -36,6 +36,10 @@
         </riaControls:DomainDataSource>
         <riaControls:DomainDataSource AutoLoad="True" Name="CoverageDomainSource" QueryName="GetCoveragesQuery" 
                                       DomainContext="{StaticResource RadiographyContext}" />
+        <riaControls:DomainDataSource AutoLoad="True" Name="EnergySource" QueryName="GetEnergiesQuery" 
+                                      DomainContext="{StaticResource RadiographyContext}" />
+        <riaControls:DomainDataSource AutoLoad="True" Name="FilmSizesSource" QueryName="GetFilmSizesQuery" 
+                                      DomainContext="{StaticResource RadiographyContext}"/>
         <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
             <StackPanel Height="30" HorizontalAlignment="Left" Orientation="Horizontal" VerticalAlignment="Top" Margin="20,20,20,0">
                 <sdk:Label Content="From:" Margin="3" VerticalAlignment="Center" />
@@ -57,66 +61,112 @@
                 <Button Name="btnFetch" Content="Generate" Click="btnFetch_Click" Margin="10,0,0,0" />
             </StackPanel>
             <local:BusyIndicator x:Name="busyIndicator" IsBusy="{Binding IsBusy, ElementName=RGDomainDataSource}">
-                <custom:CustomGrid ItemsSource="{Binding ElementName=RGDomainDataSource, Path=Data, Mode=TwoWay}" 
+                <StackPanel>
+                    <custom:CustomGrid ItemsSource="{Binding ElementName=RGDomainDataSource, Path=Data, Mode=TwoWay}" 
                                    Name="RGDataGrid" Style="{StaticResource DataGridStyle}" 
                                    ColumnHeaderStyle="{StaticResource DataGridHeaderGlassEffect}"
                                    CellStyle="{StaticResource AlignCenter}" IsReadOnly="True">
-                    <custom:CustomGrid.Resources>
-                        <local:DateFormatter x:Key="FormatConverter" />
-                    </custom:CustomGrid.Resources>
-                    <sdk:DataGrid.Columns>
-                        <sdk:DataGridTextColumn Binding="{Binding Path=ReportNo, Mode=OneWay}" Header="Report No" Width="Auto" />
-                        <sdk:DataGridTextColumn Binding="{Binding Path=ReportDate, Mode=OneWay, 
+                        <custom:CustomGrid.Resources>
+                            <local:DateFormatter x:Key="FormatConverter" />
+                        </custom:CustomGrid.Resources>
+                        <sdk:DataGrid.Columns>
+                            <sdk:DataGridTextColumn Binding="{Binding Path=ReportNo, Mode=OneWay}" Header="Report No" Width="Auto" />
+                            <sdk:DataGridTextColumn Binding="{Binding Path=ReportDate, Mode=OneWay, 
                                                             Converter={StaticResource FormatConverter}, 
                                                             ConverterParameter=\{0:d-M-yyyy\}}"
                                                 Header="Date" Width="Auto" />
-                        <sdk:DataGridTextColumn Binding="{Binding Path=RTNo, Mode=OneWay}" Header="RT No" Width="Auto" />
-                        <sdk:DataGridTextColumn Binding="{Binding Path=FixedPattern.FPNo, Mode=OneWay}" Header="FP No" Width="Auto" />
-                        <sdk:DataGridTextColumn Binding="{Binding Path=FixedPattern.Description, Mode=OneWay}" Header="Description" 
+                            <sdk:DataGridTextColumn Binding="{Binding Path=RTNo, Mode=OneWay}" Header="RT No" Width="Auto" />
+                            <sdk:DataGridTextColumn Binding="{Binding Path=FixedPattern.FPNo, Mode=OneWay}" Header="FP No" Width="Auto" />
+                            <sdk:DataGridTextColumn Binding="{Binding Path=FixedPattern.Description, Mode=OneWay}" Header="Description" 
                                                 Width="Auto" />
-                        <sdk:DataGridTextColumn Binding="{Binding Path=Coverage.CoverageName, Mode=OneWay}" Header="Coverage" Width="Auto" />
-                        <sdk:DataGridTemplateColumn Header="Edit" Width="Auto">
-                            <sdk:DataGridTemplateColumn.CellTemplate>
-                                <DataTemplate>
-                                    <Button Name="grdEditButton" Tag="{Binding}" Style="{StaticResource EditButtonStyle}"
+                            <sdk:DataGridTextColumn Binding="{Binding Path=Coverage.CoverageName, Mode=OneWay}" Header="Coverage" Width="Auto" />
+                            <sdk:DataGridTemplateColumn Header="Edit" Width="Auto">
+                                <sdk:DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Button Name="grdEditButton" Tag="{Binding}" Style="{StaticResource EditButtonStyle}"
                                             Click="EditOperation"/>
-                                </DataTemplate>
-                            </sdk:DataGridTemplateColumn.CellTemplate>
-                        </sdk:DataGridTemplateColumn>
-                        <sdk:DataGridTemplateColumn Header="Delete" Width="Auto">
-                            <sdk:DataGridTemplateColumn.CellTemplate>
-                                <DataTemplate>
-                                    <Button Name="grdDeleteButton" Click="DeleteOperation" Tag="{Binding}" BorderBrush="Transparent"
+                                    </DataTemplate>
+                                </sdk:DataGridTemplateColumn.CellTemplate>
+                            </sdk:DataGridTemplateColumn>
+                            <sdk:DataGridTemplateColumn Header="Delete" Width="Auto">
+                                <sdk:DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Button Name="grdDeleteButton" Click="DeleteOperation" Tag="{Binding}" BorderBrush="Transparent"
                                             Style="{StaticResource DeleteButtonStyle}"/>
-                                </DataTemplate>
-                            </sdk:DataGridTemplateColumn.CellTemplate>
-                        </sdk:DataGridTemplateColumn>
-                        <sdk:DataGridTemplateColumn Header="Print" Width="Auto">
-                            <sdk:DataGridTemplateColumn.CellTemplate>
-                                <DataTemplate>
-                                    <Button Name="grdPrintButton" Tag="{Binding}" Style="{StaticResource PrintButtonStyle}"
+                                    </DataTemplate>
+                                </sdk:DataGridTemplateColumn.CellTemplate>
+                            </sdk:DataGridTemplateColumn>
+                            <sdk:DataGridTemplateColumn Header="Print" Width="Auto">
+                                <sdk:DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Button Name="grdPrintButton" Tag="{Binding}" Style="{StaticResource PrintButtonStyle}"
                                             Click="PrintOperation"/>
-                                </DataTemplate>
-                            </sdk:DataGridTemplateColumn.CellTemplate>
-                        </sdk:DataGridTemplateColumn>
-                        <sdk:DataGridTemplateColumn Header="Excel" Width="Auto">
-                            <sdk:DataGridTemplateColumn.CellTemplate>
-                                <DataTemplate>
-                                    <Button Name="grdExcelButton" Tag="{Binding}" Style="{StaticResource ExcelButtonStyle}"
-                                            Click="ExcelExportOperation"/>
-                                </DataTemplate>
-                            </sdk:DataGridTemplateColumn.CellTemplate>
-                        </sdk:DataGridTemplateColumn>
-                    </sdk:DataGrid.Columns>
-                </custom:CustomGrid>
+                                    </DataTemplate>
+                                </sdk:DataGridTemplateColumn.CellTemplate>
+                            </sdk:DataGridTemplateColumn>
+                            <sdk:DataGridTemplateColumn Header="Excel" Width="Auto" >
+                                <sdk:DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Button Name="grdExcelButton" Tag="{Binding}" Style="{StaticResource ExcelButtonStyle}"
+                                            Click="ExcelExportOperation"  />
+                                    </DataTemplate>
+                                </sdk:DataGridTemplateColumn.CellTemplate>
+                            </sdk:DataGridTemplateColumn>
+                        </sdk:DataGrid.Columns>
+                    </custom:CustomGrid>
+                    <custom:CustomGrid ItemsSource="{Binding ElementName=RGDomainDataSource, Path=Data, Mode=TwoWay}" 
+                                   Name="RGDataGridCustomer" Style="{StaticResource DataGridStyle}" 
+                                   ColumnHeaderStyle="{StaticResource DataGridHeaderGlassEffect}"
+                                   CellStyle="{StaticResource AlignCenter}" IsReadOnly="True">
+                        <custom:CustomGrid.Resources>
+                            <local:DateFormatter x:Key="FormatConverter" />
+                        </custom:CustomGrid.Resources>
+                        <sdk:DataGrid.Columns>
+                            <sdk:DataGridTextColumn Binding="{Binding Path=ReportNo, Mode=OneWay}" Header="Report No" Width="Auto" />
+                            <sdk:DataGridTextColumn Binding="{Binding Path=ReportDate, Mode=OneWay, 
+                                                            Converter={StaticResource FormatConverter}, 
+                                                            ConverterParameter=\{0:d-M-yyyy\}}"
+                                                Header="Date" Width="Auto" />
+                            <sdk:DataGridTextColumn Binding="{Binding Path=RTNo, Mode=OneWay}" Header="RT No" Width="Auto" />
+                            <sdk:DataGridTextColumn Binding="{Binding Path=FixedPattern.FPNo, Mode=OneWay}" Header="FP No" Width="Auto" />
+                            <sdk:DataGridTextColumn Binding="{Binding Path=FixedPattern.Description, Mode=OneWay}" Header="Description" 
+                                                Width="Auto" />
+                            <sdk:DataGridTextColumn Binding="{Binding Path=Coverage.CoverageName, Mode=OneWay}" Header="Coverage" Width="Auto" />
+                            <sdk:DataGridTemplateColumn Header="Print" Width="Auto">
+                                <sdk:DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Button Name="grdPrintButton" Tag="{Binding}" Style="{StaticResource PrintButtonStyle}"
+                                            Click="PrintOperation"/>
+                                    </DataTemplate>
+                                </sdk:DataGridTemplateColumn.CellTemplate>
+                            </sdk:DataGridTemplateColumn>
+                            <sdk:DataGridTemplateColumn Header="Excel" Width="Auto" >
+                                <sdk:DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Button Name="grdExcelButton" Tag="{Binding}" Style="{StaticResource ExcelButtonStyle}"
+                                            Click="ExcelExportOperation"  />
+                                    </DataTemplate>
+                                </sdk:DataGridTemplateColumn.CellTemplate>
+                            </sdk:DataGridTemplateColumn>
+                        </sdk:DataGrid.Columns>
+                    </custom:CustomGrid>
+                </StackPanel>
             </local:BusyIndicator>
             <Grid>
                 <Button Name="btnDownload" Content="Download Excel" HorizontalAlignment="left" 
                         Click="btnDownload_Click" Visibility="Collapsed" Grid.Column="0"/>
                 <Button  Name="btnAdd" Width="75" Style="{StaticResource AddButtonStyle}" 
                          HorizontalAlignment="Right" Grid.Column="1"/>
-         
+
             </Grid>
         </StackPanel>
+        <Popup x:Name="myPopup"   Height="78" Width="200" VerticalAlignment="Center" HorizontalAlignment="Center"   >
+            <Border  Background="Silver" BorderThickness="2" BorderBrush="Black">
+                <StackPanel Margin="10">
+                    <TextBlock x:Name="PopUpText" Text="Download complete. Save the file !"/>
+                    <Button x:Name="PopUpButton" Height="20" Width="50" Margin="0,5,0,0" Content="OK" Click="btnDownload_Click" />
+                </StackPanel>
+            </Border>
+        </Popup>
     </Grid>
 </views:BaseCRUDView>
