@@ -167,6 +167,7 @@
     <Compile Include="Models\AddressStickerRow.cs" />
     <Compile Include="Models\Change.cs" />
     <Compile Include="Models\Company.cs" />
+    <Compile Include="Models\Period.cs" />
     <Compile Include="Models\FinalRTReportRow.cs" />
     <Compile Include="Models\FinalRTReport.cs" />
     <Compile Include="Models\Coverage.cs" />
