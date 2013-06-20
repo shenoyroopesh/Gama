@@ -30,11 +30,14 @@ namespace RadiographyTracking.Controls
             return value.ToString();
         }
 
-        // No need to implement converting back on a one-way binding 
         public object ConvertBack(object value, Type targetType,
             object parameter, System.Globalization.CultureInfo culture)
         {
-            throw new NotImplementedException();
+            var formatString = parameter as string;
+            if(!String.IsNullOrEmpty(formatString))
+                culture.DateTimeFormat.ShortDatePattern = formatString;
+            
+            return DateTime.Parse(value as string, culture);
         }
     }
 }

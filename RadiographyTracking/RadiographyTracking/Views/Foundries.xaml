@@ -26,6 +26,9 @@
                                     Name="foundryDataGrid" Style="{StaticResource DataGridStyle}" 
                                    ColumnHeaderStyle="{StaticResource DataGridHeaderGlassEffect}"
                                    CellStyle="{StaticResource AlignCenter}">
+                    <custom:CustomGrid.Resources>
+                        <local:DateFormatter x:Key="FormatConverter" />
+                    </custom:CustomGrid.Resources>
                     <sdk:DataGrid.Columns>
                         <sdk:DataGridTextColumn x:Name="nameColumn" Binding="{Binding Path=FoundryName, Mode=TwoWay}" Header="Name" Width="Auto" />
                         <sdk:DataGridTemplateColumn Header="Address" MaxWidth="150">
@@ -33,7 +36,7 @@
                                 <DataTemplate>
                                     <TextBlock TextWrapping="Wrap" Text="{Binding Address, Mode=TwoWay}" />
                                 </DataTemplate>
-                             </sdk:DataGridTemplateColumn.CellTemplate>
+                            </sdk:DataGridTemplateColumn.CellTemplate>
                             <sdk:DataGridTemplateColumn.CellEditingTemplate>
                                 <DataTemplate>
                                     <TextBox TextWrapping="Wrap" Text="{Binding Address, Mode=TwoWay}" />
@@ -42,6 +45,10 @@
                         </sdk:DataGridTemplateColumn>
                         <sdk:DataGridTextColumn x:Name="reportPrefixColumn" Binding="{Binding Path=ReportNumberPrefix, Mode=TwoWay}" Header="Report No. Prefix" Width="Auto" />
                         <sdk:DataGridTextColumn x:Name="reportTemplateColumn" Binding="{Binding Path=ReportTemplate, Mode=TwoWay}" Header="Report Template" Width="Auto" />
+                        <sdk:DataGridTextColumn Binding="{Binding Path=NextResetDate, Mode=TwoWay, 
+                                                            Converter={StaticResource FormatConverter}, 
+                                                            ConverterParameter=\{0:d-M-yyyy\}}"
+                                                Header="Next Reset Date" Width="Auto" />
                         <sdk:DataGridTemplateColumn Header="Delete" Width="Auto">
                             <sdk:DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
