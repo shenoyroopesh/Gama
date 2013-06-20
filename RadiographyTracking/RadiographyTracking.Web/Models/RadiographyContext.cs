@@ -54,5 +54,7 @@ namespace RadiographyTracking.Web.Models
         public DbSet<RTStatusReportRow> RTStatusReportRows { get; set; }
         public DbSet<FinalRTReport> FinalRTReports { get; set; }
         public DbSet<FinalRTReportRow> FinalRTReportRows { get; set; }
+
+        public DbSet<Period> Periods { get; set; }
     }
 }
