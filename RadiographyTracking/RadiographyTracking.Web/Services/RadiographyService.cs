@@ -654,11 +654,9 @@
                 return null;
             }
 
-            FixedPatternTemplate fpTemplate = this.DbContext.FixedPatternTemplates.Include(p => p.FPTemplateRows.Select(r => r.FilmSize))
-                                                                                  .Include(p => p.FixedPattern.Customer.Foundry)
-                                                                                 .Where(p =>
-                                                                                        p.FixedPattern.FPNo == fixedPattern.FPNo &&
-                                                                                        p.Coverage.CoverageName == coverage.CoverageName).FirstOrDefault();
+            var fpTemplate = this.DbContext.FixedPatternTemplates.Include(p => p.FPTemplateRows.Select(r => r.FilmSize))
+                .Include(p => p.FixedPattern.Customer.Foundry.Periods).FirstOrDefault(p => p.FixedPattern.FPNo == fixedPattern.FPNo &&
+                                                                                           p.Coverage.CoverageName == coverage.CoverageName);
 
             if (fpTemplate != null)
             {
@@ -891,7 +889,7 @@
 
             int fpID = fp.ID;
             int coverageID = coverage.ID;
-            FixedPatternTemplate fpTemplate = this.GetFixedPatternTemplateForFP(strFPNo, strCoverage);
+            FixedPatternTemplate fpTemplate = GetFixedPatternTemplateForFP(strFPNo, strCoverage);
 
             //get the latest report in the sequence
             //can't use Last() here, have to use first() since this gets converted into a store query
@@ -904,14 +902,14 @@
             //first report
             var rgReport = allReports.FirstOrDefault();
 
-            String nextReportNumber = fpTemplate.FixedPattern.Customer.Foundry.getNextReportNumber(DbContext);
+            var nextReportNumber = fpTemplate.FixedPattern.Customer.Foundry.getNextReportNumber(DbContext);
 
             if (rgReport == null)
             {
                 //create new report with existing fptemplate
                 rgReport = new RGReport(fpTemplate, rtNo, nextReportNumber, DbContext);
-                this.DbContext.RGReports.Add(rgReport);
-                this.DbContext.SaveChanges();
+                DbContext.RGReports.Add(rgReport);
+                DbContext.SaveChanges();
                 return rgReport;
             }
             else

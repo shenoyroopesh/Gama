@@ -6529,6 +6529,8 @@ namespace RadiographyTracking.Web.Models
         
         private int _id;
         
+        private DateTime _nextResetDate;
+        
         private string _reportNumberPrefix;
         
         private string _reportTemplate;
@@ -6546,6 +6548,8 @@ namespace RadiographyTracking.Web.Models
         partial void OnFoundryNameChanged();
         partial void OnIDChanging(int value);
         partial void OnIDChanged();
+        partial void OnNextResetDateChanging(DateTime value);
+        partial void OnNextResetDateChanged();
         partial void OnReportNumberPrefixChanging(string value);
         partial void OnReportNumberPrefixChanged();
         partial void OnReportTemplateChanging(string value);
@@ -6654,6 +6658,30 @@ namespace RadiographyTracking.Web.Models
                     this._id = value;
                     this.RaisePropertyChanged("ID");
                     this.OnIDChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'NextResetDate' value.
+        /// </summary>
+        [DataMember()]
+        public DateTime NextResetDate
+        {
+            get
+            {
+                return this._nextResetDate;
+            }
+            set
+            {
+                if ((this._nextResetDate != value))
+                {
+                    this.OnNextResetDateChanging(value);
+                    this.RaiseDataMemberChanging("NextResetDate");
+                    this.ValidateProperty("NextResetDate", value);
+                    this._nextResetDate = value;
+                    this.RaiseDataMemberChanged("NextResetDate");
+                    this.OnNextResetDateChanged();
                 }
             }
         }
@@ -7580,8 +7608,6 @@ namespace RadiographyTracking.Web.Models
         
         private string _endCustomerName;
         
-        private string _evaluationAsPer;
-        
         private string _film;
         
         private bool _first;
@@ -7653,8 +7679,6 @@ namespace RadiographyTracking.Web.Models
         partial void OnDrawingNoChanged();
         partial void OnEndCustomerNameChanging(string value);
         partial void OnEndCustomerNameChanged();
-        partial void OnEvaluationAsPerChanging(string value);
-        partial void OnEvaluationAsPerChanged();
         partial void OnFilmChanging(string value);
         partial void OnFilmChanged();
         partial void OnFirstChanging(bool value);
@@ -7892,30 +7916,6 @@ namespace RadiographyTracking.Web.Models
                     this._endCustomerName = value;
                     this.RaiseDataMemberChanged("EndCustomerName");
                     this.OnEndCustomerNameChanged();
-                }
-            }
-        }
-        
-        /// <summary>
-        /// Gets or sets the 'EvaluationAsPer' value.
-        /// </summary>
-        [DataMember()]
-        public string EvaluationAsPer
-        {
-            get
-            {
-                return this._evaluationAsPer;
-            }
-            set
-            {
-                if ((this._evaluationAsPer != value))
-                {
-                    this.OnEvaluationAsPerChanging(value);
-                    this.RaiseDataMemberChanging("EvaluationAsPer");
-                    this.ValidateProperty("EvaluationAsPer", value);
-                    this._evaluationAsPer = value;
-                    this.RaiseDataMemberChanged("EvaluationAsPer");
-                    this.OnEvaluationAsPerChanged();
                 }
             }
         }
@@ -8659,6 +8659,8 @@ namespace RadiographyTracking.Web.Models
         
         private string _location;
         
+        private string _locationAndSegment;
+        
         private string _observations;
         
         private EntityRef<Remark> _remark;
@@ -8734,6 +8736,8 @@ namespace RadiographyTracking.Web.Models
         partial void OnIDChanged();
         partial void OnLocationChanging(string value);
         partial void OnLocationChanged();
+        partial void OnLocationAndSegmentChanging(string value);
+        partial void OnLocationAndSegmentChanged();
         partial void OnObservationsChanging(string value);
         partial void OnObservationsChanged();
         partial void OnRemarkIDChanging(Nullable<int> value);
@@ -9190,6 +9194,35 @@ namespace RadiographyTracking.Web.Models
                     this._location = value;
                     this.RaiseDataMemberChanged("Location");
                     this.OnLocationChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'LocationAndSegment' value.
+        /// </summary>
+        // The following attributes were not generated:
+        // 
+        // - The attribute 'System.ComponentModel.DataAnnotations.NotMappedAttribute' is not visible in the client project 'RadiographyTracking'. Are you missing an assembly reference?
+        // [NotMappedAttribute()]
+        // 
+        [DataMember()]
+        public string LocationAndSegment
+        {
+            get
+            {
+                return this._locationAndSegment;
+            }
+            set
+            {
+                if ((this._locationAndSegment != value))
+                {
+                    this.OnLocationAndSegmentChanging(value);
+                    this.RaiseDataMemberChanging("LocationAndSegment");
+                    this.ValidateProperty("LocationAndSegment", value);
+                    this._locationAndSegment = value;
+                    this.RaiseDataMemberChanged("LocationAndSegment");
+                    this.OnLocationAndSegmentChanged();
                 }
             }
         }
@@ -10398,6 +10431,8 @@ namespace RadiographyTracking.Web.Models
         
         private string _observations;
         
+        private string _remarkText;
+        
         private string _segment;
         
         #region Extensibility Method Definitions
@@ -10413,6 +10448,8 @@ namespace RadiographyTracking.Web.Models
         partial void OnLocationIDChanged();
         partial void OnObservationsChanging(string value);
         partial void OnObservationsChanged();
+        partial void OnRemarkTextChanging(string value);
+        partial void OnRemarkTextChanged();
         partial void OnSegmentChanging(string value);
         partial void OnSegmentChanged();
 
@@ -10507,6 +10544,35 @@ namespace RadiographyTracking.Web.Models
                     this._observations = value;
                     this.RaiseDataMemberChanged("Observations");
                     this.OnObservationsChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'RemarkText' value.
+        /// </summary>
+        // The following attributes were not generated:
+        // 
+        // - The attribute 'System.ComponentModel.DataAnnotations.NotMappedAttribute' is not visible in the client project 'RadiographyTracking'. Are you missing an assembly reference?
+        // [NotMappedAttribute()]
+        // 
+        [DataMember()]
+        public string RemarkText
+        {
+            get
+            {
+                return this._remarkText;
+            }
+            set
+            {
+                if ((this._remarkText != value))
+                {
+                    this.OnRemarkTextChanging(value);
+                    this.RaiseDataMemberChanging("RemarkText");
+                    this.ValidateProperty("RemarkText", value);
+                    this._remarkText = value;
+                    this.RaiseDataMemberChanged("RemarkText");
+                    this.OnRemarkTextChanged();
                 }
             }
         }
@@ -12301,12 +12367,16 @@ namespace RadiographyTracking.Web.Services
         /// </summary>
         /// <param name="fromDate">The value for the 'fromDate' parameter of the query.</param>
         /// <param name="toDate">The value for the 'toDate' parameter of the query.</param>
+        /// <param name="rtNo">The value for the 'rtNo' parameter of the query.</param>
+        /// <param name="coverageId">The value for the 'coverageId' parameter of the query.</param>
         /// <returns>An EntityQuery that can be loaded to retrieve <see cref="RGReport"/> entity instances.</returns>
-        public EntityQuery<RGReport> GetRGReportsByDateQuery(DateTime fromDate, DateTime toDate)
+        public EntityQuery<RGReport> GetRGReportsByDateQuery(DateTime fromDate, DateTime toDate, string rtNo, int coverageId)
         {
             Dictionary<string, object> parameters = new Dictionary<string, object>();
             parameters.Add("fromDate", fromDate);
             parameters.Add("toDate", toDate);
+            parameters.Add("rtNo", rtNo);
+            parameters.Add("coverageId", coverageId);
             this.ValidateMethod("GetRGReportsByDateQuery", parameters);
             return base.CreateQuery<RGReport>("GetRGReportsByDate", parameters, false, true);
         }
@@ -12352,8 +12422,10 @@ namespace RadiographyTracking.Web.Services
         /// <param name="toDate">The value for the 'toDate' parameter of the query.</param>
         /// <param name="RTNo">The value for the 'RTNo' parameter of the query.</param>
         /// <param name="HeatNo">The value for the 'HeatNo' parameter of the query.</param>
+        /// <param name="fpNo">The value for the 'fpNo' parameter of the query.</param>
+        /// <param name="coverageId">The value for the 'coverageId' parameter of the query.</param>
         /// <returns>An EntityQuery that can be loaded to retrieve <see cref="RTStatusReportRow"/> entity instances.</returns>
-        public EntityQuery<RTStatusReportRow> GetRTStatusQuery(int foundryId, Nullable<DateTime> fromDate, Nullable<DateTime> toDate, string RTNo, string HeatNo)
+        public EntityQuery<RTStatusReportRow> GetRTStatusQuery(int foundryId, Nullable<DateTime> fromDate, Nullable<DateTime> toDate, string RTNo, string HeatNo, string fpNo, Nullable<int> coverageId)
         {
             Dictionary<string, object> parameters = new Dictionary<string, object>();
             parameters.Add("foundryId", foundryId);
@@ -12361,6 +12433,8 @@ namespace RadiographyTracking.Web.Services
             parameters.Add("toDate", toDate);
             parameters.Add("RTNo", RTNo);
             parameters.Add("HeatNo", HeatNo);
+            parameters.Add("fpNo", fpNo);
+            parameters.Add("coverageId", coverageId);
             this.ValidateMethod("GetRTStatusQuery", parameters);
             return base.CreateQuery<RTStatusReportRow>("GetRTStatus", parameters, false, true);
         }
@@ -13169,13 +13243,15 @@ namespace RadiographyTracking.Web.Services
             /// </summary>
             /// <param name="fromDate">The value for the 'fromDate' parameter of this action.</param>
             /// <param name="toDate">The value for the 'toDate' parameter of this action.</param>
+            /// <param name="rtNo">The value for the 'rtNo' parameter of this action.</param>
+            /// <param name="coverageId">The value for the 'coverageId' parameter of this action.</param>
             /// <param name="callback">Callback to invoke on completion.</param>
             /// <param name="asyncState">Optional state object.</param>
             /// <returns>An IAsyncResult that can be used to monitor the request.</returns>
             [FaultContract(typeof(DomainServiceFault), Action="http://tempuri.org/RadiographyService/GetRGReportsByDateDomainServiceFault", Name="DomainServiceFault", Namespace="DomainServices")]
             [OperationContract(AsyncPattern=true, Action="http://tempuri.org/RadiographyService/GetRGReportsByDate", ReplyAction="http://tempuri.org/RadiographyService/GetRGReportsByDateResponse")]
             [WebGet()]
-            IAsyncResult BeginGetRGReportsByDate(DateTime fromDate, DateTime toDate, AsyncCallback callback, object asyncState);
+            IAsyncResult BeginGetRGReportsByDate(DateTime fromDate, DateTime toDate, string rtNo, int coverageId, AsyncCallback callback, object asyncState);
             
             /// <summary>
             /// Completes the asynchronous operation begun by 'BeginGetRGReportsByDate'.
@@ -13264,13 +13340,15 @@ namespace RadiographyTracking.Web.Services
             /// <param name="toDate">The value for the 'toDate' parameter of this action.</param>
             /// <param name="RTNo">The value for the 'RTNo' parameter of this action.</param>
             /// <param name="HeatNo">The value for the 'HeatNo' parameter of this action.</param>
+            /// <param name="fpNo">The value for the 'fpNo' parameter of this action.</param>
+            /// <param name="coverageId">The value for the 'coverageId' parameter of this action.</param>
             /// <param name="callback">Callback to invoke on completion.</param>
             /// <param name="asyncState">Optional state object.</param>
             /// <returns>An IAsyncResult that can be used to monitor the request.</returns>
             [FaultContract(typeof(DomainServiceFault), Action="http://tempuri.org/RadiographyService/GetRTStatusDomainServiceFault", Name="DomainServiceFault", Namespace="DomainServices")]
             [OperationContract(AsyncPattern=true, Action="http://tempuri.org/RadiographyService/GetRTStatus", ReplyAction="http://tempuri.org/RadiographyService/GetRTStatusResponse")]
             [WebGet()]
-            IAsyncResult BeginGetRTStatus(int foundryId, Nullable<DateTime> fromDate, Nullable<DateTime> toDate, string RTNo, string HeatNo, AsyncCallback callback, object asyncState);
+            IAsyncResult BeginGetRTStatus(int foundryId, Nullable<DateTime> fromDate, Nullable<DateTime> toDate, string RTNo, string HeatNo, string fpNo, Nullable<int> coverageId, AsyncCallback callback, object asyncState);
             
             /// <summary>
             /// Completes the asynchronous operation begun by 'BeginGetRTStatus'.
