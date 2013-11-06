@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.ServiceModel.DomainServices.Client;
 using System.Windows;
@@ -44,7 +45,7 @@ namespace RadiographyTracking.Views
             }
         }
 
-     
+
         private bool customerMode = false;
 
         public override string ChangeContext
@@ -85,7 +86,7 @@ namespace RadiographyTracking.Views
         public void EditOperation(object sender, RoutedEventArgs e)
         {
             if (WebContext.Current.User.Roles.FirstOrDefault() == "Customer")
-              return;
+                return;
 
             DataGridRow row = DataGridRow.GetRowContainingElement(sender as FrameworkElement);
             App.RGReport = (RGReport)row.DataContext;
@@ -129,7 +130,9 @@ namespace RadiographyTracking.Views
             //Get the application root, where 'ClientBin' is the known dir where the XAP is
             string appRoot = src.Substring(0, src.IndexOf("ClientBin"));
 
-            Uri reportURI = new Uri(string.Format(appRoot + "RGReportGenerate.aspx?ReportNo={0}", report.ReportNo), UriKind.Absolute);
+            //Uri reportURI = new Uri(string.Format(appRoot + "RGReportGenerate.aspx?ReportNo={0}", report.ReportNo), UriKind.Absolute);
+            Debug.Assert(report != null, "report != null");
+            Uri reportURI = new Uri(string.Format(appRoot + "RGReportGenerate.aspx?ReportId={0}&" + "ReportNo={1}", report.ID, report.ReportNo), UriKind.Absolute);
             HtmlPage.Window.Navigate(reportURI, "_blank");
         }
 
@@ -138,9 +141,9 @@ namespace RadiographyTracking.Views
             DataGridRow row = DataGridRow.GetRowContainingElement(sender as FrameworkElement);
             RGReport report = (RGReport)row.DataContext;
 
-            ctx = (RadiographyContext)RGDomainDataSource.DomainContext; 
+            ctx = (RadiographyContext)RGDomainDataSource.DomainContext;
             busyIndicator.IsBusy = true;
-         this.ctx.Load(this.ctx.GetRGReportsQuery(report.ReportNo)).Completed += loadCompleted; ;
+            this.ctx.Load(this.ctx.GetRGReportsQuery(report.ID)).Completed += loadCompleted; ;
 
         }
         private void loadCompleted(object sender, EventArgs e)
@@ -151,7 +154,7 @@ namespace RadiographyTracking.Views
             var operation = sender as LoadOperation<RGReport>;
             var rgReport = operation.Entities.FirstOrDefault();
             reportNumberToDownload = rgReport.ReportNo;
-           
+
             var reportTable = new DataTable("Report");
             var cols = reportTable.Columns;
             var rows = reportTable.Rows;
@@ -179,40 +182,40 @@ namespace RadiographyTracking.Views
                 AddTextColumn(reportTable, columnName, columnName);
             }
 
-            foreach (var columnName in columnNames )
+            foreach (var columnName in columnNames)
             {
                 headerRow[columnName] = columnName;
             }
 
 
-            var totalFilmCount = rgReport.RGReportRows.Sum(p=>p.FilmCount);
+            var totalFilmCount = rgReport.RGReportRows.Sum(p => p.FilmCount);
 
             foreach (RGReportRow row in rgReport.RGReportRows)
             {
                 var dataRow = new DataRow();
                 dataRow["SlNo"] = rows.Count;
-                dataRow["Location"] = row.LocationAndSegment??string.Empty;
+                dataRow["Location"] = row.LocationAndSegment ?? string.Empty;
                 dataRow["Thickness"] = row.Thickness;
                 dataRow["SFD"] = row.SFD;
-                dataRow["IQI Designation"] = row.Designation??string.Empty;
-                dataRow["IQI Sensitivity"] = row.Sensitivity??string.Empty;
-                dataRow["Density"] = row.Density??string.Empty;
-                dataRow["FilmSize"] = row.FilmSizeString??string.Empty;
-                dataRow["Observations"] = row.Findings??string.Empty;
+                dataRow["IQI Designation"] = row.Designation ?? string.Empty;
+                dataRow["IQI Sensitivity"] = row.Sensitivity ?? string.Empty;
+                dataRow["Density"] = row.Density ?? string.Empty;
+                dataRow["FilmSize"] = row.FilmSizeString ?? string.Empty;
+                dataRow["Observations"] = row.Findings ?? string.Empty;
                 dataRow["Classifactions"] = row.Classifications ?? string.Empty;
-                dataRow["Remarks"] = row.RemarkText??string.Empty;
-                dataRow["ReportNo"] = rgReport.ReportNo??string.Empty;
+                dataRow["Remarks"] = row.RemarkText ?? string.Empty;
+                dataRow["ReportNo"] = rgReport.ReportNo ?? string.Empty;
                 dataRow["ReportDate"] = rgReport.ReportDate.ToShortDateString();
-                dataRow["Film"] = rgReport.Film??string.Empty;
-                dataRow["RTNO"] = rgReport.RTNo??string.Empty;
-                dataRow["FPNO"] = rgReport.FixedPattern!=null? rgReport.FixedPattern.FPNo : string.Empty;
-                dataRow["HEATNO"] = rgReport.HeatNo??string.Empty;
+                dataRow["Film"] = rgReport.Film ?? string.Empty;
+                dataRow["RTNO"] = rgReport.RTNo ?? string.Empty;
+                dataRow["FPNO"] = rgReport.FixedPattern != null ? rgReport.FixedPattern.FPNo : string.Empty;
+                dataRow["HEATNO"] = rgReport.HeatNo ?? string.Empty;
                 dataRow["DateOfTest"] = rgReport.DateOfTest.ToShortDateString();
                 dataRow["LeadScreenFrontBack"] = rgReport.LeadScreen;
-                dataRow["Viewing"] = rgReport.Viewing??string.Empty;
-                dataRow["Source"] = rgReport.Source??string.Empty;
-                dataRow["SourceSize"] = rgReport.SourceSize??string.Empty;
-                dataRow["Coverage"] = rgReport.Coverage != null ? rgReport.Coverage.CoverageName:string.Empty;
+                dataRow["Viewing"] = rgReport.Viewing ?? string.Empty;
+                dataRow["Source"] = rgReport.Source ?? string.Empty;
+                dataRow["SourceSize"] = rgReport.SourceSize ?? string.Empty;
+                dataRow["Coverage"] = rgReport.Coverage != null ? rgReport.Coverage.CoverageName : string.Empty;
                 dataRow["ProcedureReference"] = rgReport.ProcedureRef ?? string.Empty;
                 dataRow["AcceptanceAsper"] = rgReport.AcceptanceAsPer ?? string.Empty;
                 dataRow["TotalNoOfFilms"] = totalFilmCount;
@@ -230,7 +233,7 @@ namespace RadiographyTracking.Views
                 rows.Add(dataRow);
             }
 
-            
+
 
             var ds = new DataSet("ReportDataSet");
             ds.Tables.Add(reportTable);
@@ -240,9 +243,9 @@ namespace RadiographyTracking.Views
             reportGrid.DataMember = "Report";
             reportGrid.DataBind();
 
-           busyIndicator.IsBusy = false;
+            busyIndicator.IsBusy = false;
 
-          myPopup.IsOpen = true;
+            myPopup.IsOpen = true;
 
         }
 
@@ -250,9 +253,9 @@ namespace RadiographyTracking.Views
         private void btnDownload_Click(object sender, RoutedEventArgs e)
         {
             myPopup.IsOpen = false;
-            reportGrid.Export("Nithesh", "Gama", "", 1, "Report No "+reportNumberToDownload);
-          
-         
+            reportGrid.Export("Nithesh", "Gama", "", 1, "Report No " + reportNumberToDownload);
+
+
         }
         private static void AddTextColumn(DataTable reportTable, String columnName, String caption)
         {
@@ -268,7 +271,7 @@ namespace RadiographyTracking.Views
 
         private void btnFetch_Click(object sender, RoutedEventArgs e)
         {
-           RGDomainDataSource.Load();
+            RGDomainDataSource.Load();
         }
     }
 }

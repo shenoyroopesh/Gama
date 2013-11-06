@@ -44,7 +44,8 @@
         <riaControls:DomainDataSource Name="EditRGReportsSource" AutoLoad="False" DomainContext="{StaticResource RadiographyContext}" 
                                       QueryName="GetRGReportsQuery">
             <riaControls:DomainDataSource.QueryParameters>
-                <riaControls:Parameter ParameterName="RGReportNo" Value="{Binding ElementName=txtReportNo, Path=Text}" />
+                <riaControls:Parameter ParameterName="RGReportId" />
+                <!--value of the parameter RGReportId is set in code behind-->
             </riaControls:DomainDataSource.QueryParameters>
         </riaControls:DomainDataSource>
         <riaControls:DomainDataSource Name="FixedPatternsSource" AutoLoad="False" DomainContext="{StaticResource RadiographyContext}"

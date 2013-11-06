@@ -37,6 +37,7 @@ namespace RadiographyTracking.Web.Models
             this.Status = RGStatus.getStatus("PENDING", ctx);
             this.RTNo = RTNo;
             this.ReportNo = ReportNo;
+           // this.ID=
 
             RGReportRowType freshRowType = RGReportRowType.getRowType("FRESH", ctx);
             if (fpTemplate.FPTemplateRows == null) return;

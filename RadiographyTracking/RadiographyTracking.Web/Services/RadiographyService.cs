@@ -569,7 +569,7 @@
                             Location = r.Location.Trim(),
                             Segment = r.Segment.Trim(),
                             r.Observations,
-                            Remark=r.Remark
+                            Remark = r.Remark
                         }).ToList();
 
             var report = (from r in rows
@@ -590,14 +590,14 @@
                                            {
                                                ID = Guid.NewGuid(),
                                                Location = repg.Key.Location,
-                                               Segments = (from row in repg.Select(p => new { p.Segment, p.Observations, p.Remark}).ToArray()
-                                                           group row by new { row.Segment, row.Observations,row.Remark } into segg
+                                               Segments = (from row in repg.Select(p => new { p.Segment, p.Observations, p.Remark }).ToArray()
+                                                           group row by new { row.Segment, row.Observations, row.Remark } into segg
                                                            select new SegmentClass
                                                            {
                                                                ID = Guid.NewGuid(),
                                                                Segment = segg.Key.Segment,
                                                                Observations = segg.Key.Observations,
-                                                               RemarkText =segg.Key.Remark!=null? segg.Key.Remark.Value:string.Empty
+                                                               RemarkText = segg.Key.Remark != null ? segg.Key.Remark.Value : string.Empty
 
                                                            }).ToList()
                                            }).ToList()
@@ -839,11 +839,21 @@
 
         #region RG Reports
 
-        public IQueryable<RGReport> GetRGReports(String RGReportNo)
+        //public IQueryable<RGReport> GetRGReports(String RGReportNo)
+        //{
+        //    var foundryID = getFoundryIDForCurrentUser();
+        //    var result = this.DbContext.RGReports.Include(p => p.RGReportRows.Select(r => r.Remark))
+        //                                    .Where(p => p.ReportNo == RGReportNo &&
+        //                                            p.FixedPattern.Customer.Foundry.ID ==
+        //                                                (foundryID ?? p.FixedPattern.Customer.Foundry.ID));
+        //    return result;
+        //}
+
+        public IQueryable<RGReport> GetRGReports(int RGReportId)
         {
             var foundryID = getFoundryIDForCurrentUser();
             var result = this.DbContext.RGReports.Include(p => p.RGReportRows.Select(r => r.Remark))
-                                            .Where(p => p.ReportNo == RGReportNo &&
+                                            .Where(p => p.ID == RGReportId &&
                                                     p.FixedPattern.Customer.Foundry.ID ==
                                                         (foundryID ?? p.FixedPattern.Customer.Foundry.ID));
             return result;
