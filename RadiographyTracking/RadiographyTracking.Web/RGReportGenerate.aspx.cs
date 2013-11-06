@@ -54,6 +54,7 @@ namespace RadiographyTracking.Web
         private RGReport GetDataContext()
         {
             var reportNo = Request.Params["ReportNo"];
+            var reportId =Convert.ToInt32(Request.Params["ReportId"]);
 
             if (String.IsNullOrEmpty(reportNo))
                 return null;
@@ -63,7 +64,7 @@ namespace RadiographyTracking.Web
                 return ctx.RGReports.Include(p => p.FixedPattern.Customer.Foundry)
                     .Include(p => p.Status)
                     .Include(p => p.RGReportRows.Select(r => r.FilmSize))
-                    .Include(p => p.Coverage).FirstOrDefault(p => p.ReportNo == reportNo);
+                    .Include(p => p.Coverage).FirstOrDefault(p => p.ID == reportId);
             }
         }
 

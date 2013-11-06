@@ -317,7 +317,7 @@ namespace RadiographyTracking.Web
                         content = reportRow.Segment;
                         break;
                     case Thickness:
-                        content = reportRow.Thickness.ToString();
+                        content = reportRow.ThicknessRange.ToString();
                         break;
                     case SFD:
                         content = reportRow.SFD.ToString();

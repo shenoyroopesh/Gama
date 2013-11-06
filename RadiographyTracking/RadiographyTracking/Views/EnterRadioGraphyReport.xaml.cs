@@ -53,7 +53,7 @@ namespace RadiographyTracking.Views
                 DataContext = this.RGReport;
                 this.IsEditMode = true;
                 //set the query parameter here, the binding in the xaml is not working fine
-                this.EditRGReportsSource.QueryParameters[0].Value = this.RGReport.ReportNo;
+                this.EditRGReportsSource.QueryParameters[0].Value = this.RGReport.ID;
             }
 
             //wire up event handlers            

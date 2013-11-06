@@ -64,7 +64,7 @@ namespace RadiographyTracking.Web.Models
             //fetch immediately from the database, otherwise convert.toint32 will fail
             var reports = ctx.RGReports.Where(p => p.ReportNo.StartsWith(this.ReportNumberPrefix) && p.ReportDate > CurrentPeriod.StartDate).ToList();
             var lastNumber = !reports.Any() ? 0 : reports.Max(p => Convert.ToInt32(p.ReportNo.Replace(ReportNumberPrefix, "")));
-            return String.Concat(ReportNumberPrefix, Convert.ToString(lastNumber + 1));
+            return String.Concat(ReportNumberPrefix, " ", (lastNumber + 1).ToString("D4"));
         }
     }
 }
