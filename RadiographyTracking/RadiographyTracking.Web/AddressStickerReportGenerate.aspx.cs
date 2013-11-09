@@ -17,6 +17,7 @@ namespace RadiographyTracking.Web
         {
             var reportTemplateName = Request.Params["TEMPLATE_NAME"];
             var ReportNumber = Request.Params["REPORT_NUMBER"];
+            var RGReportID = Request.Params["REPORT_ID"];
             var cellNo = Request.Params["CELL_NO"];
 
             //date is expected in dd/MM/yyyy format from the url
@@ -66,9 +67,10 @@ namespace RadiographyTracking.Web
         {
             var reportTemplateName = Request.Params["TEMPLATE_NAME"];
             var ReportNumber = Request.Params["REPORT_NUMBER"];
+            int RGReportID = Convert.ToInt32(Request.Params["REPORT_ID"]);
             var cellNo = Request.Params["CELL_NO"];
             var service = new RadiographyService();
-            return service.GetAddressStickers(ReportNumber, Int32.Parse(cellNo));
+            return service.GetAddressStickers(ReportNumber, Int32.Parse(cellNo), RGReportID);
         }
 
         /// <summary>

@@ -34,6 +34,7 @@
         }
 
         public string ReportNo { get; set; }
+        public string RGReportID { get; set; }
 
         /// <summary>
         /// Ensures the visual state and focus are correct when the window is opened.
@@ -74,11 +75,12 @@
                 //Get the application root, where 'ClientBin' is the known dir where the XAP is
                 string appRoot = src.Substring(0, src.IndexOf("ClientBin"));
 
-                Uri reportURI = new Uri(string.Format(appRoot + "AddressStickerReportGenerate.aspx?TEMPLATE_NAME={0}&REPORT_NUMBER={1}&CELL_NO={2}",
-                                                        cmbAddressStickerTemplates.SelectedValue, 
-                                                        this.ReportNo, 
-                                                        cellNo),
-                                        UriKind.Absolute);
+                Uri reportURI = new Uri(string.Format(appRoot + "AddressStickerReportGenerate.aspx?TEMPLATE_NAME={0}&REPORT_NUMBER={1}&CELL_NO={2}&REPORT_ID={3}",
+                                                                        cmbAddressStickerTemplates.SelectedValue,
+                                                                        this.ReportNo,
+                                                                        cellNo,
+                                                                        this.RGReportID),
+                                                        UriKind.Absolute);
 
                 HtmlPage.Window.Navigate(reportURI, "_blank");
             }

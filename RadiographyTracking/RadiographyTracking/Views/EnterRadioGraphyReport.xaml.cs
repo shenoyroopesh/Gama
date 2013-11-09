@@ -535,7 +535,8 @@ namespace RadiographyTracking.Views
                 MessageBox.Show("Saved Successfully", "Success", MessageBoxButton.OK);
                 var addressStickersWindow = new PrintAddressStickers
                     {
-                        ReportNo = this.RGReport.ReportNo
+                        ReportNo = this.RGReport.ReportNo,
+                        RGReportID = Convert.ToString(this.RGReport.ID) 
                     };
                 addressStickersWindow.Show();
             }

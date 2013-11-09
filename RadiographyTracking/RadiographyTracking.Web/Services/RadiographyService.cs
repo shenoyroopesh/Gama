@@ -1406,14 +1406,14 @@
         #endregion
 
         #region address stickers
-        public List<AddressStickerRow> GetAddressStickers(string reportNo, int cellNo)
+        public List<AddressStickerRow> GetAddressStickers(string reportNo, int cellNo, int RGReportID)
         {
             var rows = new List<RGReportRow>();
             for (var i = 1; i < cellNo; i++) rows.Add(null);
 
             var reportRows = DbContext
-                            .RGReportRows.Include(p => p.RGReport.FixedPattern.Customer).Include(p => p.Energy)
-                            .Where(p => p.RGReport.ReportNo == reportNo);
+                           .RGReportRows.Include(p => p.RGReport.FixedPattern.Customer).Include(p => p.Energy)
+                           .Where(p => p.RGReport.ID == RGReportID);
 
             rows.AddRange(reportRows);
 
