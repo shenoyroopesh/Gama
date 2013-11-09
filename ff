@@ -1,0 +1,124 @@
+[33mcommit 6667acac55fa0393daf6fbb9a6683571cfa65693[m
+Author: Roopesh Shenoy <shenoy.roopesh@gmail.com>
+Date:   Fri Jun 21 01:16:23 2013 +0530
+
+    Allow NextResetDate to be changed in Foundries page
+
+[33mcommit fa9414fa5de22c6ddc50cfbf3cbd7f1980c9470a[m
+Author: Roopesh Shenoy <shenoy.roopesh@gmail.com>
+Date:   Fri Jun 21 00:54:21 2013 +0530
+
+    Completing Period logic
+    
+    Report no now depends on the period created.
+
+[33mcommit dabdc8fa6a31335b5b39cb4efa148b2bf867baaa[m
+Author: Roopesh Shenoy <shenoy.roopesh@gmail.com>
+Date:   Wed Jun 19 00:54:26 2013 +0530
+
+    Adding the actual class period
+
+[33mcommit 9363b62d56ae1d06f0563ecd25d87d42dbe80fb9[m
+Author: Roopesh Shenoy <shenoy.roopesh@gmail.com>
+Date:   Wed Jun 19 00:53:33 2013 +0530
+
+    Added Period to the Model
+    
+    This is needed to keep track of report numbers - so that report numbers
+    can restart within every period.
+
+[33mcommit e43136f72a8c8efd76f1e50d3ae23aa1ab1a11cc[m
+Author: kuntadynithesh <nitheshkumarkuntady@gmail.com>
+Date:   Tue May 21 20:29:02 2013 +0530
+
+    committing changes  for last set of changes
+
+[33mcommit b6260f06acaab1ba762fbe25caaa2b3868317b8e[m
+Author: kuntadynithesh <nitheshkumarkuntady@gmail.com>
+Date:   Sun May 5 22:00:40 2013 +0530
+
+    correcting RadiographyReports.xaml.cs for last change
+
+[33mcommit 5ce8c279956ccc9a4ee318b1e71fcacb68308cf5[m
+Author: kuntadynithesh <nitheshkumarkuntady@gmail.com>
+Date:   Sun May 5 21:56:59 2013 +0530
+
+    second set of changes for '0000115-0000118 -0000120-0000122-000123
+
+[33mcommit 8f06e6282cd16131d850b23a6885ee30cf2d41fb[m
+Author: Nithesh Kumar Kuntady <nitheshkumarkuntady@gmail.com>
+Date:   Mon Apr 22 21:36:56 2013 +0530
+
+    committing changes for 0000115,0000120,0000122
+
+[33mcommit dbe65e01b64da6cb64485c8808048ffe4e8a9d6c[m
+Author: Roopesh Shenoy <shenoy.roopesh@gmail.com>
+Date:   Tue Feb 12 15:39:59 2013 +0530
+
+    Fixing minor merging issues
+
+[33mcommit 2e1d4c96fb1fd1c1fee33bc661d46c8e053d6de3[m
+Merge: 673402a 8d96dbf
+Author: Roopesh Shenoy <shenoy.roopesh@gmail.com>
+Date:   Tue Feb 12 14:57:35 2013 +0530
+
+    Merge remote-tracking branch 'nithesh/master'
+    
+    Conflicts:
+    	RadiographyTracking/BindableDataGrid/Bin/Debug/BindableDataGrid.dll
+    	RadiographyTracking/BindableDataGrid/Bin/Debug/BindableDataGrid.pdb
+    	RadiographyTracking/BindableDataGrid/obj/Debug/BindableDataGrid.dll
+    	RadiographyTracking/BindableDataGrid/obj/Debug/BindableDataGrid.pdb
+    	RadiographyTracking/BindableDataGrid/obj/Release/BindableDataGrid.csproj.FileListAbsolute.txt
+    	RadiographyTracking/BindableDataGrid/obj/Release/DesignTimeResolveAssemblyReferencesInput.cache
+    	RadiographyTracking/ComboBoxExtensions/Bin/Debug/ComboBoxExtensions.dll
+    	RadiographyTracking/ComboBoxExtensions/Bin/Debug/ComboBoxExtensions.pdb
+    	RadiographyTracking/ComboBoxExtensions/Bin/Release/ComboBoxExtensions.dll
+    	RadiographyTracking/ComboBoxExtensions/Bin/Release/ComboBoxExtensions.pdb
+    	RadiographyTracking/ComboBoxExtensions/Bin/Release/System.ComponentModel.DataAnnotations.dll
+    	RadiographyTracking/ComboBoxExtensions/Bin/Release/System.ServiceModel.DomainServices.Client.dll
+    	RadiographyTracking/ComboBoxExtensions/Bin/Release/ar/System.ComponentModel.DataAnnotations.resources.dll
+    	RadiographyTracking/ComboBoxExtensions/Bin/Release/bg/System.ComponentModel.DataAnnotations.resources.dll
+    	RadiographyTracking/ComboBoxExtensions/Bin/Release/ca/System.ComponentModel.DataAnnotations.resources.dll
+    	RadiographyTracking/ComboBoxExtensions/Bin/Release/cs/System.ComponentModel.DataAnnotations.resources.dll
+    	RadiographyTracking/ComboBoxExtensions/Bin/Release/da/System.ComponentModel.DataAnnotations.resources.dll
+    	RadiographyTracking/ComboBoxExtensions/Bin/Release/de/System.ComponentModel.DataAnnotations.resources.dll
+    	RadiographyTracking/ComboBoxExtensions/Bin/Release/de/System.ServiceModel.DomainServices.Client.resources.dll
+    	RadiographyTracking/ComboBoxExtensions/Bin/Release/el/System.ComponentModel.DataAnnotations.resources.dll
+    	RadiographyTracking/ComboBoxExtensions/Bin/Release/es/System.ComponentModel.DataAnnotations.resources.dll
+    	RadiographyTracking/ComboBoxExtensions/Bin/Release/es/System.ServiceModel.DomainServices.Client.resources.dll
+    	RadiographyTracking/ComboBoxExtensions/Bin/Release/et/System.ComponentModel.DataAnnotations.resources.dll
+    	RadiographyTracking/ComboBoxExtensions/Bin/Release/eu/System.ComponentModel.DataAnnotations.resources.dll
+    	RadiographyTracking/ComboBoxExtensions/Bin/Release/fi/System.ComponentModel.DataAnnotations.resources.dll
+    	RadiographyTracking/ComboBoxExtensions/Bin/Release/fr/System.ComponentModel.DataAnnotations.resources.dll
+    	RadiographyTracking/ComboBoxExtensions/Bin/Release/fr/System.ServiceModel.DomainServices.Client.resources.dll
+    	RadiographyTracking/ComboBoxExtensions/Bin/Release/he/System.ComponentModel.DataAnnotations.resources.dll
+    	RadiographyTracking/ComboBoxExtensions/Bin/Release/hr/System.ComponentModel.DataAnnotations.resources.dll
+    	RadiographyTracking/ComboBoxExtensions/Bin/Release/hu/System.ComponentModel.DataAnnotations.resources.dll
+    	RadiographyTracking/ComboBoxExtensions/Bin/Release/id/System.ComponentModel.DataAnnotations.resources.dll
+    	RadiographyTracking/ComboBoxExtensions/Bin/Release/it/System.ComponentModel.DataAnnotations.resources.dll
+    	RadiographyTracking/ComboBoxExtensions/Bin/Release/it/System.ServiceModel.DomainServices.Client.resources.dll
+    	RadiographyTracking/ComboBoxExtensions/Bin/Release/ja/System.ComponentModel.DataAnnotations.resources.dll
+    	RadiographyTracking/ComboBoxExtensions/Bin/Release/ja/System.ServiceModel.DomainServices.Client.resources.dll
+    	RadiographyTracking/ComboBoxExtensions/Bin/Release/ko/System.ComponentModel.DataAnnotations.resources.dll
+    	RadiographyTracking/ComboBoxExtensions/Bin/Release/ko/System.ServiceModel.DomainServices.Client.resources.dll
+    	RadiographyTracking/ComboBoxExtensions/Bin/Release/lt/System.ComponentModel.DataAnnotations.resources.dll
+    	RadiographyTracking/ComboBoxExtensions/Bin/Release/lv/System.ComponentModel.DataAnnotations.resources.dll
+    	RadiographyTracking/ComboBoxExtensions/Bin/Release/ms/System.ComponentModel.DataAnnotations.resources.dll
+    	RadiographyTracking/ComboBoxExtensions/Bin/Release/nl/System.ComponentModel.DataAnnotations.resources.dll
+    	RadiographyTracking/ComboBoxExtensions/Bin/Release/no/System.ComponentModel.DataAnnotations.resources.dll
+    	RadiographyTracking/ComboBoxExtensions/Bin/Release/pl/System.ComponentModel.DataAnnotations.resources.dll
+    	RadiographyTracking/ComboBoxExtensions/Bin/Release/pt-BR/System.ComponentModel.DataAnnotations.resources.dll
+    	RadiographyTracking/ComboBoxExtensions/Bin/Release/pt/System.ComponentModel.DataAnnotations.resources.dll
+    	RadiographyTracking/ComboBoxExtensions/Bin/Release/ro/System.ComponentModel.DataAnnotations.resources.dll
+    	RadiographyTracking/ComboBoxExtensions/Bin/Release/ru/System.ComponentModel.DataAnnotations.resources.dll
+    	RadiographyTracking/ComboBoxExtensions/Bin/Release/ru/System.ServiceModel.DomainServices.Client.resources.dll
+    	RadiographyTracking/ComboBoxExtensions/Bin/Release/sk/System.ComponentModel.DataAnnotations.resources.dll
+    	RadiographyTracking/ComboBoxExtensions/Bin/Release/sl/System.ComponentModel.DataAnnotations.resources.dll
+    	RadiographyTracking/ComboBoxExtensions/Bin/Release/sr-Cyrl-CS/System.ComponentModel.DataAnnotations.resources.dll
+    	RadiographyTracking/ComboBoxExtensions/Bin/Release/sr-Latn-CS/System.ComponentModel.DataAnnotations.resources.dll
+    	RadiographyTracking/ComboBoxExtensions/Bin/Release/sv/System.ComponentModel.DataAnnotations.resources.dll
+    	RadiographyTracking/ComboBoxExtensions/Bin/Release/th/System.ComponentModel.DataAnnotations.resources.dll
+    	RadiographyTracking/ComboBoxExtensions/Bin/Release/tr/System.ComponentModel.DataAnnotations.resources.dll
+    	RadiographyTracking/ComboBoxExtensions/Bin/Release/uk/System.ComponentModel.DataAnnotations.resources.dll
+    	RadiographyTracking/ComboBoxExtensions/Bin/Release/vi/System.ComponentModel.DataAnno
