@@ -64,16 +64,19 @@ namespace RadiographyTracking.Views
             AddTextColumn(reportTable, "ReportDate", "Report Date");
             AddTextColumn(reportTable, "FPNo", "FP No");
             AddTextColumn(reportTable, "RTNo", "RT No");
+            AddTextColumn(reportTable, "ReportTypeAndNo", "Remarks");
 
             headerRow["ReportNo"] = "Report No";
             headerRow["ReportDate"] = "Date";
             headerRow["FPNo"] = "FP No";
             headerRow["RTNo"] = "RT No";
+            headerRow["ReportTypeAndNo"] = "Remarks";
 
             subHeaderRow["ReportNo"] = "";
             subHeaderRow["ReportDate"] = "";
             subHeaderRow["FPNo"] = "";
             subHeaderRow["RTNo"] = "";
+            subHeaderRow["ReportTypeAndNo"] = "";
 
             //filmsize columns
             foreach (var row in ctx.Energies)
@@ -113,6 +116,7 @@ namespace RadiographyTracking.Views
                     dataRow["ReportDate"] = r.Date;
                     dataRow["FPNo"] = r.FPNo;
                     dataRow["RTNo"] = r.RTNo;
+                    dataRow["ReportTypeAndNo"] = r.ReportTypeAndNo;
                 }
 
                 //prev Row last energy total col - temp fix for issue 0000109

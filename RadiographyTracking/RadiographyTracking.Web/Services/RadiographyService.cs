@@ -469,11 +469,11 @@
             toDate = toDate.Date.AddDays(1);
 
             var intermediate = (from r in DbContext.RGReportRows
-                                orderby r.RGReport.ReportDate, r.RGReport.ReportNo
+                                orderby r.RGReport.ReportDate, r.RGReport.ReportNo, r.RGReport.ReportTypeAndNo
                                 let rowFID = r.RGReport.FixedPattern.Customer.FoundryID
                                 where rowFID == (foundryId == -1 ? rowFID : foundryId)
                                 && r.RGReport.ReportDate >= fromDate && r.RGReport.ReportDate <= toDate
-                                group r by new { r.RGReport, r.RGReport.FixedPattern, r.Energy, r.Remark } into g
+                                group r by new { r.RGReport, r.RGReport.FixedPattern, r.Energy, r.Remark, r.RGReport.ReportTypeAndNo } into g
                                 select new { g.Key, Area = g.Sum(p => p.FilmSize.Area * p.FilmCount) }).ToList();
 
 
@@ -485,6 +485,7 @@
                        Date = g.Key.RGReport.ReportDate.ToString("dd-MM-yyyy"),
                        FPNo = g.Key.RGReport.FixedPattern.FPNo,
                        RTNo = g.Key.RGReport.RTNo,
+                       ReportTypeAndNo = g.Key.RGReport.ReportTypeAndNo,
                        Energy = g.Key.Energy.Name,
                        RowType = g.Key.Remark == null ? string.Empty : g.Key.Remark.Value,
                        Area = g.Area
