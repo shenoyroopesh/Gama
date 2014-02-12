@@ -26,7 +26,7 @@ namespace RadiographyTracking.Web.Models
             {
                 try
                 {
-                    this.Thickness = Convert.ToInt32(value.Split('-').ToList().Select(p => int.Parse(p.Trim())).Average());
+                    this.Thickness = Convert.ToInt32(value.Split('-').ToList().Select(p => int.Parse(p.Trim())).Max());
                     this.ThicknessRange = value;
                 }
                 catch

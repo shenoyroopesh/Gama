@@ -105,9 +105,10 @@ namespace RadiographyTracking.Web.Models
         {
             get
             {
-                return this.FilmSizeString
+
+                string FilmSizeWithCount = this.FilmSizeString + ((this.FilmCount > 1) ? ("X" + this.FilmCount.ToString()) : String.Empty);
                     //to show as 8X9X2 if there are two films of sizes 8X9
-                      + ((this.FilmCount > 1) ? ("X" + this.FilmCount.ToString()) : String.Empty);
+                return FilmSizeWithCount;
             }
         }
 

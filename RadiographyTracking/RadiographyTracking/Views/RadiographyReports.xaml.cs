@@ -200,7 +200,7 @@ namespace RadiographyTracking.Views
                 dataRow["IQI Designation"] = row.Designation ?? string.Empty;
                 dataRow["IQI Sensitivity"] = row.Sensitivity ?? string.Empty;
                 dataRow["Density"] = row.Density ?? string.Empty;
-                dataRow["FilmSize"] = row.FilmSizeString ?? string.Empty;
+                dataRow["FilmSize"] = row.FilmSizeWithCount ?? string.Empty;
                 dataRow["Observations"] = row.Findings ?? string.Empty;
                 dataRow["Classifactions"] = row.Classifications ?? string.Empty;
                 dataRow["Remarks"] = row.RemarkText ?? string.Empty;
