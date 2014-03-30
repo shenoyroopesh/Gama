@@ -53,7 +53,7 @@ namespace RadiographyTracking.Web.Models
 
         public int ShiftID { get; set; }
         public Shift Shift { get; set; }
-    
+
         private string evaluationAsPer;
         [NotMapped]
         public string EvaluationAsPer
@@ -130,7 +130,7 @@ namespace RadiographyTracking.Web.Models
                     return "0";
 
                 return this.FinalRTReportRows
-                    .Where(p=> p.RemarkText != "RETAKE")
+                    .Where(p => p.RemarkText != "RETAKE")
                     .Sum(p => p.FilmArea).ToString();
             }
         }
@@ -242,7 +242,7 @@ namespace RadiographyTracking.Web.Models
                               {
                                   Energy = g.Key,
                                   Area = g.Sum(p => p.FilmArea)
-                              }; 
+                              };
 
                 return summary.ToDictionary(s => s.Energy, s => s.Area);
             }
@@ -258,13 +258,13 @@ namespace RadiographyTracking.Web.Models
                     return null;
 
                 var summary = from r in FinalRTReportRows
-                              where r.RemarkText == "RETAKE" 
+                              where r.RemarkText == "RETAKE"
                               group r by r.Energy.Name into g
                               select new
                               {
                                   Energy = g.Key,
                                   Area = g.Sum(p => p.FilmArea)
-                              }; 
+                              };
 
                 return summary.ToDictionary(s => s.Energy, s => s.Area);
             }
@@ -299,7 +299,6 @@ namespace RadiographyTracking.Web.Models
             }
             return null;
         }
-
 
     }
 }

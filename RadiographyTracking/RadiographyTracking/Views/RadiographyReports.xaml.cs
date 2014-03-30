@@ -189,7 +189,7 @@ namespace RadiographyTracking.Views
 
 
             var totalFilmCount = rgReport.RGReportRows.Sum(p => p.FilmCount);
-
+               
             foreach (RGReportRow row in rgReport.RGReportRows)
             {
                 var dataRow = new DataRow();
@@ -200,7 +200,7 @@ namespace RadiographyTracking.Views
                 dataRow["IQI Designation"] = row.Designation ?? string.Empty;
                 dataRow["IQI Sensitivity"] = row.Sensitivity ?? string.Empty;
                 dataRow["Density"] = row.Density ?? string.Empty;
-                dataRow["FilmSize"] = row.FilmSizeWithCount ?? string.Empty;
+                dataRow["FilmSize"] = row.FilmSizeString ?? string.Empty;
                 dataRow["Observations"] = row.Findings ?? string.Empty;
                 dataRow["Classifactions"] = row.Classifications ?? string.Empty;
                 dataRow["Remarks"] = row.RemarkText ?? string.Empty;
@@ -218,15 +218,16 @@ namespace RadiographyTracking.Views
                 dataRow["Coverage"] = rgReport.Coverage != null ? rgReport.Coverage.CoverageName : string.Empty;
                 dataRow["ProcedureReference"] = rgReport.ProcedureRef ?? string.Empty;
                 dataRow["AcceptanceAsper"] = rgReport.AcceptanceAsPer ?? string.Empty;
-                dataRow["TotalNoOfFilms"] = totalFilmCount;
+                dataRow["TotalNoOfFilms"] = row.FilmCount;    //totalFilmCount;
                 dataRow["Ir192_Co60 Strength"] = rgReport.Strength ?? string.Empty;
 
                 foreach (var en in ctx.Energies)
                 {
-
+                   
                     dataRow[en.Name + " Area"] = rgReport.RGReportRows
                         .Where(p => p.EnergyID == en.ID &&
-                                    p.RemarkText != "RETAKE")
+                                  //  p.RemarkText != "RETAKE" &&
+                                    p.SlNo == rows.Count)
                         .Sum(p => p.FilmSize.Area * p.FilmCount);
                 }
 

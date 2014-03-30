@@ -34,7 +34,7 @@ namespace RadiographyTracking.Web.Models
             fpTemplate.CopyTo(this, "ID");
             this.DateOfTest = this.ReportDate = DateTime.Now;
             this.Shift = Shift.getShift("DAY", ctx); //defaulting so it can be saved
-            this.Status = RGStatus.getStatus("PENDING", ctx);
+            this.Status = RGStatus.getStatus("CASTING UNDER REPAIR", ctx);
             this.RTNo = RTNo;
             this.ReportNo = ReportNo;
            // this.ID=

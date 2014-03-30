@@ -873,7 +873,7 @@
                                                    (rtNo == string.Empty || p.RTNo.Contains(rtNo)) &&
                                                    (coverageId == -1 || p.CoverageID == coverageId) &&
                                                     p.FixedPattern.Customer.Foundry.ID ==
-                                                        (foundryID ?? p.FixedPattern.Customer.Foundry.ID));
+                                                        (foundryID ?? p.FixedPattern.Customer.Foundry.ID)).OrderBy(p => p.ReportDate).ThenBy(p => p.ReportNo); 
         }
 
 
@@ -1201,7 +1201,7 @@
                 this.DbContext.Technicians.Add(entity);
             }
         }
-
+        
         public void UpdateTechnician(Technician currentTechnician)
         {
             this.DbContext.Technicians.AttachAsModified(currentTechnician, this.ChangeSet.GetOriginal(currentTechnician), this.DbContext);

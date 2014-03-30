@@ -48,7 +48,7 @@ namespace RadiographyTracking.Web.Models
             context.Remarks.Add(new Remark { Value = "RETAKE" });
             context.Remarks.Add(new Remark { Value = "RESHOOT" });
 
-            context.RGStatuses.Add(new RGStatus() { Status = "PENDING" });
+            context.RGStatuses.Add(new RGStatus() { Status = "CASTING UNDER REPAIR" });
             context.RGStatuses.Add(new RGStatus() { Status = "COMPLETE" });
 
             context.Shifts.Add(new Shift() { Value = "DAY" });

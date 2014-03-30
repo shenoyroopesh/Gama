@@ -408,7 +408,7 @@ namespace RadiographyTracking.Views
                 if (result != MessageBoxResult.Cancel)
                     RGReport.Status =
                         ((RadiographyContext)DomainSource.DomainContext).RGStatus.FirstOrDefault(
-                            p => p.Status == "PENDING");
+                            p => p.Status == "CASTING UNDER REPAIR");
             }
             else
             {
