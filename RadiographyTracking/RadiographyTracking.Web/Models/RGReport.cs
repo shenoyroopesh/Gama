@@ -46,7 +46,7 @@ namespace RadiographyTracking.Web.Models
 
             //some default values as suggested by Shankaran (10-Apr-2012)
             this.Film = "AGFA D7";
-            this.LeadScreen = "0.125mm/0.25mm"; //Default for Leadscreen changed as per requirements shared on 30-Jun-12.
+            this.LeadScreen = "0.25mm"; //Default for Leadscreen changed as per NEW requirements shared on 07-Jun-14.
             this.ReportTypeAndNo = this.ReportType = "Fresh";
             this.ReshootNo = 0; //explicitly setting this, even though this is the default value
 
