@@ -132,7 +132,12 @@ namespace RadiographyTracking.Views
                 prevEnergy = r.Energy;
             }
             //last report row
-            if(dataRow != null) rows.Add(dataRow);
+            if (dataRow != null) //rows.Add(dataRow);
+            {
+                dataRow[prevEnergy + "ACCEPTABLE"] = totalArea;
+                totalArea = 0;
+                rows.Add(dataRow);
+            }
 
             //totals row
             var totalRow = new DataRow();
