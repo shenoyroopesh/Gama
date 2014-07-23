@@ -32,6 +32,7 @@ namespace RadiographyTracking.Web
         protected const string Date = "Date";
         protected const string Film = "Film";
         protected const string LeadScreen = "LeadScreen";
+        protected const string LeadScreenBack = "LeadScreenBack";
         protected const string Source = "Source";
         protected const string Strength = "Strength";
         protected const string SourceSize = "SourceSize";
@@ -41,6 +42,8 @@ namespace RadiographyTracking.Web
         protected const string Logo = "Logo";
         protected const string ReportTypeNo = "ReportTypeNo";
         protected const string Viewing = "Viewing";
+        protected const string EndCustomer = "EndCustomer";
+        protected const string HeaderTechnique = "HeaderTechnique";
 
         protected const string RGReportRow = "RGReportRow";
         protected const string SlNo = "SlNo";
@@ -74,7 +77,7 @@ namespace RadiographyTracking.Web
         protected const string AreaCollection = "AreaCollection";
         protected const string ExposedAreaCollection = "ExposedAreaCollection";
         protected const string RetakeAreaCollection = "RetakeAreaCollection";
-   
+
         #endregion
 
         #region Constructor
@@ -113,6 +116,7 @@ namespace RadiographyTracking.Web
                     {Date, PlaceHolderType.NonRecursive},
                     {Film, PlaceHolderType.NonRecursive},
                     {LeadScreen, PlaceHolderType.NonRecursive},
+                    {LeadScreenBack, PlaceHolderType.NonRecursive},
                     {Source, PlaceHolderType.NonRecursive},
                     {SourceSize, PlaceHolderType.NonRecursive},
                     {Strength, PlaceHolderType.NonRecursive},
@@ -150,9 +154,11 @@ namespace RadiographyTracking.Web
                     {ExposedIsotopeCollection, PlaceHolderType.Recursive},
                     {ExposedAreaCollection, PlaceHolderType.Recursive},
                     {RetakeIsotopeCollection, PlaceHolderType.Recursive},
+                    {EndCustomer, PlaceHolderType.NonRecursive},
+                    {HeaderTechnique, PlaceHolderType.NonRecursive},
                     {RetakeAreaCollection, PlaceHolderType.Recursive}
                 };
-            
+
             return placeHolderTagToTypeCollection;
         }
 
@@ -217,6 +223,9 @@ namespace RadiographyTracking.Web
                     case LeadScreen:
                         content = row.LeadScreen;
                         break;
+                    case LeadScreenBack:
+                        content = row.LeadScreenBack;
+                        break;
                     case HeatNo:
                         content = row.HeatNo;
                         break;
@@ -260,6 +269,12 @@ namespace RadiographyTracking.Web
                         break;
                     case ReportTypeNo:
                         content = row.ReportTypeAndNo;
+                        break;
+                    case EndCustomer:
+                        content = row.EndCustomerName;
+                        break;
+                    case HeaderTechnique:
+                        content = GetTechniqueWithComma(row.RGReportRows);
                         break;
                 }
             }
@@ -318,7 +333,7 @@ namespace RadiographyTracking.Web
             }
             else if (openXmlElementDataContext.DataContext is KeyValuePair<String, float>)
             {
-                var keyvalue = (KeyValuePair<String, float>) openXmlElementDataContext.DataContext;
+                var keyvalue = (KeyValuePair<String, float>)openXmlElementDataContext.DataContext;
                 switch (tagPlaceHolderValue)
                 {
                     case Isotope:
@@ -385,7 +400,7 @@ namespace RadiographyTracking.Web
             switch (tagPlaceHolderValue)
             {
                 case RGReportRow:
-                    foreach (var row in ((RGReport) (openXmlElementDataContext.DataContext)).RGReportRows)
+                    foreach (var row in ((RGReport)(openXmlElementDataContext.DataContext)).RGReportRows)
                     {
                         CloneElementAndSetContentInPlaceholders(new OpenXmlElementDataContext() { Element = openXmlElementDataContext.Element, DataContext = row }, document);
                     }
@@ -393,7 +408,7 @@ namespace RadiographyTracking.Web
                     break;
                 case IsotopeCollection:
                 case AreaCollection:
-                    foreach (var pair in ((RGReport) (openXmlElementDataContext.DataContext)).EnergyAreas)
+                    foreach (var pair in ((RGReport)(openXmlElementDataContext.DataContext)).EnergyAreas)
                     {
                         CloneElementAndSetContentInPlaceholders(new OpenXmlElementDataContext() { Element = openXmlElementDataContext.Element, DataContext = pair }, document);
                     }
@@ -401,7 +416,7 @@ namespace RadiographyTracking.Web
                     break;
                 case ExposedIsotopeCollection:
                 case ExposedAreaCollection:
-                    foreach (var pair in ((RGReport) (openXmlElementDataContext.DataContext)).ExposedEnergyAreas)
+                    foreach (var pair in ((RGReport)(openXmlElementDataContext.DataContext)).ExposedEnergyAreas)
                     {
                         CloneElementAndSetContentInPlaceholders(new OpenXmlElementDataContext() { Element = openXmlElementDataContext.Element, DataContext = pair }, document);
                     }
@@ -428,6 +443,11 @@ namespace RadiographyTracking.Web
         protected override void ContainerPlaceholderFound(string placeholderTag, OpenXmlElementDataContext openXmlElementDataContext, WordprocessingDocument document)
         {
             throw new NotImplementedException();
+        }
+
+        protected string GetTechniqueWithComma(ICollection<RGReportRow> FinalRTReportRows)
+        {
+            return string.Join(",", FinalRTReportRows.Select(p => p.Technique).Distinct()); ;
         }
     }
 }

@@ -192,6 +192,7 @@ namespace RadiographyTracking.Views
                                                 Segment = " ",
                                                 Sensitivity = " ",
                                                 FilmSizeString = " ",
+                                                FilmCount = 1,
                                             };
 
             FPTemplateRows.Add(FPTemplateRow);
@@ -277,7 +278,7 @@ namespace RadiographyTracking.Views
                 return (FPTemplateRows == null ? 0 :
                             FPTemplateRows
                     //.Where(p => p.RemarkText != "RETAKE" != "RETAKE")
-                            .Sum(p => (p.FilmSize == null ? 0 : p.FilmSize.Area )))
+                            .Sum(p => (p.FilmSize == null ? 0 : p.FilmSize.Area * p.FilmCount)))
                             .ToString() + " Sq. Inches";
             }
         }
@@ -315,8 +316,8 @@ namespace RadiographyTracking.Views
                 headerRow[e.Name] = e.Name;
                 actualRow[e.Name] = this.FPTemplateRows
                                    .Where(p => p.EnergyID == e.ID)
-                                   // .Sum(p => p.FilmSize.Area * p.FilmCount);
-                                   .Sum(p => p.FilmSize.Area );
+                                    .Sum(p => p.FilmSize.Area * p.FilmCount);
+                                  // .Sum(p => p.FilmSize.Area );
             }
 
             dt.Rows.Add(headerRow);

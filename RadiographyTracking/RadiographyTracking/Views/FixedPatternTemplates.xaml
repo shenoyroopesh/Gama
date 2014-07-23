@@ -106,6 +106,7 @@
                                     </DataTemplate>
                                 </sdk:DataGridTemplateColumn.CellEditingTemplate>
                             </sdk:DataGridTemplateColumn>
+                            <sdk:DataGridTextColumn Header="Film Count" Binding="{Binding Path=FilmCount, Mode=TwoWay}"></sdk:DataGridTextColumn>
                             <sdk:DataGridTemplateColumn Header="Delete" Width="Auto">
                                 <sdk:DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>

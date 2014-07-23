@@ -60,6 +60,7 @@ namespace RadiographyTracking.Views
             BindToPage(lblCoverage, TextBlock.TextProperty, "FinalReport.Coverage.CoverageName", BindingMode.OneWay);
             BindToPage(lblRTNo, TextBlock.TextProperty, "FinalReport.RTNo", BindingMode.OneWay);
             BindToPage(txtLeadScreen, TextBlock.TextProperty, "FinalReport.LeadScreen");
+            BindToPage(txtLeadScreenBack, TextBlock.TextProperty, "FinalReport.LeadScreenBack");
             BindToPage(txtSource, TextBlock.TextProperty, "FinalReport.Source");
             BindToPage(txtStrength, TextBlock.TextProperty, "FinalReport.Strength");
             BindToPage(txtSourceSize, TextBlock.TextProperty, "FinalReport.SourceSize");
@@ -154,6 +155,29 @@ namespace RadiographyTracking.Views
             //now that fixedpatternid is available
             FixedPatternsSource.Load();
             updateEnergyWiseArea();
+            if (FinalReport.StatusID == 2)
+                lblStatus.Text = UpdatedStatus();
+        }
+
+        public string UpdatedStatus()
+        {
+            int maxNumber = 1;
+            foreach (var finalRTReportRow in FinalReportRows)
+            {
+                string[] multpleClassifiations = finalRTReportRow.Classifications.Split(',');
+                if (multpleClassifiations.Count() > 0)
+                {
+                    for (int i = 0; i < multpleClassifiations.Count(); i++)
+                    {
+                        if (!string.IsNullOrEmpty(multpleClassifiations[i]))
+                        {
+                            if (Convert.ToInt32(multpleClassifiations[i]) > maxNumber)
+                                maxNumber = Convert.ToInt32(multpleClassifiations[i]);
+                        }
+                    }
+                }
+            }
+            return "CASTING ACCEPTABLE AS PER LEVEL " + maxNumber;
         }
 
         private void FixedPatternsSource_LoadedData(object sender, LoadedDataEventArgs e)

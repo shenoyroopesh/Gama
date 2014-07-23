@@ -29,6 +29,8 @@ namespace RadiographyTracking.Web.Models
         [NotMapped]
         public String LeadScreen { get; set; }
         [NotMapped]
+        public String LeadScreenBack { get; set; }
+        [NotMapped]
         public String Strength { get; set; }
         [NotMapped]
         public String Source { get; set; }
@@ -50,6 +52,9 @@ namespace RadiographyTracking.Web.Models
         public String Film { get; set; }
         [NotMapped]
         public String DateOfTest { get; set; }
+
+        [NotMapped]
+        public String EndCustomerName { get; set; }
 
         public int ShiftID { get; set; }
         public Shift Shift { get; set; }

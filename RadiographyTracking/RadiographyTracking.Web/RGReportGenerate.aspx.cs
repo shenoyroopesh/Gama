@@ -14,6 +14,26 @@ namespace RadiographyTracking.Web
         protected void Page_Load(object sender, EventArgs e)
         {
             var data = GetDataContext();
+            if (data.StatusID == 2)
+            {
+                int maxNumber = 1;
+                foreach (var finalRTReportRow in data.RGReportRows)
+                {
+                    string[] multpleClassifiations = finalRTReportRow.Classifications.Split(',');
+                    if (multpleClassifiations.Count() > 0)
+                    {
+                        for (int i = 0; i < multpleClassifiations.Count(); i++)
+                        {
+                            if (!string.IsNullOrEmpty(multpleClassifiations[i]))
+                            {
+                                if (Convert.ToInt32(multpleClassifiations[i]) > maxNumber)
+                                    maxNumber = Convert.ToInt32(multpleClassifiations[i]);
+                            }
+                        }
+                    }
+                }
+                data.Status.Status = "CASTING ACCEPTABLE AS PER LEVEL " + maxNumber;
+            }
             var reportTemplate = data.FixedPattern.Customer.Foundry.ReportTemplate;
 
             var generationInfo = GetDocumentGenerationInfo("RGReportGenerator", "1.0", data,

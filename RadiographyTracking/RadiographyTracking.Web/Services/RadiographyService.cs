@@ -850,6 +850,14 @@
         //    return result;
         //}
 
+        //Added by praveen to fix date issue that was causing.(Requirement:3rd july, 2014)
+        public List<RGReport> GetRGReportsOnRtNoAndReshootNo(String RtNo, int ReshootNo)
+        {
+            var result = this.DbContext.RGReports.Where(p => p.ReshootNo == ReshootNo &&
+                                                    p.RTNo == RtNo);
+            return result.ToList<RGReport>();
+        }
+
         public IQueryable<RGReport> GetRGReports(int RGReportId)
         {
             var foundryID = getFoundryIDForCurrentUser();
@@ -1054,7 +1062,26 @@
             }
 
             finalReport.FinalRTReportRows = finalRows;
-
+            if (finalReport.StatusID == 2)
+            {
+                int maxNumber = 1;
+                foreach (var finalRTReportRow in finalReport.FinalRTReportRows)
+                {
+                    string[] multpleClassifiations = finalRTReportRow.Classifications.Split(',');
+                    if (multpleClassifiations.Count() > 0)
+                    {
+                        for (int i = 0; i < multpleClassifiations.Count(); i++)
+                        {
+                            if (!string.IsNullOrEmpty(multpleClassifiations[i]))
+                            {
+                                if (Convert.ToInt32(multpleClassifiations[i]) > maxNumber)
+                                    maxNumber = Convert.ToInt32(multpleClassifiations[i]);
+                            }
+                        }
+                    }
+                }
+                finalReport.Status.Status = "CASTING ACCEPTABLE AS PER LEVEL " + maxNumber;
+            }
             return finalReport;
         }
 

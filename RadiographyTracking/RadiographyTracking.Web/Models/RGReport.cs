@@ -13,7 +13,7 @@ namespace RadiographyTracking.Web.Models
     /// This class represents a single Radiography report entry, which forms the basis of all the work done 
     /// by the users of this software
     /// </summary>
-    public partial class RGReport 
+    public partial class RGReport
     {
         /// <summary>
         /// Default constructor doesn't do much, here only for RIA services to work fine
@@ -37,16 +37,17 @@ namespace RadiographyTracking.Web.Models
             this.Status = RGStatus.getStatus("CASTING UNDER REPAIR", ctx);
             this.RTNo = RTNo;
             this.ReportNo = ReportNo;
-           // this.ID=
-
+            // this.ID=
             RGReportRowType freshRowType = RGReportRowType.getRowType("FRESH", ctx);
             if (fpTemplate.FPTemplateRows == null) return;
 
             this.RGReportRows = new List<RGReportRow>();
+            //this.FixedPattern = new FixedPattern();
 
             //some default values as suggested by Shankaran (10-Apr-2012)
             this.Film = "AGFA D7";
             this.LeadScreen = "0.25mm"; //Default for Leadscreen changed as per NEW requirements shared on 07-Jun-14.
+            this.LeadScreenBack = "0.25mm"; //Default for Leadscreen changed as per NEW requirements shared on 07-Jun-14.
             this.ReportTypeAndNo = this.ReportType = "Fresh";
             this.ReshootNo = 0; //explicitly setting this, even though this is the default value
 
@@ -152,9 +153,26 @@ namespace RadiographyTracking.Web.Models
         //then this can never be the final casting
         public bool RowsDeleted { get; set; }
         public FixedPattern FixedPattern { get; set; }
+
+        //private FixedPattern fixedPattern;
+        //[Include]
+        //public FixedPattern FixedPattern
+        //{
+        //    get
+        //    {
+        //        if (fixedPattern == null)
+        //            fixedPattern = new FixedPattern(); // just needed to initialize the value not just return a new List        
+        //        return fixedPattern;
+        //    }
+        //    set
+        //    { fixedPattern = value; }
+        //}
+
+
         public int CoverageID { get; set; }
         public Coverage Coverage { get; set; }
         public String LeadScreen { get; set; }
+        public String LeadScreenBack { get; set; }
         public String Strength { get; set; }
         public String Source { get; set; }
         public String SourceSize { get; set; }
@@ -168,7 +186,7 @@ namespace RadiographyTracking.Web.Models
         public DateTime DateOfTest { get; set; }
         public int? ShiftID { get; set; }
         public Shift Shift { get; set; }
-       // public String EvaluationAsPer { get; set; }
+        // public String EvaluationAsPer { get; set; }
         public String AcceptanceAsPer { get; set; }
         public String DrawingNo { get; set; }
         public int StatusID { get; set; }
@@ -190,21 +208,21 @@ namespace RadiographyTracking.Web.Models
         /// </summary>
         public string ReportTypeAndNo { get; set; }
 
+        //public ICollection<RGReportRow> RGReportRows { get; set; }
+
+        private ICollection<RGReportRow> rgReportRows;
         [Include]
-        public ICollection<RGReportRow> RGReportRows { get; set; }
-
-
-
-        //private ICollection<RGReportRow> rgReportRows;
-        //[Include]
-        //public ICollection<RGReportRow> RGReportRows
-        //{
-        //    get
-        //    {return rgReportRows;}
-        //    set
-        //    { rgReportRows = value;}
-
-        //}
+        public ICollection<RGReportRow> RGReportRows
+        {
+            get
+            {
+                if (rgReportRows == null)
+                    rgReportRows = new List<RGReportRow>(); // just needed to initialize the value not just return a new List        
+                return rgReportRows;
+            }
+            set
+            { rgReportRows = value; }
+        }
 
         public String Result { get; set; }
 
@@ -364,6 +382,6 @@ namespace RadiographyTracking.Web.Models
             return null;
         }
 
-      
+
     }
 }

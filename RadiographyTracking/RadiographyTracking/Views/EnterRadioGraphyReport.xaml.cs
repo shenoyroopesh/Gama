@@ -61,9 +61,7 @@ namespace RadiographyTracking.Views
             SetBindings();
 
             if (IsEditMode) DomainSource.Load();
-
-            
-
+            UpdateEnergyWiseArea();
             //var ctx = new RadiographyContext();
             //ctx.Load(ctx.GetEndCustomerNames());
         }
@@ -99,16 +97,17 @@ namespace RadiographyTracking.Views
         /// </summary>
         private void SetBindings()
         {
+            BindToPage(lblFPNo, TextBlock.TextProperty, "RGReport.FixedPattern.FPNo", BindingMode.OneWay);
+            BindToPage(lblCustomer, TextBlock.TextProperty, "RGReport.FixedPattern.Customer.CustomerName", BindingMode.OneWay);
+            BindToPage(lblDescription, TextBlock.TextProperty, "RGReport.FixedPattern.Description", BindingMode.OneWay);
             BindToPage(txtTotalArea, TextBlock.TextProperty, "TotalArea", BindingMode.OneWay);
             BindToPage(lblFixedPatternID, TextBlock.TextProperty, "RGReport.FixedPatternID", BindingMode.OneWay);
             BindToPage(lblRGReportID, TextBlock.TextProperty, "RGReport.ID", BindingMode.OneWay);
             BindToPage(lblStatus, TextBlock.TextProperty, "RGReport.Status.Status", BindingMode.OneWay);
-            BindToPage(lblFPNo, TextBlock.TextProperty, "RGReport.FixedPattern.FPNo", BindingMode.OneWay);
-            BindToPage(lblCustomer, TextBlock.TextProperty, "RGReport.FixedPattern.Customer.CustomerName", BindingMode.OneWay);
-            BindToPage(lblDescription, TextBlock.TextProperty, "RGReport.FixedPattern.Description", BindingMode.OneWay);
             BindToPage(lblCoverage, TextBlock.TextProperty, "RGReport.Coverage.CoverageName", BindingMode.OneWay);
             BindToPage(lblRTNo, TextBlock.TextProperty, "RGReport.RTNo", BindingMode.OneWay);
             BindToPage(txtLeadScreen, TextBox.TextProperty, "RGReport.LeadScreen");
+            BindToPage(txtLeadScreenBack, TextBox.TextProperty, "RGReport.LeadScreenBack");
             BindToPage(txtSource, TextBox.TextProperty, "RGReport.Source");
             BindToPage(txtStrength, TextBox.TextProperty, "RGReport.Strength");
             BindToPage(txtSourceSize, TextBox.TextProperty, "RGReport.SourceSize");
@@ -192,7 +191,7 @@ namespace RadiographyTracking.Views
             }
         }
 
- 
+
         /// <summary>
         /// Total area for the entire report
         /// </summary>
@@ -209,7 +208,7 @@ namespace RadiographyTracking.Views
             }
         }
 
-   
+
 
         public void UpdateEnergyWiseArea()
         {
@@ -225,16 +224,18 @@ namespace RadiographyTracking.Views
             //done on the first save operation
             if (ctx.IsLoading)
                 return;
-
-            foreach (var e in ctx.Energies)
+            if (ctx.Energies != null && RGReportRows != null)
             {
-                AddTextColumn(dt, e.Name, e.Name);
-                headerRow[e.Name] = e.Name;
-                actualRow[e.Name] = RGReportRows
-                    .Where(p => p.EnergyID == e.ID &&
-                                p.RemarkText != "RETAKE")
-                    //30-Jun-12 - Roopesh added this to ensure that retake areas are not included
-                    .Sum(p => p.FilmSize.Area * p.FilmCount);
+                foreach (var e in ctx.Energies)
+                {
+                    AddTextColumn(dt, e.Name, e.Name);
+                    headerRow[e.Name] = e.Name;
+                    actualRow[e.Name] = RGReportRows
+                        .Where(p => p.EnergyID == e.ID &&
+                                    p.RemarkText != "RETAKE")
+                        //30-Jun-12 - Roopesh added this to ensure that retake areas are not included
+                        .Sum(p => p.FilmSize.Area * p.FilmCount);
+                }
             }
 
             dt.Rows.Add(headerRow);
@@ -244,8 +245,8 @@ namespace RadiographyTracking.Views
             energyAreas.DataBind();
 
             OnPropertyChanged("TotalArea");
-      
-           }
+
+        }
 
         private static void AddTextColumn(DataTable reportTable, String columnName, String caption)
         {
@@ -278,6 +279,7 @@ namespace RadiographyTracking.Views
                     FilmSizeString = " ",
                     RemarkText = " ",
                     TechnicianText = " ",
+                    Observations = " ",
                     WelderText = " ",
                     FilmCount = 1, //default value for film counts
                     RowType = ((RadiographyContext)DomainSource.DomainContext)
@@ -289,6 +291,7 @@ namespace RadiographyTracking.Views
             OnPropertyChanged("RGReportRows");
         }
 
+        protected DateTime reportDateOriginalValue;
         public override void domainDataSource_LoadedData(object sender, LoadedDataEventArgs e)
         {
             base.domainDataSource_LoadedData(sender, e);
@@ -301,18 +304,47 @@ namespace RadiographyTracking.Views
 
             RGReport = (RGReport)((DomainDataSourceView)((DomainDataSource)sender).Data).GetItemAt(0);
             RGReportRows = RGReport.RGReportRows;
-          
             //now that fixedpatternid is available
             FixedPatternsSource.Load();
             UpdateEnergyWiseArea();
             OnPropertyChanged("TotalArea");
             SetViewing();
-
+            if (RGReport.StatusID == 2)
+                UpdatedStatus();
+            if (isFromFetchMethod)
+                UpdateSourceBasedOnThickness();
+            isFromFetchMethod = false;
             //if edit mode, add a clone of original RGReport to original entities for change tracking
             if (IsEditMode)
             {
                 OriginalEntities.Add(RGReport.ID, RGReport.Clone(ExcludePropertiesFromTracking));
             }
+
+        }
+
+        public void UpdatedStatus()
+        {
+            int maxNumber = 1;
+            string tempClassifications = string.Empty;
+            foreach (var finalRTReportRow in RGReportRows)
+            {
+                var split = SplitObservation(finalRTReportRow.Observations);
+                tempClassifications = split.Item2;
+
+                string[] multpleClassifiations = tempClassifications.Split(',');
+                if (multpleClassifiations.Count() > 0)
+                {
+                    for (int i = 0; i < multpleClassifiations.Count(); i++)
+                    {
+                        if (!string.IsNullOrEmpty(multpleClassifiations[i]))
+                        {
+                            if (Convert.ToInt32(multpleClassifiations[i]) > maxNumber)
+                                maxNumber = Convert.ToInt32(multpleClassifiations[i]);
+                        }
+                    }
+                }
+            }
+            lblStatus.Text = "CASTING ACCEPTABLE AS PER LEVEL " + maxNumber;
         }
 
         //Kept here only for the template column to work fine
@@ -335,7 +367,9 @@ namespace RadiographyTracking.Views
                 //mark at least one row deleted
                 RGReport.RowsDeleted = true;
             }
+            UpdateSourceBasedOnThickness();
         }
+        private bool isFromFetchMethod = false;
 
         private void FetchOperation(object sender, RoutedEventArgs e)
         {
@@ -352,12 +386,13 @@ namespace RadiographyTracking.Views
             this.RGReportDataGrid.CommitEdit();
             if (DomainSource.HasChanges) DomainSource.RejectChanges();
             DomainSource.Load();
+            UpdateEnergyWiseArea();
+            UpdateSourceBasedOnThickness();
+            isFromFetchMethod = true;
         }
 
         public override void SaveOperation(object sender, RoutedEventArgs e)
         {
-            
-
             //validations on each row
             foreach (var row in RGReportRows)
             {
@@ -387,7 +422,7 @@ namespace RadiographyTracking.Views
             //set the viewing
             SetViewing();
 
-      /** FOR SIMPLICITY OF DESIGN, SERVER DEPENDS ON THE CLIENT TO SET THE STATUS. THIS IS IMPORTANT! WITHOUT THIS THE LOGIC WILL FAIL **/
+            /** FOR SIMPLICITY OF DESIGN, SERVER DEPENDS ON THE CLIENT TO SET THE STATUS. THIS IS IMPORTANT! WITHOUT THIS THE LOGIC WILL FAIL **/
 
             MessageBoxResult result;
             if (RGReportRows.Any(p => p.RemarkText.Trim() == String.Empty))
@@ -419,12 +454,13 @@ namespace RadiographyTracking.Views
                     RGReport.Status =
                         ((RadiographyContext)DomainSource.DomainContext).RGStatus.FirstOrDefault(
                             p => p.Status == "COMPLETE");
+                UpdatedStatus();
             }
 
             //allow cancel
             if (result == MessageBoxResult.Cancel)
                 return;
-
+            UpdateReportDate();
             base.SaveOperation(sender, e);
 
             //update the energy grid
@@ -536,7 +572,7 @@ namespace RadiographyTracking.Views
                 var addressStickersWindow = new PrintAddressStickers
                     {
                         ReportNo = this.RGReport.ReportNo,
-                        RGReportID = Convert.ToString(this.RGReport.ID) 
+                        RGReportID = Convert.ToString(this.RGReport.ID)
                     };
                 addressStickersWindow.Show();
             }
@@ -555,6 +591,83 @@ namespace RadiographyTracking.Views
             txtEndCustomerName.PopulateComplete();
         }
 
+        private void CellEditEnded(object sender, DataGridCellEditEndedEventArgs e)
+        {
+            if (e.Column.Header.ToString() == "Energy")
+            {
+                UpdateSourceBasedOnThickness();
+            }
+        }
 
+        public void UpdateSourceBasedOnThickness()
+        {
+            if (RGReport != null && RGReport.ReshootNo < 1)
+            {
+                if (RGReportRows != null)
+                {
+                    if (RGReportRows.Select(o => o.EnergyID).Distinct().Count() == 1)
+                    {
+                        RGReportRow RGReportRow = RGReportRows.FirstOrDefault();
+                        if (RGReportRow.EnergyID == 1)
+                        {
+                            this.txtSource.Text = "Co 60";
+                            this.txtSourceSize.Text = "4.1 mm(Effective size)";
+                        }
+                        else
+                        {
+                            this.txtSource.Text = "Ir 192";
+                            this.txtSourceSize.Text = "3.6 mm(Effective size)";
+                        }
+                    }
+                    else
+                    {
+                        this.txtSource.Text = "Co 60/Ir 192";
+                        this.txtSourceSize.Text = "4.1 mm(Effective size)/3.6 mm(Effective size)";
+                    }
+                }
+            }
+        }
+
+        public Tuple<string, string> SplitObservation(string input)
+        {
+            var observations = input.Split(',').Select(p => p.Trim());
+
+            var results = (from observation in observations
+                           let indexOfFirstNumber = observation.IndexOfAny("0123456789".ToCharArray())
+                           select
+                               new Tuple<string, string>(
+                               observation.Substring(0, indexOfFirstNumber < 0 ? observation.Length : indexOfFirstNumber),
+                               indexOfFirstNumber < 0 ? "" : observation.Substring(indexOfFirstNumber))).ToList();
+
+            return
+                new Tuple<string, string>(
+                    String.Join(",", results.Select(p => p.Item1)),
+                    String.Join(",", results.Select(p => p.Item2)
+                //This filter is needed to ensure that if number is not present it doesn't
+                //cause stray commas
+                                         .Where(q => !String.IsNullOrEmpty(q))));
+        }
+
+        //Added by praveen to fix date issue that was causing.(Requirement:3rd july, 2014)
+        protected void UpdateReportDate()
+        {
+            var ctx = (RadiographyContext)this.DomainSource.DomainContext;
+            int reShootNo = RGReport.ReshootNo - 1;
+            String rTNo = RGReport.RTNo;
+            if (RGReport.ReshootNo > 0)
+            {
+                ctx.Load(ctx.GetRGReportsOnRtNoAndReshootNoQuery(rTNo,reShootNo));
+                RGReport rGReport = ctx.RGReports.Where(p => p.ReshootNo == reShootNo &&
+                                                    p.RTNo == rTNo).FirstOrDefault();
+
+                if (RGReport != null && rGReport != null)
+                {
+                    if (rGReport.ReportDate.ToString("dd-MM-yyyy") == Convert.ToDateTime(ReportDatePicker.Text).ToString("dd-MM-yyyy"))
+                    {
+                        RGReport.ReportDate = rGReport.ReportDate.AddMinutes(1);
+                    }
+                }
+            }
+        }
     }
 }

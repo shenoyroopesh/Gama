@@ -165,7 +165,7 @@ namespace RadiographyTracking.Views
             var columnNames = new List<string>()
                {"SlNo","Location","Thickness","SFD","IQI Designation","IQI Sensitivity", 
                 "Density", "FilmSize","Observations","Classifactions","Remarks", "ReportNo",
-                "ReportDate", "Film","RTNO","FPNO","HEATNO","DateOfTest","LeadScreenFrontBack",
+                "ReportDate", "Film","RTNO","FPNO","HEATNO","DateOfTest","LeadScreenFront","LeadScreenBack",
                 "Viewing","Source","SourceSize","Coverage","ProcedureReference","AcceptanceAsper",
                 "TotalNoOfFilms"
                };
@@ -211,7 +211,8 @@ namespace RadiographyTracking.Views
                 dataRow["FPNO"] = rgReport.FixedPattern != null ? rgReport.FixedPattern.FPNo : string.Empty;
                 dataRow["HEATNO"] = rgReport.HeatNo ?? string.Empty;
                 dataRow["DateOfTest"] = rgReport.DateOfTest.ToShortDateString();
-                dataRow["LeadScreenFrontBack"] = rgReport.LeadScreen;
+                dataRow["LeadScreenFront"] = rgReport.LeadScreen;
+                dataRow["LeadScreenBack"] = rgReport.LeadScreenBack;
                 dataRow["Viewing"] = rgReport.Viewing ?? string.Empty;
                 dataRow["Source"] = rgReport.Source ?? string.Empty;
                 dataRow["SourceSize"] = rgReport.SourceSize ?? string.Empty;
@@ -273,6 +274,11 @@ namespace RadiographyTracking.Views
         private void btnFetch_Click(object sender, RoutedEventArgs e)
         {
             RGDomainDataSource.Load();
+        }
+
+        protected string GetTechniqueWithComma(ICollection<RGReportRow> FinalRTReportRows)
+        {
+            return string.Join(",", FinalRTReportRows.Select(p => p.Technique).Distinct()); ;
         }
     }
 }

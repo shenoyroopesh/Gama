@@ -96,6 +96,7 @@
                             <RowDefinition></RowDefinition>
                             <RowDefinition></RowDefinition>
                             <RowDefinition></RowDefinition>
+                            <RowDefinition></RowDefinition>
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition></ColumnDefinition>
@@ -110,55 +111,57 @@
                         <TextBlock Text="FP No"  Grid.Column="0" Grid.Row="0" />
                         <TextBlock Name="lblFPNo" Grid.Column="2" Grid.Row="0" Margin="0,8" />
                         <TextBlock Text="Customer" Grid.Column="0" Grid.Row="1" Margin="0,8" />
-                        <TextBlock Name="lblCustomer" Grid.Column="2" Grid.Row="1" Margin="0,16" />
-                        <TextBlock Text="Coverage"  Grid.Column="0" Grid.Row="2" />
-                        <TextBlock Name="lblCoverage" Grid.Column="2" Grid.Row="2" Margin="0,8" />
+                        <TextBlock Name="lblCustomer" Grid.Column="2" Grid.Row="1" Margin="0,16" TextWrapping="Wrap" />
+                        <TextBlock Text="Coverage"  Grid.Column="0" Grid.Row="3" />
+                        <TextBlock Name="lblCoverage" Grid.Column="2" Grid.Row="3" Margin="0,8" />
                         <TextBlock Text="Description"   Grid.Column="4" Grid.Row="0" />
                         <TextBlock Name="lblDescription" Grid.Column="6" Grid.Row="0" Margin="0,8" />
-                        <TextBlock Text="Lead Screen (Front/Black)" TextWrapping="Wrap"   Grid.Column="4" Grid.Row="1" />
+                        <TextBlock Text="Lead Screen (Front)" TextWrapping="Wrap"   Grid.Column="4" Grid.Row="1" />
+                        <TextBlock Text="Lead Screen (Back)" TextWrapping="Wrap"   Grid.Column="4" Grid.Row="2" />
                         <TextBlock Name="txtLeadScreen" Grid.Column="6" Grid.Row="1" Margin="0,16"  />
-                        <TextBlock Text="Source"  Grid.Column="4" Grid.Row="2" />
-                        <TextBlock Name="txtSource" Grid.Column="6" Grid.Row="2" Margin="0,8"  />
+                        <TextBlock Name="txtLeadScreenBack" Grid.Column="6" Grid.Row="2" Margin="0,16"  />
+                        <TextBlock Text="Source"  Grid.Column="4" Grid.Row="3" />
+                        <TextBlock Name="txtSource" Grid.Column="6" Grid.Row="3" Margin="0,8" TextWrapping="Wrap" />
                         <TextBlock Name="lblRGReportID" Visibility="Collapsed" Margin="0,8"/>
                         <TextBlock Name="lblFixedPatternID" Visibility="Collapsed" Margin="0,8"/>
 
-                        <TextBlock Text="Strength"  Grid.Column="0" Grid.Row="3" />
-                        <TextBlock Name="txtStrength" Grid.Column="2" Grid.Row="3" Margin="0,8"  />
-                        <TextBlock Text="Source Size"  Grid.Column="4" Grid.Row="3" />
-                        <TextBlock Name="txtSourceSize" Grid.Column="6" Grid.Row="3" Margin="0,8"  />
-                        <TextBlock Text="RT No"  Grid.Column="0" Grid.Row="5" Grid.RowSpan="2" />
-                        <TextBlock Name="lblRTNo"  Grid.Column="2" Grid.Row="5" Margin="0,8" Grid.RowSpan="2" />
-                        <TextBlock Text="Report No"   Grid.Column="0" Grid.Row="7" />
-                        <TextBlock Name="txtReportNo" Grid.Column="2" Grid.Row="7" Margin="0,8" />
-                        <TextBlock Text="Heat No" TextWrapping="Wrap"   Grid.Column="0" Grid.Row="8" />
-                        <TextBlock Name="txtHeatNo" Grid.Column="2" Grid.Row="8" Margin="0,8" />
-                        <TextBlock Text="Procedure Ref" TextWrapping="Wrap"   Grid.Column="0" Grid.Row="9" Margin="0,8" />
-                        <TextBlock Name="txtProcedureRef" Grid.Column="2" Grid.Row="9" Margin="0,16"  />
-                        <TextBlock Text="Specifications" TextWrapping="Wrap"   Grid.Column="0" Grid.Row="10" />
-                        <TextBlock Name="txtSpecifications" Grid.Column="2" Grid.Row="10" Margin="0,8" />
-                        <TextBlock Text="Report Date" TextWrapping="Wrap"   Grid.Column="0" Grid.Row="11" Margin="0,1,0,0" />
-                        <TextBlock Name="ReportDatePicker" Grid.Column="2" Grid.Row="11" Margin="0,9,0,8"  />
+                        <TextBlock Text="Strength"  Grid.Column="0" Grid.Row="4" />
+                        <TextBlock Name="txtStrength" Grid.Column="2" Grid.Row="4" Margin="0,8"  />
+                        <TextBlock Text="Source Size"  Grid.Column="4" Grid.Row="4" />
+                        <TextBlock Name="txtSourceSize" Grid.Column="6" Grid.Row="4" Margin="0,8" TextWrapping="Wrap"  />
+                        <TextBlock Text="RT No"  Grid.Column="0" Grid.Row="6" Grid.RowSpan="2" />
+                        <TextBlock Name="lblRTNo"  Grid.Column="2" Grid.Row="6" Margin="0,8" Grid.RowSpan="2" />
+                        <TextBlock Text="Report No"   Grid.Column="0" Grid.Row="8" />
+                        <TextBlock Name="txtReportNo" Grid.Column="2" Grid.Row="8" Margin="0,8" />
+                        <TextBlock Text="Heat No" TextWrapping="Wrap"   Grid.Column="0" Grid.Row="9" />
+                        <TextBlock Name="txtHeatNo" Grid.Column="2" Grid.Row="9" Margin="0,8" />
+                        <TextBlock Text="Procedure Ref" TextWrapping="Wrap"   Grid.Column="0" Grid.Row="10" Margin="0,8" />
+                        <TextBlock Name="txtProcedureRef" Grid.Column="2" Grid.Row="10" Margin="0,16"  />
+                        <TextBlock Text="Specifications" TextWrapping="Wrap"   Grid.Column="0" Grid.Row="11" />
+                        <TextBlock Name="txtSpecifications" Grid.Column="2" Grid.Row="11" Margin="0,8" />
+                        <TextBlock Text="Report Date" TextWrapping="Wrap"   Grid.Column="0" Grid.Row="12" Margin="0,1,0,0" />
+                        <TextBlock Name="ReportDatePicker" Grid.Column="2" Grid.Row="12" Margin="0,9,0,8"  />
 
-                        <TextBlock Text="Film"  Grid.Column="4" Grid.Row="5" Grid.RowSpan="2" />
-                        <TextBlock Name="txtFilm"  Grid.Column="6" Grid.Row="5" Margin="0,8" Grid.RowSpan="2" />
-                        <TextBlock Text="Date Of Test"   Grid.Column="4" Grid.Row="7" />
-                        <TextBlock Name="TestDatePicker" Grid.Column="6" Grid.Row="7" Margin="0,8"  />
-                        <StackPanel Orientation="Horizontal" Grid.Column="7" Grid.Row="7">
+                        <TextBlock Text="Film"  Grid.Column="4" Grid.Row="6" Grid.RowSpan="2" />
+                        <TextBlock Name="txtFilm"  Grid.Column="6" Grid.Row="6" Margin="0,8" Grid.RowSpan="2" />
+                        <TextBlock Text="Date Of Test"   Grid.Column="4" Grid.Row="8" />
+                        <TextBlock Name="TestDatePicker" Grid.Column="6" Grid.Row="8" Margin="0,8"  />
+                        <StackPanel Orientation="Horizontal" Grid.Column="7" Grid.Row="8">
                             <TextBlock Text="Shift:" />
                             <TextBlock Name="cmbShift" Margin="10,0,0,0" />
                         </StackPanel>
-                        <TextBlock Text="Evaluation As Per" Grid.Column="4" Grid.Row="8" />
-                        <TextBlock Name="txtEvaluation" Grid.Column="6" Grid.Row="8" Margin="0,8" />
-                        <TextBlock Text="Acceptance As Per" TextWrapping="Wrap"   Grid.Column="4" Grid.Row="9" />
-                        <TextBlock Name="txtAcceptance" Grid.Column="6" Grid.Row="9" Margin="0,16"  />
-                        <TextBlock Text="Drawing No" TextWrapping="Wrap"   Grid.Column="4" Grid.Row="10" />
-                        <TextBlock Name="txtDrawingNo" Grid.Column="6" Grid.Row="10" Margin="0,8"  />
-                        <CheckBox Name="chkOnlyRepairs" Grid.Column="4" Grid.Row="11" Grid.ColumnSpan="3" Content="Show only Rep/RS/RT" 
+                        <TextBlock Text="Evaluation As Per" Grid.Column="4" Grid.Row="9" />
+                        <TextBlock Name="txtEvaluation" Grid.Column="6" Grid.Row="9" Margin="0,8" />
+                        <TextBlock Text="Acceptance As Per" TextWrapping="Wrap"   Grid.Column="4" Grid.Row="10" />
+                        <TextBlock Name="txtAcceptance" Grid.Column="6" Grid.Row="10" Margin="0,16"  />
+                        <TextBlock Text="Drawing No" TextWrapping="Wrap"   Grid.Column="4" Grid.Row="11" />
+                        <TextBlock Name="txtDrawingNo" Grid.Column="6" Grid.Row="11" Margin="0,8"  />
+                        <CheckBox Name="chkOnlyRepairs" Grid.Column="4" Grid.Row="12" Grid.ColumnSpan="3" Content="Show only Rep/RS/RT" 
                                   Checked="chkOnlyRepairs_Checked" Unchecked="chkOnlyRepairs_Checked" />
-                        <TextBlock Name="lblReportTemplate" Text="Report Template" Grid.Row="12" Grid.Column="4" Margin="0,2" />
-                        <ComboBox Name="cmbSelectTemplate" Grid.Column="6" Grid.Row="12" />
-                        <TextBlock Text="Viewing" Grid.Row="12" Grid.Column="0" Margin="0,2" />
-                        <TextBlock Name="lblViewing" Grid.Row="12" Grid.Column="2" Margin="0,2" />
+                        <TextBlock Name="lblReportTemplate" Text="Report Template" Grid.Row="13" Grid.Column="4" Margin="0,2" />
+                        <ComboBox Name="cmbSelectTemplate" Grid.Column="6" Grid.Row="13" />
+                        <TextBlock Text="Viewing" Grid.Row="13" Grid.Column="0" Margin="0,2" />
+                        <TextBlock Name="lblViewing" Grid.Row="13" Grid.Column="2" Margin="0,2" />
                     </Grid>
                     <StackPanel>
                         <custom:CustomGrid Name="ReportDataGrid" Style="{StaticResource DataGridStyle}" 
@@ -223,7 +226,7 @@
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="20, 20, 0, 0">
                         <TextBlock Text="Status:" />
-                        <TextBlock Name="lblStatus" FontWeight="Bold" />
+                        <TextBlock Name="lblStatus" FontWeight="Bold" TextWrapping="Wrap" />
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="20, 0, 0, 0">
                         <TextBlock Text="Total Area of Acceptable Films Submitted:" />
