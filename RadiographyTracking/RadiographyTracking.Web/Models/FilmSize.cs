@@ -17,13 +17,6 @@ namespace RadiographyTracking.Web.Models
         {
             get
             {
-                ///Change made by Praveen
-                ///14th June, 2014
-                ///According to Requirement #1 from Requirements - 12June2014
-
-                //return String.Concat(Width.ToString(), 
-                //                    "X", 
-                //                    Length.ToString());
                 if (Length > Width)
                     return String.Concat(Length.ToString(),
                     "X",

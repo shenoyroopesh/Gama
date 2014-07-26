@@ -62,8 +62,6 @@ namespace RadiographyTracking.Views
 
             if (IsEditMode) DomainSource.Load();
             UpdateEnergyWiseArea();
-            //var ctx = new RadiographyContext();
-            //ctx.Load(ctx.GetEndCustomerNames());
         }
 
         private bool clerkMode = false;
@@ -324,27 +322,7 @@ namespace RadiographyTracking.Views
 
         public void UpdatedStatus()
         {
-            int maxNumber = 1;
-            string tempClassifications = string.Empty;
-            foreach (var finalRTReportRow in RGReportRows)
-            {
-                var split = SplitObservation(finalRTReportRow.Observations);
-                tempClassifications = split.Item2;
-
-                string[] multpleClassifiations = tempClassifications.Split(',');
-                if (multpleClassifiations.Count() > 0)
-                {
-                    for (int i = 0; i < multpleClassifiations.Count(); i++)
-                    {
-                        if (!string.IsNullOrEmpty(multpleClassifiations[i]))
-                        {
-                            if (Convert.ToInt32(multpleClassifiations[i]) > maxNumber)
-                                maxNumber = Convert.ToInt32(multpleClassifiations[i]);
-                        }
-                    }
-                }
-            }
-            lblStatus.Text = "CASTING ACCEPTABLE AS PER LEVEL " + maxNumber;
+            lblStatus.Text = "CASTING ACCEPTABLE AS PER LEVEL " + RGReportRows.SelectMany(p => p.Classifications.Split(',')).Select(int.Parse).Max();
         }
 
         //Kept here only for the template column to work fine
@@ -454,7 +432,6 @@ namespace RadiographyTracking.Views
                     RGReport.Status =
                         ((RadiographyContext)DomainSource.DomainContext).RGStatus.FirstOrDefault(
                             p => p.Status == "COMPLETE");
-                UpdatedStatus();
             }
 
             //allow cancel
@@ -558,7 +535,6 @@ namespace RadiographyTracking.Views
             UpdateEnergyWiseArea();
         }
 
-
         public override void OnFormSubmitCompleted(SubmitOperation so)
         {
             if (so.HasError)
@@ -576,6 +552,7 @@ namespace RadiographyTracking.Views
                     };
                 addressStickersWindow.Show();
             }
+            UpdatedStatus();
         }
 
         private void txtEndCustomer_Populating(object sender, PopulatingEventArgs e)
@@ -601,51 +578,28 @@ namespace RadiographyTracking.Views
 
         public void UpdateSourceBasedOnThickness()
         {
-            if (RGReport != null && RGReport.ReshootNo < 1)
+            if (RGReport != null && RGReport.ReshootNo < 1 && RGReportRows != null)
             {
-                if (RGReportRows != null)
+                if (RGReportRows.Select(o => o.EnergyID).Distinct().Count() == 1)
                 {
-                    if (RGReportRows.Select(o => o.EnergyID).Distinct().Count() == 1)
+                    RGReportRow RGReportRow = RGReportRows.FirstOrDefault();
+                    if (RGReportRow.EnergyID == 1)
                     {
-                        RGReportRow RGReportRow = RGReportRows.FirstOrDefault();
-                        if (RGReportRow.EnergyID == 1)
-                        {
-                            this.txtSource.Text = "Co 60";
-                            this.txtSourceSize.Text = "4.1 mm(Effective size)";
-                        }
-                        else
-                        {
-                            this.txtSource.Text = "Ir 192";
-                            this.txtSourceSize.Text = "3.6 mm(Effective size)";
-                        }
+                        this.txtSource.Text = "Co 60";
+                        this.txtSourceSize.Text = "4.1 mm(Effective size)";
                     }
                     else
                     {
-                        this.txtSource.Text = "Co 60/Ir 192";
-                        this.txtSourceSize.Text = "4.1 mm(Effective size)/3.6 mm(Effective size)";
+                        this.txtSource.Text = "Ir 192";
+                        this.txtSourceSize.Text = "3.6 mm(Effective size)";
                     }
                 }
+                else
+                {
+                    this.txtSource.Text = "Co 60/Ir 192";
+                    this.txtSourceSize.Text = "4.1 mm(Effective size)/3.6 mm(Effective size)";
+                }
             }
-        }
-
-        public Tuple<string, string> SplitObservation(string input)
-        {
-            var observations = input.Split(',').Select(p => p.Trim());
-
-            var results = (from observation in observations
-                           let indexOfFirstNumber = observation.IndexOfAny("0123456789".ToCharArray())
-                           select
-                               new Tuple<string, string>(
-                               observation.Substring(0, indexOfFirstNumber < 0 ? observation.Length : indexOfFirstNumber),
-                               indexOfFirstNumber < 0 ? "" : observation.Substring(indexOfFirstNumber))).ToList();
-
-            return
-                new Tuple<string, string>(
-                    String.Join(",", results.Select(p => p.Item1)),
-                    String.Join(",", results.Select(p => p.Item2)
-                //This filter is needed to ensure that if number is not present it doesn't
-                //cause stray commas
-                                         .Where(q => !String.IsNullOrEmpty(q))));
         }
 
         //Added by praveen to fix date issue that was causing.(Requirement:3rd july, 2014)
@@ -656,7 +610,7 @@ namespace RadiographyTracking.Views
             String rTNo = RGReport.RTNo;
             if (RGReport.ReshootNo > 0)
             {
-                ctx.Load(ctx.GetRGReportsOnRtNoAndReshootNoQuery(rTNo,reShootNo));
+                ctx.Load(ctx.GetRGReportsOnRtNoAndReshootNoQuery(rTNo, reShootNo));
                 RGReport rGReport = ctx.RGReports.Where(p => p.ReshootNo == reShootNo &&
                                                     p.RTNo == rTNo).FirstOrDefault();
 

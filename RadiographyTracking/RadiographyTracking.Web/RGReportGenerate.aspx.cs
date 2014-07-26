@@ -15,25 +15,7 @@ namespace RadiographyTracking.Web
         {
             var data = GetDataContext();
             if (data.StatusID == 2)
-            {
-                int maxNumber = 1;
-                foreach (var finalRTReportRow in data.RGReportRows)
-                {
-                    string[] multpleClassifiations = finalRTReportRow.Classifications.Split(',');
-                    if (multpleClassifiations.Count() > 0)
-                    {
-                        for (int i = 0; i < multpleClassifiations.Count(); i++)
-                        {
-                            if (!string.IsNullOrEmpty(multpleClassifiations[i]))
-                            {
-                                if (Convert.ToInt32(multpleClassifiations[i]) > maxNumber)
-                                    maxNumber = Convert.ToInt32(multpleClassifiations[i]);
-                            }
-                        }
-                    }
-                }
-                data.Status.Status = "CASTING ACCEPTABLE AS PER LEVEL " + maxNumber;
-            }
+                data.Status.Status = "CASTING ACCEPTABLE AS PER LEVEL " + data.RGReportRows.SelectMany(p => p.Classifications.Split(',')).Select(int.Parse).Max();
             var reportTemplate = data.FixedPattern.Customer.Foundry.ReportTemplate;
 
             var generationInfo = GetDocumentGenerationInfo("RGReportGenerator", "1.0", data,
@@ -58,7 +40,7 @@ namespace RadiographyTracking.Web
 
             var filename = "ReportNo" + Request.Params["ReportNo"] + ".docx";
             Response.ContentType = "application/ms-word";
-            Response.AddHeader("content-disposition", "attachment; filename="+filename);
+            Response.AddHeader("content-disposition", "attachment; filename=" + filename);
             Response.TransmitFile(filePath);
             Response.Flush();
 
@@ -74,7 +56,7 @@ namespace RadiographyTracking.Web
         private RGReport GetDataContext()
         {
             var reportNo = Request.Params["ReportNo"];
-            var reportId =Convert.ToInt32(Request.Params["ReportId"]);
+            var reportId = Convert.ToInt32(Request.Params["ReportId"]);
 
             if (String.IsNullOrEmpty(reportNo))
                 return null;

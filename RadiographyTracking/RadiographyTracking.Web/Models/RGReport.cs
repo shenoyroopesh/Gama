@@ -37,12 +37,11 @@ namespace RadiographyTracking.Web.Models
             this.Status = RGStatus.getStatus("CASTING UNDER REPAIR", ctx);
             this.RTNo = RTNo;
             this.ReportNo = ReportNo;
-            // this.ID=
+           
             RGReportRowType freshRowType = RGReportRowType.getRowType("FRESH", ctx);
             if (fpTemplate.FPTemplateRows == null) return;
 
             this.RGReportRows = new List<RGReportRow>();
-            //this.FixedPattern = new FixedPattern();
 
             //some default values as suggested by Shankaran (10-Apr-2012)
             this.Film = "AGFA D7";
@@ -153,22 +152,6 @@ namespace RadiographyTracking.Web.Models
         //then this can never be the final casting
         public bool RowsDeleted { get; set; }
         public FixedPattern FixedPattern { get; set; }
-
-        //private FixedPattern fixedPattern;
-        //[Include]
-        //public FixedPattern FixedPattern
-        //{
-        //    get
-        //    {
-        //        if (fixedPattern == null)
-        //            fixedPattern = new FixedPattern(); // just needed to initialize the value not just return a new List        
-        //        return fixedPattern;
-        //    }
-        //    set
-        //    { fixedPattern = value; }
-        //}
-
-
         public int CoverageID { get; set; }
         public Coverage Coverage { get; set; }
         public String LeadScreen { get; set; }
@@ -207,8 +190,6 @@ namespace RadiographyTracking.Web.Models
         /// Combination of ReportType and Reshoot number, computed and persisted when the report is created
         /// </summary>
         public string ReportTypeAndNo { get; set; }
-
-        //public ICollection<RGReportRow> RGReportRows { get; set; }
 
         private ICollection<RGReportRow> rgReportRows;
         [Include]

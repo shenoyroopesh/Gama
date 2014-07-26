@@ -881,7 +881,7 @@
                                                    (rtNo == string.Empty || p.RTNo.Contains(rtNo)) &&
                                                    (coverageId == -1 || p.CoverageID == coverageId) &&
                                                     p.FixedPattern.Customer.Foundry.ID ==
-                                                        (foundryID ?? p.FixedPattern.Customer.Foundry.ID)).OrderBy(p => p.ReportDate).ThenBy(p => p.ReportNo); 
+                                                        (foundryID ?? p.FixedPattern.Customer.Foundry.ID)).OrderBy(p => p.ReportDate).ThenBy(p => p.ReportNo);
         }
 
 
@@ -1063,25 +1063,8 @@
 
             finalReport.FinalRTReportRows = finalRows;
             if (finalReport.StatusID == 2)
-            {
-                int maxNumber = 1;
-                foreach (var finalRTReportRow in finalReport.FinalRTReportRows)
-                {
-                    string[] multpleClassifiations = finalRTReportRow.Classifications.Split(',');
-                    if (multpleClassifiations.Count() > 0)
-                    {
-                        for (int i = 0; i < multpleClassifiations.Count(); i++)
-                        {
-                            if (!string.IsNullOrEmpty(multpleClassifiations[i]))
-                            {
-                                if (Convert.ToInt32(multpleClassifiations[i]) > maxNumber)
-                                    maxNumber = Convert.ToInt32(multpleClassifiations[i]);
-                            }
-                        }
-                    }
-                }
-                finalReport.Status.Status = "CASTING ACCEPTABLE AS PER LEVEL " + maxNumber;
-            }
+                finalReport.Status.Status = "CASTING ACCEPTABLE AS PER LEVEL " + finalRows.SelectMany(p => p.Classifications.Split(',')).Select(int.Parse).Max();
+
             return finalReport;
         }
 
@@ -1228,7 +1211,7 @@
                 this.DbContext.Technicians.Add(entity);
             }
         }
-        
+
         public void UpdateTechnician(Technician currentTechnician)
         {
             this.DbContext.Technicians.AttachAsModified(currentTechnician, this.ChangeSet.GetOriginal(currentTechnician), this.DbContext);

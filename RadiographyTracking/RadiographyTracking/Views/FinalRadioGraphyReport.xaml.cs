@@ -27,7 +27,6 @@ namespace RadiographyTracking.Views
             else
             {
                 this.FinalReport = App.FinalReport;
-                //DataContext = this.FinalReport;
 
                 //set the query parameter here, the binding in the xaml won't work fine
                 this.DomainSource.QueryParameters[0].Value = this.FinalReport.RTNo;
@@ -36,7 +35,7 @@ namespace RadiographyTracking.Views
             //wire up event handlers            
             AddEventHandlers();
             SetBindings();
-            DomainSource.Load();            
+            DomainSource.Load();
         }
 
         /// <summary>
@@ -156,28 +155,7 @@ namespace RadiographyTracking.Views
             FixedPatternsSource.Load();
             updateEnergyWiseArea();
             if (FinalReport.StatusID == 2)
-                lblStatus.Text = UpdatedStatus();
-        }
-
-        public string UpdatedStatus()
-        {
-            int maxNumber = 1;
-            foreach (var finalRTReportRow in FinalReportRows)
-            {
-                string[] multpleClassifiations = finalRTReportRow.Classifications.Split(',');
-                if (multpleClassifiations.Count() > 0)
-                {
-                    for (int i = 0; i < multpleClassifiations.Count(); i++)
-                    {
-                        if (!string.IsNullOrEmpty(multpleClassifiations[i]))
-                        {
-                            if (Convert.ToInt32(multpleClassifiations[i]) > maxNumber)
-                                maxNumber = Convert.ToInt32(multpleClassifiations[i]);
-                        }
-                    }
-                }
-            }
-            return "CASTING ACCEPTABLE AS PER LEVEL " + maxNumber;
+                lblStatus.Text = "CASTING ACCEPTABLE AS PER LEVEL " + FinalReportRows.SelectMany(p => p.Classifications.Split(',')).Select(int.Parse).Max();
         }
 
         private void FixedPatternsSource_LoadedData(object sender, LoadedDataEventArgs e)
@@ -262,7 +240,7 @@ namespace RadiographyTracking.Views
             string src = Application.Current.Host.Source.ToString();
 
             //Get the application root, where 'ClientBin' is the known dir where the XAP is
-            string appRoot = src.Substring(0, src.IndexOf("ClientBin")); 
+            string appRoot = src.Substring(0, src.IndexOf("ClientBin"));
 
             Uri reportURI = new Uri(string.Format(appRoot + "FinalRGReportGenerate.aspx?RTNo={0}&Template={1}&Filter={2}",
                                                     this.FinalReport.RTNo, cmbSelectTemplate.SelectedValue.ToString(), ((bool)chkOnlyRepairs.IsChecked ? "True" : "False")),
