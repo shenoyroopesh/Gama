@@ -868,7 +868,7 @@
             return result;
         }
 
-        public IQueryable<RGReport> GetRGReportsByDate(DateTime fromDate, DateTime toDate, string rtNo, int coverageId)
+        public IQueryable<RGReport> GetRGReportsByDate(DateTime fromDate, DateTime toDate, string rtNo, string heatNo, int coverageId)
         {
             //to ensure that time component of the date does not make some dates get excluded
             var fromDateValue = fromDate.Date;
@@ -879,6 +879,7 @@
                                                    (p.ReportDate >= fromDateValue || fromDate == default(DateTime)) &&
                                                    (p.ReportDate <= toDateValue || toDate == default(DateTime)) &&
                                                    (rtNo == string.Empty || p.RTNo.Contains(rtNo)) &&
+                                                   (heatNo == string.Empty || p.HeatNo.Contains(heatNo)) &&
                                                    (coverageId == -1 || p.CoverageID == coverageId) &&
                                                     p.FixedPattern.Customer.Foundry.ID ==
                                                         (foundryID ?? p.FixedPattern.Customer.Foundry.ID)).OrderBy(p => p.ReportDate).ThenBy(p => p.ReportNo);

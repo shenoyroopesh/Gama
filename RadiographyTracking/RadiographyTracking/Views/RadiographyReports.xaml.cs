@@ -28,6 +28,7 @@ namespace RadiographyTracking.Views
             fromDatePicker.SelectedDate = fromDatePicker.DisplayDate = DateTime.Now.AddDays(-15);// Convert.ToDateTime("03/03/2012"); 
             toDatePicker.SelectedDate = toDatePicker.DisplayDate = DateTime.Now;// Convert.ToDateTime("03/23/2012"); 
             txtRTNo.Text = string.Empty;
+            txtHeatNo.Text = string.Empty;
 
             if (WebContext.Current.User.Roles.FirstOrDefault() == "Customer")
             {

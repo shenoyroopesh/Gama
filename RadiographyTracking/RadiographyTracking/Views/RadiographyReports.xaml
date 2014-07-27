@@ -25,6 +25,7 @@
                 <riaControls:Parameter ParameterName="fromDate" Value="{Binding ElementName=fromDatePicker, Path=SelectedDate}" />
                 <riaControls:Parameter ParameterName="toDate" Value="{Binding ElementName=toDatePicker, Path=SelectedDate}" />
                 <riaControls:Parameter ParameterName="rtNo" Value="{Binding ElementName=txtRTNo, Path=Text}" />
+                <riaControls:Parameter ParameterName="heatNo" Value="{Binding ElementName=txtHeatNo, Path=Text}" />
                 <riaControls:Parameter ParameterName="coverageId" Value="{Binding ElementName=cmbCoverage, Path=SelectedValue,Converter={StaticResource CovergaeIdfromCoverage}}" />
             </riaControls:DomainDataSource.QueryParameters>
         </riaControls:DomainDataSource>
@@ -50,6 +51,8 @@
             <StackPanel Orientation="Horizontal" Margin="10, 10,0,10">
                 <TextBlock Text="RT No" VerticalAlignment="Center" Margin="10,0,0,0"/>
                 <TextBox Name="txtRTNo"  Margin="10,0,0,0" MinWidth="50" IsEnabled="{Binding ElementName=RGDomainDataSource, Path=CanLoad}" />
+                <TextBlock Text="Heat No" VerticalAlignment="Center" Margin="10,0,0,0"/>
+                <TextBox Name="txtHeatNo" Margin="10, 0,10,0" MinWidth="50" IsEnabled="{Binding ElementName=RGDomainDataSource, Path=CanLoad}" />
                 <TextBlock Text="Coverage" VerticalAlignment="Center" Margin="10,0,0,0"/>
                 <ComboBox Width="100" HorizontalAlignment="Left" Name="cmbCoverage" Margin="10,0,0,0"
                           Style="{StaticResource ComboBoxStyle}"
@@ -58,6 +61,7 @@
                           ItemContainerStyle="{StaticResource ComboBoxItemStyle}"
                           ItemsSource="{Binding Source={StaticResource CoveragesSource}, Path=Data}"
                           DisplayMemberPath="CoverageName"/>
+               
                 <Button Name="btnFetch" Content="Generate" Click="btnFetch_Click" Margin="10,0,0,0" />
             </StackPanel>
             <local:BusyIndicator x:Name="busyIndicator" IsBusy="{Binding IsBusy, ElementName=RGDomainDataSource}">
@@ -77,6 +81,7 @@
                                                 Header="Date" Width="Auto" />
                             <sdk:DataGridTextColumn Binding="{Binding Path=RTNo, Mode=OneWay}" Header="RT No" Width="Auto" />
                             <sdk:DataGridTextColumn Binding="{Binding Path=FixedPattern.FPNo, Mode=OneWay}" Header="FP No" Width="Auto" />
+                            <sdk:DataGridTextColumn Binding="{Binding Path=HeatNo, Mode=OneWay}" Header="Heat No" Width="Auto" />
                             <sdk:DataGridTextColumn Binding="{Binding Path=FixedPattern.Description, Mode=OneWay}" Header="Description" 
                                                 Width="Auto" />
                             <sdk:DataGridTextColumn Binding="{Binding Path=Coverage.CoverageName, Mode=OneWay}" Header="Coverage" Width="Auto" />
@@ -129,6 +134,7 @@
                                                 Header="Date" Width="Auto" />
                             <sdk:DataGridTextColumn Binding="{Binding Path=RTNo, Mode=OneWay}" Header="RT No" Width="Auto" />
                             <sdk:DataGridTextColumn Binding="{Binding Path=FixedPattern.FPNo, Mode=OneWay}" Header="FP No" Width="Auto" />
+                            <sdk:DataGridTextColumn Binding="{Binding Path=HeatNo, Mode=OneWay}" Header="Heat No" Width="Auto" />
                             <sdk:DataGridTextColumn Binding="{Binding Path=FixedPattern.Description, Mode=OneWay}" Header="Description" 
                                                 Width="Auto" />
                             <sdk:DataGridTextColumn Binding="{Binding Path=Coverage.CoverageName, Mode=OneWay}" Header="Coverage" Width="Auto" />
