@@ -42,11 +42,20 @@ namespace RadiographyTracking.Web.Models
             if (fpTemplate.FPTemplateRows == null) return;
 
             this.RGReportRows = new List<RGReportRow>();
+           
 
             //some default values as suggested by Shankaran (10-Apr-2012)
             this.Film = "AGFA D7";
-            this.LeadScreen = "0.25mm"; //Default for Leadscreen changed as per NEW requirements shared on 07-Jun-14.
-            this.LeadScreenBack = "0.25mm"; //Default for Leadscreen changed as per NEW requirements shared on 07-Jun-14.
+            if (fpTemplate.FixedPattern.Customer.FoundryID == 7)
+            {
+                this.LeadScreen = "0.25mm"; //Default for Leadscreen changed as per NEW requirements shared on 07-Jun-14.
+                this.LeadScreenBack = "0.25mm"; //Default for Leadscreen changed as per NEW requirements shared on 07-Jun-14.
+            }
+            else if (fpTemplate.FixedPattern.Customer.FoundryID == 6)
+            {
+                this.LeadScreen = "0.125mm"; //Default for Leadscreen changed as per NEW requirements shared on 07-Jun-14.
+                this.LeadScreenBack = "0.125mm"; //Default for Leadscreen changed as per NEW requirements shared on 07-Jun-14.
+            }
             this.ReportTypeAndNo = this.ReportType = "Fresh";
             this.ReshootNo = 0; //explicitly setting this, even though this is the default value
 
