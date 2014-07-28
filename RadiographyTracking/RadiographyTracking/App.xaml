@@ -14,6 +14,7 @@
                     <app:ApplicationResources x:Key="ApplicationResources" />
                     <app:NotOperatorValueConverter x:Key="NotOperatorValueConverter" />
                     <app:CovergaeIdfromCoverage x:Key="CovergaeIdfromCoverage" />
+                    <app:FoundryIdFromFoundry x:Key="FoundryIdFromFoundry" />
                     <app:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
                 </ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>

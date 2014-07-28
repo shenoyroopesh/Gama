@@ -44,6 +44,16 @@ namespace RadiographyTracking.Views
                 RGDataGrid.Visibility = Visibility.Visible;
                 RGDataGridCustomer.Visibility = Visibility.Collapsed;
             }
+            if (WebContext.Current.User.Roles.FirstOrDefault() == "Admin")
+            {
+                txtFilmStock.Visibility = Visibility.Visible;
+                cmbFoundry.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                txtFilmStock.Visibility = Visibility.Collapsed;
+                cmbFoundry.Visibility = Visibility.Collapsed;
+            }
         }
 
 
@@ -280,6 +290,15 @@ namespace RadiographyTracking.Views
         protected string GetTechniqueWithComma(ICollection<RGReportRow> FinalRTReportRows)
         {
             return string.Join(",", FinalRTReportRows.Select(p => p.Technique).Distinct()); ;
+        }
+
+        private void CmbFoundry_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            fromDatePicker.Text = null;
+            toDatePicker.Text = null;
+            txtRTNo.Text = string.Empty;
+            txtHeatNo.Text = string.Empty;
+            cmbCoverage.SelectedItem = null;
         }
     }
 }

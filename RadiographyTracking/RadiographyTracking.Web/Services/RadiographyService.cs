@@ -868,12 +868,15 @@
             return result;
         }
 
-        public IQueryable<RGReport> GetRGReportsByDate(DateTime fromDate, DateTime toDate, string rtNo, string heatNo, int coverageId)
+        public IQueryable<RGReport> GetRGReportsByDate(int foundryId,DateTime fromDate, DateTime toDate, string rtNo, string heatNo, int coverageId)
         {
             //to ensure that time component of the date does not make some dates get excluded
             var fromDateValue = fromDate.Date;
             var toDateValue = toDate.Date.AddDays(1);
             var foundryID = getFoundryIDForCurrentUser();
+
+            if (foundryId != -1 && foundryID == null)
+                foundryID = foundryId;
 
             return this.DbContext.RGReports.Where(p =>
                                                    (p.ReportDate >= fromDateValue || fromDate == default(DateTime)) &&

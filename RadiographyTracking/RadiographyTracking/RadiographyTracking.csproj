@@ -122,6 +122,7 @@
     <Compile Include="DataGridExtensions.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Helpers\BooleanToVisibilityConverter.cs" />
+    <Compile Include="Helpers\FoundryIdFromFoundry.cs" />
     <Compile Include="Models\FPTemplateRow.partial.cs" />
     <Compile Include="Models\RGReportRow.partial.cs" />
     <Compile Include="Models\Shift.Partial.cs" />

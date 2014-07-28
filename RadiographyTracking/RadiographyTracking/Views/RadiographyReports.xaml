@@ -16,6 +16,8 @@
         <my1:RadiographyContext x:Key="RadiographyContext" />
         <ex:ComboBoxDataSource x:Key="CoveragesSource" DomainContext="{StaticResource RadiographyContext}" 
                                OperationName="GetCoveragesQuery" />
+        <ex:ComboBoxDataSource x:Key="FoundryDataSource" DomainContext="{StaticResource RadiographyContext}" 
+                               OperationName="GetFoundriesQuery" />
     </UserControl.Resources>
     <Grid x:Name="LayoutRoot" Background="White">
         <sdk:Label Name="headerLabel" Style="{StaticResource PageHeaderStyle}" Content="RADIOGRAPHY REPORTS"/>
@@ -27,6 +29,7 @@
                 <riaControls:Parameter ParameterName="rtNo" Value="{Binding ElementName=txtRTNo, Path=Text}" />
                 <riaControls:Parameter ParameterName="heatNo" Value="{Binding ElementName=txtHeatNo, Path=Text}" />
                 <riaControls:Parameter ParameterName="coverageId" Value="{Binding ElementName=cmbCoverage, Path=SelectedValue,Converter={StaticResource CovergaeIdfromCoverage}}" />
+                <riaControls:Parameter ParameterName="foundryId" Value="{Binding ElementName=cmbFoundry, Path=SelectedValue,Converter={StaticResource FoundryIdFromFoundry}}" />
             </riaControls:DomainDataSource.QueryParameters>
         </riaControls:DomainDataSource>
         <riaControls:DomainDataSource AutoLoad="True" Name="FPDomainSource" QueryName="GetFixedPatternsQuery" 
@@ -43,6 +46,11 @@
                                       DomainContext="{StaticResource RadiographyContext}"/>
         <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
             <StackPanel Height="30" HorizontalAlignment="Left" Orientation="Horizontal" VerticalAlignment="Top" Margin="20,20,20,0">
+                <TextBlock Name="txtFilmStock" Text="Choose Foundry:" VerticalAlignment="Center" />
+                <ComboBox Name="cmbFoundry" Style="{StaticResource ComboBoxStyle}" MinWidth="75" 
+                              ItemsSource="{Binding Source={StaticResource FoundryDataSource}, Path=Data}" 
+                              ItemContainerStyle="{StaticResource ComboBoxItemStyle}"
+                              SelectionChanged="CmbFoundry_OnSelectionChanged" DisplayMemberPath="FoundryName"/>
                 <sdk:Label Content="From:" Margin="3" VerticalAlignment="Center" />
                 <sdk:DatePicker Name="fromDatePicker" IsEnabled="{Binding ElementName=RGDomainDataSource, Path=CanLoad}" />
                 <sdk:Label Content="To:" Margin="3" VerticalAlignment="Center" />
