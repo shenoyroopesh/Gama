@@ -207,6 +207,13 @@
                                         </DataTemplate>
                                     </sdk:DataGridTemplateColumn.CellTemplate>
                                 </sdk:DataGridTemplateColumn>
+                                <sdk:DataGridTemplateColumn Header="Retake Reasons">
+                                    <sdk:DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Path=RetakeReasonText, Mode=TwoWay}" VerticalAlignment="Center" />
+                                        </DataTemplate>
+                                    </sdk:DataGridTemplateColumn.CellTemplate>
+                                </sdk:DataGridTemplateColumn>
                                 <sdk:DataGridTemplateColumn Header="Technician">
                                     <sdk:DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>

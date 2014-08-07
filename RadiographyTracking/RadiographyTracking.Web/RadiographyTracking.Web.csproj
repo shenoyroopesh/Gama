@@ -188,6 +188,8 @@
     <Compile Include="Models\FPTemplateRow.cs" />
     <Compile Include="Models\LocationClass.cs" />
     <Compile Include="Models\Remark.cs" />
+    <Compile Include="Models\RetakeReason.cs" />
+    <Compile Include="Models\RetakeReasonReportRow.cs" />
     <Compile Include="Models\RGReportRowType.cs" />
     <Compile Include="Models\RGReport.cs" />
     <Compile Include="Models\RGReportRow.cs" />

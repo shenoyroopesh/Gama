@@ -868,7 +868,7 @@
             return result;
         }
 
-        public IQueryable<RGReport> GetRGReportsByDate(int foundryId,DateTime fromDate, DateTime toDate, string rtNo, string heatNo, int coverageId)
+        public IQueryable<RGReport> GetRGReportsByDate(int foundryId, DateTime fromDate, DateTime toDate, string rtNo, string heatNo, int coverageId)
         {
             //to ensure that time component of the date does not make some dates get excluded
             var fromDateValue = fromDate.Date;
@@ -1464,6 +1464,53 @@
             return di.GetFiles().Where(p => p.Name.ToLower().Contains("address"))
                 .Select(p => p.Name)
                 .ToList();
+        }
+        #endregion
+
+        #region RetakeReason
+
+        public IQueryable<RetakeReason> GetRetakeReasons()
+        {
+            return this.DbContext.RetakeReasons;
+        }
+
+        public IEnumerable<RetakeReasonReportRow> GetRetakeReasonReports(int foundryId, DateTime? fromDate, DateTime? toDate)
+        {
+            //from date and to date to not consider time
+            if (fromDate != null)
+                fromDate = ((DateTime)fromDate).Date;
+            if (toDate != null)
+                toDate = ((DateTime)toDate).Date.AddDays(1);
+
+            var intermediate = (from rg in DbContext.RGReportRows
+                                join r in DbContext.RGReports on rg.RGReportID equals r.ID
+                                join rr in DbContext.RetakeReasons on rg.RetakeReasonID equals rr.ID
+                                let rowFId = r.FixedPattern.Customer.FoundryID
+                                where rowFId == (foundryId == -1 ? rowFId : foundryId)
+                                && (fromDate == null || r.ReportDate >= fromDate)
+                                && (toDate == null || r.ReportDate < toDate)
+                                select new
+                                {
+                                    ID = Guid.NewGuid(),
+                                    FPNo = r.FixedPattern.FPNo,
+                                    Coverage = r.Coverage.CoverageName,
+                                    RTNo = r.RTNo,
+                                    Location = rg.Location,
+                                    Segment = rg.Segment,
+                                    RetakeReason = rr.Value
+                                }).ToList();
+
+            return from r in intermediate
+                   select new RetakeReasonReportRow
+                   {
+                       ID = r.ID,
+                       FPNo = r.FPNo,
+                       Coverage = r.Coverage,
+                       RTNo = r.RTNo,
+                       Location = r.Location,
+                       Segment = r.Segment,
+                       RetakeReason = r.RetakeReason
+                   };
         }
         #endregion
     }

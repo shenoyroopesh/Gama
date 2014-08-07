@@ -30,6 +30,8 @@
                                OperationName="GetWeldersQuery" />
         <ex:ComboBoxDataSource x:Key="ShiftsSource" DomainContext="{StaticResource RadiographyContext}"
                                OperationName="GetShiftsQuery" />
+        <ex:ComboBoxDataSource x:Key="RetakeReasonsSource" DomainContext="{StaticResource RadiographyContext}"
+                               OperationName="GetRetakeReasonsQuery" />
     </UserControl.Resources>
     <Grid x:Name="LayoutRoot">
         <riaControls:DomainDataSource Name="RGReportSource" AutoLoad="False" DomainContext="{StaticResource RadiographyContext}" 
@@ -194,7 +196,7 @@
                     </Grid>
 
                     <StackPanel>
-                        <custom:CustomGrid Name="RGReportDataGrid" CellEditEnded="CellEditEnded" Style="{StaticResource DataGridStyle}" 
+                        <custom:CustomGrid Name="RGReportDataGrid" CellEditEnded="CellEditEnded" PreparingCellForEdit="PreparingCellForEdit" Style="{StaticResource DataGridStyle}" 
                                    ColumnHeaderStyle="{StaticResource DataGridHeaderGlassEffect}"
                                    CellStyle="{StaticResource Stretch}" MaxHeight="300" 
                                    CanUserSortColumns="True" >
@@ -281,6 +283,22 @@
                                         </DataTemplate>
                                     </sdk:DataGridTemplateColumn.CellEditingTemplate>
                                 </sdk:DataGridTemplateColumn>
+                                <sdk:DataGridTemplateColumn Header="Retake Reason">
+                                    <sdk:DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Path=RetakeReasonText, Mode=TwoWay}" VerticalAlignment="Center" />
+                                        </DataTemplate>
+                                    </sdk:DataGridTemplateColumn.CellTemplate>
+                                    <sdk:DataGridTemplateColumn.CellEditingTemplate>
+                                        <DataTemplate>
+                                            <ComboBox ItemsSource="{Binding Source={StaticResource RetakeReasonsSource}, Path=Data}"
+                                              SelectedValue="{Binding RetakeReason, Mode=TwoWay}"
+                                              DisplayMemberPath="Value" 
+                                              Style="{StaticResource ComboBoxStyle}" IsEnabled="False"
+                                              ItemContainerStyle="{StaticResource ComboBoxItemStyle}" SelectionChanged="RetakeReasonChanged"/>
+                                        </DataTemplate>
+                                    </sdk:DataGridTemplateColumn.CellEditingTemplate>
+                                </sdk:DataGridTemplateColumn>
                                 <sdk:DataGridTemplateColumn Header="Technician">
                                     <sdk:DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
@@ -324,7 +342,7 @@
                                 </sdk:DataGridTemplateColumn>
                             </custom:CustomGrid.Columns>
                         </custom:CustomGrid>
-                        <custom:CustomGrid Name="RGReportDataGridClerk" Style="{StaticResource DataGridStyle}" 
+                        <custom:CustomGrid Name="RGReportDataGridClerk" Style="{StaticResource DataGridStyle}" PreparingCellForEdit="PreparingCellForEdit"
                                    ColumnHeaderStyle="{StaticResource DataGridHeaderGlassEffect}"
                                    CellStyle="{StaticResource Stretch}" MaxHeight="300" 
                                    CanUserSortColumns="True" Visibility="Collapsed">
@@ -378,6 +396,22 @@
                                               DisplayMemberPath="Value" 
                                               Style="{StaticResource ComboBoxStyle}"
                                               ItemContainerStyle="{StaticResource ComboBoxItemStyle}" SelectionChanged="RemarkChanged"/>
+                                        </DataTemplate>
+                                    </sdk:DataGridTemplateColumn.CellEditingTemplate>
+                                </sdk:DataGridTemplateColumn>
+                                <sdk:DataGridTemplateColumn Header="Retake Reason">
+                                    <sdk:DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Path=RetakeReasonText, Mode=TwoWay}" VerticalAlignment="Center" />
+                                        </DataTemplate>
+                                    </sdk:DataGridTemplateColumn.CellTemplate>
+                                    <sdk:DataGridTemplateColumn.CellEditingTemplate>
+                                        <DataTemplate>
+                                            <ComboBox ItemsSource="{Binding Source={StaticResource RetakeReasonsSource}, Path=Data}"
+                                              SelectedValue="{Binding RetakeReason, Mode=TwoWay}"
+                                              DisplayMemberPath="Value" 
+                                              Style="{StaticResource ComboBoxStyle}" IsEnabled="False"
+                                              ItemContainerStyle="{StaticResource ComboBoxItemStyle}" SelectionChanged="RetakeReasonChanged"/>
                                         </DataTemplate>
                                     </sdk:DataGridTemplateColumn.CellEditingTemplate>
                                 </sdk:DataGridTemplateColumn>

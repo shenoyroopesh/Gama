@@ -100,6 +100,9 @@ namespace RadiographyTracking.Web.Models
 
         public int RowTypeID { get; set; }
 
+        public int? RetakeReasonID { get; set; }
+        public RetakeReason RetakeReason { get; set; }
+
         [NotMapped]
         public string FilmSizeWithCount
         {
@@ -310,6 +313,38 @@ namespace RadiographyTracking.Web.Models
         public float FilmArea
         {
             get { return FilmSize == null ? 0 : FilmSize.Area*FilmCount; }
+        }
+
+        /// <summary>
+        /// Only for setting or seeing Remark by using a string value
+        /// </summary>
+        [NotMapped]
+        public string RetakeReasonText
+        {
+            get
+            {
+                if (this.RetakeReasonID == 0 || this.RetakeReasonID == null) return " ";
+                //TODO: see if context can be injected instead of using like this
+                using (var ctx = new RadiographyContext())
+                {
+                    var retakeReasons = ctx.RetakeReasons.Where(p => p.ID == this.RetakeReasonID);
+                    return retakeReasons.Any() ? retakeReasons.First().Value : " ";
+                }
+            }
+            set
+            {
+                using (var ctx = new RadiographyContext())
+                {
+                    try
+                    {
+                        this.RetakeReasonID = RetakeReason.getRetakeReasons(value, ctx).ID;
+                    }
+                    catch
+                    {
+                        //do nothing
+                    }
+                }
+            }
         }
     }
 }

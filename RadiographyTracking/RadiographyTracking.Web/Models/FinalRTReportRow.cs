@@ -78,6 +78,11 @@ namespace RadiographyTracking.Web.Models
         public Welder Welder { get; set; }
         [NotMapped]
         public int FinalRTReportID { get; set; }
+        [NotMapped]
+        public int? RetakeReasonID { get; set; }
+        [NotMapped]
+        public RetakeReason RetakeReason { get; set; }
+
 
         /// <summary>
         /// This will determine the cause for this row in the first place - necessary to track this separately from remark
@@ -166,6 +171,16 @@ namespace RadiographyTracking.Web.Models
         public float FilmArea
         {
             get { return FilmSize == null ? 0 : FilmSize.Area * FilmCount; }
+        }
+
+        /// <summary>
+        /// Only for setting or seeing Retake Reason by using a string value
+        /// </summary>
+        [NotMapped]
+        public string RetakeReasonText
+        {
+            get;
+            set;
         }
     }
 }

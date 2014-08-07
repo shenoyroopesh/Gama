@@ -279,6 +279,7 @@ namespace RadiographyTracking.Views
                     TechnicianText = " ",
                     Observations = " ",
                     WelderText = " ",
+                    RetakeReasonText = " ",
                     FilmCount = 1, //default value for film counts
                     RowType = ((RadiographyContext)DomainSource.DomainContext)
                         .RGReportRowTypes
@@ -622,6 +623,33 @@ namespace RadiographyTracking.Views
                     }
                 }
             }
+        }
+
+        /// <summary>
+        /// Have to update Retake Reason string manually
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void RetakeReasonChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ComboBox cmb = (ComboBox)sender;
+            var row = ((DataGridCell)cmb.Parent).DataContext;
+            ((RGReportRow)row).RetakeReasonText = ((RetakeReason)cmb.SelectedValue).Value;
+            if (((RGReportRow)row).RemarkText == "RETAKE")
+                cmb.IsEnabled = true;
+            else
+                cmb.IsEnabled = false;
+        }
+
+        private void PreparingCellForEdit(object sender, DataGridPreparingCellForEditEventArgs e)
+        {
+            var row = e.Row.DataContext;
+            ComboBox cmb = this.RGReportDataGrid.Columns[14].GetCellContent(e.Row) as ComboBox;
+            if (cmb != null)
+                if (((RGReportRow)row).RemarkText == "RETAKE")
+                    cmb.IsEnabled = true;
+                else
+                    cmb.IsEnabled = false;
         }
     }
 }

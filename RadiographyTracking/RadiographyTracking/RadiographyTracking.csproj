@@ -124,6 +124,7 @@
     <Compile Include="Helpers\BooleanToVisibilityConverter.cs" />
     <Compile Include="Helpers\FoundryIdFromFoundry.cs" />
     <Compile Include="Models\FPTemplateRow.partial.cs" />
+    <Compile Include="Models\RetakeReason.Partial.cs" />
     <Compile Include="Models\RGReportRow.partial.cs" />
     <Compile Include="Models\Shift.Partial.cs" />
     <Compile Include="Models\FilmSize.Partial.cs" />
@@ -178,6 +179,9 @@
     </Compile>
     <Compile Include="Views\Login\RegistrationFormWindow.xaml.cs">
       <DependentUpon>RegistrationFormWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\RetakeReasonReport.xaml.cs">
+      <DependentUpon>RetakeReasonReport.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ShiftWisePerformance.xaml.cs">
       <DependentUpon>ShiftWisePerformance.xaml</DependentUpon>
@@ -311,6 +315,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\RetakeReasonReport.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\ShiftWisePerformance.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -437,6 +445,7 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>ErrorResources.Designer.cs</LastGenOutput>
       <CustomToolNamespace>RadiographyTracking</CustomToolNamespace>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Assets\Resources\SecurityQuestions.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

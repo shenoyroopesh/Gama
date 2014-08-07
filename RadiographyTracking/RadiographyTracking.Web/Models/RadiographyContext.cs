@@ -40,6 +40,7 @@ namespace RadiographyTracking.Web.Models
         public DbSet<Welder> Welders { get; set; }
         public DbSet<ThicknessRangeForEnergy> ThicknessRangesForEnergy { get; set; }
         public DbSet<UploadedFile> UploadedFiles { get; set; }
+        public DbSet<RetakeReason> RetakeReasons { get; set; }
 
         //following are added only for reports, though they will create a few empty tables in the db, there
         //is no way around it for now. This is the path of least resistance
@@ -54,6 +55,7 @@ namespace RadiographyTracking.Web.Models
         public DbSet<RTStatusReportRow> RTStatusReportRows { get; set; }
         public DbSet<FinalRTReport> FinalRTReports { get; set; }
         public DbSet<FinalRTReportRow> FinalRTReportRows { get; set; }
+        public DbSet<RetakeReasonReportRow> RetakeReasonReportRows { get; set; }
 
         public DbSet<Period> Periods { get; set; }
     }
