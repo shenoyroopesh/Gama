@@ -32,6 +32,12 @@
                                OperationName="GetShiftsQuery" />
         <ex:ComboBoxDataSource x:Key="RetakeReasonsSource" DomainContext="{StaticResource RadiographyContext}"
                                OperationName="GetRetakeReasonsQuery" />
+        <ex:ComboBoxDataSource x:Key="ProcedureRefsSource" DomainContext="{StaticResource RadiographyContext}"
+                               OperationName="GetProcedureRefsQuery" />
+        <ex:ComboBoxDataSource x:Key="AcceptanceAsPersSource" DomainContext="{StaticResource RadiographyContext}"
+                               OperationName="GetAcceptanceAsPersQuery" />
+        <ex:ComboBoxDataSource x:Key="SpecificationsSource" DomainContext="{StaticResource RadiographyContext}"
+                               OperationName="GetSpecificationsQuery" />
     </UserControl.Resources>
     <Grid x:Name="LayoutRoot">
         <riaControls:DomainDataSource Name="RGReportSource" AutoLoad="False" DomainContext="{StaticResource RadiographyContext}" 
@@ -160,9 +166,26 @@
                         <TextBlock Text="Heat No" TextWrapping="Wrap"   Grid.Column="0" Grid.Row="9" Margin="0,4" />
                         <TextBox Name="txtHeatNo" Grid.Column="2" Grid.Row="9" />
                         <TextBlock Text="Procedure Ref" TextWrapping="Wrap"   Grid.Column="0" Grid.Row="10" Margin="0,8" />
-                        <TextBox Name="txtProcedureRef" Grid.Column="2" Grid.Row="10"  />
+                        
+                        <TextBox Name="txtProcedureRef" Grid.Column="2" Grid.Row="10" Visibility="Collapsed"  />
+                        <ComboBox Name="cmbProcedureRef" Width="Auto" HorizontalAlignment="Left"  Grid.Column="2" Grid.Row="10" SelectionChanged="cmbProcedureRefChanged"
+                                      Style="{StaticResource ComboBoxStyle}"
+                                      IsEnabled="{Binding ElementName=RGReportsSource, Path=HasChanges, 
+                                                Converter={StaticResource NotOperatorValueConverter}}"
+                                      ItemContainerStyle="{StaticResource ComboBoxItemStyle}"
+                                      ItemsSource="{Binding Source={StaticResource ProcedureRefsSource}, Path=Data}"
+                                      DisplayMemberPath="Value"/>
+                        
                         <TextBlock Text="Specifications" TextWrapping="Wrap"   Grid.Column="0" Grid.Row="11" Margin="0,4" />
-                        <TextBox Name="txtSpecifications" Grid.Column="2" Grid.Row="11" />
+                        <TextBox Name="txtSpecifications" Grid.Column="2" Grid.Row="11" Visibility="Collapsed"/>
+                        <ComboBox Name="cmbSpecifications" Width="Auto" HorizontalAlignment="Left"  Grid.Column="2" Grid.Row="11" SelectionChanged="cmbSpecificationsChanged"
+                                      Style="{StaticResource ComboBoxStyle}"
+                                      IsEnabled="{Binding ElementName=RGReportsSource, Path=HasChanges, 
+                                                Converter={StaticResource NotOperatorValueConverter}}"
+                                      ItemContainerStyle="{StaticResource ComboBoxItemStyle}"
+                                      ItemsSource="{Binding Source={StaticResource SpecificationsSource}, Path=Data}"
+                                      DisplayMemberPath="Value"/>
+                        
                         <TextBlock Text="Report Date" TextWrapping="Wrap"   Grid.Column="0" Grid.Row="12" Margin="0,4" />
                         <sdk:DatePicker Name="ReportDatePicker" Grid.Column="2" Grid.Row="12"  />
                         <TextBlock Text="End Customer Name" TextWrapping="Wrap"  Grid.Column="0" Grid.Row="13"/>
@@ -185,8 +208,17 @@
                         </StackPanel>
                         <TextBlock Text="Evaluation As Per" Grid.Column="4" Grid.Row="9" Margin="0,4" />
                         <TextBlock Name="txtEvaluation" Grid.Column="6" Grid.Row="9" />
+                        
                         <TextBlock Text="Acceptance As Per" TextWrapping="Wrap"   Grid.Column="4" Grid.Row="10" />
-                        <TextBox Name="txtAcceptance" Grid.Column="6" Grid.Row="10"  />
+                        <TextBox Name="txtAcceptance" Grid.Column="6" Grid.Row="10"  Visibility="Collapsed" />
+                        <ComboBox Name="cmbAcceptance" Width="Auto" HorizontalAlignment="Left"  Grid.Column="6" Grid.Row="10" SelectionChanged="cmbAcceptanceChanged"
+                                      Style="{StaticResource ComboBoxStyle}"
+                                      IsEnabled="{Binding ElementName=RGReportsSource, Path=HasChanges, 
+                                                Converter={StaticResource NotOperatorValueConverter}}"
+                                      ItemContainerStyle="{StaticResource ComboBoxItemStyle}"
+                                      ItemsSource="{Binding Source={StaticResource AcceptanceAsPersSource}, Path=Data}"
+                                      DisplayMemberPath="Value"/>
+                        
                         <TextBlock Text="Drawing No" TextWrapping="Wrap"   Grid.Column="4" Grid.Row="11" Margin="0,4" />
                         <TextBox Name="txtDrawingNo" Grid.Column="6" Grid.Row="11"  />
                         <TextBlock Text="Status:" Grid.Column="4" Grid.Row="12" Margin="0,4"  />

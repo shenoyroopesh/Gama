@@ -54,7 +54,7 @@
 
 
         private List<MembershipUser> _allMemberShipUsers;
-
+         
         public List<MembershipUser> AllMembershipUsers
         {
             get
@@ -1067,7 +1067,7 @@
 
             finalReport.FinalRTReportRows = finalRows;
             if (finalReport.StatusID == 2)
-                finalReport.Status.Status = "CASTING ACCEPTABLE AS PER LEVEL " + finalRows.SelectMany(p => p.Classifications.Split(',')).Select(int.Parse).Max();
+                finalReport.Status.Status = "CASTING ACCEPTABLE AS PER LEVEL " + finalRows.SelectMany(p => p.Classifications.Split(',')).Where(m => !string.IsNullOrEmpty(m)).Select(int.Parse).Max();
 
             return finalReport;
         }
@@ -1511,6 +1511,27 @@
                        Segment = r.Segment,
                        RetakeReason = r.RetakeReason
                    };
+        }
+        #endregion
+
+        #region ProcedureRef
+        public IQueryable<ProcedureReference> GetProcedureRefs()
+        {
+            return this.DbContext.ProcedureReferences;
+        }
+        #endregion
+
+        #region AcceptanceAsPer
+        public IQueryable<AcceptanceAsPer> GetAcceptanceAsPers()
+        {
+            return this.DbContext.AcceptanceAsPers;
+        }
+        #endregion
+
+        #region Specifications
+        public IQueryable<Specification> GetSpecifications()
+        {
+            return this.DbContext.Specifications;
         }
         #endregion
     }

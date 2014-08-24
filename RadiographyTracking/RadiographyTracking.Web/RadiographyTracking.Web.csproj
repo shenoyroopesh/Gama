@@ -164,6 +164,7 @@
       <DependentUpon>201301292158447_Add_Viewing.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Settings.cs" />
+    <Compile Include="Models\AcceptanceAsPer.cs" />
     <Compile Include="Models\AddressStickerRow.cs" />
     <Compile Include="Models\Change.cs" />
     <Compile Include="Models\Company.cs" />
@@ -187,6 +188,7 @@
     <Compile Include="Models\Foundry.cs" />
     <Compile Include="Models\FPTemplateRow.cs" />
     <Compile Include="Models\LocationClass.cs" />
+    <Compile Include="Models\ProcedureReference.cs" />
     <Compile Include="Models\Remark.cs" />
     <Compile Include="Models\RetakeReason.cs" />
     <Compile Include="Models\RetakeReasonReportRow.cs" />
@@ -201,6 +203,7 @@
     </Compile>
     <Compile Include="Models\Shift.cs" />
     <Compile Include="Models\ShiftWisePerformanceRow.cs" />
+    <Compile Include="Models\Specification.cs" />
     <Compile Include="Models\Technician.cs" />
     <Compile Include="Models\ThicknessRangeForEnergy.cs" />
     <Compile Include="Models\UploadedFile.cs" />

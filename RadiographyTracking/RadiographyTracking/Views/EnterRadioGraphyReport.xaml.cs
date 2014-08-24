@@ -318,12 +318,15 @@ namespace RadiographyTracking.Views
             {
                 OriginalEntities.Add(RGReport.ID, RGReport.Clone(ExcludePropertiesFromTracking));
             }
-
+            //ProcedureReference();
+            BindToPage(cmbProcedureRef, ComboBox.SelectedValueProperty, "ProcedureReferences");
+            BindToPage(cmbSpecifications, ComboBox.SelectedValueProperty, "Specifications");
+            BindToPage(cmbAcceptance, ComboBox.SelectedValueProperty, "AcceptanceAsPers");
         }
 
         public void UpdatedStatus()
         {
-            lblStatus.Text = "CASTING ACCEPTABLE AS PER LEVEL " + RGReportRows.SelectMany(p => p.Classifications.Split(',')).Select(int.Parse).Max();
+            lblStatus.Text = "CASTING ACCEPTABLE AS PER LEVEL " + RGReportRows.SelectMany(p => p.Classifications.Split(',')).Where(m => !string.IsNullOrEmpty(m)).Select(int.Parse).Max();
         }
 
         //Kept here only for the template column to work fine
@@ -650,6 +653,108 @@ namespace RadiographyTracking.Views
                     cmb.IsEnabled = true;
                 else
                     cmb.IsEnabled = false;
+        }
+
+        /// <summary>
+        /// cmbProcedureRef combobox change event.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void cmbProcedureRefChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ProcedureReference procedureReference = (ProcedureReference)cmbProcedureRef.SelectedItem;
+            txtProcedureRef.Text = procedureReference.Value;
+        }
+
+        /// <summary>
+        /// cmbProcedureRef combobox change event.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void cmbSpecificationsChanged(object sender, SelectionChangedEventArgs e)
+        {
+            Specification specification = (Specification)cmbSpecifications.SelectedItem;
+            txtSpecifications.Text = specification.Value;
+        }
+
+        /// <summary>
+        /// cmbProcedureRef combobox change event.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void cmbAcceptanceChanged(object sender, SelectionChangedEventArgs e)
+        {
+            AcceptanceAsPer acceptanceAsPer = (AcceptanceAsPer)cmbAcceptance.SelectedItem;
+            txtAcceptance.Text = acceptanceAsPer.Value;
+        }
+
+        /// <summary>
+        /// Property to set the Procedure textbox or combobox.
+        /// </summary>
+        public ProcedureReference ProcedureReferences
+        {
+            get
+            {
+                var ctx = (RadiographyContext)this.DomainSource.DomainContext;
+                ctx.Load(ctx.GetProcedureRefsQuery());
+                if (ctx.ProcedureReferences.Where(p => p.Value == RGReport.ProcedureRef.Trim()).FirstOrDefault() == null)
+                {
+                    cmbProcedureRef.Visibility = Visibility.Collapsed;
+                    txtProcedureRef.Visibility = Visibility.Visible;
+                }
+                else
+                {
+                    cmbProcedureRef.Visibility = Visibility.Visible;
+                    txtProcedureRef.Visibility = Visibility.Collapsed;
+                }
+                return ctx.ProcedureReferences.Where(p => p.Value == RGReport.ProcedureRef.Trim()).FirstOrDefault();
+            }
+        }
+
+        /// <summary>
+        /// Property to set the Specifications textbox or combobox.
+        /// </summary>
+        public Specification Specifications
+        {
+            get
+            {
+                var ctx = (RadiographyContext)this.DomainSource.DomainContext;
+                ctx.Load(ctx.GetSpecificationsQuery());
+                if (ctx.Specifications.Where(p => p.Value == RGReport.Specifications.Trim()).FirstOrDefault() == null)
+                {
+                    cmbSpecifications.Visibility = Visibility.Collapsed;
+                    txtSpecifications.Visibility = Visibility.Visible;
+                }
+                else
+                {
+                    cmbSpecifications.Visibility = Visibility.Visible;
+                    txtSpecifications.Visibility = Visibility.Collapsed;
+                }
+                return ctx.Specifications.Where(p => p.Value == RGReport.Specifications.Trim()).FirstOrDefault();
+            }
+        }
+
+        /// <summary>
+        /// Property to set the Procedure textbox or combobox.
+        /// </summary>
+        public AcceptanceAsPer AcceptanceAsPers
+        {
+            get
+            {
+                var ctx = (RadiographyContext)this.DomainSource.DomainContext;
+                ctx.Load(ctx.GetAcceptanceAsPersQuery());
+                if (ctx.AcceptanceAsPers.Where(p => p.Value == RGReport.AcceptanceAsPer.Trim()).FirstOrDefault() == null)
+                {
+                    cmbAcceptance.Visibility = Visibility.Collapsed;
+                    txtAcceptance.Visibility = Visibility.Visible;
+                }
+                else
+                {
+                    cmbAcceptance.Visibility = Visibility.Visible;
+                    txtAcceptance.Visibility = Visibility.Collapsed;
+                }
+                return ctx.AcceptanceAsPers.Where(p => p.Value == RGReport.AcceptanceAsPer.Trim()).FirstOrDefault();
+            }
         }
     }
 }

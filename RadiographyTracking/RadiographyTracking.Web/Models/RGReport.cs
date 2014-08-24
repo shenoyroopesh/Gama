@@ -37,12 +37,12 @@ namespace RadiographyTracking.Web.Models
             this.Status = RGStatus.getStatus("CASTING UNDER REPAIR", ctx);
             this.RTNo = RTNo;
             this.ReportNo = ReportNo;
-           
+
             RGReportRowType freshRowType = RGReportRowType.getRowType("FRESH", ctx);
             if (fpTemplate.FPTemplateRows == null) return;
 
             this.RGReportRows = new List<RGReportRow>();
-           
+
 
             //some default values as suggested by Shankaran (10-Apr-2012)
             this.Film = "AGFA D7";
@@ -371,7 +371,5 @@ namespace RadiographyTracking.Web.Models
             }
             return null;
         }
-
-
     }
 }

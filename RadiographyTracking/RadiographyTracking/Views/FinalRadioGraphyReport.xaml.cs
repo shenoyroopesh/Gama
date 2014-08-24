@@ -155,7 +155,7 @@ namespace RadiographyTracking.Views
             FixedPatternsSource.Load();
             updateEnergyWiseArea();
             if (FinalReport.StatusID == 2)
-                lblStatus.Text = "CASTING ACCEPTABLE AS PER LEVEL " + FinalReportRows.SelectMany(p => p.Classifications.Split(',')).Select(int.Parse).Max();
+                lblStatus.Text = "CASTING ACCEPTABLE AS PER LEVEL " + FinalReportRows.SelectMany(p => p.Classifications.Split(',')).Where(m => !string.IsNullOrEmpty(m)).Select(int.Parse).Max();
         }
 
         private void FixedPatternsSource_LoadedData(object sender, LoadedDataEventArgs e)

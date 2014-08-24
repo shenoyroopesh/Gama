@@ -15,7 +15,7 @@ namespace RadiographyTracking.Web
         {
             var data = GetDataContext();
             if (data.StatusID == 2)
-                data.Status.Status = "CASTING ACCEPTABLE AS PER LEVEL " + data.RGReportRows.SelectMany(p => p.Classifications.Split(',')).Select(int.Parse).Max();
+                data.Status.Status = "CASTING ACCEPTABLE AS PER LEVEL " + data.RGReportRows.SelectMany(p => p.Classifications.Split(',')).Where(m => !string.IsNullOrEmpty(m)).Select(int.Parse).Max();
             var reportTemplate = data.FixedPattern.Customer.Foundry.ReportTemplate;
 
             var generationInfo = GetDocumentGenerationInfo("RGReportGenerator", "1.0", data,
