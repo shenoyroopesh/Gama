@@ -11,6 +11,7 @@ using BindableDataGrid.Data;
 using RadiographyTracking.Controls;
 using System.Collections.Generic;
 using RadiographyTracking.AddressStickers;
+using RadiographyTracking.Observations;
 
 namespace RadiographyTracking.Views
 {
@@ -655,6 +656,17 @@ namespace RadiographyTracking.Views
                     cmb.IsEnabled = false;
         }
 
+        private void PreparingCellForEditClerkGrid(object sender, DataGridPreparingCellForEditEventArgs e)
+        {
+            var row = e.Row.DataContext;
+            ComboBox cmb = this.RGReportDataGridClerk.Columns[14].GetCellContent(e.Row) as ComboBox;
+            if (cmb != null)
+                if (((RGReportRow)row).RemarkText == "RETAKE")
+                    cmb.IsEnabled = true;
+                else
+                    cmb.IsEnabled = false;
+        }
+
         /// <summary>
         /// cmbProcedureRef combobox change event.
         /// </summary>
@@ -754,6 +766,49 @@ namespace RadiographyTracking.Views
                     txtAcceptance.Visibility = Visibility.Collapsed;
                 }
                 return ctx.AcceptanceAsPers.Where(p => p.Value == RGReport.AcceptanceAsPer.Trim()).FirstOrDefault();
+            }
+        }
+
+        private void btnCheck_Click(object sender, RoutedEventArgs e)
+        {
+            DataGridRow row = DataGridRow.GetRowContainingElement(sender as FrameworkElement);
+            callClickEvent(row);
+            TypeOfGrid = RGReportDataGrid;
+        }
+
+        private void btnCheckClerk_Click(object sender, RoutedEventArgs e)
+        {
+            DataGridRow row = DataGridRow.GetRowContainingElement(sender as FrameworkElement);
+            callClickEvent(row);
+            TypeOfGrid = RGReportDataGridClerk;
+        }
+
+        protected void callClickEvent(DataGridRow row)
+        {
+            RGReportRow reportRow = (RGReportRow)row.DataContext;
+            DataGridRowForObservations = row;
+            var observations = new AddObservations
+            {
+                MultipleObservations = reportRow.Observations,
+                ReportID = reportRow.ID
+            };
+
+            observations.Show();
+            observations.SubmitClicked += new EventHandler(AddObservations_SubmitClicked);
+        }
+
+        public string MultipleObservations { get; set; }
+        public DataGridRow DataGridRowForObservations { get; set; }
+        public CustomGrid TypeOfGrid { get; set; }
+
+        void AddObservations_SubmitClicked(object sender, EventArgs e)
+        {
+            var window = sender as AddObservations;
+            if (window != null && window.DialogResult == true)
+            {
+                MultipleObservations = window.MultipleObservations;
+                TextBlock txtBlock = this.TypeOfGrid.Columns[12].GetCellContent(DataGridRowForObservations) as TextBlock;
+                txtBlock.Text = MultipleObservations;
             }
         }
     }

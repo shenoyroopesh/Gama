@@ -1534,5 +1534,12 @@
             return this.DbContext.Specifications;
         }
         #endregion
+
+        #region Observations
+        public IQueryable<Observation> GetObservations()
+        {
+            return this.DbContext.Observations;
+        }
+        #endregion
     }
 }

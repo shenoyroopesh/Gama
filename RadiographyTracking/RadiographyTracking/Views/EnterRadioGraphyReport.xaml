@@ -298,7 +298,18 @@
                                         </DataTemplate>
                                     </sdk:DataGridTemplateColumn.CellEditingTemplate>
                                 </sdk:DataGridTemplateColumn>
-                                <sdk:DataGridTextColumn Header="Observation" Binding="{Binding Path=Observations, Mode=TwoWay}"></sdk:DataGridTextColumn>
+                                <sdk:DataGridTemplateColumn Header="Observation">
+                                    <sdk:DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Path=Observations, Mode=TwoWay}" VerticalAlignment="Center" />
+                                        </DataTemplate>
+                                    </sdk:DataGridTemplateColumn.CellTemplate>
+                                    <sdk:DataGridTemplateColumn.CellEditingTemplate>
+                                        <DataTemplate>
+                                            <Button Margin="0,0,0,0" Name="btnCheck" HorizontalAlignment="Right" Width="75" Click="btnCheck_Click">Add..</Button>
+                                        </DataTemplate>
+                                    </sdk:DataGridTemplateColumn.CellEditingTemplate>
+                                </sdk:DataGridTemplateColumn>
                                 <sdk:DataGridTemplateColumn Header="Remark">
                                     <sdk:DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
@@ -363,7 +374,6 @@
                                         </DataTemplate>
                                     </sdk:DataGridTemplateColumn.CellEditingTemplate>
                                 </sdk:DataGridTemplateColumn>
-
                                 <sdk:DataGridTemplateColumn Header="Delete" Width="Auto">
                                     <sdk:DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
@@ -374,7 +384,7 @@
                                 </sdk:DataGridTemplateColumn>
                             </custom:CustomGrid.Columns>
                         </custom:CustomGrid>
-                        <custom:CustomGrid Name="RGReportDataGridClerk" Style="{StaticResource DataGridStyle}" PreparingCellForEdit="PreparingCellForEdit"
+                        <custom:CustomGrid Name="RGReportDataGridClerk" Style="{StaticResource DataGridStyle}" PreparingCellForEdit="PreparingCellForEditClerkGrid"
                                    ColumnHeaderStyle="{StaticResource DataGridHeaderGlassEffect}"
                                    CellStyle="{StaticResource Stretch}" MaxHeight="300" 
                                    CanUserSortColumns="True" Visibility="Collapsed">
@@ -414,7 +424,18 @@
                                         </DataTemplate>
                                     </sdk:DataGridTemplateColumn.CellEditingTemplate>
                                 </sdk:DataGridTemplateColumn>
-                                <sdk:DataGridTextColumn Header="Observation" Binding="{Binding Path=Observations, Mode=TwoWay}"></sdk:DataGridTextColumn>
+                                <sdk:DataGridTemplateColumn Header="Observation">
+                                    <sdk:DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Path=Observations, Mode=TwoWay}" VerticalAlignment="Center" />
+                                        </DataTemplate>
+                                    </sdk:DataGridTemplateColumn.CellTemplate>
+                                    <sdk:DataGridTemplateColumn.CellEditingTemplate>
+                                        <DataTemplate>
+                                            <Button Margin="0,0,0,0" Name="btnCheck" HorizontalAlignment="Right" Width="75" Click="btnCheckClerk_Click">Add..</Button>
+                                        </DataTemplate>
+                                    </sdk:DataGridTemplateColumn.CellEditingTemplate>
+                                </sdk:DataGridTemplateColumn>
                                 <sdk:DataGridTemplateColumn Header="Remark">
                                     <sdk:DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
@@ -492,6 +513,7 @@
                         <Button Name="btnSave" Background="Transparent" Style="{StaticResource SaveButtonStyle}"/>
                         <Button Name="btnCancel" Margin="20,0,0,0" Style="{StaticResource CancelButtonStyle}" />
                     </StackPanel>
+                    
                 </StackPanel>
             </local:BusyIndicator>
         </ScrollViewer>

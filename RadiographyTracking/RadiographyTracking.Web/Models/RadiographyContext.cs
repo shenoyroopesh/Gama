@@ -44,6 +44,7 @@ namespace RadiographyTracking.Web.Models
         public DbSet<ProcedureReference> ProcedureReferences { get; set; }
         public DbSet<AcceptanceAsPer> AcceptanceAsPers { get; set; }
         public DbSet<Specification> Specifications { get; set; }
+        public DbSet<Observation> Observations { get; set; }
 
         //following are added only for reports, though they will create a few empty tables in the db, there
         //is no way around it for now. This is the path of least resistance
