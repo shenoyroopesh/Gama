@@ -42,5 +42,41 @@ namespace RadiographyTracking.Web.Models
                 
             }
         }
+
+        public float WidthInCms { get; set; }
+        public float LengthInCms { get; set; }
+
+        /// <summary>
+        /// Returns the name in the format Height X Width
+        /// </summary>
+        public String NameInCms
+        {
+            get
+            {
+                if (LengthInCms > WidthInCms)
+                    return String.Concat(LengthInCms.ToString(),
+                    "X",
+                    WidthInCms.ToString());
+                else
+                    return String.Concat(WidthInCms.ToString(),
+                    "X",
+                    LengthInCms.ToString());
+            }
+        }
+
+        public float AreaInCms
+        {
+            get
+            {
+                return WidthInCms * LengthInCms;
+            }
+
+            // ReSharper disable ValueParameterNotUsed
+            private set
+            // ReSharper restore ValueParameterNotUsed
+            {
+
+            }
+        }
     }
 }

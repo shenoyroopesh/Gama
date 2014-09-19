@@ -32,6 +32,12 @@
                                                 Width="Auto" MinWidth="100"/>
                         <sdk:DataGridTextColumn x:Name="areaColumn" Binding="{Binding Path=Area, Mode=OneWay}" Header="Area" 
                                                 Width="Auto" MinWidth="100"/>
+                        <sdk:DataGridTextColumn x:Name="widthInCmsColumn" Binding="{Binding Path=WidthInCms, Mode=TwoWay}" Header="Width In Cms" 
+                                                Width="Auto" MinWidth="100"/>
+                        <sdk:DataGridTextColumn Binding="{Binding Path=LengthInCms, Mode=TwoWay}" Header="Length In Cms" 
+                                                Width="Auto" MinWidth="100"/>
+                        <sdk:DataGridTextColumn x:Name="areaInCmsColumn" Binding="{Binding Path=AreaInCms, Mode=OneWay}" Header="Area In Cms" 
+                                                Width="Auto" MinWidth="100"/>
                         <sdk:DataGridTemplateColumn Header="Delete" Width="Auto">
                             <sdk:DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>

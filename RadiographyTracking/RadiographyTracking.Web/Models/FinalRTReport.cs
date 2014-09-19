@@ -305,5 +305,116 @@ namespace RadiographyTracking.Web.Models
             return null;
         }
 
+        [NotMapped]
+        public String TotalAreaInCms
+        {
+            get
+            {
+                if (this.FinalRTReportRows == null)
+                    return "0";
+
+                return this.FinalRTReportRows
+                    .Where(p => p.RemarkText != "RETAKE")
+                    .Sum(p => p.FilmAreaInCms).ToString();
+            }
+        }
+
+        [NotMapped]
+        [Exclude]
+        public string ExposedTotalAreaInCms
+        {
+            get
+            {
+                return FinalRTReportRows == null
+                           ? "0"
+                           : FinalRTReportRows
+                                 .Sum(p => p.FilmAreaInCms)
+                                 .ToString();
+            }
+        }
+
+        [NotMapped]
+        [Exclude]
+        public string RetakeTotalAreaInCms
+        {
+            get
+            {
+                return FinalRTReportRows == null
+                           ? "0"
+                           : FinalRTReportRows
+                                 .Where(p => p.RemarkText == "RETAKE")
+                                 .Sum(p => p.FilmAreaInCms)
+                                 .ToString();
+            }
+        }
+
+        /// <summary>
+        /// Calculated field that gets the energy area for this particular report
+        /// </summary>
+        [NotMapped]
+        [Exclude]
+        public Dictionary<String, float> EnergyAreasInCms
+        {
+            get
+            {
+                if (FinalRTReportRows == null)
+                    return null;
+
+                var summary = from r in FinalRTReportRows
+                              where r.RemarkText != "RETAKE" //Roopesh: 30-Jun-2012
+                              group r by r.Energy.Name into g
+                              select new
+                              {
+                                  Energy = g.Key,
+                                  Area = g.Sum(p => p.FilmAreaInCms)
+                              }; //TODO: note this exact logic is present in RGReport as well. Whenever making changes here make there too. 
+
+                return summary.ToDictionary(s => s.Energy, s => s.Area);
+            }
+        }
+
+        [NotMapped]
+        [Exclude]
+        public Dictionary<String, float> ExposedEnergyAreasInCms
+        {
+            get
+            {
+                if (FinalRTReportRows == null)
+                    return null;
+
+                var summary = from r in FinalRTReportRows
+                              group r by r.Energy.Name into g
+                              select new
+                              {
+                                  Energy = g.Key,
+                                  Area = g.Sum(p => p.FilmAreaInCms)
+                              };
+
+                return summary.ToDictionary(s => s.Energy, s => s.Area);
+            }
+        }
+
+        [NotMapped]
+        [Exclude]
+        public Dictionary<String, float> RetakeEnergyAreasInCms
+        {
+            get
+            {
+                if (FinalRTReportRows == null)
+                    return null;
+
+                var summary = from r in FinalRTReportRows
+                              where r.RemarkText == "RETAKE"
+                              group r by r.Energy.Name into g
+                              select new
+                              {
+                                  Energy = g.Key,
+                                  Area = g.Sum(p => p.FilmAreaInCms)
+                              };
+
+                return summary.ToDictionary(s => s.Energy, s => s.Area);
+            }
+        }
+
     }
 }

@@ -135,6 +135,12 @@ namespace RadiographyTracking.Views
             DataGridRow row = DataGridRow.GetRowContainingElement(sender as FrameworkElement);
             RGReport report = (RGReport)row.DataContext;
 
+            CheckBox cmb = null;
+            if (WebContext.Current.User.Roles.FirstOrDefault() == "Customer")
+                cmb = this.RGDataGrid.Columns[7].GetCellContent(row) as CheckBox;
+            else
+                cmb = this.RGDataGrid.Columns[9].GetCellContent(row) as CheckBox;
+
             //Get the root path for the XAP
             string src = Application.Current.Host.Source.ToString();
 
@@ -143,7 +149,7 @@ namespace RadiographyTracking.Views
 
             //Uri reportURI = new Uri(string.Format(appRoot + "RGReportGenerate.aspx?ReportNo={0}", report.ReportNo), UriKind.Absolute);
             Debug.Assert(report != null, "report != null");
-            Uri reportURI = new Uri(string.Format(appRoot + "RGReportGenerate.aspx?ReportId={0}&" + "ReportNo={1}", report.ID, report.ReportNo), UriKind.Absolute);
+            Uri reportURI = new Uri(string.Format(appRoot + "RGReportGenerate.aspx?ReportId={0}&" + "ReportNo={1}&FilmSize={2}", report.ID, report.ReportNo, cmb.IsChecked), UriKind.Absolute);
             HtmlPage.Window.Navigate(reportURI, "_blank");
         }
 
@@ -152,11 +158,20 @@ namespace RadiographyTracking.Views
             DataGridRow row = DataGridRow.GetRowContainingElement(sender as FrameworkElement);
             RGReport report = (RGReport)row.DataContext;
 
+            CheckBox cmb = null;
+            if (WebContext.Current.User.Roles.FirstOrDefault() == "Customer")
+                cmb = this.RGDataGrid.Columns[7].GetCellContent(row) as CheckBox;
+            else
+                cmb = this.RGDataGrid.Columns[9].GetCellContent(row) as CheckBox;
+
             ctx = (RadiographyContext)RGDomainDataSource.DomainContext;
             busyIndicator.IsBusy = true;
-            this.ctx.Load(this.ctx.GetRGReportsQuery(report.ID)).Completed += loadCompleted; ;
+            IsFilmSizeInCms = cmb.IsChecked.Value;
+            this.ctx.Load(this.ctx.GetRGReportsQuery(report.ID)).Completed += loadCompleted;
 
         }
+
+        public bool IsFilmSizeInCms { get; set; }
         private void loadCompleted(object sender, EventArgs e)
         {
             //wait till fully loaded
@@ -200,7 +215,7 @@ namespace RadiographyTracking.Views
 
 
             var totalFilmCount = rgReport.RGReportRows.Sum(p => p.FilmCount);
-               
+
             foreach (RGReportRow row in rgReport.RGReportRows)
             {
                 var dataRow = new DataRow();
@@ -211,7 +226,10 @@ namespace RadiographyTracking.Views
                 dataRow["IQI Designation"] = row.Designation ?? string.Empty;
                 dataRow["IQI Sensitivity"] = row.Sensitivity ?? string.Empty;
                 dataRow["Density"] = row.Density ?? string.Empty;
-                dataRow["FilmSize"] = row.FilmSizeString ?? string.Empty;
+                if (!IsFilmSizeInCms)
+                    dataRow["FilmSize"] = row.FilmSizeString ?? string.Empty;
+                else
+                    dataRow["FilmSize"] = row.FilmSizeStringInCms ?? string.Empty;
                 dataRow["Observations"] = row.Findings ?? string.Empty;
                 dataRow["Classifactions"] = row.Classifications ?? string.Empty;
                 dataRow["Remarks"] = row.RemarkText ?? string.Empty;
@@ -235,12 +253,22 @@ namespace RadiographyTracking.Views
 
                 foreach (var en in ctx.Energies)
                 {
-                   
-                    dataRow[en.Name + " Area"] = rgReport.RGReportRows
-                        .Where(p => p.EnergyID == en.ID &&
-                                  //  p.RemarkText != "RETAKE" &&
-                                    p.SlNo == rows.Count)
-                        .Sum(p => p.FilmSize.Area * p.FilmCount);
+                    if (!IsFilmSizeInCms)
+                    {
+                        dataRow[en.Name + " Area"] = rgReport.RGReportRows
+                            .Where(p => p.EnergyID == en.ID &&
+                                //  p.RemarkText != "RETAKE" &&
+                                        p.SlNo == rows.Count)
+                            .Sum(p => p.FilmSize.Area * p.FilmCount);
+                    }
+                    else
+                    {
+                        dataRow[en.Name + " Area"] = rgReport.RGReportRows
+                           .Where(p => p.EnergyID == en.ID &&
+                               //  p.RemarkText != "RETAKE" &&
+                                       p.SlNo == rows.Count)
+                           .Sum(p => p.FilmSize.AreaInCms * p.FilmCount);
+                    }
                 }
 
                 rows.Add(dataRow);

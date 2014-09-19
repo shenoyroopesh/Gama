@@ -69,7 +69,7 @@
                           ItemContainerStyle="{StaticResource ComboBoxItemStyle}"
                           ItemsSource="{Binding Source={StaticResource CoveragesSource}, Path=Data}"
                           DisplayMemberPath="CoverageName"/>
-               
+
                 <Button Name="btnFetch" Content="Generate" Click="btnFetch_Click" Margin="10,0,0,0" />
             </StackPanel>
             <local:BusyIndicator x:Name="busyIndicator" IsBusy="{Binding IsBusy, ElementName=RGDomainDataSource}">
@@ -106,6 +106,13 @@
                                     <DataTemplate>
                                         <Button Name="grdDeleteButton" Click="DeleteOperation" Tag="{Binding}" BorderBrush="Transparent"
                                             Style="{StaticResource DeleteButtonStyle}"/>
+                                    </DataTemplate>
+                                </sdk:DataGridTemplateColumn.CellTemplate>
+                            </sdk:DataGridTemplateColumn>
+                            <sdk:DataGridTemplateColumn Header="Film Size In Cms" Width="Auto">
+                                <sdk:DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <CheckBox Name="chkIsInchCms" Tag="{Binding}" VerticalAlignment="Center"></CheckBox>
                                     </DataTemplate>
                                 </sdk:DataGridTemplateColumn.CellTemplate>
                             </sdk:DataGridTemplateColumn>
@@ -146,6 +153,13 @@
                             <sdk:DataGridTextColumn Binding="{Binding Path=FixedPattern.Description, Mode=OneWay}" Header="Description" 
                                                 Width="Auto" />
                             <sdk:DataGridTextColumn Binding="{Binding Path=Coverage.CoverageName, Mode=OneWay}" Header="Coverage" Width="Auto" />
+                            <sdk:DataGridTemplateColumn Header="Film Size In Cms" Width="Auto">
+                                <sdk:DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <CheckBox Name="chkIsInchCms" Tag="{Binding}"></CheckBox>
+                                    </DataTemplate>
+                                </sdk:DataGridTemplateColumn.CellTemplate>
+                            </sdk:DataGridTemplateColumn>
                             <sdk:DataGridTemplateColumn Header="Print" Width="Auto">
                                 <sdk:DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>

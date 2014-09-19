@@ -21,7 +21,11 @@ namespace RadiographyTracking.Web
             var generationInfo = GetDocumentGenerationInfo("RGReportGenerator", "1.0", data,
                                         reportTemplate, false);
 
+            var IsFilmSizeInCms = Convert.ToBoolean(Request.Params["FilmSize"]);
+
             var sampleDocumentGenerator = new RGReportGenerator(generationInfo);
+            sampleDocumentGenerator.IsFilmSizeInCms = IsFilmSizeInCms;
+
             byte[] result = sampleDocumentGenerator.GenerateDocument();
             var filePath = WriteOutputToFile("RadiographyReportTemplate_Out" + DateTime.Now.ToString("SSMIHH") + ".docx", result);
 

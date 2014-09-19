@@ -347,5 +347,64 @@ namespace RadiographyTracking.Web.Models
             }
         }
 
+        [NotMapped]
+        public string FilmSizeWithCountInCms
+        {
+            get
+            {
+
+                string FilmSizeWithCount = this.FilmSizeStringInCms + ((this.FilmCount > 1) ? ("X" + this.FilmCount.ToString()) : String.Empty);
+                //to show as 8X9X2 if there are two films of sizes 8X9
+                return FilmSizeWithCount;
+            }
+        }
+
+        [NotMapped]
+        public String FilmSizeStringInCms
+        {
+            get
+            {
+                if (this.FilmSizeID == 0) return " ";
+                //TODO: see if context can be injected instead of using like this
+                using (var ctx = new RadiographyContext())
+                {
+                    var filmSizes = ctx.FilmSizes.Where(p => p.ID == this.FilmSizeID);
+                    if (filmSizes.Any())
+                        return filmSizes.First().NameInCms;
+                    else
+                        return " ";
+                }
+            }
+            set
+            {
+                float length, width;
+                try
+                {
+                    var dimensions = value.Split('X');
+                    length = float.Parse(dimensions[0]);
+                    width = float.Parse(dimensions[1]);
+                }
+                catch
+                {
+                    return;
+                }
+
+                using (var ctx = new RadiographyContext())
+                {
+                    var filmsizes = ctx.FilmSizes.Where(p => p.LengthInCms == length && p.WidthInCms == width);
+                    if (filmsizes.Any())
+                    {
+                        this.FilmSizeID = filmsizes.First().ID;
+                    }
+                }
+            }
+        }
+
+        [NotMapped]
+        [Exclude]
+        public float FilmAreaInCms
+        {
+            get { return FilmSize == null ? 0 : FilmSize.AreaInCms * FilmCount; }
+        }
     }
 }

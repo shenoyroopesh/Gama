@@ -182,5 +182,19 @@ namespace RadiographyTracking.Web.Models
             get;
             set;
         }
+
+        [NotMapped]
+        [Exclude]
+        public float FilmAreaInCms
+        {
+            get { return FilmSize == null ? 0 : FilmSize.AreaInCms * FilmCount; }
+        }
+
+        [NotMapped]
+        public string FilmSizeWithCountInCms
+        {
+            get;
+            set;
+        }
     }
 }

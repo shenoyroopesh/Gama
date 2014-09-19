@@ -97,6 +97,7 @@
                             <RowDefinition></RowDefinition>
                             <RowDefinition></RowDefinition>
                             <RowDefinition></RowDefinition>
+                            <RowDefinition></RowDefinition>
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition></ColumnDefinition>
@@ -162,6 +163,8 @@
                         <ComboBox Name="cmbSelectTemplate" Grid.Column="6" Grid.Row="13" />
                         <TextBlock Text="Viewing" Grid.Row="13" Grid.Column="0" Margin="0,2" />
                         <TextBlock Name="lblViewing" Grid.Row="13" Grid.Column="2" Margin="0,2" />
+                        <TextBlock Text="Filmsize In Cms" Grid.Row="14" Grid.Column="4" Margin="0,2" />
+                        <CheckBox Name="chkFilmSizeInCms" Grid.Row="14" Grid.Column="6" Margin="0,2" />
                     </Grid>
                     <StackPanel>
                         <custom:CustomGrid Name="ReportDataGrid" Style="{StaticResource DataGridStyle}" 

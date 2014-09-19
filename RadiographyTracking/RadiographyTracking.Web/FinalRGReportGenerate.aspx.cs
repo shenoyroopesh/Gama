@@ -20,6 +20,7 @@ namespace RadiographyTracking.Web
         protected void Page_Load(object sender, EventArgs e)
         {
             var reportTemplateName = Request.Params["Template"];
+            var IsFilmSizeInCms = Convert.ToBoolean(Request.Params["FilmSize"]);
 
             if (string.IsNullOrEmpty(reportTemplateName))
                 return;
@@ -28,6 +29,7 @@ namespace RadiographyTracking.Web
                                         reportTemplateName, false);
 
             FinalRGReportGenerator sampleDocumentGenerator = new FinalRGReportGenerator(generationInfo);
+            sampleDocumentGenerator.IsFilmSizeInCms = IsFilmSizeInCms;
             byte[] result = result = sampleDocumentGenerator.GenerateDocument();
             var filePath = WriteOutputToFile("RadiographyReportTemplate_Out" + DateTime.Now.ToString("SSMIHH") + ".docx", result);
 

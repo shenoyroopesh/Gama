@@ -1,11 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <publishData>
-  <publishProfile publishUrl="D:\Project_Freeliance\Teknika\Gama\Builds\FirstAssignment - 9thJune, 2014\July26-AfterCodeChange" deleteExistingFiles="True" ftpAnonymousLogin="False" ftpPassiveMode="True" msdeploySite="" msdeploySiteID="" msdeployRemoteSitePhysicalPath="" msdeployAllowUntrustedCertificate="False" msdeploySkipExtraFilesOnServer="True" msdeployMarkAsApp="False" profileName="Profile1" publishMethod="FileSystem" replaceMatchingFiles="False" userName="" savePWD="False" userPWD="" SelectedForPublish="True">
+  <publishProfile publishUrl="D:\Project_Freeliance\Teknika\Gama\Builds\2nd Assignement\11thSept1StBuild" deleteExistingFiles="True" ftpAnonymousLogin="False" ftpPassiveMode="True" msdeploySite="" msdeploySiteID="" msdeployRemoteSitePhysicalPath="" msdeployAllowUntrustedCertificate="False" msdeploySkipExtraFilesOnServer="True" msdeployMarkAsApp="False" profileName="Profile1" publishMethod="FileSystem" replaceMatchingFiles="False" userName="" savePWD="False" userPWD="" SelectedForPublish="True">
     <file relUrl="Silverlight.js" publishTime="06/26/2014 20:05:07" />
     <file relUrl="bin/Microsoft.ServiceModel.DomainServices.EntityFramework.dll" publishTime="06/26/2014 20:05:08" />
     <file relUrl="bin/it/System.ServiceModel.DomainServices.Server.resources.dll" publishTime="09/09/2011 21:23:42" />
     <file relUrl="Global.asax" publishTime="06/26/2014 20:05:07" />
     <file relUrl="bin/zh-Hant/System.ServiceModel.DomainServices.Server.resources.dll" publishTime="09/09/2011 21:23:42" />
+    <file relUrl="bin/ru/System.ServiceModel.DomainServices.Server.resources.dll" publishTime="09/09/2011 21:23:42" />
     <file relUrl="bin/ko/System.ServiceModel.DomainServices.Server.resources.dll" publishTime="09/09/2011 21:23:42" />
     <file relUrl="AddressStickerReportGenerate.aspx" publishTime="06/26/2014 20:05:07" />
     <file relUrl="bin/ja/System.ServiceModel.DomainServices.Hosting.resources.dll" publishTime="09/09/2011 21:23:40" />
@@ -16,28 +17,27 @@
     <file relUrl="bin/es/System.ServiceModel.DomainServices.Server.resources.dll" publishTime="09/09/2011 21:23:40" />
     <file relUrl="bin/de/System.ServiceModel.DomainServices.Hosting.resources.dll" publishTime="09/09/2011 21:23:40" />
     <file relUrl="bin/DocumentFormat.OpenXml.dll" publishTime="06/26/2014 20:05:08" />
-    <file relUrl="ClientBin/RadiographyTracking.xap" publishTime="07/26/2014 19:14:05" />
+    <file relUrl="ClientBin/RadiographyTracking.xap" publishTime="09/11/2014 23:57:57" />
     <file relUrl="bin/System.ServiceModel.DomainServices.Hosting.xml" publishTime="09/09/2011 21:21:14" />
     <file relUrl="packages.config" publishTime="06/26/2014 20:05:07" />
     <file relUrl="bin/System.ServiceModel.DomainServices.Server.xml" publishTime="09/09/2011 21:21:12" />
-    <file relUrl="bin/RadiographyTracking.Web.pdb" publishTime="07/26/2014 19:13:59" />
-    <file relUrl="bin/RadiographyTracking.Web.dll" publishTime="07/26/2014 19:13:59" />
+    <file relUrl="bin/RadiographyTracking.Web.pdb" publishTime="09/11/2014 22:38:27" />
     <file relUrl="bin/fr/System.ServiceModel.DomainServices.Hosting.resources.dll" publishTime="09/09/2011 21:23:42" />
-    <file relUrl="bin/WordDocumentGenerator.Library.dll" publishTime="07/06/2014 02:38:56" />
+    <file relUrl="bin/zh-Hans/System.ServiceModel.DomainServices.Server.resources.dll" publishTime="09/09/2011 21:23:42" />
+    <file relUrl="bin/WordDocumentGenerator.Library.dll" publishTime="08/23/2014 21:43:19" />
     <file relUrl="RadiographyTrackingTestPage.html" publishTime="06/26/2014 20:05:07" />
-    <file relUrl="bin/ja/System.ServiceModel.DomainServices.Server.resources.dll" publishTime="09/09/2011 21:23:42" />
     <file relUrl="RGReportGenerate.aspx" publishTime="06/26/2014 20:05:07" />
-    <file relUrl="bin/EntityFramework.Migrations.dll" publishTime="06/26/2014 20:05:08" />
-    <file relUrl="bin/WordDocumentGenerator.Library.pdb" publishTime="07/06/2014 02:38:56" />
+    <file relUrl="bin/ja/System.ServiceModel.DomainServices.Server.resources.dll" publishTime="09/09/2011 21:23:42" />
+    <file relUrl="bin/WordDocumentGenerator.Library.pdb" publishTime="08/23/2014 21:43:19" />
     <file relUrl="FinalRGReportGenerate.aspx" publishTime="06/26/2014 20:05:07" />
     <file relUrl="bin/ko/System.ServiceModel.DomainServices.Hosting.resources.dll" publishTime="09/09/2011 21:23:42" />
     <file relUrl="bin/System.ServiceModel.DomainServices.Hosting.dll" publishTime="09/09/2011 21:23:36" />
-    <file relUrl="Web.config" publishTime="07/26/2014 19:15:53" />
+    <file relUrl="Web.config" publishTime="09/12/2014 00:00:12" />
     <file relUrl="bin/System.ServiceModel.DomainServices.Server.dll" publishTime="09/09/2011 21:23:40" />
     <file relUrl="bin/de/System.ServiceModel.DomainServices.Server.resources.dll" publishTime="09/09/2011 21:23:40" />
     <file relUrl="bin/ru/System.ServiceModel.DomainServices.Hosting.resources.dll" publishTime="09/09/2011 21:23:42" />
-    <file relUrl="bin/zh-Hans/System.ServiceModel.DomainServices.Server.resources.dll" publishTime="09/09/2011 21:23:42" />
-    <file relUrl="bin/ru/System.ServiceModel.DomainServices.Server.resources.dll" publishTime="09/09/2011 21:23:42" />
+    <file relUrl="bin/RadiographyTracking.Web.dll" publishTime="09/11/2014 22:38:27" />
+    <file relUrl="bin/EntityFramework.Migrations.dll" publishTime="06/26/2014 20:05:08" />
     <file relUrl="bin/zh-Hant/System.ServiceModel.DomainServices.Hosting.resources.dll" publishTime="09/09/2011 21:23:40" />
     <file relUrl="bin/zh-Hans/System.ServiceModel.DomainServices.Hosting.resources.dll" publishTime="09/09/2011 21:23:40" />
     <file relUrl="bin/fr/System.ServiceModel.DomainServices.Server.resources.dll" publishTime="09/09/2011 21:23:42" />
