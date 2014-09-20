@@ -42,11 +42,21 @@
                                        IsReadOnly="True" CellStyle="{StaticResource AlignCenter}" 
                                        MinWidth="400" MinHeight="250" MaxHeight="450" AutoGenerateColumns="False"
                                        ColumnHeaderStyle="{StaticResource DataGridHeaderGlassEffect}">
+                        <custom:CustomGrid.Resources>
+                            <local:DateFormatter x:Key="FormatConverter" />
+                        </custom:CustomGrid.Resources>
                         <custom:CustomGrid.Columns>
                             <sdk:DataGridTextColumn Header="FP No" Binding="{Binding Path=FPNo}" />
                             <sdk:DataGridTextColumn Header="Coverage" Binding="{Binding Path=Coverage}" />
                             <sdk:DataGridTextColumn Header="RT No" Binding="{Binding Path=RTNo}" />
+
+                            <sdk:DataGridTextColumn Header="Report No" Binding="{Binding Path=ReportNo}" />
+                            <sdk:DataGridTextColumn Header="Report Date" Binding="{Binding Path=ReportDate, Converter={StaticResource FormatConverter}, ConverterParameter=\{0:d-M-yyyy\}}" />
+                            <sdk:DataGridTextColumn Header="Date of Test" Binding="{Binding Path=DateOfTest, Converter={StaticResource FormatConverter}, ConverterParameter=\{0:d-M-yyyy\}}" />
+                            <sdk:DataGridTextColumn Header="Technician" Binding="{Binding Path=TechnicianName}" />
+                            <sdk:DataGridTextColumn Header="User" Binding="{Binding Path=UserName}" />
                             <sdk:DataGridTextColumn Header="Location" Binding="{Binding Path=Location}" />
+                            
                             <sdk:DataGridTextColumn Header="Segment" Binding="{Binding Path=Segment}" />
                             <sdk:DataGridTextColumn Header="Retake Reason" Binding="{Binding Path=RetakeReason}" />
                         </custom:CustomGrid.Columns>

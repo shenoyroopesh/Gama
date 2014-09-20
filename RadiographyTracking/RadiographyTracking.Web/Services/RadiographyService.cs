@@ -54,7 +54,7 @@
 
 
         private List<MembershipUser> _allMemberShipUsers;
-         
+
         public List<MembershipUser> AllMembershipUsers
         {
             get
@@ -1476,6 +1476,7 @@
 
         public IEnumerable<RetakeReasonReportRow> GetRetakeReasonReports(int foundryId, DateTime? fromDate, DateTime? toDate)
         {
+            MembershipUser mUser = Membership.GetUser();
             //from date and to date to not consider time
             if (fromDate != null)
                 fromDate = ((DateTime)fromDate).Date;
@@ -1497,8 +1498,14 @@
                                     RTNo = r.RTNo,
                                     Location = rg.Location,
                                     Segment = rg.Segment,
-                                    RetakeReason = rr.Value
+                                    RetakeReason = rr.Value,
+                                    ReportNo = r.ReportNo,
+                                    ReportDate = r.ReportDate,
+                                    DateOfTest = r.DateOfTest,
+                                    TechnicianID = rg.TechnicianID,
+                                    UserName = mUser.UserName
                                 }).ToList();
+
 
             return from r in intermediate
                    select new RetakeReasonReportRow
@@ -1509,7 +1516,12 @@
                        RTNo = r.RTNo,
                        Location = r.Location,
                        Segment = r.Segment,
-                       RetakeReason = r.RetakeReason
+                       RetakeReason = r.RetakeReason,
+                       ReportNo = r.ReportNo,
+                       ReportDate = r.ReportDate,
+                       DateOfTest = r.DateOfTest,
+                       TechnicianID = r.TechnicianID,
+                       UserName = r.UserName
                    };
         }
         #endregion
