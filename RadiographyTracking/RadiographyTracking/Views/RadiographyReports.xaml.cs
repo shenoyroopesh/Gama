@@ -221,7 +221,7 @@ namespace RadiographyTracking.Views
                 var dataRow = new DataRow();
                 dataRow["SlNo"] = rows.Count;
                 dataRow["Location"] = row.LocationAndSegment ?? string.Empty;
-                dataRow["Thickness"] = row.Thickness;
+                dataRow["Thickness"] = row.ThicknessRange;
                 dataRow["SFD"] = row.SFD;
                 dataRow["IQI Designation"] = row.Designation ?? string.Empty;
                 dataRow["IQI Sensitivity"] = row.Sensitivity ?? string.Empty;
