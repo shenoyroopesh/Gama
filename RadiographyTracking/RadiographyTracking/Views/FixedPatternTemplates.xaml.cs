@@ -227,7 +227,7 @@ namespace RadiographyTracking.Views
                 var rowToBeRemoved = (FPTemplateRow)row.DataContext;
                 FPTemplateRows.Remove(rowToBeRemoved);
                 //also delete from the context
-                (DomainSource.DomainContext as RadiographyContext).FPTemplateRows.Remove(row.DataContext as FPTemplateRow);
+                (DomainSource.DomainContext as RadiographyContext).FPTemplateRows.Remove(rowToBeRemoved as FPTemplateRow);
             }
         }
 

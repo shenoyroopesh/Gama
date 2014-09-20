@@ -342,10 +342,11 @@ namespace RadiographyTracking.Views
             //commit any unsaved changes to avoid an exception
             if (Grid.CommitEdit())
             {
-                RGReportRows.Remove((RGReportRow)row.DataContext);
+                var rowToBeRemoved = (RGReportRow)row.DataContext;
+                RGReportRows.Remove(rowToBeRemoved);
                 //also delete from the datacontext
                 ((RadiographyContext)this.DomainSource.DomainContext).RGReportRows
-                                                                      .Remove(row.DataContext as RGReportRow);
+                                                                      .Remove(rowToBeRemoved as RGReportRow);
 
                 //mark at least one row deleted
                 RGReport.RowsDeleted = true;
