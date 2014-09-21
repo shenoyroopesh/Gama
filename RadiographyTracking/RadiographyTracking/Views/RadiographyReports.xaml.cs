@@ -328,5 +328,16 @@ namespace RadiographyTracking.Views
             txtHeatNo.Text = string.Empty;
             cmbCoverage.SelectedItem = null;
         }
+
+        private void SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            btnFetch.IsEnabled = ValueChanged();
+        }
+
+        public bool ValueChanged()
+        {
+            return (!(String.IsNullOrEmpty(fromDatePicker.Text) ||
+                      String.IsNullOrEmpty(toDatePicker.Text)));
+        }
     }
 }

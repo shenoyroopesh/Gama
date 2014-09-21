@@ -28,7 +28,10 @@ namespace RadiographyTracking.Views
             this.ExcludePropertiesFromTracking.Add("ThicknessRangeUI");
             this.ExcludePropertiesFromTracking.Add("Thickness");
             this.ExcludePropertiesFromTracking.Add("FilmSizeWithCount");
-            this.ExcludePropertiesFromTracking.Add("Viewing");
+            this.ExcludePropertiesFromTracking.Add("FilmSizeStringInCms");
+            this.ExcludePropertiesFromTracking.Add("FilmSizeWithCountInCms");
+            this.ExcludePropertiesFromTracking.Add("TotalAreaInCms");
+            
 
             this.OnCancelNavigation = "/RadiographyReports";
 
@@ -495,8 +498,28 @@ namespace RadiographyTracking.Views
         private void RemarkChanged(object sender, SelectionChangedEventArgs e)
         {
             ComboBox cmb = (ComboBox)sender;
-            var row = ((DataGridCell)cmb.Parent).DataContext;
-            ((RGReportRow)row).RemarkText = ((Remark)cmb.SelectedValue).Value;
+            if (cmb.Parent != null)
+            {
+                var row = ((DataGridCell)cmb.Parent).DataContext;
+                ((RGReportRow)row).RemarkText = ((Remark)cmb.SelectedValue).Value;
+
+                var ctx = (RadiographyContext)this.DomainSource.DomainContext;
+                ctx.Load(ctx.GetRetakeReasonsQuery());
+
+                if (((RGReportRow)row).RemarkText != "RETAKE")
+                {
+                    ((RGReportRow)row).RetakeReasonID = null;
+                    ((RGReportRow)row).RetakeReasonText = string.Empty;
+                }
+                else
+                {
+                    if (((RGReportRow)row).RetakeReasonID == null)
+                    {
+                        RetakeReason retakeReason = ctx.RetakeReasons.FirstOrDefault();
+                        ((RGReportRow)row).RetakeReasonText = retakeReason.Value;
+                    }
+                }
+            }
         }
 
         private void TechniqueChanged(object sender, SelectionChangedEventArgs e)
@@ -638,12 +661,25 @@ namespace RadiographyTracking.Views
         private void RetakeReasonChanged(object sender, SelectionChangedEventArgs e)
         {
             ComboBox cmb = (ComboBox)sender;
-            var row = ((DataGridCell)cmb.Parent).DataContext;
-            ((RGReportRow)row).RetakeReasonText = ((RetakeReason)cmb.SelectedValue).Value;
-            if (((RGReportRow)row).RemarkText == "RETAKE")
-                cmb.IsEnabled = true;
-            else
-                cmb.IsEnabled = false;
+            if (cmb.Parent != null)
+            {
+                var row = ((DataGridCell)cmb.Parent).DataContext;
+                if (cmb.Parent != null)
+                {
+                    if (cmb.SelectedIndex > -1)
+                    {
+                        ((RGReportRow)row).RetakeReasonText = ((RetakeReason)cmb.SelectedValue).Value;
+                        if (((RGReportRow)row).RemarkText == "RETAKE")
+                            cmb.IsEnabled = true;
+                        else
+                        {
+                            cmb.IsEnabled = false;
+                            ((RGReportRow)row).RetakeReasonText = string.Empty;
+                            ((RGReportRow)row).RetakeReasonID = null;
+                        }
+                    }
+                }
+            }
         }
 
         private void PreparingCellForEdit(object sender, DataGridPreparingCellForEditEventArgs e)
@@ -652,9 +688,18 @@ namespace RadiographyTracking.Views
             ComboBox cmb = this.RGReportDataGrid.Columns[14].GetCellContent(e.Row) as ComboBox;
             if (cmb != null)
                 if (((RGReportRow)row).RemarkText == "RETAKE")
+                {
                     cmb.IsEnabled = true;
+                    if (((RGReportRow)row).RetakeReasonID == null)
+                    {
+                        cmb.SelectedIndex = 0;
+                    }
+                }
                 else
+                {
                     cmb.IsEnabled = false;
+                    cmb.SelectedIndex = -1;
+                }
         }
 
         private void PreparingCellForEditClerkGrid(object sender, DataGridPreparingCellForEditEventArgs e)
@@ -665,7 +710,10 @@ namespace RadiographyTracking.Views
                 if (((RGReportRow)row).RemarkText == "RETAKE")
                     cmb.IsEnabled = true;
                 else
+                {
                     cmb.IsEnabled = false;
+                    cmb.SelectedIndex = -1;
+                }
         }
 
         /// <summary>
@@ -710,6 +758,7 @@ namespace RadiographyTracking.Views
             {
                 var ctx = (RadiographyContext)this.DomainSource.DomainContext;
                 ctx.Load(ctx.GetProcedureRefsQuery());
+
                 if (ctx.ProcedureReferences.Where(p => p.Value == RGReport.ProcedureRef.Trim()).FirstOrDefault() == null)
                 {
                     cmbProcedureRef.Visibility = Visibility.Collapsed;
