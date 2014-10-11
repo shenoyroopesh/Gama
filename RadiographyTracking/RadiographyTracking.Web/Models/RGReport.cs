@@ -62,7 +62,6 @@ namespace RadiographyTracking.Web.Models
             //since this is the first report for this FP and RT No
             this.First = true;
             this.RowsDeleted = false;
-
             foreach (var row in fpTemplate.FPTemplateRows.OrderBy(p => p.SlNo))
             {
                 var rgReportRow = new RGReportRow
@@ -79,6 +78,7 @@ namespace RadiographyTracking.Web.Models
 
                 this.RGReportRows.Add(rgReportRow);
             }
+            
         }
 
         /// <summary>

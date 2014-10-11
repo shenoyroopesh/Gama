@@ -1,0 +1,196 @@
+﻿<views:BaseCRUDView x:Class="RadiographyTracking.Views.MasterData"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignWidth="640" d:DesignHeight="480" 
+    xmlns:sdk="http://schemas.microsoft.com/winfx/2006/xaml/presentation/sdk"
+    xmlns:views="clr-namespace:RadiographyTracking.Views"
+    xmlns:custom="clr-namespace:Vagsons.Controls;assembly=CustomControls"
+    xmlns:local="clr-namespace:RadiographyTracking.Controls"
+    xmlns:riaControls="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.DomainServices" 
+    xmlns:my="clr-namespace:RadiographyTracking.Web.Models" xmlns:my1="clr-namespace:RadiographyTracking.Web.Services" 
+    xmlns:ex="clr-namespace:ComboBoxExtensions;assembly=ComboBoxExtensions">
+
+    <Grid x:Name="LayoutRoot" Background="White">
+        <sdk:Label Name="headerLabel" Style="{StaticResource PageHeaderStyle}" Content="Master Data Entry"/>
+        <riaControls:DomainDataSource AutoLoad="True" d:DesignData="{d:DesignInstance my:AcceptanceAsPer, CreateList=true}" Height="0"
+                                      Name="acceptanceAsPerDomainDataSource" QueryName="GetAcceptanceAsPersQuery" Width="0">
+            <riaControls:DomainDataSource.DomainContext>
+                <my1:RadiographyContext />
+            </riaControls:DomainDataSource.DomainContext>
+        </riaControls:DomainDataSource>
+        <riaControls:DomainDataSource AutoLoad="True" d:DesignData="{d:DesignInstance my:ProcedureReference, CreateList=true}" Height="0"
+                                      Name="procedureRefDomainDataSource" QueryName="GetProcedureRefsQuery" Width="0">
+            <riaControls:DomainDataSource.DomainContext>
+                <my1:RadiographyContext />
+            </riaControls:DomainDataSource.DomainContext>
+        </riaControls:DomainDataSource>
+        <riaControls:DomainDataSource AutoLoad="True" d:DesignData="{d:DesignInstance my:Specification, CreateList=true}" Height="0"
+                                      Name="specificationDomainDataSource" QueryName="GetSpecificationsQuery" Width="0">
+            <riaControls:DomainDataSource.DomainContext>
+                <my1:RadiographyContext />
+            </riaControls:DomainDataSource.DomainContext>
+        </riaControls:DomainDataSource>
+        <riaControls:DomainDataSource AutoLoad="True" d:DesignData="{d:DesignInstance my:Observation, CreateList=true}" Height="0"
+                                      Name="observationsDomainDataSource" QueryName="GetObservationsQuery" Width="0">
+            <riaControls:DomainDataSource.DomainContext>
+                <my1:RadiographyContext />
+            </riaControls:DomainDataSource.DomainContext>
+        </riaControls:DomainDataSource>
+        <riaControls:DomainDataSource AutoLoad="True" d:DesignData="{d:DesignInstance my:RetakeReason, CreateList=true}" Height="0"
+                                      Name="retakeReasonDomainDataSource" QueryName="GetRetakeReasonsQuery" Width="0">
+            <riaControls:DomainDataSource.DomainContext>
+                <my1:RadiographyContext />
+            </riaControls:DomainDataSource.DomainContext>
+        </riaControls:DomainDataSource>
+        <sdk:TabControl Name="masterTab" FontFamily="Verdana" FontSize="12" Margin="50" SelectionChanged="TabControl_SelectionChanged">
+            <sdk:TabItem Header="Acceptance as per">
+                <StackPanel>
+                    <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,20,0,0">
+                        <local:BusyIndicator x:Name="busyIndicatorAcceptanceAsPer">
+                            <custom:CustomGrid ItemsSource="{Binding ElementName=acceptanceAsPerDomainDataSource, Path=Data, Mode=TwoWay}" 
+                                    Name="acceptanceAsPerDataGrid" Style="{StaticResource DataGridStyle}" 
+                                   ColumnHeaderStyle="{StaticResource DataGridHeaderGlassEffect}"
+                                   CellStyle="{StaticResource AlignCenter}">
+                                <sdk:DataGrid.Columns>
+                                    <sdk:DataGridTextColumn x:Name="nameAcceptanceAsPerColumn" Binding="{Binding Path=Value, Mode=TwoWay}" Header="Name" Width="Auto" MinWidth="300" />
+                                    <sdk:DataGridTemplateColumn Header="Delete" Width="Auto">
+                                        <sdk:DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <Button Name="grdDeleteButton" Click="DeleteOperation" Tag="{Binding}" BorderBrush="Transparent"
+                                            Style="{StaticResource DeleteButtonStyle}"/>
+                                            </DataTemplate>
+                                        </sdk:DataGridTemplateColumn.CellTemplate>
+                                    </sdk:DataGridTemplateColumn>
+                                </sdk:DataGrid.Columns>
+                            </custom:CustomGrid>
+                        </local:BusyIndicator>
+                        <StackPanel Orientation="Horizontal" Height="23" Margin="0,20,0,0" HorizontalAlignment="Center">
+                            <Button Name="btnAcceptanceAsPerSave" Background="Transparent" Style="{StaticResource SaveButtonStyle}"/>
+                            <Button Name="btnAcceptanceAsPerCancel" Margin="20,0,0,0" Style="{StaticResource CancelButtonStyle}" />
+                            <Button Margin="100,0,0,0" Name="btnAcceptanceAsPerAdd" VerticalAlignment="Top" Width="75" Style="{StaticResource AddButtonStyle}"/>
+                        </StackPanel>
+                    </StackPanel>
+                </StackPanel>
+            </sdk:TabItem>
+            <sdk:TabItem Header="Procedure Ref">
+                <StackPanel>
+                    <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,20,0,0">
+                        <local:BusyIndicator x:Name="busyIndicatorProcedureRef">
+                            <custom:CustomGrid ItemsSource="{Binding ElementName=procedureRefDomainDataSource, Path=Data, Mode=TwoWay}" 
+                                    Name="procedureRefDataGrid" Style="{StaticResource DataGridStyle}" 
+                                   ColumnHeaderStyle="{StaticResource DataGridHeaderGlassEffect}"
+                                   CellStyle="{StaticResource AlignCenter}">
+                                <sdk:DataGrid.Columns>
+                                    <sdk:DataGridTextColumn x:Name="nameProcedureRefColumn" Binding="{Binding Path=Value, Mode=TwoWay}" Header="Name" Width="Auto" MinWidth="300" />
+                                    <sdk:DataGridTemplateColumn Header="Delete" Width="Auto">
+                                        <sdk:DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <Button Name="grdDeleteButton" Click="DeleteOperation" Tag="{Binding}" BorderBrush="Transparent"
+                                            Style="{StaticResource DeleteButtonStyle}"/>
+                                            </DataTemplate>
+                                        </sdk:DataGridTemplateColumn.CellTemplate>
+                                    </sdk:DataGridTemplateColumn>
+                                </sdk:DataGrid.Columns>
+                            </custom:CustomGrid>
+                        </local:BusyIndicator>
+                        <StackPanel Orientation="Horizontal" Height="23" Margin="0,20,0,0" HorizontalAlignment="Center">
+                            <Button Name="btnProcedureRefSave" Background="Transparent" Style="{StaticResource SaveButtonStyle}"/>
+                            <Button Name="btnProcedureRefCancel" Margin="20,0,0,0" Style="{StaticResource CancelButtonStyle}" />
+                            <Button Margin="100,0,0,0" Name="btnProcedureRefAdd" VerticalAlignment="Top" Width="75" Style="{StaticResource AddButtonStyle}"/>
+                        </StackPanel>
+                    </StackPanel>
+                </StackPanel>
+            </sdk:TabItem>
+            <sdk:TabItem Header="Specification">
+                <StackPanel>
+                    <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,20,0,0">
+                        <local:BusyIndicator x:Name="busyIndicatorSpecification">
+                            <custom:CustomGrid ItemsSource="{Binding ElementName=specificationDomainDataSource, Path=Data, Mode=TwoWay}" 
+                                    Name="specificationDataGrid" Style="{StaticResource DataGridStyle}" 
+                                   ColumnHeaderStyle="{StaticResource DataGridHeaderGlassEffect}"
+                                   CellStyle="{StaticResource AlignCenter}">
+                                <sdk:DataGrid.Columns>
+                                    <sdk:DataGridTextColumn x:Name="nameSpecificationColumn" Binding="{Binding Path=Value, Mode=TwoWay}" Header="Name" Width="Auto" MinWidth="300" />
+                                    <sdk:DataGridTemplateColumn Header="Delete" Width="Auto">
+                                        <sdk:DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <Button Name="grdDeleteButton" Click="DeleteOperation" Tag="{Binding}" BorderBrush="Transparent"
+                                            Style="{StaticResource DeleteButtonStyle}"/>
+                                            </DataTemplate>
+                                        </sdk:DataGridTemplateColumn.CellTemplate>
+                                    </sdk:DataGridTemplateColumn>
+                                </sdk:DataGrid.Columns>
+                            </custom:CustomGrid>
+                        </local:BusyIndicator>
+                        <StackPanel Orientation="Horizontal" Height="23" Margin="0,20,0,0" HorizontalAlignment="Center">
+                            <Button Name="btnSpecificationSave" Background="Transparent" Style="{StaticResource SaveButtonStyle}"/>
+                            <Button Name="btnSpecificationCancel" Margin="20,0,0,0" Style="{StaticResource CancelButtonStyle}" />
+                            <Button Margin="100,0,0,0" Name="btnSpecificationAdd" VerticalAlignment="Top" Width="75" Style="{StaticResource AddButtonStyle}"/>
+                        </StackPanel>
+                    </StackPanel>
+                </StackPanel>
+            </sdk:TabItem>
+            <sdk:TabItem Header="Observations">
+                <StackPanel>
+                    <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,20,0,0">
+                        <local:BusyIndicator x:Name="busyIndicatorObservations">
+                            <custom:CustomGrid ItemsSource="{Binding ElementName=observationsDomainDataSource, Path=Data, Mode=TwoWay}" 
+                                    Name="observationsDataGrid" Style="{StaticResource DataGridStyle}" 
+                                   ColumnHeaderStyle="{StaticResource DataGridHeaderGlassEffect}"
+                                   CellStyle="{StaticResource AlignCenter}">
+                                <sdk:DataGrid.Columns>
+                                    <sdk:DataGridTextColumn x:Name="nameObservationsColumn" Binding="{Binding Path=Value, Mode=TwoWay}" Header="Name" Width="Auto" MinWidth="300" />
+                                    <sdk:DataGridTemplateColumn Header="Delete" Width="Auto">
+                                        <sdk:DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <Button Name="grdDeleteButton" Click="DeleteOperation" Tag="{Binding}" BorderBrush="Transparent"
+                                            Style="{StaticResource DeleteButtonStyle}"/>
+                                            </DataTemplate>
+                                        </sdk:DataGridTemplateColumn.CellTemplate>
+                                    </sdk:DataGridTemplateColumn>
+                                </sdk:DataGrid.Columns>
+                            </custom:CustomGrid>
+                        </local:BusyIndicator>
+                        <StackPanel Orientation="Horizontal" Height="23" Margin="0,20,0,0" HorizontalAlignment="Center">
+                            <Button Name="btnObservationsSave" Background="Transparent" Style="{StaticResource SaveButtonStyle}"/>
+                            <Button Name="btnObservationsCancel" Margin="20,0,0,0" Style="{StaticResource CancelButtonStyle}" />
+                            <Button Margin="100,0,0,0" Name="btnObservationsAdd" VerticalAlignment="Top" Width="75" Style="{StaticResource AddButtonStyle}"/>
+                        </StackPanel>
+                    </StackPanel>
+                </StackPanel>
+            </sdk:TabItem>
+            <sdk:TabItem Header="Retake Reasons">
+                <StackPanel>
+                    <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,20,0,0">
+                        <local:BusyIndicator x:Name="busyIndicatorRetakeReasons">
+                            <custom:CustomGrid ItemsSource="{Binding ElementName=retakeReasonDomainDataSource, Path=Data, Mode=TwoWay}" 
+                                    Name="retakeReasonsDataGrid" Style="{StaticResource DataGridStyle}" 
+                                   ColumnHeaderStyle="{StaticResource DataGridHeaderGlassEffect}"
+                                   CellStyle="{StaticResource AlignCenter}">
+                                <sdk:DataGrid.Columns>
+                                    <sdk:DataGridTextColumn x:Name="nameRetakeReasonsColumn" Binding="{Binding Path=Value, Mode=TwoWay}" Header="Name" Width="Auto" MinWidth="300" />
+                                    <sdk:DataGridTemplateColumn Header="Delete" Width="Auto">
+                                        <sdk:DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <Button Name="grdDeleteButton" Click="DeleteOperation" Tag="{Binding}" BorderBrush="Transparent"
+                                            Style="{StaticResource DeleteButtonStyle}"/>
+                                            </DataTemplate>
+                                        </sdk:DataGridTemplateColumn.CellTemplate>
+                                    </sdk:DataGridTemplateColumn>
+                                </sdk:DataGrid.Columns>
+                            </custom:CustomGrid>
+                        </local:BusyIndicator>
+                        <StackPanel Orientation="Horizontal" Height="23" Margin="0,20,0,0" HorizontalAlignment="Center">
+                            <Button Name="btnRetakeReasonsSave" Background="Transparent" Style="{StaticResource SaveButtonStyle}"/>
+                            <Button Name="btnRetakeReasonsCancel" Margin="20,0,0,0" Style="{StaticResource CancelButtonStyle}" />
+                            <Button Margin="100,0,0,0" Name="btnRetakeReasonsAdd" VerticalAlignment="Top" Width="75" Style="{StaticResource AddButtonStyle}"/>
+                        </StackPanel>
+                    </StackPanel>
+                </StackPanel>
+            </sdk:TabItem>
+        </sdk:TabControl>
+    </Grid>
+</views:BaseCRUDView>

@@ -22,7 +22,7 @@ namespace RadiographyTracking.Views
         public Energies()
             : base()
         {
-            InitializeComponent();
+            InitializeComponent(); 
             DomainSource.LoadedData += domainDataSource_LoadedData;
             btnAdd.Click += AddOperation;
             btnCancel.Click += CancelOperation;

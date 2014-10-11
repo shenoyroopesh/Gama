@@ -952,6 +952,15 @@
             }
         }
 
+        public FixedPattern GetFixedPatternDetails(String strFPNo, String strCoverage, String rtNo)
+        {
+            var foundryID = getFoundryIDForCurrentUser();
+            FixedPattern fp = DbContext.FixedPatterns
+                                       .FirstOrDefault(p => p.FPNo == strFPNo &&
+                                                       p.Customer.Foundry.ID == (foundryID ?? p.Customer.Foundry.ID));
+            return fp;
+        }
+
         /// <summary>
         /// Gets all existing used distinct end customer names
         /// </summary>
@@ -1067,7 +1076,12 @@
 
             finalReport.FinalRTReportRows = finalRows;
             if (finalReport.StatusID == 2)
-                finalReport.Status.Status = "CASTING ACCEPTABLE AS PER LEVEL " + finalRows.SelectMany(p => p.Classifications.Split(',')).Where(m => !string.IsNullOrEmpty(m)).Select(int.Parse).Max();
+            {
+                if (finalRows.SelectMany(p => p.Classifications).Count() > 0)
+                    finalReport.Status.Status = "CASTING ACCEPTABLE AS PER LEVEL " + finalRows.SelectMany(p => p.Classifications.Split(',')).Where(m => !string.IsNullOrEmpty(m)).Select(int.Parse).Max();
+                else
+                    finalReport.Status.Status = "CASTING ACCEPTABLE AS PER LEVEL 1";
+            }
 
             return finalReport;
         }
@@ -1524,6 +1538,39 @@
                        UserName = r.UserName
                    };
         }
+
+        public void InsertRetakeReason(RetakeReason entity)
+        {
+            DbEntityEntry<RetakeReason> entityEntry = this.DbContext.Entry(entity);
+            if ((entityEntry.State != EntityState.Detached))
+            {
+                entityEntry.State = EntityState.Added;
+            }
+            else
+            {
+                this.DbContext.RetakeReasons.Add(entity);
+            }
+        }
+
+        public void UpdateRetakeReason(RetakeReason currentRetakeReason)
+        {
+            this.DbContext.RetakeReasons.AttachAsModified(currentRetakeReason, this.ChangeSet.GetOriginal(currentRetakeReason), this.DbContext);
+        }
+
+        public void DeleteRetakeReason(RetakeReason entity)
+        {
+            DbEntityEntry<RetakeReason> entityEntry = this.DbContext.Entry(entity);
+            if ((entityEntry.State != EntityState.Deleted))
+            {
+                entityEntry.State = EntityState.Deleted;
+            }
+            else
+            {
+                this.DbContext.RetakeReasons.Attach(entity);
+                this.DbContext.RetakeReasons.Remove(entity);
+            }
+        }
+
         #endregion
 
         #region ProcedureRef
@@ -1531,12 +1578,77 @@
         {
             return this.DbContext.ProcedureReferences;
         }
+
+        public void InsertProcedureRefs(ProcedureReference entity)
+        {
+            DbEntityEntry<ProcedureReference> entityEntry = this.DbContext.Entry(entity);
+            if ((entityEntry.State != EntityState.Detached))
+            {
+                entityEntry.State = EntityState.Added;
+            }
+            else
+            {
+                this.DbContext.ProcedureReferences.Add(entity);
+            }
+        }
+
+        public void UpdateProcedureRefs(ProcedureReference currentProcedureReference)
+        {
+            this.DbContext.ProcedureReferences.AttachAsModified(currentProcedureReference, this.ChangeSet.GetOriginal(currentProcedureReference), this.DbContext);
+        }
+
+        public void DeleteProcedureRefs(ProcedureReference entity)
+        {
+            DbEntityEntry<ProcedureReference> entityEntry = this.DbContext.Entry(entity);
+            if ((entityEntry.State != EntityState.Deleted))
+            {
+                entityEntry.State = EntityState.Deleted;
+            }
+            else
+            {
+                this.DbContext.ProcedureReferences.Attach(entity);
+                this.DbContext.ProcedureReferences.Remove(entity);
+            }
+        }
+
         #endregion
 
         #region AcceptanceAsPer
         public IQueryable<AcceptanceAsPer> GetAcceptanceAsPers()
         {
             return this.DbContext.AcceptanceAsPers;
+        }
+
+        public void InsertAcceptanceAsPers(AcceptanceAsPer entity)
+        {
+            DbEntityEntry<AcceptanceAsPer> entityEntry = this.DbContext.Entry(entity);
+            if ((entityEntry.State != EntityState.Detached))
+            {
+                entityEntry.State = EntityState.Added;
+            }
+            else
+            {
+                this.DbContext.AcceptanceAsPers.Add(entity);
+            }
+        }
+
+        public void UpdateAcceptanceAsPers(AcceptanceAsPer currentAcceptanceAsPer)
+        {
+            this.DbContext.AcceptanceAsPers.AttachAsModified(currentAcceptanceAsPer, this.ChangeSet.GetOriginal(currentAcceptanceAsPer), this.DbContext);
+        }
+
+        public void DeleteAcceptanceAsPers(AcceptanceAsPer entity)
+        {
+            DbEntityEntry<AcceptanceAsPer> entityEntry = this.DbContext.Entry(entity);
+            if ((entityEntry.State != EntityState.Deleted))
+            {
+                entityEntry.State = EntityState.Deleted;
+            }
+            else
+            {
+                this.DbContext.AcceptanceAsPers.Attach(entity);
+                this.DbContext.AcceptanceAsPers.Remove(entity);
+            }
         }
         #endregion
 
@@ -1545,12 +1657,76 @@
         {
             return this.DbContext.Specifications;
         }
+
+        public void InsertSpecification(Specification entity)
+        {
+            DbEntityEntry<Specification> entityEntry = this.DbContext.Entry(entity);
+            if ((entityEntry.State != EntityState.Detached))
+            {
+                entityEntry.State = EntityState.Added;
+            }
+            else
+            {
+                this.DbContext.Specifications.Add(entity);
+            }
+        }
+
+        public void UpdateSpecification(Specification currentSpecification)
+        {
+            this.DbContext.Specifications.AttachAsModified(currentSpecification, this.ChangeSet.GetOriginal(currentSpecification), this.DbContext);
+        }
+
+        public void DeleteSpecification(Specification entity)
+        {
+            DbEntityEntry<Specification> entityEntry = this.DbContext.Entry(entity);
+            if ((entityEntry.State != EntityState.Deleted))
+            {
+                entityEntry.State = EntityState.Deleted;
+            }
+            else
+            {
+                this.DbContext.Specifications.Attach(entity);
+                this.DbContext.Specifications.Remove(entity);
+            }
+        }
         #endregion
 
         #region Observations
         public IQueryable<Observation> GetObservations()
         {
             return this.DbContext.Observations;
+        }
+
+        public void InsertObservation(Observation entity)
+        {
+            DbEntityEntry<Observation> entityEntry = this.DbContext.Entry(entity);
+            if ((entityEntry.State != EntityState.Detached))
+            {
+                entityEntry.State = EntityState.Added;
+            }
+            else
+            {
+                this.DbContext.Observations.Add(entity);
+            }
+        }
+
+        public void UpdateObservation(Observation currentObservation)
+        {
+            this.DbContext.Observations.AttachAsModified(currentObservation, this.ChangeSet.GetOriginal(currentObservation), this.DbContext);
+        }
+
+        public void DeleteObservation(Observation entity)
+        {
+            DbEntityEntry<Observation> entityEntry = this.DbContext.Entry(entity);
+            if ((entityEntry.State != EntityState.Deleted))
+            {
+                entityEntry.State = EntityState.Deleted;
+            }
+            else
+            {
+                this.DbContext.Observations.Attach(entity);
+                this.DbContext.Observations.Remove(entity);
+            }
         }
         #endregion
     }

@@ -31,7 +31,7 @@ namespace RadiographyTracking.Views
             this.ExcludePropertiesFromTracking.Add("FilmSizeStringInCms");
             this.ExcludePropertiesFromTracking.Add("FilmSizeWithCountInCms");
             this.ExcludePropertiesFromTracking.Add("TotalAreaInCms");
-            
+
 
             this.OnCancelNavigation = "/RadiographyReports";
 
@@ -99,11 +99,11 @@ namespace RadiographyTracking.Views
         /// </summary>
         private void SetBindings()
         {
+            BindToPage(lblFixedPatternID, TextBlock.TextProperty, "RGReport.FixedPatternID", BindingMode.OneWay);
             BindToPage(lblFPNo, TextBlock.TextProperty, "RGReport.FixedPattern.FPNo", BindingMode.OneWay);
             BindToPage(lblCustomer, TextBlock.TextProperty, "RGReport.FixedPattern.Customer.CustomerName", BindingMode.OneWay);
             BindToPage(lblDescription, TextBlock.TextProperty, "RGReport.FixedPattern.Description", BindingMode.OneWay);
             BindToPage(txtTotalArea, TextBlock.TextProperty, "TotalArea", BindingMode.OneWay);
-            BindToPage(lblFixedPatternID, TextBlock.TextProperty, "RGReport.FixedPatternID", BindingMode.OneWay);
             BindToPage(lblRGReportID, TextBlock.TextProperty, "RGReport.ID", BindingMode.OneWay);
             BindToPage(lblStatus, TextBlock.TextProperty, "RGReport.Status.Status", BindingMode.OneWay);
             BindToPage(lblCoverage, TextBlock.TextProperty, "RGReport.Coverage.CoverageName", BindingMode.OneWay);
@@ -309,13 +309,20 @@ namespace RadiographyTracking.Views
             RGReportRows = RGReport.RGReportRows;
             //now that fixedpatternid is available
             FixedPatternsSource.Load();
+
             UpdateEnergyWiseArea();
             OnPropertyChanged("TotalArea");
             SetViewing();
-            if (RGReport.StatusID == 2)
-                UpdatedStatus();
+            UpdatedStatus();
             if (isFromFetchMethod)
+            {
+                var ctx = (RadiographyContext)this.DomainSource.DomainContext;
+                Coverage coverage = (Coverage)cmbCoverage.SelectedItem;
+                ctx.Load(ctx.GetFixedPatternDetailsQuery(txtFPNo.Text, coverage.CoverageName, txtRTNo.Text));
+
                 UpdateSourceBasedOnThickness();
+                RGReport.FixedPattern = ctx.FixedPatterns.FirstOrDefault();
+            }
             isFromFetchMethod = false;
             //if edit mode, add a clone of original RGReport to original entities for change tracking
             if (IsEditMode)
@@ -330,7 +337,13 @@ namespace RadiographyTracking.Views
 
         public void UpdatedStatus()
         {
-            lblStatus.Text = "CASTING ACCEPTABLE AS PER LEVEL " + RGReportRows.SelectMany(p => p.Classifications.Split(',')).Where(m => !string.IsNullOrEmpty(m)).Select(int.Parse).Max();
+            if (RGReport.StatusID == 2)
+            {
+                if (RGReportRows.SelectMany(p => p.Classifications).Count() > 0)
+                    lblStatus.Text = "CASTING ACCEPTABLE AS PER LEVEL " + RGReportRows.SelectMany(p => p.Classifications.Split(',')).Where(m => !string.IsNullOrEmpty(m)).Select(int.Parse).Max();
+                else
+                    lblStatus.Text = "CASTING ACCEPTABLE AS PER LEVEL 1";
+            }
         }
 
         //Kept here only for the template column to work fine
@@ -756,20 +769,25 @@ namespace RadiographyTracking.Views
         {
             get
             {
+                ProcedureReference procedureReference = new ProcedureReference();
                 var ctx = (RadiographyContext)this.DomainSource.DomainContext;
                 ctx.Load(ctx.GetProcedureRefsQuery());
-
-                if (ctx.ProcedureReferences.Where(p => p.Value == RGReport.ProcedureRef.Trim()).FirstOrDefault() == null)
+                if (RGReport.ProcedureRef != null)
                 {
-                    cmbProcedureRef.Visibility = Visibility.Collapsed;
-                    txtProcedureRef.Visibility = Visibility.Visible;
+                    if (ctx.ProcedureReferences.Where(p => p.Value == RGReport.ProcedureRef.Trim()).FirstOrDefault() == null)
+                    {
+                        cmbProcedureRef.Visibility = Visibility.Collapsed;
+                        txtProcedureRef.Visibility = Visibility.Visible;
+                    }
+                    else
+                    {
+                        cmbProcedureRef.Visibility = Visibility.Visible;
+                        txtProcedureRef.Visibility = Visibility.Collapsed;
+                    }
+                    return ctx.ProcedureReferences.Where(p => p.Value == RGReport.ProcedureRef.Trim()).FirstOrDefault();
                 }
                 else
-                {
-                    cmbProcedureRef.Visibility = Visibility.Visible;
-                    txtProcedureRef.Visibility = Visibility.Collapsed;
-                }
-                return ctx.ProcedureReferences.Where(p => p.Value == RGReport.ProcedureRef.Trim()).FirstOrDefault();
+                    return procedureReference;
             }
         }
 
@@ -780,19 +798,25 @@ namespace RadiographyTracking.Views
         {
             get
             {
+                Specification specification = new Specification();
                 var ctx = (RadiographyContext)this.DomainSource.DomainContext;
                 ctx.Load(ctx.GetSpecificationsQuery());
-                if (ctx.Specifications.Where(p => p.Value == RGReport.Specifications.Trim()).FirstOrDefault() == null)
+                if (RGReport.Specifications != null)
                 {
-                    cmbSpecifications.Visibility = Visibility.Collapsed;
-                    txtSpecifications.Visibility = Visibility.Visible;
+                    if (ctx.Specifications.Where(p => p.Value == RGReport.Specifications.Trim()).FirstOrDefault() == null)
+                    {
+                        cmbSpecifications.Visibility = Visibility.Collapsed;
+                        txtSpecifications.Visibility = Visibility.Visible;
+                    }
+                    else
+                    {
+                        cmbSpecifications.Visibility = Visibility.Visible;
+                        txtSpecifications.Visibility = Visibility.Collapsed;
+                    }
+                    return ctx.Specifications.Where(p => p.Value == RGReport.Specifications.Trim()).FirstOrDefault();
                 }
                 else
-                {
-                    cmbSpecifications.Visibility = Visibility.Visible;
-                    txtSpecifications.Visibility = Visibility.Collapsed;
-                }
-                return ctx.Specifications.Where(p => p.Value == RGReport.Specifications.Trim()).FirstOrDefault();
+                    return specification;
             }
         }
 
@@ -803,19 +827,25 @@ namespace RadiographyTracking.Views
         {
             get
             {
+                AcceptanceAsPer acceptanceAsPer = new AcceptanceAsPer();
                 var ctx = (RadiographyContext)this.DomainSource.DomainContext;
                 ctx.Load(ctx.GetAcceptanceAsPersQuery());
-                if (ctx.AcceptanceAsPers.Where(p => p.Value == RGReport.AcceptanceAsPer.Trim()).FirstOrDefault() == null)
+                if (RGReport.AcceptanceAsPer != null)
                 {
-                    cmbAcceptance.Visibility = Visibility.Collapsed;
-                    txtAcceptance.Visibility = Visibility.Visible;
+                    if (ctx.AcceptanceAsPers.Where(p => p.Value == RGReport.AcceptanceAsPer.Trim()).FirstOrDefault() == null)
+                    {
+                        cmbAcceptance.Visibility = Visibility.Collapsed;
+                        txtAcceptance.Visibility = Visibility.Visible;
+                    }
+                    else
+                    {
+                        cmbAcceptance.Visibility = Visibility.Visible;
+                        txtAcceptance.Visibility = Visibility.Collapsed;
+                    }
+                    return ctx.AcceptanceAsPers.Where(p => p.Value == RGReport.AcceptanceAsPer.Trim()).FirstOrDefault();
                 }
                 else
-                {
-                    cmbAcceptance.Visibility = Visibility.Visible;
-                    txtAcceptance.Visibility = Visibility.Collapsed;
-                }
-                return ctx.AcceptanceAsPers.Where(p => p.Value == RGReport.AcceptanceAsPer.Trim()).FirstOrDefault();
+                    return acceptanceAsPer;
             }
         }
 

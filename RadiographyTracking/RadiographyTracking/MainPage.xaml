@@ -53,6 +53,7 @@
                                 <menu:MenuItem MenuText="Thickness-Energy"  Click="MenuItem_Click" NavigationURI="/ThicknessToEnergyType"/>
                                 <menu:MenuItem MenuText="Film Sizes"  Click="MenuItem_Click" NavigationURI="/FilmSizes"/>
                                 <menu:MenuItem MenuText="Technicians"  Click="MenuItem_Click" NavigationURI="/Technicians"/>
+                                <menu:MenuItem MenuText="Master Data"  Click="MenuItem_Click" NavigationURI="/MasterData"/>
                             </menu:MenuBarItem>
                             <menu:MenuBarItem Name="foundrySetupMenu" MenuText="Foundry Setup" >
                                 <menu:MenuItem MenuText="Customers"  Click="MenuItem_Click" NavigationURI="/Customers"/>

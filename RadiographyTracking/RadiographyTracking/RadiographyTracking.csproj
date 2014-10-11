@@ -180,6 +180,9 @@
     <Compile Include="Views\Login\RegistrationFormWindow.xaml.cs">
       <DependentUpon>RegistrationFormWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\MasterData.xaml.cs">
+      <DependentUpon>MasterData.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Observations\AddObservations.xaml.cs">
       <DependentUpon>AddObservations.xaml</DependentUpon>
     </Compile>
@@ -315,6 +318,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\Login\RegistrationFormWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\MasterData.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
