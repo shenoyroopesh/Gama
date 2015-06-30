@@ -58,9 +58,9 @@
             </StackPanel>
             <StackPanel Orientation="Horizontal" Margin="10, 10,0,10">
                 <TextBlock Text="RT No" VerticalAlignment="Center" Margin="10,0,0,0"/>
-                <TextBox Name="txtRTNo"  Margin="10,0,0,0" MinWidth="50" IsEnabled="{Binding ElementName=RGDomainDataSource, Path=CanLoad}" />
+                <TextBox Name="txtRTNo"  Margin="10,0,0,0" MinWidth="50"  TextChanged="TextChanged" IsEnabled="{Binding ElementName=RGDomainDataSource, Path=CanLoad}" />
                 <TextBlock Text="Heat No" VerticalAlignment="Center" Margin="10,0,0,0"/>
-                <TextBox Name="txtHeatNo" Margin="10, 0,10,0" MinWidth="50" IsEnabled="{Binding ElementName=RGDomainDataSource, Path=CanLoad}" />
+                <TextBox Name="txtHeatNo" Margin="10, 0,10,0" MinWidth="50" TextChanged="TextChanged" IsEnabled="{Binding ElementName=RGDomainDataSource, Path=CanLoad}" />
                 <TextBlock Text="Coverage" VerticalAlignment="Center" Margin="10,0,0,0"/>
                 <ComboBox Width="100" HorizontalAlignment="Left" Name="cmbCoverage" Margin="10,0,0,0"
                           Style="{StaticResource ComboBoxStyle}"

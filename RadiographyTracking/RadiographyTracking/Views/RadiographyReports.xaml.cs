@@ -10,6 +10,7 @@ using RadiographyTracking.Web.Models;
 using RadiographyTracking.Web.Services;
 using Vagsons.Controls;
 using System.Windows.Browser;
+using System.Collections;
 
 namespace RadiographyTracking.Views
 {
@@ -18,6 +19,7 @@ namespace RadiographyTracking.Views
         RadiographyContext ctx;
         private BindableDataGrid.BindableDataGrid reportGrid;
         private string reportNumberToDownload;
+
         public RadiographyReports()
             : base()
         {
@@ -137,7 +139,7 @@ namespace RadiographyTracking.Views
 
             CheckBox cmb = null;
             if (WebContext.Current.User.Roles.FirstOrDefault() == "Customer")
-                cmb = this.RGDataGrid.Columns[7].GetCellContent(row) as CheckBox;
+                cmb = this.RGDataGridCustomer.Columns[7].GetCellContent(row) as CheckBox;
             else
                 cmb = this.RGDataGrid.Columns[9].GetCellContent(row) as CheckBox;
 
@@ -160,7 +162,7 @@ namespace RadiographyTracking.Views
 
             CheckBox cmb = null;
             if (WebContext.Current.User.Roles.FirstOrDefault() == "Customer")
-                cmb = this.RGDataGrid.Columns[7].GetCellContent(row) as CheckBox;
+                cmb = this.RGDataGridCustomer.Columns[7].GetCellContent(row) as CheckBox;
             else
                 cmb = this.RGDataGrid.Columns[9].GetCellContent(row) as CheckBox;
 
@@ -212,7 +214,6 @@ namespace RadiographyTracking.Views
             {
                 headerRow[columnName] = columnName;
             }
-
 
             var totalFilmCount = rgReport.RGReportRows.Sum(p => p.FilmCount);
 
@@ -295,8 +296,6 @@ namespace RadiographyTracking.Views
         {
             myPopup.IsOpen = false;
             reportGrid.Export("Nithesh", "Gama", "", 1, "Report No " + reportNumberToDownload);
-
-
         }
         private static void AddTextColumn(DataTable reportTable, String columnName, String caption)
         {
@@ -334,10 +333,18 @@ namespace RadiographyTracking.Views
             btnFetch.IsEnabled = ValueChanged();
         }
 
+        private void TextChanged(object sender, TextChangedEventArgs e)
+        {
+            btnFetch.IsEnabled = ValueChanged();
+        }
+
         public bool ValueChanged()
         {
             return (!(String.IsNullOrEmpty(fromDatePicker.Text) ||
-                      String.IsNullOrEmpty(toDatePicker.Text)));
+                      String.IsNullOrEmpty(toDatePicker.Text))
+                      || !((String.IsNullOrEmpty(txtRTNo.Text) &&
+                                                            String.IsNullOrEmpty(txtHeatNo.Text)))
+                      );
         }
     }
 }
