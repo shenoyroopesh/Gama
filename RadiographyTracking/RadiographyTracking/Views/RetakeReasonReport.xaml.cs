@@ -37,8 +37,9 @@ namespace RadiographyTracking.Views
             busyIndicator.IsBusy = true;
 
             int foundryId = cmbFoundry.SelectedIndex == -1 ? -1 : ((Foundry)cmbFoundry.SelectedItem).ID;
+            int retakeReasonId = cmbRetakeReason.SelectedIndex == -1 ? -1 : ((RetakeReason)cmbRetakeReason.SelectedItem).ID;
             ctx.Load(ctx.GetRetakeReasonReportsQuery(foundryId, (DateTime?)fromDatePicker.SelectedDate,
-                (DateTime?)toDatePicker.SelectedDate)).Completed += loadCompleted;
+                (DateTime?)toDatePicker.SelectedDate, retakeReasonId)).Completed += loadCompleted;
         }
 
         private void loadCompleted(object sender, EventArgs e)
@@ -64,14 +65,15 @@ namespace RadiographyTracking.Views
         public bool ValueChanged()
         {
             return (!(cmbFoundry.SelectedIndex == -1 || String.IsNullOrEmpty(fromDatePicker.Text) ||
-                      String.IsNullOrEmpty(toDatePicker.Text)));
-
+                      String.IsNullOrEmpty(toDatePicker.Text))
+                      || !(cmbRetakeReason.SelectedIndex == -1));
         }
 
         private void CmbFoundry_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             fromDatePicker.Text = null;
             toDatePicker.Text = null;
+            cmbRetakeReason.SelectedIndex = -1;
         }
     }
 }

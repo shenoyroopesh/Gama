@@ -17,6 +17,8 @@
         <my1:RadiographyContext x:Key="RadiographyContext" />
         <ex:ComboBoxDataSource x:Key="FoundryDataSource" DomainContext="{StaticResource RadiographyContext}" 
                                OperationName="GetFoundriesQuery" />
+        <ex:ComboBoxDataSource x:Key="RetakeReasonDataSource" DomainContext="{StaticResource RadiographyContext}" 
+                               OperationName="GetRetakeReasonsQuery" />
     </UserControl.Resources>
     <Grid x:Name="LayoutRoot">
         <sdk:Label Name="headerLabel" Style="{StaticResource PageHeaderStyle}" Content="RETAKE REASON REPORT"/>
@@ -34,6 +36,13 @@
                     <sdk:Label Content="To:" Margin="3" VerticalAlignment="Center" />
                     <sdk:DatePicker Name="toDatePicker" IsEnabled="{Binding ElementName=filmTransactionsDomainDataSource, Path=CanLoad}"
                                     SelectedDateChanged="SelectionChanged"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="20, 10,0,0">
+                    <TextBlock Text="Retake Reasons: " VerticalAlignment="Center" Margin="10,0,0,0"/>
+                    <ComboBox Name="cmbRetakeReason" Style="{StaticResource ComboBoxStyle}" MinWidth="75" 
+                              ItemsSource="{Binding Source={StaticResource RetakeReasonDataSource}, Path=Data}" 
+                              ItemContainerStyle="{StaticResource ComboBoxItemStyle}"
+                              SelectionChanged="SelectionChanged" DisplayMemberPath="Value"/>
                 </StackPanel>
                 <Button Name="btnFetch" Content="Generate" Click="btnFetch_Click" HorizontalAlignment="Center" 
                         Margin="0,10,0,0" IsEnabled="False"/>
@@ -56,7 +65,7 @@
                             <sdk:DataGridTextColumn Header="Technician" Binding="{Binding Path=TechnicianName}" />
                             <sdk:DataGridTextColumn Header="User" Binding="{Binding Path=UserName}" />
                             <sdk:DataGridTextColumn Header="Location" Binding="{Binding Path=Location}" />
-                            
+
                             <sdk:DataGridTextColumn Header="Segment" Binding="{Binding Path=Segment}" />
                             <sdk:DataGridTextColumn Header="Retake Reason" Binding="{Binding Path=RetakeReason}" />
                         </custom:CustomGrid.Columns>
