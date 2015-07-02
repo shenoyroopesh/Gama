@@ -36,13 +36,25 @@
                 <custom:CustomGrid ItemsSource="{Binding ElementName=FPDomainDataSource, Path=Data, Mode=TwoWay}" 
                                     Name="FPDataGrid" Style="{StaticResource DataGridStyle}" 
                                    ColumnHeaderStyle="{StaticResource DataGridHeaderGlassEffect}"
-                                   CellStyle="{StaticResource AlignCenter}">
+                                   CellStyle="{StaticResource AlignCenter}" BindingValidationError="FPDataGrid_BindingValidationError">
                     <sdk:DataGrid.Columns>
-                        <sdk:DataGridTextColumn Binding="{Binding Path=FPNo, Mode=TwoWay}" Header="FP No" Width="Auto" />
+                        <sdk:DataGridTemplateColumn Header="FP No" Width="Auto">
+                            <sdk:DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Path=FPNo, Mode=TwoWay}"></TextBlock>
+                                </DataTemplate>
+                            </sdk:DataGridTemplateColumn.CellTemplate>
+                            <sdk:DataGridTemplateColumn.CellEditingTemplate>
+                                <DataTemplate>
+                                    <TextBox Text="{Binding Path=FPNo, Mode=TwoWay, ValidatesOnExceptions=True, NotifyOnValidationError=True}" Name="FpTextBox" ></TextBox>
+                                </DataTemplate>
+                            </sdk:DataGridTemplateColumn.CellEditingTemplate>
+                        </sdk:DataGridTemplateColumn>
+                        
                         <sdk:DataGridTemplateColumn Header="Customer" Width="Auto">
                             <sdk:DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <TextBlock Text="{Binding Path=Customer.ShortName, Mode=OneWay}" VerticalAlignment="Center"/>
+                                    <TextBlock Text="{Binding Path=Customer.ShortName, Mode=OneWay}" VerticalAlignment="Center" />
                                 </DataTemplate>
                             </sdk:DataGridTemplateColumn.CellTemplate>
                             <sdk:DataGridTemplateColumn.CellEditingTemplate>

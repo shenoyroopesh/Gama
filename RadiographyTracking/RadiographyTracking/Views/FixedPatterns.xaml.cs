@@ -15,6 +15,7 @@ using System.ServiceModel.DomainServices.Client;
 using System.ComponentModel.DataAnnotations;
 using Vagsons.Controls;
 using System.Windows.Navigation;
+using System.Text.RegularExpressions;
 
 namespace RadiographyTracking.Views
 {
@@ -73,6 +74,11 @@ namespace RadiographyTracking.Views
             DataGridRow row = DataGridRow.GetRowContainingElement(sender as FrameworkElement);
             App.FixedPattern = (FixedPattern)row.DataContext;
             Navigate("/FixedPatternTemplates");
+        }
+
+        private void FPDataGrid_BindingValidationError(object sender, ValidationErrorEventArgs e)
+        {
+
         }
     }
 }
