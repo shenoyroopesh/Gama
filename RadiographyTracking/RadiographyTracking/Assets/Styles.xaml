@@ -1815,6 +1815,19 @@
         </Setter>
     </Style>
 
+    <Style x:Key="PassteButtonStyle" TargetType="Button" BasedOn="{StaticResource BaseButtonStyle}">
+        <Setter Property="ContentTemplate">
+            <Setter.Value>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Height="Auto">
+                        <Image Source="/RadiographyTracking;component/Images/paste.png" Stretch="UniformToFill" />
+                        <TextBlock Text="Paste" FontSize="12" Margin="10,0,0,0"/>
+                    </StackPanel>
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
     <!--Cancel Button Style-->
     <Style x:Key="CancelButtonStyle" TargetType="Button" BasedOn="{StaticResource BaseButtonStyle}">
         <Setter Property="ContentTemplate">
@@ -1878,6 +1891,18 @@
             <Setter.Value>
                 <ControlTemplate>
                     <Image Stretch="Fill" Source="/RadiographyTracking;component/Images/Delete.png" />
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!--Delete Button Style-->
+    <Style x:Key="CopyButtonStyle" TargetType="Button" BasedOn="{StaticResource BaseButtonStyle}">
+        <Setter Property="Width" Value="23" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate>
+                    <Image Stretch="Fill" Source="/RadiographyTracking;component/Images/copy.png" />
                 </ControlTemplate>
             </Setter.Value>
         </Setter>

@@ -23,6 +23,7 @@ namespace RadiographyTracking.Views
 {
     public partial class FixedPatternTemplates : BaseCRUDView
     {
+        FPTemplateRow FPTemplateRowForCopying;
         public FixedPatternTemplates()
             : base()
         {
@@ -223,7 +224,7 @@ namespace RadiographyTracking.Views
             DataGridRow row = DataGridRow.GetRowContainingElement(sender as FrameworkElement);
             //commit any unsaved changes to avoid an exception
             if (Grid.CommitEdit())
-            {                
+            {
                 var rowToBeRemoved = (FPTemplateRow)row.DataContext;
                 FPTemplateRows.Remove(rowToBeRemoved);
                 //also delete from the context
@@ -236,6 +237,7 @@ namespace RadiographyTracking.Views
             //validations on each row
             foreach (var row in FPTemplateRows)
             {
+                row.ThicknessRangeUI = row.ThicknessRange;
                 //sl no should be unique
                 var duplicateRow = FPTemplateRows.FirstOrDefault(p => p.SlNo == row.SlNo && p != row);
                 if (duplicateRow != null)
@@ -253,7 +255,7 @@ namespace RadiographyTracking.Views
                 }
             }
 
-            base.SaveOperation(sender, e);            
+            base.SaveOperation(sender, e);
             //update the energy grid
             UpdateEnergyWiseArea();
         }
@@ -296,9 +298,9 @@ namespace RadiographyTracking.Views
         }
 
         public void UpdateEnergyWiseArea()
-        {            
+        {
             var ctx = (RadiographyContext)this.DomainSource.DomainContext;
-            var dt = new  DataTable("EnergyTable");
+            var dt = new DataTable("EnergyTable");
             AddTextColumn(dt, "HeadRow", "HeadRow");
             var headerRow = new DataRow();
             var actualRow = new DataRow();
@@ -317,7 +319,7 @@ namespace RadiographyTracking.Views
                 actualRow[e.Name] = this.FPTemplateRows
                                    .Where(p => p.EnergyID == e.ID)
                                     .Sum(p => p.FilmSize.Area * p.FilmCount);
-                                  // .Sum(p => p.FilmSize.Area );
+                // .Sum(p => p.FilmSize.Area );
             }
 
             dt.Rows.Add(headerRow);
@@ -342,6 +344,43 @@ namespace RadiographyTracking.Views
             reportTable.Columns.Add(dc);
         }
 
-       
+
+        public void CopyOperation(object sender, RoutedEventArgs e)
+        {
+            FPTemplateRowForCopying = new FPTemplateRow();
+            DataGridRow row = DataGridRow.GetRowContainingElement(sender as FrameworkElement);
+            FPTemplateRowForCopying = (FPTemplateRow)row.DataContext;
+        }
+
+        private void btnPaste_Click(object sender, RoutedEventArgs e)
+        {
+            if (FPTemplateRowForCopying != null)
+            {
+                FPTemplateRow FPTemplateRow = new FPTemplateRow()
+                {
+                    FixedPatternTemplate = this.FixedPatternTemplate,
+                    //auto increment sl no for each additional row
+                    SlNo = FPTemplateRows.Max(p => p.SlNo) + 1,
+                    Density = FPTemplateRowForCopying.Density,
+                    Designation = FPTemplateRowForCopying.Designation,
+                    Location = FPTemplateRowForCopying.Location,
+                    Segment = FPTemplateRowForCopying.Segment,
+                    Sensitivity = FPTemplateRowForCopying.Sensitivity,
+                    FilmSizeString = FPTemplateRowForCopying.FilmSizeString,
+                    FilmCount = FPTemplateRowForCopying.FilmCount,
+                    FilmSize = FPTemplateRowForCopying.FilmSize,
+                    ThicknessRange = FPTemplateRowForCopying.ThicknessRange,
+                    ThicknessRangeUI = FPTemplateRowForCopying.ThicknessRangeUI,
+                };
+
+                FPTemplateRows.Add(FPTemplateRow);
+                OnPropertyChanged("FPTemplateRows");
+            }
+            else
+            {
+                MessageBox.Show("Please copy anyone row to paste!!");
+                return;
+            }
+        }
     }
 }

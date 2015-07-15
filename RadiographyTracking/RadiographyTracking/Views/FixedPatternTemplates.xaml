@@ -84,7 +84,7 @@
                             <sdk:DataGridTextColumn Header="SlNo" Binding="{Binding Path=SlNo, Mode=OneWay}"></sdk:DataGridTextColumn>
                             <sdk:DataGridTextColumn Header="Location" Binding="{Binding Path=Location, Mode=OneWay}"></sdk:DataGridTextColumn>
                             <sdk:DataGridTextColumn Header="Segment" Binding="{Binding Path=Segment, Mode=OneWay}"></sdk:DataGridTextColumn>
-                            <sdk:DataGridTextColumn Header="Thickness" Binding="{Binding Path=ThicknessRangeUI, Mode=OneWay}"></sdk:DataGridTextColumn>
+                            <sdk:DataGridTextColumn Header="Thickness" Binding="{Binding Path=ThicknessRange, Mode=OneWay}"></sdk:DataGridTextColumn>
                             <!--<sdk:DataGridTextColumn Header="Energy"></sdk:DataGridTextColumn>-->
                             <sdk:DataGridTextColumn Header="SFD" Binding="{Binding Path=SFD, Mode=TwoWay}"></sdk:DataGridTextColumn>
                             <sdk:DataGridTextColumn Header="Designation" Binding="{Binding Path=Designation, Mode=TwoWay}"></sdk:DataGridTextColumn>
@@ -115,6 +115,14 @@
                                     </DataTemplate>
                                 </sdk:DataGridTemplateColumn.CellTemplate>
                             </sdk:DataGridTemplateColumn>
+                            <sdk:DataGridTemplateColumn Header="Copy" Width="Auto">
+                                <sdk:DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Button Name="grdCopyButton" Click="CopyOperation" Tag="{Binding}" 
+                                            Style="{StaticResource CopyButtonStyle}"/>
+                                    </DataTemplate>
+                                </sdk:DataGridTemplateColumn.CellTemplate>
+                            </sdk:DataGridTemplateColumn>
                         </custom:CustomGrid.Columns>
                     </custom:CustomGrid>
                 </local:BusyIndicator>
@@ -126,8 +134,9 @@
                 <StackPanel Orientation="Horizontal" Height="23" Margin="0,20,0,0" HorizontalAlignment="Center" Name="ButtonsPanel">
                     <Button Name="btnSave" Background="Transparent" Style="{StaticResource SaveButtonStyle}"/>
                     <Button Name="btnCancel" Margin="20,0,0,0" Style="{StaticResource CancelButtonStyle}" />
-                    <Button Margin="100,0,0,0" Name="btnAdd" VerticalAlignment="Top" Width="75" Style="{StaticResource AddButtonStyle}"/>
+                    <Button Margin="20,0,0,0" Name="btnAdd" VerticalAlignment="Top" Width="75" Style="{StaticResource AddButtonStyle}"/>
                     <Button Margin="20,0,0,0" Name="btnAdd5Rows" VerticalAlignment="Top" Width="120" Style="{StaticResource Add5RowsButtonStyle}"/>
+                    <Button Margin="20,0,0,0" Name="btnPaste" VerticalAlignment="Top" Width="75" Style="{StaticResource PassteButtonStyle}" Click="btnPaste_Click" />
                 </StackPanel>
             </StackPanel>
         </ScrollViewer>
