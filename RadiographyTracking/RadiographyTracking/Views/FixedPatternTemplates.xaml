@@ -136,7 +136,7 @@
                     <Button Name="btnCancel" Margin="20,0,0,0" Style="{StaticResource CancelButtonStyle}" />
                     <Button Margin="20,0,0,0" Name="btnAdd" VerticalAlignment="Top" Width="75" Style="{StaticResource AddButtonStyle}"/>
                     <Button Margin="20,0,0,0" Name="btnAdd5Rows" VerticalAlignment="Top" Width="120" Style="{StaticResource Add5RowsButtonStyle}"/>
-                    <Button Margin="20,0,0,0" Name="btnPaste" VerticalAlignment="Top" Width="75" Style="{StaticResource PassteButtonStyle}" Click="btnPaste_Click" />
+                    <Button Margin="20,0,0,0" Name="btnPaste" VerticalAlignment="Top" Width="75" Style="{StaticResource PasteButtonStyle}" Click="btnPaste_Click" />
                 </StackPanel>
             </StackPanel>
         </ScrollViewer>

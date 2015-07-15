@@ -47,6 +47,7 @@
                 <riaControls:Parameter ParameterName="strFPNo" Value="{Binding ElementName=txtFPNo, Path=Text}" />
                 <riaControls:Parameter ParameterName="strCoverage" Value="{Binding ElementName=cmbCoverage, Path=SelectedValue.CoverageName}" />
                 <riaControls:Parameter ParameterName="rtNo" Value="{Binding ElementName=txtRTNo, Path=Text}" />
+                <riaControls:Parameter ParameterName="isDirectlyReshoot" Value="{Binding ElementName=chkIsInchCms, Path=IsChecked}" />
             </riaControls:DomainDataSource.QueryParameters>
         </riaControls:DomainDataSource>
         <riaControls:DomainDataSource Name="EditRGReportsSource" AutoLoad="False" DomainContext="{StaticResource RadiographyContext}" 
@@ -104,6 +105,7 @@
                         <TextBox Name="txtRTNo" MinWidth="50" Margin="10, 0, 10, 0" 
                          IsEnabled="{Binding ElementName=RGReportsSource, Path=HasChanges, 
                                     Converter={StaticResource NotOperatorValueConverter}}"/>
+                        <CheckBox FontWeight="Bold" Name="chkIsInchCms" Tag="{Binding}" VerticalAlignment="Center" Margin="10, 0, 10, 0"  IsChecked="False" Content="Is Directly Reshoot?"></CheckBox>
                         <Button Content="Create/Fetch" Click="FetchOperation" Name="btnFetch"/>
                     </StackPanel>
                     <Grid Margin="10" Width="Auto" HorizontalAlignment="Stretch">
@@ -164,7 +166,7 @@
                         <TextBlock Text="Report No"   Grid.Column="0" Grid.Row="8" Margin="0,4" />
                         <TextBox Name="txtReportNo" Grid.Column="2" Grid.Row="8" />
                         <TextBlock Text="Heat No" TextWrapping="Wrap"   Grid.Column="0" Grid.Row="9" Margin="0,4" />
-                        <TextBox Name="txtHeatNo" Grid.Column="2" Grid.Row="9" />
+                        <TextBox Name="txtHeatNo" Grid.Column="2" Grid.Row="9" KeyUp="txtHeatNo_KeyUp" />
                         <TextBlock Text="Procedure Ref" TextWrapping="Wrap"   Grid.Column="0" Grid.Row="10" Margin="0,8" />
                         
                         <TextBox Name="txtProcedureRef" Grid.Column="2" Grid.Row="10" Visibility="Collapsed"  />
@@ -244,7 +246,7 @@
                                 <sdk:DataGridTextColumn Header="SlNo" Binding="{Binding Path=SlNo, Mode=TwoWay}"></sdk:DataGridTextColumn>
                                 <sdk:DataGridTextColumn Header="Location" Binding="{Binding Path=Location, Mode=TwoWay}"></sdk:DataGridTextColumn>
                                 <sdk:DataGridTextColumn Header="Segment" Binding="{Binding Path=Segment, Mode=TwoWay}"></sdk:DataGridTextColumn>
-                                <sdk:DataGridTextColumn Header="Thickness" Binding="{Binding Path=ThicknessRangeUI, Mode=TwoWay}"  ></sdk:DataGridTextColumn>
+                                <sdk:DataGridTextColumn Header="Thickness" Binding="{Binding Path=ThicknessRange, Mode=TwoWay}"  ></sdk:DataGridTextColumn>
                                 <sdk:DataGridTemplateColumn Header="Energy">
                                     <sdk:DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
@@ -286,7 +288,7 @@
                                 <sdk:DataGridTemplateColumn Header="Technique">
                                     <sdk:DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
-                                            <TextBlock Text="{Binding Path=TechniqueText, Mode=TwoWay}" VerticalAlignment="Center" />
+                                            <TextBlock Text="{Binding Path=Technique, Mode=TwoWay}" VerticalAlignment="Center" />
                                         </DataTemplate>
                                     </sdk:DataGridTemplateColumn.CellTemplate>
                                     <sdk:DataGridTemplateColumn.CellEditingTemplate>
@@ -298,7 +300,8 @@
                                         </DataTemplate>
                                     </sdk:DataGridTemplateColumn.CellEditingTemplate>
                                 </sdk:DataGridTemplateColumn>
-                                <sdk:DataGridTemplateColumn Header="Observation">
+                                <sdk:DataGridTextColumn Header="Observation" Binding="{Binding Path=Observations, Mode=TwoWay}"></sdk:DataGridTextColumn>
+                                <!--<sdk:DataGridTemplateColumn Header="Observation">
                                     <sdk:DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
                                             <TextBlock Text="{Binding Path=Observations, Mode=TwoWay}" VerticalAlignment="Center" />
@@ -309,7 +312,7 @@
                                             <Button Margin="0,0,0,0" Name="btnCheck" HorizontalAlignment="Right" Width="75" Click="btnCheck_Click">Add..</Button>
                                         </DataTemplate>
                                     </sdk:DataGridTemplateColumn.CellEditingTemplate>
-                                </sdk:DataGridTemplateColumn>
+                                </sdk:DataGridTemplateColumn>-->
                                 <sdk:DataGridTemplateColumn Header="Remark">
                                     <sdk:DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
@@ -382,6 +385,14 @@
                                         </DataTemplate>
                                     </sdk:DataGridTemplateColumn.CellTemplate>
                                 </sdk:DataGridTemplateColumn>
+                                <sdk:DataGridTemplateColumn Header="Copy" Width="Auto">
+                                    <sdk:DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Button Name="grdCopyButton" Click="CopyOperation" Tag="{Binding}" 
+                                            Style="{StaticResource CopyButtonStyle}"/>
+                                        </DataTemplate>
+                                    </sdk:DataGridTemplateColumn.CellTemplate>
+                                </sdk:DataGridTemplateColumn>
                             </custom:CustomGrid.Columns>
                         </custom:CustomGrid>
                         <custom:CustomGrid Name="RGReportDataGridClerk" Style="{StaticResource DataGridStyle}" PreparingCellForEdit="PreparingCellForEditClerkGrid"
@@ -424,7 +435,8 @@
                                         </DataTemplate>
                                     </sdk:DataGridTemplateColumn.CellEditingTemplate>
                                 </sdk:DataGridTemplateColumn>
-                                <sdk:DataGridTemplateColumn Header="Observation">
+                                <sdk:DataGridTextColumn Header="Observation" Binding="{Binding Path=Observations, Mode=TwoWay}"></sdk:DataGridTextColumn>
+                                <!--<sdk:DataGridTemplateColumn Header="Observation">
                                     <sdk:DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
                                             <TextBlock Text="{Binding Path=Observations, Mode=TwoWay}" VerticalAlignment="Center" />
@@ -435,7 +447,7 @@
                                             <Button Margin="0,0,0,0" Name="btnCheck" HorizontalAlignment="Right" Width="75" Click="btnCheckClerk_Click">Add..</Button>
                                         </DataTemplate>
                                     </sdk:DataGridTemplateColumn.CellEditingTemplate>
-                                </sdk:DataGridTemplateColumn>
+                                </sdk:DataGridTemplateColumn>-->
                                 <sdk:DataGridTemplateColumn Header="Remark">
                                     <sdk:DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
@@ -502,7 +514,10 @@
                                 </sdk:DataGridTemplateColumn>
                             </custom:CustomGrid.Columns>
                         </custom:CustomGrid>
-                        <Button Margin="100,0,50,0" Name="btnAdd" HorizontalAlignment="Right" Width="75" Style="{StaticResource AddButtonStyle}"/>
+                        <StackPanel Orientation="Horizontal" Height="23" Margin="0,20,0,0" HorizontalAlignment="Center" Name="ButtonsPanelAdd">
+                            <Button Margin="300,0,0,0" Name="btnAdd" HorizontalAlignment="Right" Width="75" Style="{StaticResource AddButtonStyle}"/>
+                            <Button Margin="20,0,0,0" Name="btnPaste" HorizontalAlignment="Right" Width="75" Style="{StaticResource PasteButtonStyle}" Click="btnPaste_Click" />
+                        </StackPanel>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="20, 20, 0, 0">
                         <TextBlock Text="Total Area of Acceptable films Submitted:" />

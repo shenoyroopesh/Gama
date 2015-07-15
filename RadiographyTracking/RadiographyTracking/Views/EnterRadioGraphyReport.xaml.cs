@@ -12,11 +12,14 @@ using RadiographyTracking.Controls;
 using System.Collections.Generic;
 using RadiographyTracking.AddressStickers;
 using RadiographyTracking.Observations;
+using System.Windows.Input;
+using System.Text;
 
 namespace RadiographyTracking.Views
 {
     public partial class EnterRadioGraphyReport : BaseCRUDView
     {
+        RGReportRow RGReportRowForCopying;
         public EnterRadioGraphyReport()
             : base()
         {
@@ -396,6 +399,8 @@ namespace RadiographyTracking.Views
             //validations on each row
             foreach (var row in RGReportRows)
             {
+                row.ThicknessRangeUI = row.ThicknessRange;
+                row.TechnicianText = row.Technique;
                 //sl no should be unique
                 var duplicateRow = RGReportRows.FirstOrDefault(p => p.SlNo == row.SlNo && p != row);
                 if (duplicateRow != null)
@@ -620,7 +625,7 @@ namespace RadiographyTracking.Views
 
         public void UpdateSourceBasedOnThickness()
         {
-            if (RGReport != null && RGReport.ReshootNo < 1 && RGReportRows != null)
+            if (RGReport != null && (RGReport.ReshootNo < 1 || chkIsInchCms.IsChecked == true) && RGReportRows != null)
             {
                 if (RGReportRows.Select(o => o.EnergyID).Distinct().Count() == 1)
                 {
@@ -849,47 +854,113 @@ namespace RadiographyTracking.Views
             }
         }
 
-        private void btnCheck_Click(object sender, RoutedEventArgs e)
+        private void txtHeatNo_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
         {
-            DataGridRow row = DataGridRow.GetRowContainingElement(sender as FrameworkElement);
-            callClickEvent(row);
-            TypeOfGrid = RGReportDataGrid;
-        }
-
-        private void btnCheckClerk_Click(object sender, RoutedEventArgs e)
-        {
-            DataGridRow row = DataGridRow.GetRowContainingElement(sender as FrameworkElement);
-            callClickEvent(row);
-            TypeOfGrid = RGReportDataGridClerk;
-        }
-
-        protected void callClickEvent(DataGridRow row)
-        {
-            RGReportRow reportRow = (RGReportRow)row.DataContext;
-            DataGridRowForObservations = row;
-            var observations = new AddObservations
+            if (e.Key == Key.Space)
             {
-                MultipleObservations = reportRow.Observations,
-                ReportID = reportRow.ID
-            };
-
-            observations.Show();
-            observations.SubmitClicked += new EventHandler(AddObservations_SubmitClicked);
-        }
-
-        public string MultipleObservations { get; set; }
-        public DataGridRow DataGridRowForObservations { get; set; }
-        public CustomGrid TypeOfGrid { get; set; }
-
-        void AddObservations_SubmitClicked(object sender, EventArgs e)
-        {
-            var window = sender as AddObservations;
-            if (window != null && window.DialogResult == true)
-            {
-                MultipleObservations = window.MultipleObservations;
-                TextBlock txtBlock = this.TypeOfGrid.Columns[12].GetCellContent(DataGridRowForObservations) as TextBlock;
-                txtBlock.Text = MultipleObservations;
+                txtHeatNo.Text = txtHeatNo.Text.Replace(" ", String.Empty);
+                txtHeatNo.SelectionStart = txtHeatNo.Text.Length;
             }
         }
+
+        public void CopyOperation(object sender, RoutedEventArgs e)
+        {
+            RGReportRowForCopying = new RGReportRow();
+            DataGridRow row = DataGridRow.GetRowContainingElement(sender as FrameworkElement);
+            RGReportRowForCopying = (RGReportRow)row.DataContext;
+        }
+
+        private void btnPaste_Click(object sender, RoutedEventArgs e)
+        {
+            if (RGReportRowForCopying != null)
+            {
+                var rgReportRow = new RGReportRow
+                {
+                    RGReport = this.RGReport,
+                    //auto increment sl no for each additional row
+                    SlNo = RGReportRows.Max(p => p.SlNo) + 1,
+                    Density = RGReportRowForCopying.Density,
+                    Designation = RGReportRowForCopying.Designation,
+                    Location = RGReportRowForCopying.Location,
+                    Segment = RGReportRowForCopying.Segment,
+                    Sensitivity = RGReportRowForCopying.Sensitivity,
+                    FilmSizeString = RGReportRowForCopying.FilmSizeString,
+                    RemarkText = RGReportRowForCopying.RemarkText,
+                    TechnicianText = RGReportRowForCopying.TechnicianText,
+                    Observations = RGReportRowForCopying.Observations,
+                    WelderText = RGReportRowForCopying.WelderText,
+                    RetakeReasonText = RGReportRowForCopying.RetakeReasonText,
+                    FilmCount = RGReportRowForCopying.FilmCount, //default value for film counts
+                    RowType = ((RadiographyContext)DomainSource.DomainContext)
+                        .RGReportRowTypes
+                        .FirstOrDefault(p => p.Value == "FRESH"),
+                    Energy = RGReportRowForCopying.Energy,
+                    EnergyText = RGReportRowForCopying.EnergyText,
+                    FilmSize = RGReportRowForCopying.FilmSize,
+                    Technique = RGReportRowForCopying.Technique,
+                    Remark = RGReportRowForCopying.Remark,
+                    RetakeReason = RGReportRowForCopying.RetakeReason,
+                    Technician = RGReportRowForCopying.Technician,
+                    Welder = RGReportRowForCopying.Welder,
+                    TechniqueText = RGReportRowForCopying.TechniqueText,
+                    ThicknessRange = RGReportRowForCopying.ThicknessRange,
+                    ThicknessRangeUI = RGReportRowForCopying.ThicknessRangeUI,
+                    SFD = RGReportRowForCopying.SFD
+                };
+
+                RGReportRows.Add(rgReportRow);
+                OnPropertyChanged("RGReportRows");
+            }
+            else
+            {
+                MessageBox.Show("Please copy any one row to paste!!");
+                return;
+            }
+        }
+
+        #region # Code is commented till the Requirement is cleared.
+        //private void btnCheck_Click(object sender, RoutedEventArgs e)
+        //{
+        //    DataGridRow row = DataGridRow.GetRowContainingElement(sender as FrameworkElement);
+        //    callClickEvent(row);
+        //    TypeOfGrid = RGReportDataGrid;
+        //}
+
+        //private void btnCheckClerk_Click(object sender, RoutedEventArgs e)
+        //{
+        //    DataGridRow row = DataGridRow.GetRowContainingElement(sender as FrameworkElement);
+        //    callClickEvent(row);
+        //    TypeOfGrid = RGReportDataGridClerk;
+        //}
+
+        //protected void callClickEvent(DataGridRow row)
+        //{
+        //    RGReportRow reportRow = (RGReportRow)row.DataContext;
+        //    DataGridRowForObservations = row;
+        //    var observations = new AddObservations
+        //    {
+        //        MultipleObservations = reportRow.Observations,
+        //        ReportID = reportRow.ID
+        //    };
+
+        //    observations.Show();
+        //    observations.SubmitClicked += new EventHandler(AddObservations_SubmitClicked);
+        //}
+
+        //public string MultipleObservations { get; set; }
+        //public DataGridRow DataGridRowForObservations { get; set; }
+        //public CustomGrid TypeOfGrid { get; set; }
+
+        //void AddObservations_SubmitClicked(object sender, EventArgs e)
+        //{
+        //    var window = sender as AddObservations;
+        //    if (window != null && window.DialogResult == true)
+        //    {
+        //        MultipleObservations = window.MultipleObservations;
+        //        TextBlock txtBlock = this.TypeOfGrid.Columns[12].GetCellContent(DataGridRowForObservations) as TextBlock;
+        //        txtBlock.Text = MultipleObservations;
+        //    }
+        //} 
+        #endregion
     }
 }
