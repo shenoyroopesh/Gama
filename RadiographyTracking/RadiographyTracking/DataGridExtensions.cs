@@ -33,7 +33,7 @@ public static class DataGridExtensions
 
     public static void Export(this DataGrid dg, String author, String companyName, String mergeCells, int boldHeaderRows, string fileName)
     {
-        ExportDataGrid(dg, author, companyName, mergeCells, boldHeaderRows,fileName);
+        ExportDataGrid(dg, author, companyName, mergeCells, boldHeaderRows, fileName);
     }
 
     public static void ExportDataGrid(DataGrid dGrid, String author, String companyName, String mergeCells, int boldHeaderRows)
@@ -54,7 +54,7 @@ public static class DataGridExtensions
         if (Application.Current.HasElevatedPermissions)
         {
 
-            var filePath ="C:" + Path.DirectorySeparatorChar +"Nithesh"+Path.DirectorySeparatorChar +fileName + ".XML";
+            var filePath = "C:" + Path.DirectorySeparatorChar + "Nithesh" + Path.DirectorySeparatorChar + fileName + ".XML";
 
             File.Create(filePath);
             Stream outputStream = File.Open(filePath, FileMode.Open, FileAccess.ReadWrite);
@@ -75,7 +75,7 @@ public static class DataGridExtensions
             }
         }
 
-     
+
 
     }
 
@@ -270,7 +270,7 @@ public static class DataGridExtensions
     private static string FormatField(string data, string format, bool bold = false, string merge = null)
     {
         string style = bold ? "sCenterBold" : "sCenter";
-       
+
         switch (format)
         {
             case "XML":
@@ -324,5 +324,118 @@ public static class DataGridExtensions
         else
             style = style;
         return data;
+    }
+
+    public static void ExportForBulkDownload(this DataGrid dg, String author, String companyName, String mergeCells, int boldHeaderRows, string fileName)
+    {
+        ExportDataGridForBulkDownLoad(dg, author, companyName, mergeCells, boldHeaderRows, fileName);
+    }
+
+    public static void ExportDataGridForBulkDownLoad(DataGrid dGrid, String author, String companyName, String mergeCells, int boldHeaderRows, string fileName)
+    {
+        SaveFileDialog objSFD = new SaveFileDialog() { DefaultExt = "xml", Filter = FILE_FILTER, FilterIndex = 2, DefaultFileName = fileName };
+
+        if (objSFD.ShowDialog() == true)
+        {
+            string strFormat = objSFD.SafeFileName.Substring(objSFD.SafeFileName.IndexOf('.') + 1).ToUpper();
+            Stream outputStream = objSFD.OpenFile();
+
+            ExportToExcelForBulkDownload(dGrid, author, companyName, mergeCells, boldHeaderRows, strFormat, outputStream);
+        }
+    }
+
+    public static void ExportToExcelForBulkDownload(DataGrid dGrid, string author, string companyName, string mergeCells,
+                                      int boldHeaderRows, string strFormat, Stream outputStream)
+    {
+        List<List<String>> mergeCellsList = new List<List<string>>();
+        if (!String.IsNullOrEmpty(mergeCells))
+        {
+            List<String> temp = mergeCells.Split(',').ToList();
+            temp.ForEach(p => mergeCellsList.Add(p.Split('-').ToList()));
+        }
+
+        StringBuilder strBuilder = new StringBuilder();
+        if (dGrid.ItemsSource == null) return;
+        List<string> lstFields = new List<string>();
+        if (dGrid.HeadersVisibility == DataGridHeadersVisibility.Column ||
+            dGrid.HeadersVisibility == DataGridHeadersVisibility.All)
+        {
+            foreach (DataGridColumn dgcol in dGrid.Columns)
+                lstFields.Add(FormatField(dgcol.Header.ToString(), strFormat, true));
+            BuildStringOfRow(strBuilder, lstFields, strFormat);
+        }
+
+        int rowCount = 0;
+
+        foreach (object data in dGrid.ItemsSource)
+        {
+            lstFields.Clear();
+            for (int colCount = 0; colCount < dGrid.Columns.Count; colCount++)
+            //foreach (DataGridColumn col in dGrid.Columns)
+            {
+                DataGridColumn col = dGrid.Columns[colCount];
+                string strValue = "";
+                Binding objBinding = null;
+                if (col is DataGridBoundColumn)
+                    objBinding = (col as DataGridBoundColumn).Binding;
+                if (col is DataGridTemplateColumn)
+                {
+                    //This is a template column... let us see the underlying dependency object
+                    DependencyObject objDO = (col as DataGridTemplateColumn).CellTemplate.LoadContent();
+                    FrameworkElement oFE = (FrameworkElement)objDO;
+                    FieldInfo oFI = oFE.GetType().GetField("TextProperty");
+                    if (oFI != null)
+                    {
+                        var value = oFI.GetValue(null);
+                        if (value != null)
+                        {
+                            var depProp = (DependencyProperty)value;
+                            if (oFE.GetBindingExpression(depProp) != null)
+                                objBinding = oFE.GetBindingExpression(depProp).ParentBinding;
+                        }
+                    }
+                }
+                if (objBinding != null)
+                {
+                    if (objBinding.Path.Path != "")
+                    {
+                        PropertyInfo pi = data.GetType().GetProperty(objBinding.Path.Path);
+                        if (pi != null) strValue = pi.GetValue(data, null).ToString();
+                    }
+                    if (objBinding.Converter != null)
+                    {
+                        if (strValue != "")
+                            strValue =
+                                objBinding.Converter.Convert(strValue, typeof(string), objBinding.ConverterParameter,
+                                                             objBinding.ConverterCulture).ToString();
+                    }
+                }
+
+                // In mergeCellsList for each element, 0 has row num, 1 has column num, and 4 has number of cells to merge with this cell
+
+                var merge =
+                    mergeCellsList.FirstOrDefault(
+                        p => Convert.ToInt32(p[0]) == rowCount && Convert.ToInt32(p[1]) == colCount);
+                var bold = (rowCount < boldHeaderRows); //only header rows need to be bold
+
+                lstFields.Add(FormatField(strValue, strFormat, bold, merge == null ? null : merge[2]));
+                if (merge != null) colCount += Convert.ToInt32(merge[2]); //don't process the merged cells
+            }
+            BuildStringOfRow(strBuilder, lstFields, strFormat);
+            rowCount++;
+        }
+
+        StreamWriter sw = new StreamWriter(outputStream);
+        if (strFormat == "XML" || strFormat == "XLSX")
+        {
+            //Let us write the headers for the Excel XML
+            WriteExcelHeader(sw, author, companyName);
+        }
+        sw.Write(strBuilder.ToString());
+        if (strFormat == "XML" || strFormat == "XLSX")
+        {
+            CloseTags(sw);
+        }
+        sw.Close();
     }
 }

@@ -33,7 +33,7 @@ namespace RadiographyTracking.Web.Models
         public String Sensitivity { get; set; }
         [NotMapped]
         public String Density { get; set; }
-        
+
         public int FilmSizeID { get; set; }
         public FilmSize FilmSize { get; set; }
 
@@ -158,7 +158,7 @@ namespace RadiographyTracking.Web.Models
                 //very rarely this should happen, but check none-the-less
                 if (string.IsNullOrEmpty(Location) || string.IsNullOrEmpty(Segment))
                     return "";
-                
+
                 //if location is LN and segment is 1-2, return LN1-LN2
                 var segments = Segment.Split('-');
                 var joined = segments.Select(p => Location + p);
@@ -171,6 +171,20 @@ namespace RadiographyTracking.Web.Models
         public float FilmArea
         {
             get { return FilmSize == null ? 0 : FilmSize.Area * FilmCount; }
+        }
+
+        [NotMapped]
+        [Exclude]
+        public float FilmAreaFirstFilm
+        {
+            get { return FilmSize == null ? 0 : FilmSize.Area * 1; }
+        }
+
+        [NotMapped]
+        [Exclude]
+        public float FilmAreaAdditionalFilm
+        {
+            get { return FilmSize == null ? 0 : FilmCount > 1 ? FilmSize.Area * (FilmCount - 1) : 0; }
         }
 
         /// <summary>
@@ -188,6 +202,20 @@ namespace RadiographyTracking.Web.Models
         public float FilmAreaInCms
         {
             get { return FilmSize == null ? 0 : FilmSize.AreaInCms * FilmCount; }
+        }
+
+        [NotMapped]
+        [Exclude]
+        public float FilmAreaInCmsFirstFilm
+        {
+            get { return FilmSize == null ? 0 : FilmSize.AreaInCms * 1; }
+        }
+
+        [NotMapped]
+        [Exclude]
+        public float FilmAreaInCmsAdditionalFilm
+        {
+            get { return FilmSize == null ? 0 : FilmCount > 1 ? FilmSize.AreaInCms * (FilmCount - 1) : 0; }
         }
 
         [NotMapped]

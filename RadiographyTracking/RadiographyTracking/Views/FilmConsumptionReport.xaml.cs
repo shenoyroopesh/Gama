@@ -11,11 +11,11 @@ using BindableDataGrid.Data;
 namespace RadiographyTracking.Views
 {
     public partial class FilmConsumptionReport : BaseCRUDView
-    {        
+    {
         DataTable reportTable;
         RadiographyContext ctx;
-        string[] rowTypes = new string[] { "ACCEPTABLE", "REPAIR", "RESHOOT", "RETAKE" };
-        
+        string[] rowTypes = new string[] { "ACCEPTABLE", "REPAIR", "RESHOOT", "RETAKE", "CHECKSHOT" };
+
 
         public FilmConsumptionReport()
             : base()
@@ -29,7 +29,7 @@ namespace RadiographyTracking.Views
         {
             ctx = new RadiographyContext();
             busyIndicator.IsBusy = true;
-            
+
             ctx.Load(ctx.GetEnergiesQuery()).Completed += new EventHandler(FilmConsumptionReport_Completed);
         }
 
@@ -62,31 +62,63 @@ namespace RadiographyTracking.Views
 
             AddTextColumn(reportTable, "ReportNo", "Report No");
             AddTextColumn(reportTable, "ReportDate", "Report Date");
+            //AddTextColumn(reportTable, "DateOfTest", "Date of Test");
             AddTextColumn(reportTable, "FPNo", "FP No");
             AddTextColumn(reportTable, "RTNo", "RT No");
             AddTextColumn(reportTable, "ReportTypeAndNo", "Remarks");
 
             headerRow["ReportNo"] = "Report No";
-            headerRow["ReportDate"] = "Date";
+            headerRow["ReportDate"] = "Report Date";
+            //headerRow["DateOfTest"] = "Date of Test";
             headerRow["FPNo"] = "FP No";
             headerRow["RTNo"] = "RT No";
             headerRow["ReportTypeAndNo"] = "Remarks";
 
             subHeaderRow["ReportNo"] = "";
             subHeaderRow["ReportDate"] = "";
+            //subHeaderRow["DateOfTest"] = "";
             subHeaderRow["FPNo"] = "";
             subHeaderRow["RTNo"] = "";
             subHeaderRow["ReportTypeAndNo"] = "";
 
+
             //filmsize columns
             foreach (var row in ctx.Energies)
             {
+                int acceptableCount = 1;
                 foreach (var type in rowTypes)
                 {
-                    var colName = String.Format("{0}{1}", row.Name, type);
-                    AddTextColumn(reportTable, colName, colName);
-                    headerRow[colName] = type == "ACCEPTABLE" ? row.Name : string.Empty;
-                    subHeaderRow[colName] = type == "ACCEPTABLE" ? "T" : type == "REPAIR" ? "RP" : type == "RETAKE" ? "RT" : "RS";
+                    if (type == "RETAKE")
+                    {
+                        var colNameSingle = String.Format("{0}{1}{2}", row.Name, type, "SINGLE");
+                        AddTextColumn(reportTable, colNameSingle, colNameSingle);
+                        subHeaderRow[colNameSingle] = "RTF";
+
+                        var colNameAdditional = String.Format("{0}{1}{2}", row.Name, type, "ADDITIONAL");
+                        AddTextColumn(reportTable, colNameAdditional, colNameAdditional);
+                        subHeaderRow[colNameAdditional] = "RTA";
+                    }
+                    else
+                    {
+                        var colName = String.Format("{0}{1}", row.Name, type);
+                        AddTextColumn(reportTable, colName, colName);
+                        headerRow[colName] = type == "ACCEPTABLE" ? row.Name : " ";
+                        subHeaderRow[colName] = type == "ACCEPTABLE" ? "T" : type == "REPAIR" ? "RP" : type == "CHECKSHOT" ? "CS" : "RS";
+                    }
+
+                    if (acceptableCount == 1)
+                    {
+                        var colNameSingle = String.Format("{0}{1}{2}", row.Name, type, "SINGLE");
+                        AddTextColumn(reportTable, colNameSingle, colNameSingle);
+                        headerRow[colNameSingle] = "Single";
+                        subHeaderRow[colNameSingle] = "Film";
+
+                        var colNameAdditional = String.Format("{0}{1}{2}", row.Name, type, "ADDITIONAL");
+                        AddTextColumn(reportTable, colNameAdditional, colNameAdditional);
+                        headerRow[colNameAdditional] = "Additional";
+                        subHeaderRow[colNameAdditional] = "Film";
+                    }
+                    acceptableCount++;
                 }
             }
 
@@ -94,26 +126,34 @@ namespace RadiographyTracking.Views
 
             DataRow dataRow = null;
 
-            float totalArea = 0;
-
+            float totalArea = 0, totalAreaAdditionalFilm = 0, totalAreaSignleFilm = 0, totalRTAreaAdditionalFilm = 0, totalRTAreaSingleFilm = 0;
             string prevEnergy = String.Empty;
-            int rowCount = 1;
 
             //the loop pivots the data wrt to energy and row types
             foreach (var r in report)
             {
-                if(r.ReportNo != prevReportNo)
+                if (r.ReportNo != prevReportNo)
                 {
                     if (dataRow != null)
                     {
                         //prev Row last energy total col - temp fix for issue 0000109
                         dataRow[prevEnergy + "ACCEPTABLE"] = totalArea;
+                        dataRow[prevEnergy + "ACCEPTABLEADDITIONAL"] = totalAreaAdditionalFilm;
+                        dataRow[prevEnergy + "ACCEPTABLESINGLE"] = totalAreaSignleFilm;
+                        dataRow[prevEnergy + "RTADDITIONAL"] = totalRTAreaAdditionalFilm;
+                        dataRow[prevEnergy + "RTSINGLE"] = totalRTAreaSingleFilm;
+
                         totalArea = 0;
+                        totalAreaAdditionalFilm = 0;
+                        totalAreaSignleFilm = 0;
+                        totalRTAreaAdditionalFilm = 0;
+                        totalRTAreaSingleFilm = 0;
                         rows.Add(dataRow);
                     }
                     dataRow = new DataRow();
                     dataRow["ReportNo"] = prevReportNo = r.ReportNo; //set prevReportNo for next time
                     dataRow["ReportDate"] = r.Date;
+                    //  dataRow["DateOfTest"] = r.DateOfTest;
                     dataRow["FPNo"] = r.FPNo;
                     dataRow["RTNo"] = r.RTNo;
                     dataRow["ReportTypeAndNo"] = r.ReportTypeAndNo;
@@ -123,11 +163,26 @@ namespace RadiographyTracking.Views
                 if (r.Energy != prevEnergy)
                 {
                     dataRow[prevEnergy + "ACCEPTABLE"] = totalArea;
+                    dataRow[prevEnergy + "ACCEPTABLEADDITIONAL"] = totalAreaAdditionalFilm;
+                    dataRow[prevEnergy + "ACCEPTABLESINGLE"] = totalAreaSignleFilm;
+                    dataRow[prevEnergy + "RTADDITIONAL"] = totalRTAreaAdditionalFilm;
+                    dataRow[prevEnergy + "RTSINGLE"] = totalRTAreaSingleFilm;
+
                     totalArea = 0;
+                    totalAreaAdditionalFilm = 0;
+                    totalAreaSignleFilm = 0;
+                    totalRTAreaAdditionalFilm = 0;
+                    totalRTAreaSingleFilm = 0;
                 }
 
                 dataRow[r.Energy + r.RowType] = r.Area;
+                dataRow[r.Energy + r.RowType + "ADDITIONAL"] = r.AreaAdditionalFilm;
+                dataRow[r.Energy + r.RowType + "SINGLE"] = r.AreaSingleFilm;
+
+
                 totalArea += r.Area;
+                totalAreaAdditionalFilm += r.AreaAdditionalFilm;
+                totalAreaSignleFilm += r.AreaSingleFilm;
 
                 prevEnergy = r.Energy;
             }
@@ -135,20 +190,50 @@ namespace RadiographyTracking.Views
             if (dataRow != null) //rows.Add(dataRow);
             {
                 dataRow[prevEnergy + "ACCEPTABLE"] = totalArea;
+                dataRow[prevEnergy + "ACCEPTABLEADDITIONAL"] = totalAreaAdditionalFilm;
+                dataRow[prevEnergy + "ACCEPTABLESINGLE"] = totalAreaSignleFilm;
+                dataRow[prevEnergy + "RTADDITIONAL"] = totalRTAreaAdditionalFilm;
+                dataRow[prevEnergy + "RTSINGLE"] = totalRTAreaSingleFilm;
+
                 totalArea = 0;
+                totalAreaAdditionalFilm = 0;
+                totalAreaSignleFilm = 0;
+                totalRTAreaAdditionalFilm = 0;
+                totalRTAreaSingleFilm = 0;
                 rows.Add(dataRow);
             }
 
             //totals row
             var totalRow = new DataRow();
 
-            
+
             foreach (var row in ctx.Energies)
             {
+                int acceptableCount = 1;
                 foreach (var type in rowTypes)
                 {
                     var colName = String.Format("{0}{1}", row.Name, type);
-                    totalRow[colName] = rows.Select(p => (p[colName] as float?) ?? 0).Sum();
+
+                    if (type == "RETAKE")
+                    {
+                        var colNameSingle = String.Format("{0}{1}{2}", row.Name, type, "SINGLE");
+                        totalRow[colNameSingle] = rows.Select(p => (p[colNameSingle] as float?) ?? 0).Sum();
+
+                        var colNameAdditional = String.Format("{0}{1}{2}", row.Name, type, "ADDITIONAL");
+                        totalRow[colNameAdditional] = rows.Select(p => (p[colNameAdditional] as float?) ?? 0).Sum();
+                    }
+                    else
+                        totalRow[colName] = rows.Select(p => (p[colName] as float?) ?? 0).Sum();
+
+                    if (acceptableCount == 1)
+                    {
+                        var colNameAdditional = String.Format("{0}{1}{2}", row.Name, type, "ADDITIONAL");
+                        totalRow[colNameAdditional] = rows.Select(p => (p[colNameAdditional] as float?) ?? 0).Sum();
+
+                        var colNameSingle = String.Format("{0}{1}{2}", row.Name, type, "SINGLE");
+                        totalRow[colNameSingle] = rows.Select(p => (p[colNameSingle] as float?) ?? 0).Sum();
+                    }
+                    acceptableCount++;
                 }
             }
 
@@ -187,7 +272,7 @@ namespace RadiographyTracking.Views
 
         private void SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            btnFetch.IsEnabled = !(cmbFoundry.SelectedIndex == -1 || String.IsNullOrEmpty(fromDatePicker.Text) || 
+            btnFetch.IsEnabled = !(cmbFoundry.SelectedIndex == -1 || String.IsNullOrEmpty(fromDatePicker.Text) ||
                                   String.IsNullOrEmpty(toDatePicker.Text));
         }
     }

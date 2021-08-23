@@ -74,6 +74,7 @@ namespace RadiographyTracking.Web
         protected const string TotalArea = "TotalArea";
         protected const string Isotope = "Isotope";
         protected const string Area = "Area";
+
         protected const string TotalFilmCount = "TotalFilmCount";
         protected const string ExposedTotalArea = "ExposedTotalArea";
         protected const string RetakeTotalArea = "RetakeTotalArea";
@@ -85,6 +86,10 @@ namespace RadiographyTracking.Web
         protected const string AreaCollection = "AreaCollection";
         protected const string ExposedAreaCollection = "ExposedAreaCollection";
         protected const string RetakeAreaCollection = "RetakeAreaCollection";
+
+        protected const string AdditionalAreaCollection = "AdditionalAreaCollection";
+        protected const string AdditionalExposedAreaCollection = "AdditionalExposedAreaCollection";
+        protected const string AdditionalRetakeAreaCollection = "AdditionalRetakeAreaCollection";
 
         protected const string InchCms = "InchCms";
         protected const string InchsCms = "InchsCms";
@@ -170,12 +175,17 @@ namespace RadiographyTracking.Web
    
                     {Isotope, PlaceHolderType.NonRecursive},
                     {Area, PlaceHolderType.NonRecursive},
+                    
                     {IsotopeCollection, PlaceHolderType.Recursive},
                     {AreaCollection, PlaceHolderType.Recursive},
                     {ExposedIsotopeCollection, PlaceHolderType.Recursive},
                     {ExposedAreaCollection, PlaceHolderType.Recursive},
                     {RetakeIsotopeCollection, PlaceHolderType.Recursive},
                     {RetakeAreaCollection, PlaceHolderType.Recursive},
+
+                    {AdditionalAreaCollection, PlaceHolderType.Recursive},
+                    {AdditionalExposedAreaCollection, PlaceHolderType.Recursive},
+                    {AdditionalRetakeAreaCollection, PlaceHolderType.Recursive},
 
                     {InchCms, PlaceHolderType.NonRecursive},
                     {InchsCms, PlaceHolderType.NonRecursive}
@@ -324,7 +334,7 @@ namespace RadiographyTracking.Web
                     case ReportTypeNo:
                         content = row.ReportTypeNo;
                         break;
-
+                        //
                     case InchCms:
                         if (!IsFilmSizeInCms)
                             content = "Inch";
@@ -476,14 +486,31 @@ namespace RadiographyTracking.Web
                 case AreaCollection:
                     if (!IsFilmSizeInCms)
                     {
-                        foreach (var pair in ((FinalRTReport)(openXmlElementDataContext.DataContext)).EnergyAreas)
+                        foreach (var pair in ((FinalRTReport)(openXmlElementDataContext.DataContext)).EnergyAreasForFirstFilm)
                         {
                             CloneElementAndSetContentInPlaceholders(new OpenXmlElementDataContext() { Element = openXmlElementDataContext.Element, DataContext = pair }, document);
                         }
                     }
                     else
                     {
-                        foreach (var pair in ((FinalRTReport)(openXmlElementDataContext.DataContext)).EnergyAreasInCms)
+                        foreach (var pair in ((FinalRTReport)(openXmlElementDataContext.DataContext)).EnergyAreasInCmsForFirstFilm)
+                        {
+                            CloneElementAndSetContentInPlaceholders(new OpenXmlElementDataContext() { Element = openXmlElementDataContext.Element, DataContext = pair }, document);
+                        }
+                    }
+                    openXmlElementDataContext.Element.Remove();
+                    break;
+                case AdditionalAreaCollection:
+                    if (!IsFilmSizeInCms)
+                    {
+                        foreach (var pair in ((FinalRTReport)(openXmlElementDataContext.DataContext)).EnergyAreasForAdditionalFilm)
+                        {
+                            CloneElementAndSetContentInPlaceholders(new OpenXmlElementDataContext() { Element = openXmlElementDataContext.Element, DataContext = pair }, document);
+                        }
+                    }
+                    else
+                    {
+                        foreach (var pair in ((FinalRTReport)(openXmlElementDataContext.DataContext)).EnergyAreasInCmsForAdditionalFilm)
                         {
                             CloneElementAndSetContentInPlaceholders(new OpenXmlElementDataContext() { Element = openXmlElementDataContext.Element, DataContext = pair }, document);
                         }
@@ -494,14 +521,31 @@ namespace RadiographyTracking.Web
                 case ExposedAreaCollection:
                     if (!IsFilmSizeInCms)
                     {
-                        foreach (var pair in ((FinalRTReport)(openXmlElementDataContext.DataContext)).ExposedEnergyAreas)
+                        foreach (var pair in ((FinalRTReport)(openXmlElementDataContext.DataContext)).ExposedEnergyAreasForFirstFilm)
                         {
                             CloneElementAndSetContentInPlaceholders(new OpenXmlElementDataContext() { Element = openXmlElementDataContext.Element, DataContext = pair }, document);
                         }
                     }
                     else
                     {
-                        foreach (var pair in ((FinalRTReport)(openXmlElementDataContext.DataContext)).ExposedEnergyAreasInCms)
+                        foreach (var pair in ((FinalRTReport)(openXmlElementDataContext.DataContext)).ExposedEnergyAreasInCmsForFirstFilm)
+                        {
+                            CloneElementAndSetContentInPlaceholders(new OpenXmlElementDataContext() { Element = openXmlElementDataContext.Element, DataContext = pair }, document);
+                        }
+                    }
+                    openXmlElementDataContext.Element.Remove();
+                    break;
+                case AdditionalExposedAreaCollection:
+                    if (!IsFilmSizeInCms)
+                    {
+                        foreach (var pair in ((FinalRTReport)(openXmlElementDataContext.DataContext)).ExposedEnergyAreasForAdditionalFilm)
+                        {
+                            CloneElementAndSetContentInPlaceholders(new OpenXmlElementDataContext() { Element = openXmlElementDataContext.Element, DataContext = pair }, document);
+                        }
+                    }
+                    else
+                    {
+                        foreach (var pair in ((FinalRTReport)(openXmlElementDataContext.DataContext)).ExposedEnergyAreasInCmsForAdditionalFilm)
                         {
                             CloneElementAndSetContentInPlaceholders(new OpenXmlElementDataContext() { Element = openXmlElementDataContext.Element, DataContext = pair }, document);
                         }
@@ -512,14 +556,31 @@ namespace RadiographyTracking.Web
                 case RetakeAreaCollection:
                     if (!IsFilmSizeInCms)
                     {
-                        foreach (var pair in ((FinalRTReport)(openXmlElementDataContext.DataContext)).RetakeEnergyAreas)
+                        foreach (var pair in ((FinalRTReport)(openXmlElementDataContext.DataContext)).RetakeEnergyAreasForFirstFilm)
                         {
                             CloneElementAndSetContentInPlaceholders(new OpenXmlElementDataContext() { Element = openXmlElementDataContext.Element, DataContext = pair }, document);
                         }
                     }
                     else
                     {
-                        foreach (var pair in ((FinalRTReport)(openXmlElementDataContext.DataContext)).RetakeEnergyAreasInCms)
+                        foreach (var pair in ((FinalRTReport)(openXmlElementDataContext.DataContext)).RetakeEnergyAreasInCmsForFirstFilm)
+                        {
+                            CloneElementAndSetContentInPlaceholders(new OpenXmlElementDataContext() { Element = openXmlElementDataContext.Element, DataContext = pair }, document);
+                        }
+                    }
+                    openXmlElementDataContext.Element.Remove();
+                    break;
+                case AdditionalRetakeAreaCollection:
+                    if (!IsFilmSizeInCms)
+                    {
+                        foreach (var pair in ((FinalRTReport)(openXmlElementDataContext.DataContext)).RetakeEnergyAreasForAdditionalFilm)
+                        {
+                            CloneElementAndSetContentInPlaceholders(new OpenXmlElementDataContext() { Element = openXmlElementDataContext.Element, DataContext = pair }, document);
+                        }
+                    }
+                    else
+                    {
+                        foreach (var pair in ((FinalRTReport)(openXmlElementDataContext.DataContext)).RetakeEnergyAreasInCmsForAdditionalFilm)
                         {
                             CloneElementAndSetContentInPlaceholders(new OpenXmlElementDataContext() { Element = openXmlElementDataContext.Element, DataContext = pair }, document);
                         }

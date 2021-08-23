@@ -9,6 +9,7 @@ using System.Windows.Data;
 using RadiographyTracking.Web.Services;
 using BindableDataGrid.Data;
 using System.Windows.Browser;
+using System.ServiceModel.DomainServices.Client;
 
 namespace RadiographyTracking.Views
 {
@@ -152,8 +153,7 @@ namespace RadiographyTracking.Views
             FinalReportRows = FinalReport.FinalRTReportRows;
             DataContext = FinalReport;
             //now that fixedpatternid is available
-            FixedPatternsSource.Load();
-            updateEnergyWiseArea();
+            FixedPatternsSource.Load();            
             if (FinalReport.StatusID == 2)
             {
                 if (FinalReportRows.SelectMany(p => p.Classifications).Count() > 0)
@@ -161,6 +161,7 @@ namespace RadiographyTracking.Views
                 else
                     lblStatus.Text = "CASTING ACCEPTABLE AS PER LEVEL 1";
             }
+            updateEnergyWiseArea();
         }
 
         private void FixedPatternsSource_LoadedData(object sender, LoadedDataEventArgs e)
@@ -186,14 +187,24 @@ namespace RadiographyTracking.Views
         {
             RadiographyContext ctx = (RadiographyContext)this.DomainSource.DomainContext;
             DataTable dt = new DataTable("EnergyTable");
-            AddTextColumn(dt, "HeadRow", "HeadRow");
             DataRow headerRow = new DataRow();
-            DataRow actualRow = new DataRow();
+            DataRow actualRow1 = new DataRow();
+            DataRow actualRow2 = new DataRow();
+
+            AddTextColumn(dt, "FilmHeadRow", "FilmHeadRow");
+            headerRow["FilmHeadRow"] = "Film Count";
+            actualRow1["FilmHeadRow"] = "First Film";
+            actualRow2["FilmHeadRow"] = "Additional Film";
+
+            AddTextColumn(dt, "HeadRow", "HeadRow");
+
             headerRow["HeadRow"] = "Isotope";
-            actualRow["HeadRow"] = "Sq. Inches";
+            actualRow1["HeadRow"] = "Sq. Inches";
+            actualRow2["HeadRow"] = "Sq. Inches";
 
             //instead of encountering an error if context is still loading, just don't do it, it will get 
             //done on the first save operation
+
             if (ctx.IsLoading)
                 return;
 
@@ -201,14 +212,20 @@ namespace RadiographyTracking.Views
             {
                 AddTextColumn(dt, e.Name, e.Name);
                 headerRow[e.Name] = e.Name;
-                actualRow[e.Name] = FinalReportRows
+                actualRow1[e.Name] = FinalReportRows
                                             .Where(p => p.EnergyID == e.ID &&
                                                    p.RemarkText != "RETAKE") //30-Jun-12 - Roopesh added this to ensure that retake areas are not included
-                                            .Sum(p => p.FilmSize.Area * p.FilmCount);
+                                            .Sum(p => p.FilmSize.Area * 1);
+
+                actualRow2[e.Name] = FinalReportRows
+                                            .Where(p => p.EnergyID == e.ID &&
+                                                   p.RemarkText != "RETAKE") //30-Jun-12 - Roopesh added this to ensure that retake areas are not included
+                                                   .Sum(p => p.FilmSize.Area * (p.FilmCount > 1 ? (p.FilmCount - 1) : 0));
             }
 
             dt.Rows.Add(headerRow);
-            dt.Rows.Add(actualRow);
+            dt.Rows.Add(actualRow1);
+            dt.Rows.Add(actualRow2);
 
             energyAreas.DataSource = dt;
             energyAreas.DataBind();

@@ -36,7 +36,7 @@
             }
             else
                 MultipleObservations = txtOldObservations.Text.Trim();
-           
+
             if (SubmitClicked != null)
             {
                 this.DialogResult = true;
@@ -85,6 +85,16 @@
             var oldObservations = string.Join(",", listOfObserations.Except(listOfObserationsFromDB).ToList());
             txtOldObservations.Text = oldObservations;
 
+            if (string.IsNullOrEmpty(txtOldObservations.Text))
+            {
+                txtOldObservations.Visibility = Visibility.Collapsed;
+                observationLabel.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                txtOldObservations.Visibility = Visibility.Visible;
+                observationLabel.Visibility = Visibility.Visible;
+            }
             foreach (Observation observation in ctx.Observations)
             {
                 Observation Observations = new Observation();

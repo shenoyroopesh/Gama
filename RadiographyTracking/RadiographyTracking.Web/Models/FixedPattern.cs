@@ -11,8 +11,8 @@ namespace RadiographyTracking.Web.Models
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ID { get; set; }
 
-         [RegularExpression(@"^[A-Za-z]{2}[0-9]{1}[A-Za-z0-9_@./#&+-]{5}$", ErrorMessage =
-            "FP No should be eight characters – First two must be alphabet. Third must be numeral. Remaining five can be alphanumeric or special characters.")]
+         [RegularExpression(@"^[A-Za-z]{2}[0-9]{2}(?:[A-Za-z0-9_@./#&+-]{0,4})?$", ErrorMessage =
+            "FP No can be maximum of eight characters – First two must be alphabet. Next two must be numeral. Remaining four can be alphanumeric or special characters.")]
         public String FPNo { get; set; }
 
         public int CustomerID { get; set; }

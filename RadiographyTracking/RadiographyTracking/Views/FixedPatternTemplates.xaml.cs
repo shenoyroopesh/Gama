@@ -371,6 +371,7 @@ namespace RadiographyTracking.Views
                     FilmSize = FPTemplateRowForCopying.FilmSize,
                     ThicknessRange = FPTemplateRowForCopying.ThicknessRange,
                     ThicknessRangeUI = FPTemplateRowForCopying.ThicknessRangeUI,
+                    SFD=FPTemplateRowForCopying.SFD
                 };
 
                 FPTemplateRows.Add(FPTemplateRow);

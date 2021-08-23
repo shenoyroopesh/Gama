@@ -416,5 +416,278 @@ namespace RadiographyTracking.Web.Models
             }
         }
 
+        ///////////////////////
+
+        /// <summary>
+        /// Calculated field that gets the energy area for this particular report
+        /// </summary>
+        [NotMapped]
+        [Exclude]
+        public Dictionary<String, float> EnergyAreasForFirstFilm
+        {
+            get
+            {
+                if (FinalRTReportRows == null)
+                    return null;
+
+                var summary = from r in FinalRTReportRows
+                              where r.RemarkText != "RETAKE" //Roopesh: 30-Jun-2012
+                              group r by r.Energy.Name into g
+                              select new
+                              {
+                                  Energy = g.Key,
+                                  Area = g.Sum(p => p.FilmAreaFirstFilm)
+                              }; //TODO: note this exact logic is present in RGReport as well. Whenever making changes here make there too. 
+
+                return summary.ToDictionary(s => s.Energy, s => s.Area);
+            }
+        }
+
+        /// <summary>
+        /// Calculated field that gets the energy area for this particular report
+        /// </summary>
+        [NotMapped]
+        [Exclude]
+        public Dictionary<String, float> EnergyAreasForAdditionalFilm
+        {
+            get
+            {
+                if (FinalRTReportRows == null)
+                    return null;
+
+                var summary = from r in FinalRTReportRows
+                              where r.RemarkText != "RETAKE" //Roopesh: 30-Jun-2012
+                              group r by r.Energy.Name into g
+                              select new
+                              {
+                                  Energy = g.Key,
+                                  Area = g.Sum(p => p.FilmAreaAdditionalFilm)
+                              }; //TODO: note this exact logic is present in RGReport as well. Whenever making changes here make there too. 
+
+                return summary.ToDictionary(s => s.Energy, s => s.Area);
+            }
+        }
+
+        /// <summary>
+        /// Calculated field that gets the energy area for this particular report
+        /// </summary>
+        [NotMapped]
+        [Exclude]
+        public Dictionary<String, float> EnergyAreasInCmsForFirstFilm
+        {
+            get
+            {
+                if (FinalRTReportRows == null)
+                    return null;
+
+                var summary = from r in FinalRTReportRows
+                              where r.RemarkText != "RETAKE" //Roopesh: 30-Jun-2012
+                              group r by r.Energy.Name into g
+                              select new
+                              {
+                                  Energy = g.Key,
+                                  Area = g.Sum(p => p.FilmAreaInCmsFirstFilm)
+                              }; //TODO: note this exact logic is present in RGReport as well. Whenever making changes here make there too. 
+
+                return summary.ToDictionary(s => s.Energy, s => s.Area);
+            }
+        }
+
+        /// <summary>
+        /// Calculated field that gets the energy area for this particular report
+        /// </summary>
+        [NotMapped]
+        [Exclude]
+        public Dictionary<String, float> EnergyAreasInCmsForAdditionalFilm
+        {
+            get
+            {
+                if (FinalRTReportRows == null)
+                    return null;
+
+                var summary = from r in FinalRTReportRows
+                              where r.RemarkText != "RETAKE" //Roopesh: 30-Jun-2012
+                              group r by r.Energy.Name into g
+                              select new
+                              {
+                                  Energy = g.Key,
+                                  Area = g.Sum(p => p.FilmAreaInCmsAdditionalFilm)
+                              }; //TODO: note this exact logic is present in RGReport as well. Whenever making changes here make there too. 
+
+                return summary.ToDictionary(s => s.Energy, s => s.Area);
+            }
+        }
+
+        [NotMapped]
+        [Exclude]
+        public Dictionary<String, float> ExposedEnergyAreasForFirstFilm
+        {
+            get
+            {
+                if (FinalRTReportRows == null)
+                    return null;
+
+                var summary = from r in FinalRTReportRows
+                              group r by r.Energy.Name into g
+                              select new
+                              {
+                                  Energy = g.Key,
+                                  Area = g.Sum(p => p.FilmAreaFirstFilm)
+                              };
+
+                return summary.ToDictionary(s => s.Energy, s => s.Area);
+            }
+        }
+
+        [NotMapped]
+        [Exclude]
+        public Dictionary<String, float> ExposedEnergyAreasForAdditionalFilm
+        {
+            get
+            {
+                if (FinalRTReportRows == null)
+                    return null;
+
+                var summary = from r in FinalRTReportRows
+                              group r by r.Energy.Name into g
+                              select new
+                              {
+                                  Energy = g.Key,
+                                  Area = g.Sum(p => p.FilmAreaAdditionalFilm)
+                              };
+
+                return summary.ToDictionary(s => s.Energy, s => s.Area);
+            }
+        }
+
+        [NotMapped]
+        [Exclude]
+        public Dictionary<String, float> ExposedEnergyAreasInCmsForFirstFilm
+        {
+            get
+            {
+                if (FinalRTReportRows == null)
+                    return null;
+
+                var summary = from r in FinalRTReportRows
+                              group r by r.Energy.Name into g
+                              select new
+                              {
+                                  Energy = g.Key,
+                                  Area = g.Sum(p => p.FilmAreaInCmsFirstFilm)
+                              };
+
+                return summary.ToDictionary(s => s.Energy, s => s.Area);
+            }
+        }
+
+        [NotMapped]
+        [Exclude]
+        public Dictionary<String, float> ExposedEnergyAreasInCmsForAdditionalFilm
+        {
+            get
+            {
+                if (FinalRTReportRows == null)
+                    return null;
+
+                var summary = from r in FinalRTReportRows
+                              group r by r.Energy.Name into g
+                              select new
+                              {
+                                  Energy = g.Key,
+                                  Area = g.Sum(p => p.FilmAreaInCmsAdditionalFilm)
+                              };
+
+                return summary.ToDictionary(s => s.Energy, s => s.Area);
+            }
+        }
+
+        [NotMapped]
+        [Exclude]
+        public Dictionary<String, float> RetakeEnergyAreasForFirstFilm
+        {
+            get
+            {
+                if (FinalRTReportRows == null)
+                    return null;
+
+                var summary = from r in FinalRTReportRows
+                              where r.RemarkText == "RETAKE"
+                              group r by r.Energy.Name into g
+                              select new
+                              {
+                                  Energy = g.Key,
+                                  Area = g.Sum(p => p.FilmAreaFirstFilm)
+                              };
+
+                return summary.ToDictionary(s => s.Energy, s => s.Area);
+            }
+        }
+
+        [NotMapped]
+        [Exclude]
+        public Dictionary<String, float> RetakeEnergyAreasForAdditionalFilm
+        {
+            get
+            {
+                if (FinalRTReportRows == null)
+                    return null;
+
+                var summary = from r in FinalRTReportRows
+                              where r.RemarkText == "RETAKE"
+                              group r by r.Energy.Name into g
+                              select new
+                              {
+                                  Energy = g.Key,
+                                  Area = g.Sum(p => p.FilmAreaAdditionalFilm)
+                              };
+
+                return summary.ToDictionary(s => s.Energy, s => s.Area);
+            }
+        }
+
+        [NotMapped]
+        [Exclude]
+        public Dictionary<String, float> RetakeEnergyAreasInCmsForFirstFilm
+        {
+            get
+            {
+                if (FinalRTReportRows == null)
+                    return null;
+
+                var summary = from r in FinalRTReportRows
+                              where r.RemarkText == "RETAKE"
+                              group r by r.Energy.Name into g
+                              select new
+                              {
+                                  Energy = g.Key,
+                                  Area = g.Sum(p => p.FilmAreaInCmsFirstFilm)
+                              };
+
+                return summary.ToDictionary(s => s.Energy, s => s.Area);
+            }
+        }
+
+        [NotMapped]
+        [Exclude]
+        public Dictionary<String, float> RetakeEnergyAreasInCmsForAdditionalFilm
+        {
+            get
+            {
+                if (FinalRTReportRows == null)
+                    return null;
+
+                var summary = from r in FinalRTReportRows
+                              where r.RemarkText == "RETAKE"
+                              group r by r.Energy.Name into g
+                              select new
+                              {
+                                  Energy = g.Key,
+                                  Area = g.Sum(p => p.FilmAreaInCmsAdditionalFilm)
+                              };
+
+                return summary.ToDictionary(s => s.Energy, s => s.Area);
+            }
+        }
     }
 }

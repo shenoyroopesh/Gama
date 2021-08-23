@@ -64,11 +64,14 @@
                             <menu:MenuBarItem Name="entryMenu" MenuText="Entry" >
                                 <menu:MenuItem MenuText="Film Transactions"  Click="MenuItem_Click" NavigationURI="/FilmTransactions"/>
                                 <menu:MenuItem MenuText="Radiography Entry"  Click="MenuItem_Click" NavigationURI="/RadiographyReports"/>
+                                <menu:MenuItem MenuText="Corner Stickers"  Click="MenuItem_Click" NavigationURI="/CornerSticker"/>
                             </menu:MenuBarItem>
                             <menu:MenuBarItem Name="reportsMenu" MenuText="Reports" >
                                 <menu:MenuItem MenuText="Film Consumption"  Click="MenuItem_Click" NavigationURI="/FilmConsumptionReport"/>
                                 <menu:MenuItem MenuText="Film Stock Report"  Click="MenuItem_Click" NavigationURI="/FilmStockReport"/>
                                 <menu:MenuItem MenuText="Casting Status"  Click="MenuItem_Click" NavigationURI="/CastingStatusReport"/>
+                                <menu:MenuItem MenuText="Casting Handled"  Click="MenuItem_Click" NavigationURI="/CastingHandledReport"/>
+                                <menu:MenuItem MenuText="Casting History"  Click="MenuItem_Click" NavigationURI="/CastingHistoryReport"/>
                                 <menu:MenuItem MenuText="Shiftwise Performance"  Click="MenuItem_Click" NavigationURI="/ShiftWisePerformance"/>
                                 <menu:MenuItem MenuText="FP Performance"  Click="MenuItem_Click" NavigationURI="/FixedPatternPerformance"/>
                                 <menu:MenuItem MenuText="Changes"  Click="MenuItem_Click" NavigationURI="/ChangesMadeReport"/>
@@ -84,6 +87,7 @@
                             <menu:MenuBarItem  MenuText="Entry" >
                                 <menu:MenuItem MenuText="Film Transactions"  Click="MenuItem_Click" NavigationURI="/FilmTransactions"/>
                                 <menu:MenuItem MenuText="Radiography Entry"  Click="MenuItem_Click" NavigationURI="/RadiographyReports"/>
+                                <menu:MenuItem MenuText="Corner Stickers"  Click="MenuItem_Click" NavigationURI="/CornerSticker"/>
                             </menu:MenuBarItem>
                             <menu:MenuBarItem MenuText="Reports" >
                                 <menu:MenuItem MenuText="Film Consumption"  Click="MenuItem_Click" NavigationURI="/FilmConsumptionReport"/>
@@ -100,6 +104,7 @@
                             <menu:MenuBarItem  MenuText="Entry" >
                                 <menu:MenuItem MenuText="Film Transactions"  Click="MenuItem_Click" NavigationURI="/FilmTransactions"/>
                                 <menu:MenuItem MenuText="Radiography Entry"  Click="MenuItem_Click" NavigationURI="/RadiographyReports"/>
+                                <menu:MenuItem MenuText="Corner Stickers"  Click="MenuItem_Click" NavigationURI="/CornerSticker"/>
                             </menu:MenuBarItem>
                         </menu:MenuBar>
                         <menu:MenuBar Name="ManagingDirectorMenuBar" VerticalAlignment="Center" Visibility="Collapsed">
@@ -111,7 +116,7 @@
                                 <menu:MenuItem MenuText="FP Performance"  Click="MenuItem_Click" NavigationURI="/FixedPatternPerformance"/>
                                 <menu:MenuItem MenuText="Changes"  Click="MenuItem_Click" NavigationURI="/ChangesMadeReport"/>
                             </menu:MenuBarItem>
-                        </menu:MenuBar>                        
+                        </menu:MenuBar>
                         <menu:MenuBar Name="CustomerMenuBar" VerticalAlignment="Center" Visibility="Collapsed">
                             <menu:MenuBarItem MenuText="Entry" >
                                 <menu:MenuItem MenuText="Radiography Entry"  Click="MenuItem_Click" NavigationURI="/RadiographyReports"/>

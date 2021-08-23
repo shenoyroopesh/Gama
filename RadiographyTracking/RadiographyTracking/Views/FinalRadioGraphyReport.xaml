@@ -4,7 +4,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    d:DesignHeight="550" d:DesignWidth="640" 
+    d:DesignHeight="750" d:DesignWidth="640" 
     xmlns:riaControls="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.DomainServices" 
     xmlns:my="clr-namespace:RadiographyTracking.Web.Models" xmlns:my1="clr-namespace:RadiographyTracking.Web.Services" 
     xmlns:sdk="http://schemas.microsoft.com/winfx/2006/xaml/presentation/sdk"
@@ -21,7 +21,7 @@
         <ex:ComboBoxDataSource x:Key="FilmSizesSource" DomainContext="{StaticResource RadiographyContext}"
                                OperationName="GetFilmSizesQuery" LoadCompleted="FilmSizeArea_LoadCompleted" />
         <ex:ComboBoxDataSource x:Key="EnergySource" DomainContext="{StaticResource RadiographyContext}" 
-                               OperationName="GetEnergiesQuery"/>
+                               OperationName="GetEnergiesQuery" LoadCompleted="FilmSizeArea_LoadCompleted"/>
         <ex:ComboBoxDataSource x:Key="RemarksSource" DomainContext="{StaticResource RadiographyContext}"
                                OperationName="GetRemarksQuery" />
         <ex:ComboBoxDataSource x:Key="TechniciansSource" DomainContext="{StaticResource RadiographyContext}" 
@@ -29,11 +29,11 @@
         <ex:ComboBoxDataSource x:Key="WeldersSource" DomainContext="{StaticResource RadiographyContext}"
                                OperationName="GetWeldersQuery" />
         <ex:ComboBoxDataSource x:Key="ShiftsSource" DomainContext="{StaticResource RadiographyContext}"
-                               OperationName="GetShiftsQuery" />
+                               OperationName="GetShiftsQuery" LoadCompleted="FilmSizeArea_LoadCompleted" />
     </UserControl.Resources>
     <Grid x:Name="LayoutRoot">
         <riaControls:DomainDataSource Name="ReportSource" AutoLoad="False" DomainContext="{StaticResource RadiographyContext}" 
-                                      QueryName="GetFinalRTReportQuery">
+                                      QueryName="GetFinalRTReportQuery" >
             <riaControls:DomainDataSource.QueryParameters>
                 <riaControls:Parameter ParameterName="rtNo" Value="{Binding ElementName=txtRTNo, Path=Text}" />
                 <riaControls:Parameter ParameterName="filter" Value="False" />

@@ -29,6 +29,8 @@ namespace RadiographyTracking.Web.Models
         public String Retakes { get; set; }
         [NotMapped]
         public String Reshoots { get; set; }
+        [NotMapped]
+        public String Checkshots { get; set; }
 
         [NotMapped]
         public string Date { get; set; }

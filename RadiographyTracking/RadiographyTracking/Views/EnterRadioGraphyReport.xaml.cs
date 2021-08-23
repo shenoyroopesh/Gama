@@ -34,6 +34,7 @@ namespace RadiographyTracking.Views
             this.ExcludePropertiesFromTracking.Add("FilmSizeStringInCms");
             this.ExcludePropertiesFromTracking.Add("FilmSizeWithCountInCms");
             this.ExcludePropertiesFromTracking.Add("TotalAreaInCms");
+            this.ExcludePropertiesFromTracking.Add("RetakeReasonText");
 
 
             this.OnCancelNavigation = "/RadiographyReports";
@@ -219,11 +220,19 @@ namespace RadiographyTracking.Views
         {
             var ctx = (RadiographyContext)this.DomainSource.DomainContext;
             var dt = new DataTable("EnergyTable");
-            AddTextColumn(dt, "HeadRow", "HeadRow");
+           
             var headerRow = new DataRow();
-            var actualRow = new DataRow();
+            DataRow actualRow1 = new DataRow();
+            DataRow actualRow2 = new DataRow();
+
+            AddTextColumn(dt, "HeadRow", "HeadRow");
+            headerRow["FilmHeadRow"] = "Film Count";
+            actualRow1["FilmHeadRow"] = "First Film";
+            actualRow2["FilmHeadRow"] = "Additional Film";
+
             headerRow["HeadRow"] = "Isotope";
-            actualRow["HeadRow"] = "Sq. Inches";
+            actualRow1["HeadRow"] = "Sq. Inches";
+            actualRow2["HeadRow"] = "Sq. Inches";
 
             //instead of encountering an error if context is still loading, just don't do it, it will get 
             //done on the first save operation
@@ -235,16 +244,23 @@ namespace RadiographyTracking.Views
                 {
                     AddTextColumn(dt, e.Name, e.Name);
                     headerRow[e.Name] = e.Name;
-                    actualRow[e.Name] = RGReportRows
+                    actualRow1[e.Name] = RGReportRows
                         .Where(p => p.EnergyID == e.ID &&
                                     p.RemarkText != "RETAKE")
                         //30-Jun-12 - Roopesh added this to ensure that retake areas are not included
-                        .Sum(p => p.FilmSize.Area * p.FilmCount);
+                        .Sum(p => p.FilmSize.Area *1);
+
+                    actualRow2[e.Name] = RGReportRows
+                        .Where(p => p.EnergyID == e.ID &&
+                                    p.RemarkText != "RETAKE")
+                        //30-Jun-12 - Roopesh added this to ensure that retake areas are not included
+                        .Sum(p => p.FilmSize.Area * (p.FilmCount > 1 ? (p.FilmCount - 1) : 0));
                 }
             }
 
             dt.Rows.Add(headerRow);
-            dt.Rows.Add(actualRow);
+            dt.Rows.Add(actualRow1);
+            dt.Rows.Add(actualRow2);
 
             energyAreas.DataSource = dt;
             energyAreas.DataBind();

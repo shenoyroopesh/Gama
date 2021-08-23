@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.ComponentModel.DataAnnotations;
+using System.ServiceModel.DomainServices.Server;
 
 namespace RadiographyTracking.Web.Models
 {
@@ -26,5 +27,17 @@ namespace RadiographyTracking.Web.Models
         public String RowType { get; set; }
         [NotMapped]
         public float Area { get; set; }
+        [NotMapped]
+        public float AreaSingleFilm { get; set; }
+        [NotMapped]
+        public float AreaAdditionalFilm { get; set; }
+        [NotMapped]
+        public int ReshootNo { get; set; }
+        [NotMapped]
+        public float AreaInCo { get; set; }
+        [NotMapped]
+        public float AreaInIr { get; set; }
+        [NotMapped]
+        public String DateOfTest { get; set; }
     }
 }

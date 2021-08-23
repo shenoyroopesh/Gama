@@ -28,7 +28,7 @@ namespace RadiographyTracking.Web.Models
         /// </summary>
         /// <param name="fpTemplate"></param>
         /// <param name="ctx">Database Context with reference which to create the object</param>
-        public RGReport(FixedPatternTemplate fpTemplate, string RTNo, string ReportNo, RadiographyContext ctx)
+        public RGReport(FixedPatternTemplate fpTemplate, string RTNo, string ReportNo, RadiographyContext ctx, bool isDirectlyReshoot)
         {
             //shallow copy properties
             fpTemplate.CopyTo(this, "ID");
@@ -56,8 +56,18 @@ namespace RadiographyTracking.Web.Models
                 this.LeadScreen = "0.125mm"; //Default for Leadscreen changed as per NEW requirements shared on 07-Jun-14.
                 this.LeadScreenBack = "0.125mm"; //Default for Leadscreen changed as per NEW requirements shared on 07-Jun-14.
             }
-            this.ReportTypeAndNo = this.ReportType = "Fresh";
-            this.ReshootNo = 0; //explicitly setting this, even though this is the default value
+
+            if (isDirectlyReshoot)
+            {
+                this.ReportType = "Reshoot";
+                this.ReshootNo = 1; //explicitly setting this, even though this is the default value
+                this.ReportTypeAndNo = this.ReportType + "-" + this.ReshootNo.ToString();
+            }
+            else
+            {
+                this.ReportTypeAndNo = this.ReportType = "Fresh";
+                this.ReshootNo = 0; //explicitly setting this, even though this is the default value
+            }
 
             //since this is the first report for this FP and RT No
             this.First = true;
@@ -65,12 +75,12 @@ namespace RadiographyTracking.Web.Models
             foreach (var row in fpTemplate.FPTemplateRows.OrderBy(p => p.SlNo))
             {
                 var rgReportRow = new RGReportRow
-                                            {
-                                                RowType = freshRowType,
-                                                Energy = Energy.getEnergyForThickness(row.Thickness, ctx),
-                                                Observations = " ", //for grid to work fine
-                                                FilmCount = 1 // default for the new film count
-                                            };
+                {
+                    RowType = freshRowType,
+                    Energy = Energy.getEnergyForThickness(row.Thickness, ctx),
+                    Observations = " ", //for grid to work fine
+                    FilmCount = 1 // default for the new film count
+                };
                 row.CopyTo(rgReportRow, "ID,FilmSizeString");
 
                 //for future reports, so that ordering can be done on this basis
@@ -78,7 +88,7 @@ namespace RadiographyTracking.Web.Models
 
                 this.RGReportRows.Add(rgReportRow);
             }
-            
+
         }
 
         /// <summary>
@@ -132,11 +142,12 @@ namespace RadiographyTracking.Web.Models
                 var reportRow = new RGReportRow()
                 {
                     RowType = RGReportRowType.getRowType(row.Remark.Value, ctx),
-                    Observations = " "
+                    Observations = " ",
+                    RetakeReasonText = " "
                 };
                 row.CopyTo(reportRow,
                     "ID,RGReport,Observations,Remark,RemarkText,ObservationsText," +
-                    "Technician,TechnicianText,Welder,WelderText,RowType,ReportNo");
+                    "Technician,TechnicianText,Welder,WelderText,RowType,ReportNo,RetakeReason,RetakeReasonText");
                 reportRow.SlNo = slNo++;
                 this.RGReportRows.Add(reportRow);
             }
@@ -479,6 +490,280 @@ namespace RadiographyTracking.Web.Models
                                  .Where(p => p.RemarkText == "RETAKE")
                                  .Sum(p => p.FilmAreaInCms)
                                  .ToString();
+            }
+        }
+
+        ///////////////////////
+
+        /// <summary>
+        /// Calculated field that gets the energy area for this particular report
+        /// </summary>
+        [NotMapped]
+        [Exclude]
+        public Dictionary<String, float> EnergyAreasForFirstFilm
+        {
+            get
+            {
+                if (RGReportRows == null)
+                    return null;
+
+                var summary = from r in RGReportRows
+                              where r.RemarkText != "RETAKE" //Roopesh: 30-Jun-2012
+                              group r by r.EnergyText into g
+                              select new
+                              {
+                                  Energy = g.Key,
+                                  Area = g.Sum(p => p.FilmAreaFirstFilm)
+                              }; //TODO: note this exact logic is present in RGReport as well. Whenever making changes here make there too. 
+
+                return summary.ToDictionary(s => s.Energy, s => s.Area);
+            }
+        }
+
+        /// <summary>
+        /// Calculated field that gets the energy area for this particular report
+        /// </summary>
+        [NotMapped]
+        [Exclude]
+        public Dictionary<String, float> EnergyAreasForAdditionalFilm
+        {
+            get
+            {
+                if (RGReportRows == null)
+                    return null;
+
+                var summary = from r in RGReportRows
+                              where r.RemarkText != "RETAKE" //Roopesh: 30-Jun-2012
+                              group r by r.EnergyText into g
+                              select new
+                              {
+                                  Energy = g.Key,
+                                  Area = g.Sum(p => p.FilmAreaAdditionalFilm)
+                              }; //TODO: note this exact logic is present in RGReport as well. Whenever making changes here make there too. 
+
+                return summary.ToDictionary(s => s.Energy, s => s.Area);
+            }
+        }
+
+        /// <summary>
+        /// Calculated field that gets the energy area for this particular report
+        /// </summary>
+        [NotMapped]
+        [Exclude]
+        public Dictionary<String, float> EnergyAreasInCmsForFirstFilm
+        {
+            get
+            {
+                if (RGReportRows == null)
+                    return null;
+
+                var summary = from r in RGReportRows
+                              where r.RemarkText != "RETAKE" //Roopesh: 30-Jun-2012
+                              group r by r.EnergyText into g
+                              select new
+                              {
+                                  Energy = g.Key,
+                                  Area = g.Sum(p => p.FilmAreaInCmsFirstFilm)
+                              }; //TODO: note this exact logic is present in RGReport as well. Whenever making changes here make there too. 
+
+                return summary.ToDictionary(s => s.Energy, s => s.Area);
+            }
+        }
+
+        /// <summary>
+        /// Calculated field that gets the energy area for this particular report
+        /// </summary>
+        [NotMapped]
+        [Exclude]
+        public Dictionary<String, float> EnergyAreasInCmsForAdditionalFilm
+        {
+            get
+            {
+                if (RGReportRows == null)
+                    return null;
+
+                var summary = from r in RGReportRows
+                              where r.RemarkText != "RETAKE" //Roopesh: 30-Jun-2012
+                              group r by r.EnergyText into g
+                              select new
+                              {
+                                  Energy = g.Key,
+                                  Area = g.Sum(p => p.FilmAreaInCmsAdditionalFilm)
+                              }; //TODO: note this exact logic is present in RGReport as well. Whenever making changes here make there too. 
+
+                return summary.ToDictionary(s => s.Energy, s => s.Area);
+            }
+        }
+
+        [NotMapped]
+        [Exclude]
+        public Dictionary<String, float> ExposedEnergyAreasForFirstFilm
+        {
+            get
+            {
+                if (RGReportRows == null)
+                    return null;
+
+                var summary = from r in RGReportRows
+                              group r by r.EnergyText into g
+                              select new
+                              {
+                                  Energy = g.Key,
+                                  Area = g.Sum(p => p.FilmAreaFirstFilm)
+                              };
+
+                return summary.ToDictionary(s => s.Energy, s => s.Area);
+            }
+        }
+
+        [NotMapped]
+        [Exclude]
+        public Dictionary<String, float> ExposedEnergyAreasForAdditionalFilm
+        {
+            get
+            {
+                if (RGReportRows == null)
+                    return null;
+
+                var summary = from r in RGReportRows
+                              group r by r.EnergyText into g
+                              select new
+                              {
+                                  Energy = g.Key,
+                                  Area = g.Sum(p => p.FilmAreaAdditionalFilm)
+                              };
+
+                return summary.ToDictionary(s => s.Energy, s => s.Area);
+            }
+        }
+
+        [NotMapped]
+        [Exclude]
+        public Dictionary<String, float> ExposedEnergyAreasInCmsForFirstFilm
+        {
+            get
+            {
+                if (RGReportRows == null)
+                    return null;
+
+                var summary = from r in RGReportRows
+                              group r by r.EnergyText into g
+                              select new
+                              {
+                                  Energy = g.Key,
+                                  Area = g.Sum(p => p.FilmAreaInCmsFirstFilm)
+                              };
+
+                return summary.ToDictionary(s => s.Energy, s => s.Area);
+            }
+        }
+
+        [NotMapped]
+        [Exclude]
+        public Dictionary<String, float> ExposedEnergyAreasInCmsForAdditionalFilm
+        {
+            get
+            {
+                if (RGReportRows == null)
+                    return null;
+
+                var summary = from r in RGReportRows
+                              group r by r.EnergyText into g
+                              select new
+                              {
+                                  Energy = g.Key,
+                                  Area = g.Sum(p => p.FilmAreaInCmsAdditionalFilm)
+                              };
+
+                return summary.ToDictionary(s => s.Energy, s => s.Area);
+            }
+        }
+
+        [NotMapped]
+        [Exclude]
+        public Dictionary<String, float> RetakeEnergyAreasForFirstFilm
+        {
+            get
+            {
+                if (RGReportRows == null)
+                    return null;
+
+                var summary = from r in RGReportRows
+                              where r.RemarkText == "RETAKE"
+                              group r by r.EnergyText into g
+                              select new
+                              {
+                                  Energy = g.Key,
+                                  Area = g.Sum(p => p.FilmAreaFirstFilm)
+                              };
+
+                return summary.ToDictionary(s => s.Energy, s => s.Area);
+            }
+        }
+
+        [NotMapped]
+        [Exclude]
+        public Dictionary<String, float> RetakeEnergyAreasForAdditionalFilm
+        {
+            get
+            {
+                if (RGReportRows == null)
+                    return null;
+
+                var summary = from r in RGReportRows
+                              where r.RemarkText == "RETAKE"
+                              group r by r.EnergyText into g
+                              select new
+                              {
+                                  Energy = g.Key,
+                                  Area = g.Sum(p => p.FilmAreaAdditionalFilm)
+                              };
+
+                return summary.ToDictionary(s => s.Energy, s => s.Area);
+            }
+        }
+
+        [NotMapped]
+        [Exclude]
+        public Dictionary<String, float> RetakeEnergyAreasInCmsForFirstFilm
+        {
+            get
+            {
+                if (RGReportRows == null)
+                    return null;
+
+                var summary = from r in RGReportRows
+                              where r.RemarkText == "RETAKE"
+                              group r by r.EnergyText into g
+                              select new
+                              {
+                                  Energy = g.Key,
+                                  Area = g.Sum(p => p.FilmAreaInCmsFirstFilm)
+                              };
+
+                return summary.ToDictionary(s => s.Energy, s => s.Area);
+            }
+        }
+
+        [NotMapped]
+        [Exclude]
+        public Dictionary<String, float> RetakeEnergyAreasInCmsForAdditionalFilm
+        {
+            get
+            {
+                if (RGReportRows == null)
+                    return null;
+
+                var summary = from r in RGReportRows
+                              where r.RemarkText == "RETAKE"
+                              group r by r.EnergyText into g
+                              select new
+                              {
+                                  Energy = g.Key,
+                                  Area = g.Sum(p => p.FilmAreaInCmsAdditionalFilm)
+                              };
+
+                return summary.ToDictionary(s => s.Energy, s => s.Area);
             }
         }
     }

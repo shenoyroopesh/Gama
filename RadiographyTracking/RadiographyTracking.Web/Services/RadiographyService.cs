@@ -464,7 +464,10 @@
 
         public IEnumerable<FilmConsumptionReportRow> GetFilmConsumptionReport(int foundryId, DateTime fromDate, DateTime toDate)
         {
+            //&& r.RGReport.ReportDate >= fromDate && r.RGReport.ReportDate <= toDate -- Report date is changed to Test date. 28thMay 2015(4th Assignment - TEK009
             //to ensure that time component of the date does not make some dates get excluded
+            //toDate = toDate.Date.AddDays(1);
+
             fromDate = fromDate.Date;
             toDate = toDate.Date.AddDays(1);
 
@@ -474,22 +477,114 @@
                                 where rowFID == (foundryId == -1 ? rowFID : foundryId)
                                 && r.RGReport.ReportDate >= fromDate && r.RGReport.ReportDate <= toDate
                                 group r by new { r.RGReport, r.RGReport.FixedPattern, r.Energy, r.Remark, r.RGReport.ReportTypeAndNo } into g
-                                select new { g.Key, Area = g.Sum(p => p.FilmSize.Area * p.FilmCount) }).ToList();
+                                select new
+                                {
+                                    g.Key,
+                                    Area = g.Sum(p => p.FilmSize.Area * p.FilmCount),
+                                    AreaAdditionalFilm = g.Sum(p => p.FilmSize.Area * (p.FilmCount - 1)),
+                                    AreaSingleFilm = g.Sum(p => p.FilmSize.Area * 1)
+                                }).ToList();
+
+            var intermediateData = intermediate.OrderBy(a => a.Key.RGReport.ReportDate);
+
+            return from g in intermediateData
+                   select new FilmConsumptionReportRow
+                   {
+                       ID = Guid.NewGuid(),
+                       ReportNo = g.Key.RGReport.ReportNo,
+                       Date = g.Key.RGReport.ReportDate.ToString("dd-MM-yyyy"),
+                       DateOfTest = g.Key.RGReport.DateOfTest.ToString("dd-MM-yyyy"),
+                       FPNo = g.Key.RGReport.FixedPattern.FPNo,
+                       RTNo = g.Key.RGReport.RTNo,
+                       ReportTypeAndNo = g.Key.RGReport.ReportTypeAndNo,
+                       ReshootNo = g.Key.RGReport.ReshootNo,
+                       Energy = g.Key.Energy.Name,
+                       RowType = g.Key.Remark == null ? string.Empty : g.Key.Remark.Value,
+                       Area = g.Area,
+                       AreaAdditionalFilm = g.AreaAdditionalFilm,
+                       AreaSingleFilm = g.AreaSingleFilm
+                   };
+        }
+
+        public IEnumerable<FilmConsumptionReportRow> GetCastingHandledReport(int foundryId, DateTime fromDate, DateTime toDate)
+        {
+            fromDate = fromDate.Date;
+            toDate = toDate.Date;
+
+            var intermediate = (from r in DbContext.RGReports.Include(p => p.RGReportRows).Include(q => q.FixedPattern).Include(r => r.RGReportRows.Select(p => p.FilmSize))
+                                orderby r.DateOfTest
+                                let rowFID = r.FixedPattern.Customer.FoundryID
+                                where rowFID == (foundryId == -1 ? rowFID : foundryId)
+                                  && r.DateOfTest >= fromDate && r.DateOfTest <= toDate
+                                select new
+                                {
+                                    r,
+                                    r.RGReportRows,
+                                    r.FixedPattern,
+                                    filmSizeArea = r.RGReportRows.Select(q => q.FilmSize.Area * q.FilmCount).Sum(),
+                                    AreaInCo = r.RGReportRows.Count == 0 ? 0 : r.RGReportRows.Where(q => q.EnergyID == 1).Select(a => a.FilmSize.Area * a.FilmCount).DefaultIfEmpty(0).Sum(),
+                                    AreaInIr = r.RGReportRows.Count == 0 ? 0 : r.RGReportRows.Where(q => q.EnergyID == 2).Select(a => a.FilmSize.Area * a.FilmCount).DefaultIfEmpty(0).Sum()
+                                }).ToList();
 
 
             return from g in intermediate
                    select new FilmConsumptionReportRow
                    {
                        ID = Guid.NewGuid(),
-                       ReportNo = g.Key.RGReport.ReportNo,
-                       Date = g.Key.RGReport.ReportDate.ToString("dd-MM-yyyy"),
-                       FPNo = g.Key.RGReport.FixedPattern.FPNo,
-                       RTNo = g.Key.RGReport.RTNo,
-                       ReportTypeAndNo = g.Key.RGReport.ReportTypeAndNo,
-                       Energy = g.Key.Energy.Name,
-                       RowType = g.Key.Remark == null ? string.Empty : g.Key.Remark.Value,
-                       Area = g.Area
+                       ReportNo = g.r.ReportNo,
+                       Date = g.r.ReportDate.ToString("dd-MM-yyyy"),
+                       DateOfTest = g.r.DateOfTest.ToString("dd-MM-yyyy"),
+                       FPNo = g.r.FixedPattern.FPNo,
+                       RTNo = g.r.RTNo,
+                       ReportTypeAndNo = g.r.ReportTypeAndNo,
+                       ReshootNo = g.r.ReshootNo,
+                       Area = g.filmSizeArea,
+                       AreaInCo = g.r.ReshootNo == 0 ? g.AreaInCo : 0,
+                       AreaInIr = g.r.ReshootNo == 0 ? g.AreaInIr : 0
                    };
+        }
+
+        public IEnumerable<FilmConsumptionReportRow> GetCastingHistoryReport(int foundryId, string RTNo, string HeatNo, string fpNo, int? coverageId)
+        {
+            var intermediate = (from r in DbContext.RGReports.Include(p => p.RGReportRows).Include(q => q.FixedPattern).Include(r => r.RGReportRows.Select(p => p.FilmSize))
+                                let rowFID = r.FixedPattern.Customer.FoundryID
+                                where rowFID == (foundryId == -1 ? rowFID : foundryId)
+                                      && (RTNo == string.Empty || r.RTNo.Contains(RTNo))
+                                && (HeatNo == string.Empty || r.HeatNo.Contains(HeatNo))
+                                && ((fpNo == string.Empty && (coverageId == null || coverageId == -1))
+                                    || (r.CoverageID == coverageId && r.FixedPattern.FPNo.Contains(fpNo)))
+                                select new
+                                {
+                                    r,
+                                    r.RGReportRows,
+                                    r.FixedPattern,
+                                    filmSizeArea = r.RGReportRows.Select(q => q.FilmSize.Area * q.FilmCount).Sum(),
+                                    AreaInCo = r.RGReportRows.Count == 0 ? 0 : r.RGReportRows.Where(q => q.EnergyID == 1).Select(a => a.FilmSize.Area * a.FilmCount).DefaultIfEmpty(0).Sum(),
+                                    AreaInIr = r.RGReportRows.Count == 0 ? 0 : r.RGReportRows.Where(q => q.EnergyID == 2).Select(a => a.FilmSize.Area * a.FilmCount).DefaultIfEmpty(0).Sum()
+                                }).ToList();
+
+
+            return from g in intermediate
+                   select new FilmConsumptionReportRow
+                   {
+                       ID = Guid.NewGuid(),
+                       ReportNo = g.r.ReportNo,
+                       Date = g.r.ReportDate.ToString("dd-MM-yyyy"),
+                       DateOfTest = g.r.DateOfTest.ToString("dd-MM-yyyy"),
+                       FPNo = g.r.FixedPattern.FPNo,
+                       RTNo = g.r.RTNo,
+                       ReportTypeAndNo = g.r.ReportTypeAndNo,
+                       ReshootNo = g.r.ReshootNo,
+                       Area = g.filmSizeArea,
+                       AreaInCo = g.r.ReshootNo == 0 ? g.AreaInCo : 0,
+                       AreaInIr = g.r.ReshootNo == 0 ? g.AreaInIr : 0
+                   };
+        }
+
+        public IQueryable<RGReport> GetRGReportsOnRtNoAndReshootNoForReport(String RtNo, int ReshootNo)
+        {
+            return this.DbContext.RGReports.Include(p => p.RGReportRows.Select(r => r.FilmSize)).Where(p => p.ReshootNo == ReshootNo &&
+                                                    p.RTNo == RtNo);
         }
 
         #endregion
@@ -861,8 +956,22 @@
         public IQueryable<RGReport> GetRGReports(int RGReportId)
         {
             var foundryID = getFoundryIDForCurrentUser();
-            var result = this.DbContext.RGReports.Include(p => p.RGReportRows.Select(r => r.Remark))
+            //Added orderby to solve sorting issue.
+            //var result = this.DbContext.RGReports.Include(p => p.RGReportRows.Select(r => r.Remark))
+            var result = this.DbContext.RGReports.OrderByDescending(a => a.RGReportRows.FirstOrDefault().SlNo).Include(p => p.RGReportRows.Select(r => r.Remark))
                                             .Where(p => p.ID == RGReportId &&
+                                                    p.FixedPattern.Customer.Foundry.ID ==
+                                                        (foundryID ?? p.FixedPattern.Customer.Foundry.ID));
+            return result;
+        }
+
+        public IQueryable<RGReport> GetRGReportsWithRTNo(string rtNo, int reshootNo)
+        {
+            var foundryID = getFoundryIDForCurrentUser();
+            //Added orderby to solve sorting issue.
+            //var result = this.DbContext.RGReports.Include(p => p.RGReportRows.Select(r => r.Remark))
+            var result = this.DbContext.RGReports.OrderByDescending(a => a.RGReportRows.FirstOrDefault().SlNo).Include(p => p.RGReportRows.Select(r => r.Remark))
+                                            .Where(p => p.RTNo == rtNo && p.ReshootNo == reshootNo &
                                                     p.FixedPattern.Customer.Foundry.ID ==
                                                         (foundryID ?? p.FixedPattern.Customer.Foundry.ID));
             return result;
@@ -898,7 +1007,7 @@
                                                         (foundryID ?? p.FixedPattern.Customer.Foundry.ID));
         }
 
-        public RGReport GetNewRGReport(String strFPNo, String strCoverage, String rtNo)
+        public RGReport GetNewRGReport(String strFPNo, String strCoverage, String rtNo, bool isDirectlyReshoot)
         {
             var foundryID = getFoundryIDForCurrentUser();
             //check if there is an existing report with this combination for this users foundry
@@ -930,7 +1039,7 @@
             if (rgReport == null)
             {
                 //create new report with existing fptemplate
-                rgReport = new RGReport(fpTemplate, rtNo, nextReportNumber, DbContext);
+                rgReport = new RGReport(fpTemplate, rtNo, nextReportNumber, DbContext, isDirectlyReshoot);
                 DbContext.RGReports.Add(rgReport);
                 DbContext.SaveChanges();
                 return rgReport;
@@ -1011,6 +1120,7 @@
                                     Repairs = allLatestRows.Where(p => p.Remark.Value == "REPAIR").Count(),
                                     Retakes = allLatestRows.Where(p => p.Remark.Value == "RETAKE").Count(),
                                     Reshoots = allLatestRows.Where(p => p.Remark.Value == "RESHOOT").Count(),
+                                    Checkshots = allLatestRows.Where(p => p.Remark.Value == "CHECKSHOT").Count(),
                                     Status = g.OrderByDescending(p => p.ReportDate).FirstOrDefault().Status.Status
                                 }).ToList();
 
@@ -1026,6 +1136,7 @@
                        Repairs = r.Repairs.ToString(),
                        Retakes = r.Retakes.ToString(),
                        Reshoots = r.Reshoots.ToString(),
+                       Checkshots = r.Checkshots.ToString(),
                        Status = r.Status
                    };
         }
@@ -1074,6 +1185,7 @@
                 finalRows.Add(row);
             }
 
+            //Added by Praveen to fix segment shuffling issue
             finalReport.FinalRTReportRows = finalRows;
             if (finalReport.StatusID == 2)
             {
@@ -1083,6 +1195,7 @@
                     finalReport.Status.Status = "CASTING ACCEPTABLE AS PER LEVEL 1";
             }
 
+            finalReport.ReportTypeNo = "C";
             return finalReport;
         }
 
@@ -1138,7 +1251,6 @@
         {
             return this.DbContext.RGReportRows.Where(p => p.RGReport.ReportNo == ReportNo);
         }
-
 
         public IQueryable<RGReportRow> GetRGReportRowsByFPNo(string fpNo)
         {
@@ -1463,6 +1575,82 @@
             return addressStickerRows;
         }
 
+        public List<DummyAddressStickerRow> GetDummyAddressStickers(string fixedPatternNo, int strCoverage, string rtNo, int cellNo)
+        {
+            var rows = new List<FPTemplateRow>();
+            for (var i = 1; i < cellNo; i++) rows.Add(null);
+
+            FixedPattern fixedPattern;
+            Coverage coverage;
+            FixedPatternTemplate fixedPatternTemplate = new FixedPatternTemplate();
+            try
+            {
+                fixedPattern = this.DbContext.FixedPatterns.Single(p => p.FPNo == fixedPatternNo);
+                coverage = this.DbContext.Coverages.Single(p => p.ID == strCoverage);
+            }
+            catch (InvalidOperationException e)
+            {
+                return null;
+            }
+
+            var fpTemplate = this.DbContext.FixedPatternTemplates.Include(p => p.FPTemplateRows.Select(r => r.FilmSize))
+                .Include(p => p.FixedPattern.Customer.Foundry.Periods).FirstOrDefault(p => p.FixedPattern.FPNo == fixedPattern.FPNo &&
+                                                                                           p.Coverage.CoverageName == coverage.CoverageName);
+
+            if (fpTemplate != null)
+            {
+                fixedPatternTemplate = fpTemplate;
+            }
+            else
+            {
+                //create a new fixed pattern template for this combination
+                fpTemplate = new FixedPatternTemplate() { FixedPattern = fixedPattern, Coverage = coverage };
+                DbContext.FixedPatternTemplates.Add(fpTemplate);
+                //save the fixed pattern template before sending it back, so that it has an ID
+                DbContext.SaveChanges();
+                fixedPatternTemplate = fpTemplate;
+            }
+
+            var reportRows = fixedPatternTemplate.FPTemplateRows;
+
+            rows.AddRange(reportRows);
+
+            //if not even, add something to the end to make it even
+            if (rows.Count % 3 > 0) rows.Add(null);
+
+            var addressStickerRows = new List<DummyAddressStickerRow>();
+
+            for (var i = 0; i < rows.Count / 3; i++)
+            {
+                addressStickerRows.Add(new DummyAddressStickerRow
+                {
+                    AddressLabelCol1 = rows[i * 3],
+                    AddressLabelCol2 = rows[i * 3 + 1],
+                    AddressLabelCol3 = rows[i * 3 + 2],
+                    FPNo = fixedPattern.FPNo,
+                    CoverageName = coverage.CoverageName,
+                    RTNo = rtNo
+                });
+            }
+
+            //if (rows.Count % 2 > 0) rows.Add(null);
+
+            //var addressStickerRows = new List<DummyAddressStickerRow>();
+
+            //for (var i = 0; i < rows.Count / 2; i++)
+            //{
+            //    addressStickerRows.Add(new DummyAddressStickerRow
+            //    {
+            //        AddressLabelCol1 = rows[i * 2],
+            //        AddressLabelCol2 = rows[i * 2 + 1],                    
+            //        FPNo = fixedPattern.FPNo,
+            //        CoverageName = coverage.CoverageName,
+            //        RTNo = rtNo
+            //    });
+            //}
+            return addressStickerRows;
+        }
+
         /// <summary>
         /// Gets list of report templates filtered by an optional filter parameter
         /// </summary>
@@ -1488,7 +1676,7 @@
             return this.DbContext.RetakeReasons;
         }
 
-        public IEnumerable<RetakeReasonReportRow> GetRetakeReasonReports(int foundryId, DateTime? fromDate, DateTime? toDate)
+        public IEnumerable<RetakeReasonReportRow> GetRetakeReasonReports(int foundryId, DateTime? fromDate, DateTime? toDate, int? reTakeRasonID)
         {
             MembershipUser mUser = Membership.GetUser();
             //from date and to date to not consider time
@@ -1504,6 +1692,7 @@
                                 where rowFId == (foundryId == -1 ? rowFId : foundryId)
                                 && (fromDate == null || r.ReportDate >= fromDate)
                                 && (toDate == null || r.ReportDate < toDate)
+                                && ((reTakeRasonID == null || reTakeRasonID == -1) || (rg.RetakeReasonID == reTakeRasonID))
                                 select new
                                 {
                                     ID = Guid.NewGuid(),

@@ -1,0 +1,54 @@
+﻿<views:BaseCRUDView x:Class="RadiographyTracking.Views.CornerSticker"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignHeight="480" d:DesignWidth="840" 
+                        xmlns:riaControls="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.DomainServices" 
+    xmlns:my="clr-namespace:RadiographyTracking.Web.Models" xmlns:my1="clr-namespace:RadiographyTracking.Web.Services" 
+    xmlns:sdk="http://schemas.microsoft.com/winfx/2006/xaml/presentation/sdk"
+    xmlns:custom="clr-namespace:Vagsons.Controls;assembly=CustomControls"
+    xmlns:local="clr-namespace:RadiographyTracking.Controls"
+                    xmlns:ex="clr-namespace:ComboBoxExtensions;assembly=ComboBoxExtensions"
+    xmlns:views="clr-namespace:RadiographyTracking.Views">
+    <UserControl.Resources>
+        <my1:RadiographyContext x:Key="RadiographyContext" />
+        <ex:ComboBoxDataSource x:Key="CoveragesSource" DomainContext="{StaticResource RadiographyContext}" 
+                               OperationName="GetCoveragesQuery" />
+    </UserControl.Resources>
+    <Grid x:Name="LayoutRoot" Background="White">
+        <sdk:Label Name="headerLabel" Style="{StaticResource PageHeaderStyle}" Content="CORNER STICKERS"/>
+        <ScrollViewer Margin="0, 50,0,0 " IsHitTestVisible="True">
+            <local:BusyIndicator x:Name="busyIndicator">
+                <StackPanel Margin="50, 0, 50,0" HorizontalAlignment="Center" IsHitTestVisible="True" >
+                    <StackPanel Orientation="Horizontal" Margin="10">
+                        <StackPanel.Resources>
+                            <Style TargetType="TextBlock" >
+                                <Setter Property="FontWeight" Value="Bold" />
+                                <Setter Property="VerticalAlignment" Value="Center" />
+                            </Style>
+                        </StackPanel.Resources>
+                        <!-- Note that the below controls' isEnabled is bound to negative of whether RGReportsSource has changes, meaning
+                it will be disabled when there are pending changes-->
+                        <TextBlock Text="FP No"/>
+                        <TextBox Name="txtFPNo" MinWidth="50" Margin="10, 0, 10, 0"/>
+                        <TextBlock Text="Select Coverage:" Margin="0,0,10,0"/>
+                        <ComboBox Width="100" HorizontalAlignment="Left" Name="cmbCoverage"
+                          Style="{StaticResource ComboBoxStyle}"
+                          IsEnabled="{Binding ElementName=RGReportsSource, Path=HasChanges, 
+                                    Converter={StaticResource NotOperatorValueConverter}}"
+                          ItemContainerStyle="{StaticResource ComboBoxItemStyle}"
+                          ItemsSource="{Binding Source={StaticResource CoveragesSource}, Path=Data}"
+                          DisplayMemberPath="CoverageName"/>
+                        <TextBlock Text="RT No" FontWeight="Bold" Margin="10,0,0,0" VerticalAlignment="Center"/>
+                        <TextBox Name="txtRTNo" MinWidth="50" Margin="10, 0, 10, 0" />
+                        <TextBlock Text="Start from cell" FontWeight="Bold" Margin="10,0,0,0" VerticalAlignment="Center"/>
+                        <TextBox Name="cellNo" MinWidth="50" Margin="10, 0, 10, 0" />
+                        <Button Content="Generate Stickers" Click="FetchOperation" Name="btnFetch"/>
+                    </StackPanel>
+                </StackPanel>
+            </local:BusyIndicator>
+        </ScrollViewer>
+    </Grid>
+</views:BaseCRUDView>

@@ -110,7 +110,7 @@ namespace RadiographyTracking.Web.Models
             {
 
                 string FilmSizeWithCount = this.FilmSizeString + ((this.FilmCount > 1) ? ("X" + this.FilmCount.ToString()) : String.Empty);
-                    //to show as 8X9X2 if there are two films of sizes 8X9
+                //to show as 8X9X2 if there are two films of sizes 8X9
                 return FilmSizeWithCount;
             }
         }
@@ -206,7 +206,7 @@ namespace RadiographyTracking.Web.Models
                 }
             }
             set
-            {                
+            {
                 using (var ctx = new RadiographyContext())
                 {
                     try
@@ -295,24 +295,55 @@ namespace RadiographyTracking.Web.Models
         {
             get
             {
+                //Commnted to fix location segment issue - dec 19 2015
+                //if (string.IsNullOrEmpty(this.Location) || string.IsNullOrEmpty(this.Segment))
+                //{
+                //    return "";
+                //}
+
                 //very rarely this should happen, but check none-the-less
-                if (string.IsNullOrEmpty(this.Location) || string.IsNullOrEmpty(this.Segment))
+                if (string.IsNullOrEmpty(this.Location) && string.IsNullOrEmpty(this.Segment))
                 {
                     return "";
                 }
+
+                if (string.IsNullOrEmpty(this.Location) && !string.IsNullOrEmpty(this.Segment))
+                {
+                    return this.Segment;
+                }
+
+                if (!string.IsNullOrEmpty(this.Location) && string.IsNullOrEmpty(this.Segment))
+                {
+                    return this.Location;
+                }
+
                 //if location is LN and segment is 1-2, return LN1-LN2
                 var segments = this.Segment.Split('-');
                 var joined = segments.Select(p => this.Location + p);
                 return String.Join("-", joined);
             }
-            set {  }
+            set { }
         }
 
         [NotMapped]
         [Exclude]
         public float FilmArea
         {
-            get { return FilmSize == null ? 0 : FilmSize.Area*FilmCount; }
+            get { return FilmSize == null ? 0 : FilmSize.Area * FilmCount; }
+        }
+
+        [NotMapped]
+        [Exclude]
+        public float FilmAreaFirstFilm
+        {
+            get { return FilmSize == null ? 0 : FilmSize.Area * 1; }
+        }
+
+        [NotMapped]
+        [Exclude]
+        public float FilmAreaAdditionalFilm
+        {
+            get { return FilmSize == null ? 0 : FilmCount > 1 ? FilmSize.Area * (FilmCount - 1) : 0; }
         }
 
         /// <summary>
@@ -405,6 +436,20 @@ namespace RadiographyTracking.Web.Models
         public float FilmAreaInCms
         {
             get { return FilmSize == null ? 0 : FilmSize.AreaInCms * FilmCount; }
+        }
+
+        [NotMapped]
+        [Exclude]
+        public float FilmAreaInCmsFirstFilm
+        {
+            get { return FilmSize == null ? 0 : FilmSize.AreaInCms * 1; }
+        }
+
+        [NotMapped]
+        [Exclude]
+        public float FilmAreaInCmsAdditionalFilm
+        {
+            get { return FilmSize == null ? 0 : FilmCount > 1 ? FilmSize.AreaInCms * (FilmCount - 1) : 0; }
         }
     }
 }

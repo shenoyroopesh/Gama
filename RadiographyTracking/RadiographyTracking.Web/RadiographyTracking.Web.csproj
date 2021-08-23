@@ -106,6 +106,7 @@
     <Content Include="ClientBin\RadiographyTracking.xap" />
     <Content Include="ChangesReportGenerate.aspx" />
     <Content Include="AddressStickerReportGenerate.aspx" />
+    <Content Include="DummyAddressStickerReportGenerate.aspx" />
     <Content Include="FinalRGReportGenerate.aspx" />
     <Content Include="Global.asax" />
     <Content Include="RadiographyTrackingTestPage.aspx" />
@@ -139,6 +140,14 @@
       <DependentUpon>AddressStickerReportGenerate.aspx</DependentUpon>
     </Compile>
     <Compile Include="AddressStickerGenerator.cs" />
+    <Compile Include="DummyAddressStickerGenerator.cs" />
+    <Compile Include="DummyAddressStickerReportGenerate.aspx.cs">
+      <DependentUpon>DummyAddressStickerReportGenerate.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="DummyAddressStickerReportGenerate.aspx.designer.cs">
+      <DependentUpon>DummyAddressStickerReportGenerate.aspx</DependentUpon>
+    </Compile>
     <Compile Include="FinalRGReportGenerate.aspx.cs">
       <DependentUpon>FinalRGReportGenerate.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -263,11 +272,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="ReportTemplates\CustomerTemplate1.docx">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="ReportTemplates\ChangesReportTemplate.docx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
@@ -275,6 +279,18 @@
   <ItemGroup>
     <None Include="Properties\PublishProfiles\Profile1.pubxml" />
     <None Include="ReportTemplates\AddressLabels.docx" />
+    <None Include="ReportTemplates\AddressLabels_Dummy.docx" />
+    <None Include="ReportTemplates\AddressLabels_with rt done.docx" />
+    <None Include="ReportTemplates\AddressLabels_Without_RT_done_by.docx" />
+    <None Include="ReportTemplates\AddressLabels_With_RT_done - Calicut.docx" />
+    <None Include="ReportTemplates\AddressLabels_With_RT_done_GAMA.docx" />
+    <None Include="ReportTemplates\AddressLabels_With_RT_done_Gama_Mlore.docx" />
+    <None Include="ReportTemplates\BAIKAMPADY_RadiographyReportTemplate.docx" />
+    <None Include="ReportTemplates\CALICUT_RadiographyReportTemplate.docx" />
+    <None Include="ReportTemplates\CustomerTemplate.docx" />
+    <None Include="ReportTemplates\RadiographyReportTemplate_BAIKAMPADY.docx" />
+    <None Include="ReportTemplates\RadiographyReportTemplate_BHEL.docx" />
+    <None Include="ReportTemplates\RadiographyReportTemplate_CALICUT.docx" />
     <Resource Include="ReportTemplates\RadiographyReportTemplate.docx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>

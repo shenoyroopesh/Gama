@@ -69,6 +69,7 @@
                             <sdk:DataGridTextColumn Header="Repairs" Binding="{Binding Path=Repairs}" />
                             <sdk:DataGridTextColumn Header="Retakes" Binding="{Binding Path=Retakes}" />
                             <sdk:DataGridTextColumn Header="Reshoots" Binding="{Binding Path=Reshoots}" />
+                            <sdk:DataGridTextColumn Header="Checkshots" Binding="{Binding Path=Checkshots}" />
                             <sdk:DataGridTextColumn Header="Status" Binding="{Binding Path=Status}" />
                             <sdk:DataGridTemplateColumn Header="Details" Width="Auto">
                                 <sdk:DataGridTemplateColumn.CellTemplate>
